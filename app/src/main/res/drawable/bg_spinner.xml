@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <corners android:radius="@dimen/_20sdp" />
+        </shape>
+    </item>
+
+    <item
+        android:gravity="center_vertical|right"
+        android:left="@dimen/_4sdp"
+        android:right="@dimen/_4sdp">
+        <layer-list>
+            <item
+                android:width="@dimen/_20sdp"
+                android:height="@dimen/_20sdp"
+                android:bottom="@dimen/_5sdp"
+                android:drawable="@drawable/ic_arrow_drop_down"
+                android:gravity="center"
+                android:left="@dimen/_8sdp"
+                android:top="@dimen/_5sdp">
+                <!-- <rotate
+                     android:fromDegrees="45"
+                     android:toDegrees="45">
+                     <shape android:shape="rectangle">
+                         <solid android:color="#666666" />
+                         <stroke android:color="#aaaaaa" android:width="@dimen/_1sdp"/>
+                     </shape>
+                 </rotate>-->
+            </item>
+
+        </layer-list>
+    </item>
+</layer-list>

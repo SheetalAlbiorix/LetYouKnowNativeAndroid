@@ -1,0 +1,79 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.LetYouKnow" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/gray</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/lightBlue</item>
+        <item name="colorSecondaryVariant">@color/lightBlue</item>
+        <item name="colorOnSecondary">@color/gray</item>
+
+        <item name="fontFamily">@font/roboto</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <!-- Toolbar Back Button color. -->
+        <item name="colorControlNormal">@color/lightBlue</item>
+
+        <!-- Edittext Style -->
+        <item name="editTextStyle">@style/MyCustomTextInputStyle</item>
+        <!-- Button Style -->
+        <item name="buttonStyle">@style/ButtonStyleTextColor</item>
+        <!-- Spinner Style -->
+        <item name="spinnerStyle">@style/SpinnerStyle</item>
+
+        <!-- Custom Colors -->
+        <item name="blackHeaderText">@color/black</item>
+        <item name="blackText">@color/lightBlue</item>
+        <item name="lightBlackText">@color/textLightGrey</item>
+
+        <item name="blueText">@color/lightBlue</item>
+
+        <item name="pageBgColor">@color/black100</item>
+        <item name="toolbarBgColor">@color/lightBlue</item>
+        <item name="toolbarTitleColor">@color/lightBlue</item>
+        <item name="editBgColor">@color/black100</item>
+        <item name="editHintColor">@color/lightBlue</item>
+        <item name="editBorderColor">@color/lightBlue</item>
+        <item name="editTextColor">@color/lightBlue</item>
+        <item name="textColor">@color/lightBlue</item>
+        <item name="linkTextColor">@color/lightBlue</item>
+        <item name="buttonColor">@color/lightBlue</item>
+        <item name="buttonTextColor">@color/lightBlue</item>
+        <item name="textGreyColor">@color/white</item>
+        <item name="textDarkColor">@color/white</item>
+        <item name="orangeText">@color/orange</item>
+
+
+    </style>
+
+    <style name="MyCustomTextInputStyle" parent="@android:style/Widget.EditText">
+        <!--<item name="android:background">@drawable/bg_edittext</item>-->
+        <item name="android:textColorHint">@color/gray98</item>
+        <item name="android:paddingTop">@dimen/_10sdp</item>
+        <item name="android:paddingBottom">@dimen/_10sdp</item>
+        <item name="android:paddingLeft">@dimen/_15sdp</item>
+        <item name="android:paddingRight">@dimen/_15sdp</item>
+        <item name="android:drawablePadding">@dimen/_10sdp</item>
+    </style>
+
+    <style name="ButtonStyleTextColor" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">@dimen/_10sdp</item>
+        <item name="android:height">@dimen/_32sdp</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="@android:style/Widget.Spinner">
+        <!--<item name="android:background">@drawable/bg_edittext</item>-->
+        <item name="android:paddingTop">@dimen/_10sdp</item>
+        <item name="android:paddingBottom">@dimen/_10sdp</item>
+        <item name="android:paddingLeft">@dimen/_15sdp</item>
+        <item name="android:paddingRight">@dimen/_15sdp</item>
+        <item name="android:drawableEnd">@drawable/ic_lock</item>
+        <item name="android:drawablePadding">@dimen/_10sdp</item>
+    </style>
+</resources>

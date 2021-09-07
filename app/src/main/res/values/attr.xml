@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="blackText" format="reference|color" />
+    <attr name="lightBlackText" format="reference|color" />
+    <attr name="blueText" format="reference|color" />
+
+    <attr name="pageBgColor" format="reference|color" />
+    <attr name="toolbarBgColor" format="reference|color" />
+    <attr name="toolbarTitleColor" format="reference|color" />
+    <attr name="editBgColor" format="reference|color" />
+    <attr name="editHintColor" format="reference|color" />
+    <attr name="editBorderColor" format="reference|color" />
+    <attr name="editTextColor" format="reference|color" />
+    <attr name="textColor" format="reference|color" />
+    <attr name="linkTextColor" format="reference|color" />
+    <attr name="buttonColor" format="reference|color" />
+    <attr name="buttonTextColor" format="reference|color" />
+    <attr name="textGreyColor" format="reference|color" />
+    <attr name="textDarkColor" format="reference|color" />
+    <attr name="blackHeaderText" format="reference|color" />
+    <attr name="orangeText" format="reference|color" />
+
+    <declare-styleable name="CreditCardView">
+        <attr name="labelOwner" format="string" />
+        <attr name="labelDateExp" format="string" />
+    </declare-styleable>
+</resources>
