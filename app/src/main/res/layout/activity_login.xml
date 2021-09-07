@@ -83,6 +83,16 @@
                     android:inputType="text"
                     app:drawableTint="?editBorderColor" />
 
+                <TextView
+                    android:id="@+id/tvErrorUserId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/enter_user_id"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -104,6 +114,16 @@
                         android:layout_marginRight="@dimen/_15sdp"
                         android:src="@drawable/ic_fingerprint" />
                 </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvErrorPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/enter_password"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btnSignIn"

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -62,7 +63,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity<ForgotPasswordActivity>()
             }
             R.id.btnSignIn -> {
-                startActivity<MainActivity>()
+                tvErrorUserId.visibility = View.GONE
+                tvErrorPassword.visibility = View.GONE
+
+                if (isValid())
+                    startActivity<MainActivity>()
 
                 val biometricManager = BiometricManager.from(this)
                 when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
@@ -96,5 +101,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun isValid(): Boolean {
+        if (TextUtils.isEmpty(edtUserId.text.toString().trim())) {
+            edtUserId.requestFocus()
+            tvErrorUserId.visibility = View.VISIBLE
+            return false
+        } else if (TextUtils.isEmpty(edtPassword.text.toString().trim())) {
+            edtPassword.requestFocus()
+            tvErrorPassword.visibility = View.VISIBLE
+            return false
+        } else if (edtPassword.text.toString().trim().length < 6) {
+            edtPassword.requestFocus()
+            tvErrorPassword.text = getString(R.string.password_length_minimum_6_characters)
+            tvErrorPassword.visibility = View.VISIBLE
+            return false
+        }
+        return true
     }
 }

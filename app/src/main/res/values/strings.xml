@@ -56,6 +56,9 @@
     <!--    <string name="i_have_read_accept">I have read, accept, and agree to abide by LetYouKnow\'s Terms and Conditions and Privacy Policy.</string>-->
     <string name="i_have_read_accept">I have read, accept, and agree to abide by %1$s\'s Terms and Conditions and Privacy Policy.</string>
     <string name="initial_here_to_accept">Initial Here to Accept</string>
+    <string name="enter_user_id">Enter UserID</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="password_length_minimum_6_characters">Password length minimum 6 characters</string>
 
 
 </resources>
