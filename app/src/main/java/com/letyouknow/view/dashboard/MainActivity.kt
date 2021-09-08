@@ -3,14 +3,11 @@ package com.letyouknow.view.dashboard
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
-import android.view.MenuItem
+import android.view.Gravity
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationView
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.DrawerData
@@ -20,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
 
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
+class MainActivity : BaseActivity(),
     View.OnClickListener {
     private lateinit var adapterDrawer: DrawerListAdapter
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
@@ -28,14 +25,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
 
     private fun init() {
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setHomeButtonEnabled(true)
+        ivMenu.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
     }
@@ -69,8 +67,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     invalidateOptionsMenu()
                 }
             }
-        drawer.addDrawerListener(drawerToggle)
-        drawerToggle.syncState()
+//        drawer.addDrawerListener(drawerToggle)
+//        drawerToggle.syncState()
 //        navigationView.setNavigationItemSelectedListener(this)
         loadFragment(HomeFragment())
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -83,16 +81,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNetworkStateChange(isConnect: Boolean) {
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        when (menuItem.itemId) {
-            R.id.item1 -> {
-                Toast.makeText(this, "Publication", Toast.LENGTH_SHORT).show()
-            }
 
-        }
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -101,8 +90,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START)
+        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+            drawer.closeDrawer(Gravity.RIGHT)
         } else {
             super.onBackPressed()
         }
@@ -124,8 +113,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 selectDrawerPos = pos
 
                 Handler().postDelayed({
-                    drawer.closeDrawer(GravityCompat.START)
+                    drawer.closeDrawer(Gravity.RIGHT)
                 }, 200)
+            }
+            R.id.ivMenu -> {
+                drawer.openDrawer(Gravity.RIGHT)
+                /* if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                     drawer.closeDrawer(Gravity.RIGHT)
+                 }*/
             }
         }
     }

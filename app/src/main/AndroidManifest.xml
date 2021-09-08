@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.letyouknow">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <application
         android:name=".LetYouKnowApp"
@@ -15,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LetYouKnow"
         tools:replace="android:icon">
+        <activity
+            android:name=".view.privacypolicy.PrivacyPolicyTermsCondActivity"
+            android:exported="true" />
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true" />

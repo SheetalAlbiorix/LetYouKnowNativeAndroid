@@ -47,7 +47,7 @@
     </style>
 
     <style name="MyCustomTextInputStyle" parent="@android:style/Widget.EditText">
-        <item name="android:background">@drawable/bg_edittext</item>
+<!--        <item name="android:background">@drawable/bg_edittext</item>-->
         <item name="android:textColorHint">@color/gray98</item>
         <item name="android:paddingTop">@dimen/_16sdp</item>
         <item name="android:paddingBottom">@dimen/_16sdp</item>
@@ -94,6 +94,10 @@
 
     <style name="light">
         <item name="fontFamily">@font/roboto_light</item>
+    </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

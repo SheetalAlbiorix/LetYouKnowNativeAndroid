@@ -8,17 +8,24 @@ import android.os.Build
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.kaopiz.kprogresshud.KProgressHUD
+import com.letyouknow.R
+import java.util.regex.Pattern
+
 
 class Constant {
     companion object {
 
         //String
         var noInternet = "No internet connection"
+        var TERMS_CONDITIONS_LINK = "https://www.letyouknow.com/termsandconditions"
+        var PRIVACY_POLICY_LINK = "https://www.letyouknow.com/privacypolicy"
 
         //blank error
         var emailBlank = "email can not be blank"
@@ -32,6 +39,7 @@ class Constant {
         //Arguments
         var ARG_LINK = "ARG_LINK"
         var ARG_TITLE = "ARG_TITLE"
+        var ARG_POLICY = "ARG_POLICY"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
@@ -39,6 +47,16 @@ class Constant {
 
         lateinit var progress: KProgressHUD
 
+        val patternPassword =
+            Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~_`#?{}()+!@\$%^&*-]).{8,16}\$")
+
+        fun emailValidator(strEmail: String): Boolean {
+            return Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()
+        }
+
+        fun passwordValidator(strPassword: String): Boolean {
+            return patternPassword.matcher(strPassword).matches()
+        }
 
         fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
             val spannableString = SpannableString(this.text)
@@ -123,6 +141,42 @@ class Constant {
             val inputMethodManager =
                 getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun onTextChange(context: Context, edtText: EditText, errorText: TextView) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! >= 0) {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+        }
+
+        fun setErrorBorder(edtView: EditText, tvError: TextView) {
+            edtView.requestFocus()
+            edtView.setBackgroundResource(R.drawable.bg_edittext_error)
+            tvError.visibility = View.VISIBLE
         }
     }
 }
