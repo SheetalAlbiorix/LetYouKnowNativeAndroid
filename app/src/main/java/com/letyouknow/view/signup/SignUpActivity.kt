@@ -17,33 +17,32 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityCreateAccountBinding
+import com.letyouknow.databinding.ActivitySignUpBinding
 import com.letyouknow.model.CardListData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.SignUpViewModel
-import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.onTextChange
-import kotlinx.android.synthetic.main.activity_create_account.*
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.startActivity
 
-class CreateAccountActivity : BaseActivity(), View.OnClickListener {
+class SignUpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
     private var selectPaymentType = 0
     private var arCardList: ArrayList<CardListData> = ArrayList()
-    lateinit var binding: ActivityCreateAccountBinding
+    lateinit var binding: ActivitySignUpBinding
     lateinit var signupViewModel: SignUpViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_account)
+        setContentView(R.layout.activity_sign_up)
 
         binding =
-            DataBindingUtil.setContentView(this, R.layout.activity_create_account)
+            DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         binding.setSelectPaymentType(selectPaymentType)
         toolbar.setNavigationIcon(R.drawable.ic_back)
         toolbar.setTitleTextColor(resources.getColor(R.color.black))
@@ -53,7 +52,6 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true);
             supportActionBar!!.setDisplayShowHomeEnabled(true);
         }
-
         init()
     }
 
@@ -119,9 +117,7 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
                     edtCVV.requestFocus()
                 }
             }
-
         })
-
     }
 
     private fun initCardAdapter() {
@@ -203,7 +199,7 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
                             .observe(this, Observer { signUpVo ->
                                 Constant.dismissLoader()
                                 Toast.makeText(this, signUpVo.message, Toast.LENGTH_SHORT).show()
-                                startActivity<MainActivity>()
+//                                startActivity<MainActivity>()
                                 finish()
                             }
                             )
@@ -326,12 +322,12 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
             }
             TextUtils.isEmpty(edtConfirmPassword.text.toString().trim()) -> {
                 tvErrorConfirmPassword.text = getString(R.string.enter_confirm_password)
-                Constant.setErrorBorder(edtPassword, tvErrorConfirmPassword)
+                Constant.setErrorBorder(edtConfirmPassword, tvErrorConfirmPassword)
                 return false
             }
             (edtPassword.text.toString().trim() != edtConfirmPassword.text.toString().trim()) -> {
                 tvErrorConfirmPassword.text = getString(R.string.did_n_t_match_password)
-                Constant.setErrorBorder(edtPassword, tvErrorConfirmPassword)
+                Constant.setErrorBorder(edtConfirmPassword, tvErrorConfirmPassword)
                 return false
             }
             else -> return true

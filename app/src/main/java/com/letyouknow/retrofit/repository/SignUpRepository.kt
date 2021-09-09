@@ -13,7 +13,6 @@ import retrofit2.Response
 
 
 object SignUpRepository {
-
     fun getSignUpApiCall(
         context: Context,
         request: HashMap<String, String>
@@ -39,10 +38,8 @@ object SignUpRepository {
                     Constant.dismissLoader()
                     Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
                 }
-
             }
         })
-
         return signupVo
     }
 }

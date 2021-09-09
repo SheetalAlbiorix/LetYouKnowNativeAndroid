@@ -18,6 +18,8 @@ class LetYouKnowApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+//        FacebookSdk.sdkInitialize(this)
+//        AppEventsLogger.activateApp(this);
         mInstance = this
 //        Fabric.with(this, Crashlytics())
 

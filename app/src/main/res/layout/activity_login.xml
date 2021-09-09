@@ -236,13 +236,21 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
-
-                    <ImageView
+                    <!--
+                                        <ImageView
+                                            android:id="@+id/ivFacebook"
+                                            android:layout_width="@dimen/_20sdp"
+                                            android:layout_height="@dimen/_25sdp"
+                                            android:src="@drawable/ic_facebook" />-->
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/ivFacebook"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/ic_facebook" />
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/textGray" />
 
                     <ImageView
+                        android:id="@+id/ivGoogle"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginLeft="@dimen/_8sdp"

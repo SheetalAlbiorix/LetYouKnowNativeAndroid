@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="?pageBgColor"
         android:orientation="vertical"
-        tools:context=".view.signup.CreateAccountActivity">
+        tools:context=".view.signup.SignUpActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -135,7 +135,7 @@
                         android:id="@+id/edtAddress2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_2"
                         android:inputType="text"
@@ -156,7 +156,7 @@
                         android:id="@+id/edtCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/city"
                         android:inputType="text"
@@ -188,7 +188,7 @@
                                 android:id="@+id/edtState"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
                                 android:background="@drawable/bg_edittext"
                                 android:hint="@string/state"
                                 android:inputType="text"
@@ -220,7 +220,7 @@
                                 android:id="@+id/edtZipCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
                                 android:background="@drawable/bg_edittext"
                                 android:digits="1234567890"
                                 android:hint="@string/zip_code"
@@ -243,7 +243,7 @@
                         android:id="@+id/edtPhoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/phone_number"
                         android:inputType="number"
@@ -264,7 +264,7 @@
                         android:id="@+id/edtEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
@@ -320,7 +320,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp">
+                        android:layout_marginTop="@dimen/_8sdp">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtPassword"
@@ -348,6 +348,7 @@
                                 app:tint="@color/gray" />
 
                             <ImageView
+                                android:visibility="gone"
                                 android:id="@+id/ivFingerPrint"
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
@@ -369,7 +370,7 @@
                         android:id="@+id/edtConfirmPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/confirm_password"
                         android:inputType="textPassword"
@@ -427,7 +428,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
-                            android:src="?textDarkColor" />
+                            android:src="@drawable/ic_card" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
@@ -575,7 +576,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
-                            android:src="?textDarkColor" />
+                            android:src="@drawable/ic_paypal" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
@@ -616,7 +617,7 @@
                         <ImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
-                            android:src="?textDarkColor" />
+                            android:src="@drawable/ic_bank" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"

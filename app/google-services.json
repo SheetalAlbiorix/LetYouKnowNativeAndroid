@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "701813435131",
+    "project_id": "letyouknow-9f7f2",
+    "storage_bucket": "letyouknow-9f7f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701813435131:android:b667cea0d6a323cc129e5e",
+        "android_client_info": {
+          "package_name": "com.letyouknow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701813435131-8ncp8sl4468illcf2v60bl50hk8o8squ.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.letyouknow",
+            "certificate_hash": "0a61d41ccc5e815d65bec308545e7b131f91dbf5"
+          }
+        },
+        {
+          "client_id": "701813435131-6v2o8gk49vbc3o85sh14r5nthh528q2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQERWI4neJWl8QB6C3ra95edskAZhPFKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701813435131-6v2o8gk49vbc3o85sh14r5nthh528q2t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

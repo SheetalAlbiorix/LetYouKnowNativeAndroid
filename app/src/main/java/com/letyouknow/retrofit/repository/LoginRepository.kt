@@ -37,7 +37,12 @@ object LoginRepository {
                     loginVo.value = data!!
                 } else {
                     Constant.dismissLoader()
-                    Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
+                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    Toast.makeText(
+                        context,
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
