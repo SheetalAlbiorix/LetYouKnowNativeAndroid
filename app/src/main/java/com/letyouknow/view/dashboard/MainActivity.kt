@@ -15,12 +15,14 @@ import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
+import org.jetbrains.anko.backgroundColor
 
 
 class MainActivity : BaseActivity(),
     View.OnClickListener {
     private lateinit var adapterDrawer: DrawerListAdapter
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +31,36 @@ class MainActivity : BaseActivity(),
         init()
     }
 
+    companion object {
+        private lateinit var main: MainActivity
+        fun getInstance(): MainActivity {
+            return main
+        }
+    }
+
+    fun setTitle(title: String) {
+        tvMainTitle.text = title
+    }
+
+    fun setVisibleEditImg(isVisible: Boolean) {
+        if (isVisible) {
+            ivEdit.visibility = View.VISIBLE
+            toolbar.backgroundColor = resources.getColor(R.color.colord3e6ff)
+            toolbar.elevation = 0f
+        } else {
+            ivEdit.visibility = View.INVISIBLE
+            toolbar.backgroundColor = resources.getColor(R.color.white)
+            toolbar.elevation = 8f
+        }
+    }
+
     private fun init() {
+        main = this
         setSupportActionBar(toolbar)
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        supportActionBar?.setHomeButtonEnabled(true)
         ivMenu.setOnClickListener(this)
+        ivCloseDrawer.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
     }
@@ -70,7 +97,7 @@ class MainActivity : BaseActivity(),
 //        drawer.addDrawerListener(drawerToggle)
 //        drawerToggle.syncState()
 //        navigationView.setNavigationItemSelectedListener(this)
-        loadFragment(HomeFragment())
+        loadFragment(HomeFragment(), getString(R.string.app_name))
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -82,11 +109,11 @@ class MainActivity : BaseActivity(),
     }
 
 
-
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flContainer, fragment)
         transaction.commit()
+        setTitle(title)
     }
 
     override fun onBackPressed() {
@@ -121,6 +148,9 @@ class MainActivity : BaseActivity(),
                 /* if (drawer.isDrawerOpen(Gravity.RIGHT)) {
                      drawer.closeDrawer(Gravity.RIGHT)
                  }*/
+            }
+            R.id.ivCloseDrawer -> {
+                drawer.closeDrawer(Gravity.RIGHT)
             }
         }
     }

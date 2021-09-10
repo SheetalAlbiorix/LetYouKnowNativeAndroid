@@ -71,6 +71,18 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:background="@drawable/bg_spinner" />
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/bg_edittext"
+                android:digits="1234567890"
+                android:hint="@string/zip_code"
+                android:inputType="number"
+                android:maxLength="6" />
+
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnProceedDeal"
                 android:layout_width="match_parent"
@@ -79,9 +91,10 @@
                 android:background="@drawable/bg_button"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/_12sdp"
-                android:text="@string/proceed_with_your_deal"
+                android:text="@string/find_my_deal"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 

@@ -138,6 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
             android:hint="INITIALS"
+            android:background="@drawable/bg_edittext"
             android:inputType="text" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

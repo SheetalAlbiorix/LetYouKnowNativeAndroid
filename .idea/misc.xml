@@ -6,17 +6,32 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-anydpi/bg_round_50.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-anydpi/ic_fingerprint.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-anydpi/ic_user.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-mdpi/checked.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_checkbox.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_edittext.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_edittext_error.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_spinner.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checked_icon.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_close.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_menu.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_un_checked_icon.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_create_account.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_privacy_policy_terms_cond.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_password_hint.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_summery.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_summery_step2.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery_step2.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_nav_drawer.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_toolbar.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_drawer.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/menu/menu_bottom.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow/app/src/main/res/drawable-anydpi/ic_user.xml" value="0.14814814814814814" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow/app/src/main/res/drawable/bg_button.xml" value="0.2203125" />

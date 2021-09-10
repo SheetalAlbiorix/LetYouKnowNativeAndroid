@@ -33,14 +33,24 @@
                     android:src="@drawable/ic_menu" />
 
                 <TextView
+                    android:id="@+id/tvMainTitle"
+                    android:layout_width="0dp"
                     style="@style/medium"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13sdp" />
 
+                <ImageView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="invisible" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.Toolbar>
 

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummery.DealSummeryFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -45,6 +46,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         setInteriorColor()
         setDealer()
         btnProceedDeal.setOnClickListener(this)
+        MainActivity.getInstance().setVisibleEditImg(false)
     }
 
     private fun setYear() {
@@ -127,17 +129,18 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         spDealer.adapter = adapterDealer
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = activity!!.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.flContainer, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    private fun loadFragment(fragment: Fragment, title: String) {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.flContainer, fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
+        MainActivity.getInstance().setTitle(title)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-                loadFragment(DealSummeryFragment())
+                loadFragment(DealSummeryFragment(), getString(R.string.lighting_car_deals))
             }
         }
     }

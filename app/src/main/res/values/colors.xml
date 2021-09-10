@@ -19,6 +19,8 @@
     <color name="splashGradientTop">#0065EF</color>
     <color name="splashGradientCenter">#3F2CCE</color>
     <color name="splashGradientBottom">#4F99FE</color>
+    <color name="coloracadad">#acadad</color>
+    <color name="colord3e6ff">#d3e6ff</color>
 
     <color name="color515151">#515151</color>
     <color name="darkGray">#666666</color>

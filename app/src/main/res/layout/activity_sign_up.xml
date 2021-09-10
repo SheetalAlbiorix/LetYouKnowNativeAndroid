@@ -174,6 +174,7 @@
                         android:visibility="gone" />
 
                     <LinearLayout
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -184,16 +185,21 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edtState"
+                            <!-- <androidx.appcompat.widget.AppCompatEditText
+                                 android:id="@+id/edtState"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="@dimen/_8sdp"
+                                 android:background="@drawable/bg_edittext"
+                                 android:hint="@string/state"
+                                 android:inputType="text"
+                                 app:layout_constraintStart_toStartOf="parent"
+                                 app:layout_constraintTop_toTopOf="parent" />-->
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spState"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:background="@drawable/bg_edittext"
-                                android:hint="@string/state"
-                                android:inputType="text"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                android:background="@drawable/bg_spinner" />
 
                             <TextView
                                 android:id="@+id/tvErrorState"
@@ -220,7 +226,7 @@
                                 android:id="@+id/edtZipCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
+
                                 android:background="@drawable/bg_edittext"
                                 android:digits="1234567890"
                                 android:hint="@string/zip_code"
@@ -343,7 +349,6 @@
                                 android:id="@+id/ivPasswordInfo"
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                android:layout_marginRight="@dimen/_10sdp"
                                 android:src="@android:drawable/ic_dialog_info"
                                 app:tint="@color/gray" />
 
@@ -391,7 +396,9 @@
                         android:id="@+id/chkIsPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:buttonTint="?blackText"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/bg_checkbox"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/add_payment"
                         android:textColor="?blackText" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -426,8 +433,8 @@
                         android:paddingBottom="@dimen/_12sdp">
 
                         <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_15sdp"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:src="@drawable/ic_card" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -504,12 +511,21 @@
                             android:orientation="vertical">
 
 
-                            <com.letyouknow.utils.CreditCardEditText
-                                android:id="@+id/edtCardNumber"
+                            <!--<com.letyouknow.utils.CreditCardEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:digits="1234567890"
                                 android:hint="@string/card_number"
+                                android:inputType="number" />-->
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/edtCardNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:background="@drawable/bg_edittext"
+                                android:digits="1234567890"
+                                android:drawableRight="@drawable/ic_camera"
+                                android:hint="@string/card_holder"
                                 android:inputType="number" />
 
                             <androidx.appcompat.widget.AppCompatEditText
@@ -518,8 +534,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:hint="@string/card_holder"
-                                android:inputType="text"
-                                app:drawableTint="?editBorderColor" />
+                                android:background="@drawable/bg_edittext"
+                                android:inputType="text" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -534,6 +550,7 @@
                                     android:layout_weight="1"
                                     android:digits="1234567890"
                                     android:hint="@string/expire_date"
+                                    android:background="@drawable/bg_edittext"
                                     android:inputType="number"
                                     android:maxLength="5" />
 
@@ -543,6 +560,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:hint="@string/cvv"
+                                    android:background="@drawable/bg_edittext"
                                     android:inputType="number"
                                     android:maxLength="3" />
                             </LinearLayout>
@@ -574,8 +592,8 @@
                         android:paddingBottom="@dimen/_12sdp">
 
                         <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_15sdp"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:src="@drawable/ic_paypal" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -615,8 +633,8 @@
                         android:paddingBottom="@dimen/_12sdp">
 
                         <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_15sdp"
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:src="@drawable/ic_bank" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -653,6 +671,9 @@
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/bg_checkbox"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/yes_send_me_promotinal_emails_from_letyouknow"
                         android:textColor="?blackText"
                         android:textSize="@dimen/_12sdp" />
@@ -662,6 +683,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/bg_checkbox"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/yes_text_me_promo"
                         android:textColor="?blackText"
                         android:textSize="@dimen/_12sdp" />
@@ -725,17 +749,21 @@
 
 
                 <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/ivFacebook"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/ic_facebook" />
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/textGray" />
 
                     <ImageView
+                        android:id="@+id/ivGoogle"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginLeft="@dimen/_8sdp"

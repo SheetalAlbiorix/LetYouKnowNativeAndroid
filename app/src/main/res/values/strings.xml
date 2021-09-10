@@ -12,6 +12,7 @@
     <string name="user_id">User Id</string>
     <string name="password">Password</string>
     <string name="sign_in">SIGN IN</string>
+    <string name="find_my_deal">FIND MY DEAL</string>
     <string name="proceed_with_your_deal">PROCEED WITH YOUR DEAL</string>
     <string name="create_an_account">CREATE AN ACCOUNT</string>
     <string name="submit">SUBMIT</string>
@@ -40,7 +41,7 @@
     <string name="confirm_email">Confirm Email Address</string>
     <string name="confirm_user_id">Confirm User ID</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="add_payment">Would you like to add a payment method?</string>
+    <string name="add_payment"> Would you like to add a payment method?</string>
     <string name="on_the_go">On The Go,</string>
     <string name="on_your_terms">On Your Terms</string>
     <string name="tm"><Sup>TM</Sup></string>
@@ -82,6 +83,17 @@
     <string name="enter_phonenumber">Enter PhoneNumber</string>
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="did_n_t_match_password">Password and Confirm Password didn\'t match</string>
+    <string name="exterior_color">EXTERIOR \nCOLOR</string>
+    <string name="interior_color">INTERIOR \nCOLOR</string>
+    <string name="submit_my_deal">Submit My Deal</string>
+    <string name="bid_price">Bid Price:</string>
+    <string name="price_summery">Price Summery:</string>
+    <string name="your_lightingcardeals_price">Your LightingCarDeals Price:</string>
+    <string name="service_and_reserve_fee">Service and Reserve Fee:</string>
+    <string name="remaining_balance_due_at_dealer">Remaining Balance Due at Dealer:\n(Plus taxes and licence plate fees)</string>
+    <string name="have_a_promo_code"><u>Have a promo code?</u></string>
+    <string name="buyer_information">Buyer Information</string>
+    <string name="lighting_car_deals">Lighting Car Deals</string>
 
 
 </resources>

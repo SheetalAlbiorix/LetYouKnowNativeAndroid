@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.ImageViewCompat
+import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Fragment
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import kotlinx.android.synthetic.main.fragment_deal_summery.*
 import kotlinx.android.synthetic.main.layout_deal_summery.*
 
-class DealSummeryFragment : BaseFragment() {
+class DealSummeryFragment : BaseFragment(), View.OnClickListener {
     private var arLoan = arrayListOf("LOAN ")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +42,10 @@ class DealSummeryFragment : BaseFragment() {
         ImageViewCompat.setImageTintList(
             ivInteriorColor,
             ColorStateList.valueOf(resources.getColor(R.color.textLightGrey))
-        );
+        )
+
+        btnProceedDeal.setOnClickListener(this)
+        MainActivity.getInstance().setVisibleEditImg(true)
     }
 
     private fun setLoan() {
@@ -74,4 +80,20 @@ class DealSummeryFragment : BaseFragment() {
             })
         )
     }
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.flContainer, fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnProceedDeal -> {
+                loadFragment(DealSummeryStep2Fragment())
+            }
+        }
+    }
+
 }

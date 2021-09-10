@@ -1,7 +1,7 @@
 package com.letyouknow.model
 
 class CardListData(
-    val cardImg: Int? = 0,
+    val cardImg: String? = "ic_camera",
     val cardNo: String? = "",
     val cardHolder: String? = "",
     val expDate: String? = "",

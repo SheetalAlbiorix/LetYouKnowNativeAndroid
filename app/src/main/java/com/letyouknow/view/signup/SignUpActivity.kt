@@ -3,17 +3,35 @@ package com.letyouknow.view.signup
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
@@ -21,6 +39,8 @@ import com.letyouknow.databinding.ActivitySignUpBinding
 import com.letyouknow.model.CardListData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.SignUpViewModel
+import com.letyouknow.utils.CreditCardNumberTextWatcher
+import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -37,25 +57,30 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var arCardList: ArrayList<CardListData> = ArrayList()
     lateinit var binding: ActivitySignUpBinding
     lateinit var signupViewModel: SignUpViewModel
+
+    private var arState = arrayListOf("State")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
-        binding.setSelectPaymentType(selectPaymentType)
+        binding.selectPaymentType = selectPaymentType
         toolbar.setNavigationIcon(R.drawable.ic_back)
         toolbar.setTitleTextColor(resources.getColor(R.color.black))
 
         setSupportActionBar(toolbar)
         if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true);
-            supportActionBar!!.setDisplayShowHomeEnabled(true);
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
         init()
     }
 
     private fun init() {
+        val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
+        edtCardNumber.addTextChangedListener(textWatcher)
         signupViewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         llDebitCreditCard.setOnClickListener(this)
         llPayPal.setOnClickListener(this)
@@ -64,10 +89,27 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         btnSave.setOnClickListener(this)
         btnCreateAccount.setOnClickListener(this)
         ivPasswordInfo.setOnClickListener(this)
+        ivGoogle.setOnClickListener(this)
 
         initCardAdapter()
         setOnChange()
         setLink()
+
+        //Google & facebook Sign In
+        firebaseAuth()
+        googleInit()
+        facebookInit()
+        setState()
+    }
+
+    private fun setState() {
+        val adapterYear = ArrayAdapter<String?>(
+            applicationContext,
+            android.R.layout.simple_spinner_item,
+            arState as List<String?>
+        )
+        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spState.adapter = adapterYear
     }
 
     private fun setLink() {
@@ -94,7 +136,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         onTextChange(this, edtAddress1, tvErrorAddress1)
         onTextChange(this, edtAddress2, tvErrorAddress2)
         onTextChange(this, edtCity, tvErrorCity)
-        onTextChange(this, edtState, tvErrorState)
         onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
         onTextChange(this, edtEmail, tvErrorEmailAddress)
         onTextChange(this, edtPassword, tvErrorPassword)
@@ -211,7 +252,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             R.id.btnSave -> {
                 arCardList.add(
                     CardListData(
-                        edtCardNumber.mCurrentDrawableResId,
+                        getDetectedCreditCardImage(),
                         edtCardNumber.text.toString().trim(),
                         edtCardHolder.text.toString().trim(),
                         edtExpiresDate.text.toString().trim(),
@@ -224,6 +265,18 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 llCardList.visibility = View.VISIBLE
                 setClearData()
             }
+            R.id.ivGoogle -> {
+                googleSignIn()
+            }
+        }
+    }
+
+    private fun getDetectedCreditCardImage(): String {
+        val type: CreditCardType = CreditCardType.detect(edtCardNumber.text.toString().trim())
+        return if (type != null) {
+            type.imageResourceName
+        } else {
+            "ic_camera"
         }
     }
 
@@ -288,10 +341,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 Constant.setErrorBorder(edtCity, tvErrorCity)
                 return false
             }
-            TextUtils.isEmpty(edtState.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtState, tvErrorState)
-                return false
-            }
+
             TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
                 return false
@@ -332,6 +382,133 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             }
             else -> return true
         }
+    }
+
+    //Google
+
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var auth: FirebaseAuth
+    private lateinit var callbackManager: CallbackManager
+    private val GOOGLE_SIGN_IN = 101
+
+    private fun firebaseAuth() {
+        auth = FirebaseAuth.getInstance();
+    }
+
+    private fun googleInit() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.google_web_client_id)).requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun googleSignIn() {
+        val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN)
+    }
+
+    //Facebook
+    private fun facebookInit() {
+        ivFacebook.setBackgroundResource(R.drawable.ic_facebook)
+        ivFacebook.text = ""
+        ivFacebook.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        callbackManager = CallbackManager.Factory.create()
+        ivFacebook.setReadPermissions("email", "public_profile")
+
+        ivFacebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                Log.d(TAG, "facebook:onSuccess:$loginResult")
+                handleFacebookAccessToken(loginResult.accessToken)
+            }
+
+            override fun onCancel() {
+                Log.d(TAG, "facebook:onCancel")
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.d(TAG, "facebook:onError", error)
+            }
+        })
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GOOGLE_SIGN_IN) {
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+                    Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                    firebaseAuthWithGoogle(account.idToken)
+                } catch (e: ApiException) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w(TAG, "Google sign in failed", e)
+                }
+            }
+
+
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    Log.e("UserName : ", user?.displayName!!)
+                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+                        .show()
+                    // updateUI(user)
+                    googleSignOut()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    //  updateUI(null)
+                }
+            }
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d(TAG, "handleFacebookAccessToken:$token")
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    Log.e("UserName FB : ", user?.displayName!!)
+                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+                        .show()
+                    //updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    //updateUI(null)
+                }
+            }
+        facebookSignOut()
+    }
+
+    private fun googleSignOut() {
+        mGoogleSignInClient.signOut()
+        auth.signOut()
+    }
+
+    private fun facebookSignOut() {
+        LoginManager.getInstance().logOut()
+        auth.signOut()
     }
 
 }

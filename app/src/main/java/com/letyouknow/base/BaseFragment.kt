@@ -4,10 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
 import com.letyouknow.utils.AppGlobal
 
 open class BaseFragment : Fragment(), BaseView {
+    var pref = LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
