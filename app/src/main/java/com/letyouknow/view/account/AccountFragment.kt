@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.view.account.editlogin.EditLoginActivity
+import kotlinx.android.synthetic.main.fragment_account.*
+import org.jetbrains.anko.support.v4.startActivity
 
-class AccountFragment : BaseFragment() {
+class AccountFragment : BaseFragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,6 +25,15 @@ class AccountFragment : BaseFragment() {
     }
 
     private fun init() {
+        ivEditLogin.setOnClickListener(this)
+    }
 
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.ivEditLogin -> {
+                startActivity<EditLoginActivity>()
+            }
+        }
     }
 }

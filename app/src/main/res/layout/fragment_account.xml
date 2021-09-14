@@ -41,11 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_2sdp"
-                android:elevation="@dimen/_3sdp"
                 android:orientation="vertical"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="@dimen/_2sdp"
-                app:cardElevation="@dimen/_8sdp">
+                app:cardCornerRadius="@dimen/_5sdp">
 
 
                 <TextView
@@ -61,6 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -73,6 +72,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
+                    android:id="@+id/ivEditLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
@@ -82,8 +82,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_margin="@dimen/_2sdp"
                 android:elevation="@dimen/_8sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
                 android:orientation="vertical"
                 app:cardBackgroundColor="@color/white">
 
@@ -143,6 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -164,9 +166,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_margin="@dimen/_2sdp"
                 android:elevation="@dimen/_8sdp"
                 android:orientation="vertical"
+                app:cardCornerRadius="@dimen/_5sdp"
                 app:cardBackgroundColor="@color/white">
 
                 <TextView
@@ -182,6 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -203,9 +207,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_margin="@dimen/_3sdp"
                 android:elevation="@dimen/_8sdp"
                 android:orientation="vertical"
+                app:cardCornerRadius="@dimen/_5sdp"
                 app:cardBackgroundColor="@color/white">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -244,6 +249,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -265,9 +271,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:elevation="@dimen/_8sdp"
+                android:layout_margin="@dimen/_3sdp"
                 android:orientation="vertical"
+                app:cardCornerRadius="@dimen/_5sdp"
                 app:cardBackgroundColor="@color/white">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -303,8 +309,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:gravity="center"
-                android:paddingStart="@dimen/_65sdp"
-                android:paddingEnd="@dimen/_65sdp"
+                android:paddingStart="@dimen/_35sdp"
+                android:paddingEnd="@dimen/_35sdp"
                 android:text="@string/saving_are_calculated_based_on_the_msrp_parameters"
                 android:textColor="@color/textGray" />
         </androidx.appcompat.widget.LinearLayoutCompat>

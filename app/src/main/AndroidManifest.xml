@@ -19,6 +19,18 @@
         android:theme="@style/Theme.LetYouKnow"
         tools:replace="android:icon">
         <activity
+            android:name=".view.account.editinfo.EditInformationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.savedsearches.SavedSearchesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.transaction_history.TransactionHistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.account.editlogin.EditLoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.privacypolicy.PrivacyPolicyTermsCondActivity"
             android:exported="true" />
         <activity
@@ -29,6 +41,9 @@
             android:exported="true" />
         <activity
             android:name=".view.forgotpassword.ForgotPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.bidhistory.BidHistoryActivity"
             android:exported="true" />
         <activity
             android:name=".view.signup.SignUpActivity"
@@ -71,8 +86,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

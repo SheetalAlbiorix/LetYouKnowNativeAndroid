@@ -11,6 +11,7 @@
 
     <string name="user_id">User Id</string>
     <string name="password">Password</string>
+    <string name="current_password">Current Password</string>
     <string name="sign_in">SIGN IN</string>
     <string name="find_my_deal">FIND MY DEAL</string>
     <string name="proceed_with_your_deal">PROCEED WITH YOUR DEAL</string>
@@ -22,6 +23,8 @@
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="create_account">Create an account</string>
+    <string name="edit_login">Edit Login</string>
+    <string name="edit_my_information">Edit My Information</string>
     <string name="by_registering">By registering you agree to LetYouKnow\'s \nTerms and Conditions and Privacy Policy</string>
     <string name="remember_me">Remember me</string>
     <string name="first_name">First Name</string>
@@ -37,11 +40,12 @@
     <string name="state">State</string>
     <string name="zip_code">Zip Code</string>
     <string name="phone_number">Phone Number</string>
-    <string name="email_address">Email Address</string>
+    <string name="email_address">Email</string>
     <string name="email">Email</string>
-    <string name="confirm_email">Confirm Email Address</string>
+    <string name="confirm_email">Confirm Email</string>
     <string name="confirm_user_id">Confirm User ID</string>
     <string name="confirm_password">Confirm Password</string>
+
     <string name="add_payment"> Would you like to add a payment method?</string>
     <string name="on_the_go">On The Go,</string>
     <string name="on_your_terms">On Your Terms</string>
@@ -70,7 +74,7 @@
     <string name="enter_user_id">Enter UserID</string>
     <string name="enter_email_address_vali">Enter EmailAddress</string>
     <string name="enter_password">Enter Password</string>
-    <string name="enter_valid_email">Enter Valid Email Address</string>
+    <string name="enter_valid_email">Enter Valid Email</string>
     <string name="enter_valid_password">Enter Valid Password</string>
     <string name="password_length_minimum_6_characters">Password length minimum 6 characters</string>
     <string name="password_must_be_8_16_characters">Password must be 8-16 characters in length and contain at least:<br /> uppercase letter<br /> lowercase letter<br /> number<br />1 special character (@$!%*?#&amp;^~)</string>
@@ -99,6 +103,7 @@
     <string name="gift_card_or_discount_code">Gift card or discount code</string>
     <string name="apply_promo">APPLY PROMO</string>
     <string name="account">Account</string>
+    <string name="unlocked_car_deals">Unlocked Car Deals</string>
     <string name="my_information">My Information</string>
     <string name="login">Login</string>
     <string name="payment_method">Payment Method</string>
@@ -106,6 +111,15 @@
     <string name="push_notification">Push Notification</string>
     <string name="saving_to_date">Saving to Date</string>
     <string name="saving_are_calculated_based_on_the_msrp_parameters">*saving are calculated based on the MSRP parameters</string>
+    <string name="unsuccessful_match">Unsuccessful Match</string>
+    <string name="disclosure">Disclosure:</string>
+    <string name="last_bid">Last Bid:</string>
+    <string name="submitted">Submitted</string>
+    <string name="bid_history">Bid History</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="saved_searches">Saved Searches</string>
+    <string name="savings_to_date">Savings* to Date:</string>
+    <string name="your_search_results">Your Search Results:</string>
 
 
 </resources>

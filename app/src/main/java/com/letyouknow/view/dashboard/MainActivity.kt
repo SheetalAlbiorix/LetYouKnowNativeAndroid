@@ -14,11 +14,16 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.DrawerData
 import com.letyouknow.view.account.AccountFragment
+import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.home.HomeFragment
+import com.letyouknow.view.savedsearches.SavedSearchesActivity
+import com.letyouknow.view.transaction_history.TransactionHistoryActivity
+import com.letyouknow.view.unlockedcardeal.UnlockedCarDealFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
 import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : BaseActivity(),
@@ -71,12 +76,12 @@ class MainActivity : BaseActivity(),
 
     private fun setDrawerData() {
         arDrawer.add(DrawerData(1, 0, "Account"))
-        arDrawer.add(DrawerData(1, 0, "Bid History"))
-        arDrawer.add(DrawerData(1, 0, "Transaction History"))
-        arDrawer.add(DrawerData(1, 0, "Favourite Searches"))
-        arDrawer.add(DrawerData(1, 0, "How it works"))
-        arDrawer.add(DrawerData(1, 0, "Contact Support"))
-        arDrawer.add(DrawerData(1, 0, "Legal"))
+        arDrawer.add(DrawerData(2, 0, "Bid History"))
+        arDrawer.add(DrawerData(3, 0, "Transaction History"))
+        arDrawer.add(DrawerData(4, 0, "Favourite Searches"))
+        arDrawer.add(DrawerData(5, 0, "How it works"))
+        arDrawer.add(DrawerData(6, 0, "Contact Support"))
+        arDrawer.add(DrawerData(7, 0, "Legal"))
     }
 
     private fun setNavDrawerData() {
@@ -101,7 +106,7 @@ class MainActivity : BaseActivity(),
 //        drawer.addDrawerListener(drawerToggle)
 //        drawerToggle.syncState()
 //        navigationView.setNavigationItemSelectedListener(this)
-        loadFragment(HomeFragment(), getString(R.string.app_name))
+        loadFragmentHome(HomeFragment(), getString(R.string.app_name))
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -113,12 +118,21 @@ class MainActivity : BaseActivity(),
     }
 
 
-    private fun loadFragment(fragment: Fragment, title: String) {
+    private fun loadFragmentHome(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flContainer, fragment)
         transaction.commit()
         setTitle(title)
     }
+
+    private fun loadFragment(fragment: Fragment, title: String) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.flContainer, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+        setTitle(title)
+    }
+
 
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -142,10 +156,27 @@ class MainActivity : BaseActivity(),
                 data.isSelect = true
                 adapterDrawer.update(pos, data)
                 selectDrawerPos = pos
+                when (pos) {
+                    0 -> {
 
+                    }
+                    1 -> {
+                        startActivity<BidHistoryActivity>()
+                    }
+                    2 -> {
+                        startActivity<TransactionHistoryActivity>()
+                    }
+                    3 -> {
+                        startActivity<SavedSearchesActivity>()
+                    }
+                    4 -> {
+
+                    }
+                }
                 Handler().postDelayed({
                     drawer.closeDrawer(Gravity.RIGHT)
                 }, 200)
+
             }
             R.id.ivMenu -> {
                 drawer.openDrawer(Gravity.RIGHT)
@@ -162,13 +193,13 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(HomeFragment(), getString(R.string.app_name))
+                loadFragmentHome(HomeFragment(), getString(R.string.app_name))
             }
             R.id.itemBottom2 -> {
 
             }
             R.id.itemBottom3 -> {
-
+                loadFragment(UnlockedCarDealFragment(), getString(R.string.unlocked_car_deals))
             }
             R.id.itemBottom4 -> {
 

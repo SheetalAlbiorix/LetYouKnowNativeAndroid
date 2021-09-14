@@ -29,7 +29,7 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
     private var arCardList: ArrayList<CardListData> = ArrayList()
     private var lightBindData: LightDealBindData = LightDealBindData()
     private lateinit var cTimer: CountDownTimer
-    private var seconds = 300
+    private var seconds = 10
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,13 +74,13 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
     private fun startTimer() {
         cTimer = object : CountDownTimer(((seconds * 1000)).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                seconds -= 1;
+                seconds -= 1
+                tvTimer.text = (String.format("%02d", seconds / 60)
+                        + ":" + String.format("%02d", seconds % 60))
                 if (seconds == 0) {
                     cancelTimer()
                     return
                 }
-                tvTimer.text = (String.format("%02d", seconds / 60)
-                        + ":" + String.format("%02d", seconds % 60))
             }
 
             override fun onFinish() {

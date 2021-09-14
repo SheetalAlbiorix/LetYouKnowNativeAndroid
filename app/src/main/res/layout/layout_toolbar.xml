@@ -17,7 +17,29 @@
         android:layout_marginBottom="@dimen/_8sdp"
         android:background="@color/white"
         android:elevation="@dimen/_8sdp"
+        android:gravity="center"
         android:minHeight="?attr/actionBarSize"
-        app:title="@{toolbarTitle}"
-        app:titleTextColor="?blackText" />
+        app:title=""
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{toolbarTitle}"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_1sdp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.Toolbar>
 </layout>

@@ -131,6 +131,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     result: BiometricPrompt.AuthenticationResult
                 ) {
                     super.onAuthenticationSucceeded(result)
+
                     Toast.makeText(
                         applicationContext,
                         "Authentication succeeded!", Toast.LENGTH_SHORT
