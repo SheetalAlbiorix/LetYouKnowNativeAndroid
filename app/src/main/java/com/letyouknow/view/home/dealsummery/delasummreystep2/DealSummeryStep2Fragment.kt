@@ -1,6 +1,9 @@
 package com.letyouknow.view.home.dealsummery.delasummreystep2
 
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +13,12 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentDealSummeryStep2Binding
 import com.letyouknow.model.CardListData
+import com.letyouknow.model.LightDealBindData
+import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.signup.CardListAdapter
+import kotlinx.android.synthetic.main.fragment_deal_summery_step2.*
 import kotlinx.android.synthetic.main.layout_deal_summery_step2.*
 
 class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
@@ -20,19 +27,22 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
     private var selectCardPos = -1
     private var selectPaymentType = 0
     private var arCardList: ArrayList<CardListData> = ArrayList()
+    private var lightBindData: LightDealBindData = LightDealBindData()
+    private lateinit var cTimer: CountDownTimer
+    private var seconds = 300
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_deal_summery_step2,
             container,
             false
         )
-        binding.selectPaymentType = selectPaymentType
+
         return binding.root
     }
 
@@ -42,13 +52,82 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
 
     }
 
+
     private fun init() {
+        val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
+        edtCardNumber.addTextChangedListener(textWatcher)
+
         initCardAdapter()
         llDebitCreditCard.setOnClickListener(this)
         llPayPal.setOnClickListener(this)
         llBankAccount.setOnClickListener(this)
+        tvHavePromoCode.setOnClickListener(this)
         tvAddMore.setOnClickListener(this)
         btnSave.setOnClickListener(this)
+        ivBackDeal.setOnClickListener(this)
+        tvAddMin.setOnClickListener(this)
+
+        setOnChange()
+        startTimer()
+    }
+
+    private fun startTimer() {
+        cTimer = object : CountDownTimer(((seconds * 1000)).toLong(), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                seconds -= 1;
+                if (seconds == 0) {
+                    cancelTimer()
+                    return
+                }
+                tvTimer.text = (String.format("%02d", seconds / 60)
+                        + ":" + String.format("%02d", seconds % 60))
+            }
+
+            override fun onFinish() {
+
+            }
+        }.start()
+    }
+
+    private fun cancelTimer() {
+        if (cTimer != null)
+            cTimer.cancel()
+    }
+
+    override fun onDestroy() {
+        cancelTimer()
+        super.onDestroy()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        cancelTimer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        cancelTimer()
+    }
+
+    private fun setOnChange() {
+        edtExpiresDate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val inputLength = edtExpiresDate.text.toString().length
+                if (inputLength == 2) {
+                    edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
+                    edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
+                }
+                if (inputLength == 5) {
+                    edtCVV.requestFocus()
+                }
+            }
+        })
     }
 
     private fun initCardAdapter() {
@@ -84,15 +163,22 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
             }
             R.id.llDebitCreditCard -> {
                 selectPaymentType = 1
-                binding.selectPaymentType = selectPaymentType
+                lightBindData.selectPaymentType = selectPaymentType
+                binding.lightDealBindData = lightBindData
             }
             R.id.llPayPal -> {
                 selectPaymentType = 2
-                binding.selectPaymentType = selectPaymentType
+                lightBindData.selectPaymentType = selectPaymentType
+                binding.lightDealBindData = lightBindData
             }
             R.id.llBankAccount -> {
                 selectPaymentType = 3
-                binding.selectPaymentType = selectPaymentType
+                lightBindData.selectPaymentType = selectPaymentType
+                binding.lightDealBindData = lightBindData
+            }
+            R.id.tvHavePromoCode -> {
+                lightBindData.isShowPromo = !lightBindData.isShowPromo!!
+                binding.lightDealBindData = lightBindData
             }
             R.id.tvAddMore -> {
                 llCardViewDetail.visibility = View.VISIBLE
@@ -112,6 +198,16 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
                 pref?.setCardList(Gson().toJson(arCardList))
                 llCardList.visibility = View.VISIBLE
                 setClearData()
+            }
+            R.id.ivBackDeal -> {
+                MainActivity.getInstance().onBackPressed()
+            }
+            R.id.tvAddMin -> {
+                seconds += 120;
+                //seconds = ((60 * ((2 + minutes) + (second / 60))).toDouble())
+                tvAddMin.visibility = View.GONE
+                cancelTimer()
+                startTimer()
             }
         }
     }

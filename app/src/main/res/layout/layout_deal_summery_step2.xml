@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="selectPaymentType"
-            type="int" />
+            name="lightDealBindData"
+            type="com.letyouknow.model.LightDealBindData" />
     </data>
 
 
@@ -73,6 +73,54 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/interior_color"
+                        android:textColor="?textGreyColor"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="Super Black Metalic"
+                        android:textColor="@color/textDarkGrey"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/exterior_color"
+                        android:textColor="?textGreyColor"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="Cashmere"
+                        android:textColor="@color/textDarkGrey"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="@string/zip_code_colon"
                         android:textColor="?textGreyColor"
                         android:textSize="@dimen/_12sdp" />
@@ -90,6 +138,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -113,6 +162,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -177,6 +227,59 @@
                         android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHavePromoCode"
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/have_a_promo_code"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHighlight="@android:color/transparent"
+                    android:textColorLink="@color/orange"
+                    android:textSize="@dimen/_11sdp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_button"
+                    android:backgroundTint="@color/textLightGrey"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_8sdp"
+                    android:visibility="@{lightDealBindData.isShowPromo ? View.VISIBLE : View.GONE}">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtGiftCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/gift_card_or_discount_code"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_12sdp"
+                        android:paddingTop="@dimen/_12sdp"
+                        android:paddingBottom="@dimen/_12sdp"
+                        android:textSize="@dimen/_10sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="-10dp"
+                        android:background="@drawable/bg_button3"
+                        android:backgroundTint="@color/textGreyDetail"
+                        android:gravity="center"
+
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:text="@string/apply_promo"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,16 +309,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/bg_button3"
+                    android:backgroundTint="@color/navyBlue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_12sdp">
 
-                    <TextView
-                        style="@style/medium"
-                        android:layout_width="0dp"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/remaining_balance_due_at_dealer"
-                        android:textColor="@color/coloracadad"
-                        android:textSize="@dimen/_10sdp" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/remaining_balance_due_at_dealer"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            style="@style/medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/remaining_balance_due_at_dealer"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_11sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <TextView
                         style="@style/bold"
@@ -223,72 +343,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="46,201.00"
-                        android:textColor="@color/textDarkGrey"
-                        android:textSize="@dimen/_12sdp" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:text="@string/have_a_promo_code"
-                android:textColor="@color/colorPrimary"
-                android:textColorHighlight="@android:color/transparent"
-                android:textColorLink="@color/orange"
-                android:textSize="@dimen/_11sdp" />
-
-            <TextView
-                style="@style/bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/buyer_information"
-                android:textColor="?blackHeaderText"
-                android:textSize="@dimen/_16sdp" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/bg_button"
-                android:backgroundTint="@color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp">
-
-                <TextView
-                    style="@style/medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(this person must be present when picking up the vehicle)"
-                    android:textColor="@color/coloracadad"
-                    android:textSize="@dimen/_10sdp" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/medium"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/remaining_balance_due_at_dealer"
-                        android:textColor="@color/coloracadad"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        style="@style/bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="$799.00"
-                        android:textColor="@color/textDarkGrey"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -343,7 +399,7 @@
                     android:id="@+id/ivNextCard"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@{selectPaymentType==1 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                    android:src="@{lightDealBindData.selectPaymentType==1 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
@@ -360,7 +416,7 @@
                 android:paddingTop="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_25sdp"
                 android:paddingBottom="@dimen/_15sdp"
-                android:visibility="@{selectPaymentType==1 ? View.VISIBLE : View.GONE}">
+                android:visibility="@{lightDealBindData.selectPaymentType==1 ? View.VISIBLE : View.GONE}">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/llCardList"
@@ -502,7 +558,7 @@
                     android:id="@+id/ivNextPayPal"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@{selectPaymentType==2 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                    android:src="@{lightDealBindData.selectPaymentType==2 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
                 />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -521,7 +577,8 @@
                 android:paddingLeft="@dimen/_25sdp"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingRight="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_12sdp">
+                android:paddingBottom="@dimen/_12sdp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_24sdp"
@@ -543,7 +600,7 @@
                     android:id="@+id/ivNextBankAccount"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@{selectPaymentType==3 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                    android:src="@{lightDealBindData.selectPaymentType==3 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
@@ -551,6 +608,63 @@
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/dividerColor" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:text="@string/buyer_information"
+            android:textColor="?blackHeaderText"
+            android:textSize="@dimen/_16sdp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/bg_button"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp">
+
+            <TextView
+                style="@style/medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(this person must be present when picking up the vehicle)"
+                android:textColor="@color/coloracadad"
+                android:textSize="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/remaining_balance_due_at_dealer"
+                    android:textColor="@color/coloracadad"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:text="$799.00"
+                    android:textColor="@color/textDarkGrey"
+                    android:textSize="@dimen/_12sdp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/btnProceedDeal"
@@ -566,6 +680,7 @@
             android:paddingBottom="@dimen/_12sdp">
 
             <ImageView
+                android:id="@+id/ivBackDeal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_back"

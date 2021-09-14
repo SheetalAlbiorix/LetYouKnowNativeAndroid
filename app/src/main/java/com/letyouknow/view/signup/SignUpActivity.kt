@@ -81,7 +81,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
+
         signupViewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+
         llDebitCreditCard.setOnClickListener(this)
         llPayPal.setOnClickListener(this)
         llBankAccount.setOnClickListener(this)
@@ -149,12 +151,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val inputlength = edtExpiresDate.text.toString().length
-                if (inputlength == 2) {
+                val inputLength = edtExpiresDate.text.toString().length
+                if (inputLength == 2) {
                     edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
                     edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
                 }
-                if (inputlength == 5) {
+                if (inputLength == 5) {
                     edtCVV.requestFocus()
                 }
             }

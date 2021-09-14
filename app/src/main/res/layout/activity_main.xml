@@ -51,6 +51,15 @@
                     android:layout_marginRight="@dimen/_12sdp"
                     android:src="@drawable/ic_edit"
                     android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/ivLogOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:src="@drawable/ic_logout"
+                    android:visibility="gone" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.Toolbar>
 
@@ -64,6 +73,7 @@
         </FrameLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
             app_itemIconTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

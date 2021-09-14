@@ -7,8 +7,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="selectPaymentType"
-            type="int" />
+            name="lightDealBindData"
+            type="com.letyouknow.model.LightDealBindData" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,10 +36,61 @@
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_250sdp"
+                        android:layout_height="@dimen/_280sdp"
                         android:background="@color/colord3e6ff"
                         android:gravity="center"
+                        android:padding="@dimen/_25sdp"
                         android:orientation="vertical">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+
+                            android:background="@drawable/bg_shadow_round_rectangle"
+                            android:backgroundTint="@color/navyBlue"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_8sdp">
+
+
+                            <TextView
+                                style="@style/medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:text="Deal Guaranteed For"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tvTimer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_white_border_round_rect7"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="00.00"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/tvAddMin"
+                                style="@style/medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:background="@drawable/bg_button3"
+                                android:backgroundTint="@color/white"
+                                android:gravity="center"
+                                android:padding="@dimen/_8sdp"
+                                android:text="Add 2 Min"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_9sdp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <View
                             android:layout_width="wrap_content"
@@ -51,9 +102,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:padding="@dimen/_20sdp"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitXY"
                             android:src="@drawable/ic_car" />
 
                         <View
@@ -66,7 +115,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 style="@style/medium"
@@ -126,7 +176,7 @@
 
                 <include
                     layout="@layout/layout_deal_summery_step2"
-                    app:selectPaymentType="@{selectPaymentType}" />
+                    app:lightDealBindData="@{lightDealBindData}" />
 
             </LinearLayout>
 
@@ -138,6 +188,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_23sdp"
+            android:visibility="gone"
             app:backgroundTint="@color/white"
             app:fabSize="mini"
             app:layout_anchor="@id/appbar"
@@ -151,6 +202,7 @@
             android:layout_marginStart="@dimen/_80sdp"
             android:foregroundTint="@color/lightGray"
             android:tint="@color/textLightGrey"
+            android:visibility="gone"
             app:backgroundTint="@color/white"
             app:fabSize="mini"
             app:layout_anchor="@id/appbar"

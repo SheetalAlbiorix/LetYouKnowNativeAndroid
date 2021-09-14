@@ -4,13 +4,16 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.DrawerData
+import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +22,7 @@ import org.jetbrains.anko.backgroundColor
 
 
 class MainActivity : BaseActivity(),
-    View.OnClickListener {
+    View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var adapterDrawer: DrawerListAdapter
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
 
@@ -63,6 +66,7 @@ class MainActivity : BaseActivity(),
         ivCloseDrawer.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
+        bottomNavigation.setOnNavigationItemSelectedListener(this)
     }
 
     private fun setDrawerData() {
@@ -153,5 +157,26 @@ class MainActivity : BaseActivity(),
                 drawer.closeDrawer(Gravity.RIGHT)
             }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.itemBottom1 -> {
+                loadFragment(HomeFragment(), getString(R.string.app_name))
+            }
+            R.id.itemBottom2 -> {
+
+            }
+            R.id.itemBottom3 -> {
+
+            }
+            R.id.itemBottom4 -> {
+
+            }
+            R.id.itemBottom5 -> {
+                loadFragment(AccountFragment(), getString(R.string.account))
+            }
+        }
+        return true
     }
 }

@@ -37,7 +37,8 @@
     <string name="state">State</string>
     <string name="zip_code">Zip Code</string>
     <string name="phone_number">Phone Number</string>
-    <string name="email">Email Address</string>
+    <string name="email_address">Email Address</string>
+    <string name="email">Email</string>
     <string name="confirm_email">Confirm Email Address</string>
     <string name="confirm_user_id">Confirm User ID</string>
     <string name="confirm_password">Confirm Password</string>
@@ -83,17 +84,28 @@
     <string name="enter_phonenumber">Enter PhoneNumber</string>
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="did_n_t_match_password">Password and Confirm Password didn\'t match</string>
-    <string name="exterior_color">EXTERIOR \nCOLOR</string>
-    <string name="interior_color">INTERIOR \nCOLOR</string>
+    <string name="exterior_color">Exterior Color</string>
+    <string name="interior_color">Interior Color</string>
     <string name="submit_my_deal">Submit My Deal</string>
     <string name="bid_price">Bid Price:</string>
     <string name="price_summery">Price Summery:</string>
     <string name="your_lightingcardeals_price">Your LightingCarDeals Price:</string>
-    <string name="service_and_reserve_fee">Service and Reserve Fee:</string>
-    <string name="remaining_balance_due_at_dealer">Remaining Balance Due at Dealer:\n(Plus taxes and licence plate fees)</string>
+    <string name="service_and_reserve_fee">No Refundable Service &amp; Reservation Fee:\n(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</string>
+    <string name="remaining_balance_due_at_dealer">Remaining Balance Due at Dealer:</string>
+    <string name="balance_exclude_taxes">(Balance excludes taxes, registration, titling &amp; licencing fees)</string>
     <string name="have_a_promo_code"><u>Have a promo code?</u></string>
     <string name="buyer_information">Buyer Information</string>
     <string name="lighting_car_deals">Lighting Car Deals</string>
+    <string name="gift_card_or_discount_code">Gift card or discount code</string>
+    <string name="apply_promo">APPLY PROMO</string>
+    <string name="account">Account</string>
+    <string name="my_information">My Information</string>
+    <string name="login">Login</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="text_message">Text Message</string>
+    <string name="push_notification">Push Notification</string>
+    <string name="saving_to_date">Saving to Date</string>
+    <string name="saving_are_calculated_based_on_the_msrp_parameters">*saving are calculated based on the MSRP parameters</string>
 
 
 </resources>

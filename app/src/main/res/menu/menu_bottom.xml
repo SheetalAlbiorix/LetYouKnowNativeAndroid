@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/itemHome"
+        android:id="@+id/itemBottom1"
         android:icon="@drawable/ic_bottom_menu1"
         android:title="Home" />
     <item
-        android:id="@+id/itemHome1"
+        android:id="@+id/itemBottom2"
         android:icon="@drawable/ic_bottom_menu2"
         android:title="Home" />
     <item
-        android:id="@+id/itemHome2"
+        android:id="@+id/itemBottom3"
         android:icon="@drawable/ic_bottom_menu3"
         android:title="Home" />
     <item
-        android:id="@+id/itemHome3"
+        android:id="@+id/itemBottom4"
         android:icon="@drawable/ic_bottom_menu4"
         android:title="Home" />
     <item
-        android:id="@+id/itemHome4"
+        android:id="@+id/itemBottom5"
         android:icon="@drawable/ic_bottom_menu5"
         android:title="Home" />
 
