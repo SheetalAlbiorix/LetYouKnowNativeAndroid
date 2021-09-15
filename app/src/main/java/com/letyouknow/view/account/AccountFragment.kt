@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
+import com.letyouknow.view.account.editnotification.EditNotificationActivity
+import com.letyouknow.view.account.editrefer.EditReferActivity
 import kotlinx.android.synthetic.main.fragment_account.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -25,14 +28,26 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
+        ivEditInfo.setOnClickListener(this)
         ivEditLogin.setOnClickListener(this)
+        ivEditNotification.setOnClickListener(this)
+        ivRefer.setOnClickListener(this)
     }
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.ivEditInfo -> {
+                startActivity<EditInformationActivity>()
+            }
             R.id.ivEditLogin -> {
                 startActivity<EditLoginActivity>()
+            }
+            R.id.ivEditNotification -> {
+                startActivity<EditNotificationActivity>()
+            }
+            R.id.ivRefer -> {
+                startActivity<EditReferActivity>()
             }
         }
     }

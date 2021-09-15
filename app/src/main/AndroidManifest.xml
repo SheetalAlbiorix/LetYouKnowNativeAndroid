@@ -19,6 +19,15 @@
         android:theme="@style/Theme.LetYouKnow"
         tools:replace="android:icon">
         <activity
+            android:name=".view.account.editrefer.referstep2.ReferStep2Activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.account.editrefer.EditReferActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.account.editnotification.EditNotificationActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.account.editinfo.EditInformationActivity"
             android:exported="true" />
         <activity

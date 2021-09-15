@@ -79,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:elevation="@dimen/_8sdp"
+            android:enabled="true"
             app:itemTextColor="@color/white"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/menu_bottom" />

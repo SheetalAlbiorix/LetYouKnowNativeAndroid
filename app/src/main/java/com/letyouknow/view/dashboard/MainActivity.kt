@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +17,7 @@ import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.home.HomeFragment
 import com.letyouknow.view.savedsearches.SavedSearchesActivity
+import com.letyouknow.view.search.SearchFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.unlockedcardeal.UnlockedCarDealFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -91,23 +91,7 @@ class MainActivity : BaseActivity(),
         rvNavigation.adapter = adapterDrawer
         adapterDrawer.addAll(arDrawer)
 
-        val drawerToggle =
-            object : ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close) {
-                override fun onDrawerClosed(drawerView: View) {
-                    super.onDrawerClosed(drawerView)
-                    invalidateOptionsMenu()
-                }
-
-                override fun onDrawerOpened(drawerView: View) {
-                    super.onDrawerOpened(drawerView)
-                    invalidateOptionsMenu()
-                }
-            }
-//        drawer.addDrawerListener(drawerToggle)
-//        drawerToggle.syncState()
-//        navigationView.setNavigationItemSelectedListener(this)
-        loadFragmentHome(HomeFragment(), getString(R.string.app_name))
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        loadFragment(HomeFragment(), getString(R.string.app_name))
     }
 
     override fun getViewActivity(): Activity {
@@ -118,17 +102,11 @@ class MainActivity : BaseActivity(),
     }
 
 
-    private fun loadFragmentHome(fragment: Fragment, title: String) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.flContainer, fragment)
-        transaction.commit()
-        setTitle(title)
-    }
 
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flContainer, fragment)
-        transaction.addToBackStack(null)
+        // transaction.addToBackStack(null)
         transaction.commit()
         setTitle(title)
     }
@@ -137,8 +115,14 @@ class MainActivity : BaseActivity(),
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
             drawer.closeDrawer(Gravity.RIGHT)
-        } else {
+            return
+        }
+        val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
+        if (item.isChecked) {
             super.onBackPressed()
+        } else {
+            loadFragment(HomeFragment(), getString(R.string.app_name))
+            item.isChecked = true
         }
     }
 
@@ -193,7 +177,7 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragmentHome(HomeFragment(), getString(R.string.app_name))
+                loadFragment(HomeFragment(), getString(R.string.app_name))
             }
             R.id.itemBottom2 -> {
 
@@ -202,6 +186,7 @@ class MainActivity : BaseActivity(),
                 loadFragment(UnlockedCarDealFragment(), getString(R.string.unlocked_car_deals))
             }
             R.id.itemBottom4 -> {
+                loadFragment(SearchFragment(), getString(R.string.search_deals))
 
             }
             R.id.itemBottom5 -> {
