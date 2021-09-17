@@ -5,30 +5,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.databinding.FragmentHomeBinding
+import com.letyouknow.model.UpDownData
+import com.letyouknow.utils.AppGlobal.Companion.setTextColor
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummery.DealSummeryFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
-    private var arYear = arrayListOf("Year")
-    private var arMake = arrayListOf("Make")
-    private var arModel = arrayListOf("Model")
-    private var arTrim = arrayListOf("Trim")
-    private var arOptionalPackages = arrayListOf("OptionalPackages")
-    private var arExteriorColor = arrayListOf("ExteriorColor")
-    private var arInteriorColor = arrayListOf("InteriorColor")
-    private var arDealer = arrayListOf("Dealer Installed Accessories")
+    private var arYear = arrayListOf("YEAR")
+    private var arMake = arrayListOf("MAKE")
+    private var arModel = arrayListOf("MODEL")
+    private var arTrim = arrayListOf("TRIM")
+    private var arExteriorColor = arrayListOf("EXTERIOR COLOR")
+    private var arInteriorColor = arrayListOf("INTERIOR COLOR")
+    private var arRadius = arrayListOf("RADIUS ")
 
+    private lateinit var binding: FragmentHomeBinding
+    private var upDownData = UpDownData()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_home,
+            container,
+            false
+        )
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,14 +49,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
+        binding.upDownData = upDownData
         setYear()
         setMake()
         setModel()
         setTrim()
-        setOptionalPackages()
         setExteriorColor()
         setInteriorColor()
-        setDealer()
+        setRadius()
         btnProceedDeal.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
     }
@@ -57,6 +69,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spYear.adapter = adapterYear
+        setTextColor(spYear, requireActivity())
+
     }
 
     private fun setMake() {
@@ -67,6 +81,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterMake.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spMake.adapter = adapterMake
+        setTextColor(spMake, requireActivity())
     }
 
     private fun setModel() {
@@ -77,6 +92,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spModel.adapter = adapterModel
+        setTextColor(spModel, requireActivity())
     }
 
     private fun setTrim() {
@@ -87,17 +103,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterTrim.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spTrim.adapter = adapterTrim
+        setTextColor(spTrim, requireActivity())
     }
 
-    private fun setOptionalPackages() {
-        val adapterOptionalPackages = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arOptionalPackages as List<String?>
-        )
-        adapterOptionalPackages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spOptionalPackages.adapter = adapterOptionalPackages
-    }
+
 
     private fun setExteriorColor() {
         val adapterExteriorColor = ArrayAdapter<String?>(
@@ -107,6 +116,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterExteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spExteriorColor.adapter = adapterExteriorColor
+        setTextColor(spExteriorColor, requireActivity())
     }
 
     private fun setInteriorColor() {
@@ -117,31 +127,35 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         )
         adapterInteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spInteriorColor.adapter = adapterInteriorColor
+        setTextColor(spInteriorColor, requireActivity())
     }
 
-    private fun setDealer() {
-        val adapterDealer = ArrayAdapter<String?>(
+    private fun setRadius() {
+        val adapterRadius = ArrayAdapter<String?>(
             activity!!,
             android.R.layout.simple_spinner_item,
-            arDealer as List<String?>
+            arRadius as List<String?>
         )
-        adapterDealer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spDealer.adapter = adapterDealer
+        adapterRadius.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spRadius.adapter = adapterRadius
+        setTextColor(spRadius, requireActivity())
     }
 
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(R.id.flContainer, fragment)
-        transaction?.addToBackStack(null)
+//        transaction?.addToBackStack(null)
         transaction?.commit()
         MainActivity.getInstance().setTitle(title)
     }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 loadFragment(DealSummeryFragment(), getString(R.string.lighting_car_deals))
             }
+
         }
     }
 }

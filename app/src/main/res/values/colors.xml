@@ -28,4 +28,6 @@
     <color name="darkGray">#666666</color>
     <color name="dividerColor">#E6E5E5</color>
     <color name="colorTransparent3">#30000000</color>
+    <color name="color3B495A">#3B495A</color>
+    <color name="color556473">#556473</color>
 </resources>

@@ -206,6 +206,8 @@
         android:paddingBottom="@dimen/_12sdp">
 
         <ImageView
+            android:id="@+id/ivBackDeal"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -222,6 +224,8 @@
             android:textSize="@dimen/_12sdp" />
 
         <ImageView
+            android:id="@+id/ivForwardDeal"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rotation="180"

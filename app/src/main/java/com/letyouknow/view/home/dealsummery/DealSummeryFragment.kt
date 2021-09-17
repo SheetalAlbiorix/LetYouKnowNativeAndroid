@@ -45,6 +45,8 @@ class DealSummeryFragment : BaseFragment(), View.OnClickListener {
         )
 
         btnProceedDeal.setOnClickListener(this)
+        ivBackDeal.setOnClickListener(this)
+        ivForwardDeal.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(true)
     }
 
@@ -84,13 +86,19 @@ class DealSummeryFragment : BaseFragment(), View.OnClickListener {
     private fun loadFragment(fragment: Fragment) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(R.id.flContainer, fragment)
-        transaction?.addToBackStack(null)
+//        transaction?.addToBackStack(null)
         transaction?.commit()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
+                loadFragment(DealSummeryStep2Fragment())
+            }
+            R.id.ivBackDeal -> {
+                requireActivity().onBackPressed()
+            }
+            R.id.ivForwardDeal -> {
                 loadFragment(DealSummeryStep2Fragment())
             }
         }

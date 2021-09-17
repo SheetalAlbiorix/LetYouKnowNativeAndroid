@@ -122,18 +122,30 @@
     <string name="your_search_results">Your Search Results:</string>
     <string name="notifications">Notifications</string>
     <string name="search_deals">Search Deals</string>
-    <string name="car_options">Car Options</string>
-    <string name="colors">Colors</string>
+    <string name="car_options">CAR OPTIONS</string>
+    <string name="colors">COLORS</string>
     <string name="location">Location</string>
     <string name="search">SEARCH</string>
     <string name="notification_setting">Notification Setting</string>
     <string name="refer_your_fellow_car_shopper">Refer your fellow car shopper</string>
+    <string name="refer_your_friends_and_family">Refer your Friends and Family</string>
     <string name="refer">Refer</string>
     <string name="how_it_work">How it work</string>
     <string name="let_the_m_know">LETTHEMKNOW</string>
     <string name="friends_and_family">friends and family!</string>
     <string name="share_your_letyouknow_experience_with_friends_and_family_they_ll_save_big_and_we_will_reward_you_as_a_token_of_our_application">Share your letyouknow experience with friends and family! They\'ll save big and we will reward you as a token of our Application!</string>
     <string name="enter_information_for_the_person_you_are_referring">Enter information for the person you are referring</string>
+    <string name="copy">Copy</string>
+    <string name="your_invite_like">Your Invite Like</string>
+    <string name="share_on_facebook">Share On Facebook</string>
+    <string name="share_via_sms">Share Via SMS</string>
+    <string name="share_on_twitter">Share on Twitter</string>
+    <string name="share_via_email">Share Via Email</string>
+    <string name="rewards_are_unlimited_see_terms_and_conditions_for_full_details">Rewards are unlimited!\nSee Terms and Conditions for full details.</string>
+    <string name="search_my_deal">Search My Deal</string>
+    <string name="features">FEATURES</string>
+    <string name="one_deal_near_you">One Deal Near You</string>
+    <string name="submit_your_price">Submit Your Price</string>
 
 
 </resources>

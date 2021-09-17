@@ -8,6 +8,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityEditReferBinding
 import com.letyouknow.model.ReferStepData
+import com.letyouknow.view.account.editrefer.referstep2.ReferStep2Activity
 import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -28,6 +29,8 @@ class EditReferActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         backButton()
         setReferStepAdapter()
+        btnLetTheKnow.setOnClickListener(this)
+        setTermsLink()
     }
 
     private fun setTermsLink() {
@@ -91,6 +94,10 @@ class EditReferActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-
+        when (v?.id) {
+            R.id.btnLetTheKnow -> {
+                startActivity<ReferStep2Activity>()
+            }
+        }
     }
 }

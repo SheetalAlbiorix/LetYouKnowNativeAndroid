@@ -110,7 +110,7 @@
             <ImageView
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
-                android:src="@color/white" />
+                android:src="@drawable/ic_gift" />
 
             <TextView
                 style="@style/regular"

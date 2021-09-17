@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.databinding.FragmentSearchBinding
+import com.letyouknow.model.UpDownData
 import kotlinx.android.synthetic.main.fragment_search.*
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment(), View.OnClickListener {
     private var arYear = arrayListOf("Year")
     private var arMake = arrayListOf("Make")
     private var arModel = arrayListOf("Model")
@@ -18,12 +21,21 @@ class SearchFragment : BaseFragment() {
     private var arExteriorColor = arrayListOf("ExteriorColor")
     private var arInteriorColor = arrayListOf("InteriorColor")
 
+    private val upDownData = UpDownData()
+    private lateinit var binding: FragmentSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_search,
+            container,
+            false
+        )
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +51,9 @@ class SearchFragment : BaseFragment() {
         setSearchRadius()
         setExteriorColor()
         setInteriorColor()
+        llCarOptions.setOnClickListener(this)
+        llLocation.setOnClickListener(this)
+        llColors.setOnClickListener(this)
     }
 
     private fun setYear() {
@@ -109,5 +124,22 @@ class SearchFragment : BaseFragment() {
         )
         adapterInteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spInteriorColor.adapter = adapterInteriorColor
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.llCarOptions -> {
+                upDownData.isCarOptions = !upDownData.isCarOptions!!
+                binding.upDownData = upDownData
+            }
+            R.id.llLocation -> {
+                upDownData.isLocation = !upDownData.isLocation!!
+                binding.upDownData = upDownData
+            }
+            R.id.llColors -> {
+                upDownData.isColors = !upDownData.isColors!!
+                binding.upDownData = upDownData
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ import android.net.NetworkInfo
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.letyouknow.R
@@ -110,6 +111,13 @@ class AppGlobal {
             } finally {
                 progressDialog = null
             }
+        }
+
+        fun setTextColor(spinner: Spinner, context: Context) {
+            spinner.setSelection(0, true)
+            val v = spinner.selectedView as TextView
+            v.setTextColor(context.resources.getColor(R.color.white))
+            v.textSize = context.resources.getDimension(R.dimen._6sdp)
         }
     }
 }

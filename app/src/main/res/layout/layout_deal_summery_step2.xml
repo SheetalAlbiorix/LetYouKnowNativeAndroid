@@ -680,6 +680,7 @@
             android:paddingBottom="@dimen/_12sdp">
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/ivBackDeal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -701,7 +702,7 @@
                 android:layout_height="wrap_content"
                 android:rotation="180"
                 android:src="@drawable/ic_back"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:tint="@color/white" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>

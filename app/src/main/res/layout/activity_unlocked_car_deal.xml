@@ -17,6 +17,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbarTitle="@{@string/unlocked_car_deals}" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

@@ -1,102 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.core.widget.NestedScrollView
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="upDownData"
+            type="com.letyouknow.model.UpDownData" />
+
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+
+        <androidx.core.widget.NestedScrollView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_25sdp">
+            android:layout_weight="1">
 
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spYear"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_spinner" />
+                android:orientation="vertical"
+                android:padding="@dimen/_20sdp">
+
+                <!--<TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_deals"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_13sdp" />-->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:cardBackgroundColor="@color/color3B495A"
+                    app:cardCornerRadius="@dimen/_8sdp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_12sdp">
+
+                        <!-- <androidx.appcompat.widget.LinearLayoutCompat
+                             android:id="@+id/llCarOptions"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:gravity="center_vertical">
+
+                             <TextView
+                                 style="@style/bold"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:paddingStart="@dimen/_8sdp"
+                                 android:paddingEnd="@dimen/_8sdp"
+                                 android:text="@string/car_options"
+                                 android:textColor="@color/white"
+                                 android:textSize="@dimen/_13sdp" />
+                         </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="@{upDownData.isCarOptions() ? View.VISIBLE : View.GONE}">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spYear"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spMake"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spMake"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spModel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spModel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spTrim"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spTrim"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spOptionalPackages"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spExteriorColor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spExteriorColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spInteriorColor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spInteriorColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/edtZipCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_edittext"
+                                android:backgroundTint="@color/color556473"
+                                android:digits="1234567890"
+                                android:hint="@string/zip_code"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/offWhite" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spDealer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_spinner" />
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spRadius"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:background="@drawable/bg_spinner_dark" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtZipCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@drawable/bg_edittext"
-                android:digits="1234567890"
-                android:hint="@string/zip_code"
-                android:inputType="number"
-                android:maxLength="6" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnProceedDeal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_button"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_12sdp"
+                    android:text="@string/search_my_deal"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btnProceedDeal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/bg_button"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/_12sdp"
-                android:text="@string/find_my_deal"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.core.widget.NestedScrollView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
 
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

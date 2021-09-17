@@ -84,7 +84,7 @@
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/btnProceedDeal"
+                android:id="@+id/btnLetTheKnow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"

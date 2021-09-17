@@ -15,11 +15,11 @@ import com.letyouknow.model.DrawerData
 import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
+import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.home.HomeFragment
 import com.letyouknow.view.savedsearches.SavedSearchesActivity
-import com.letyouknow.view.search.SearchFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
-import com.letyouknow.view.unlockedcardeal.UnlockedCarDealFragment
+import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
 import org.jetbrains.anko.backgroundColor
@@ -69,19 +69,55 @@ class MainActivity : BaseActivity(),
 //        supportActionBar?.setHomeButtonEnabled(true)
         ivMenu.setOnClickListener(this)
         ivCloseDrawer.setOnClickListener(this)
+        ivEdit.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
     }
 
     private fun setDrawerData() {
-        arDrawer.add(DrawerData(1, 0, "Account"))
-        arDrawer.add(DrawerData(2, 0, "Bid History"))
-        arDrawer.add(DrawerData(3, 0, "Transaction History"))
-        arDrawer.add(DrawerData(4, 0, "Favourite Searches"))
-        arDrawer.add(DrawerData(5, 0, "How it works"))
-        arDrawer.add(DrawerData(6, 0, "Contact Support"))
-        arDrawer.add(DrawerData(7, 0, "Legal"))
+        arDrawer.add(DrawerData(1, R.drawable.ic_account, R.drawable.ic_account_white, "Account"))
+        arDrawer.add(
+            DrawerData(
+                2,
+                R.drawable.ic_bid_history,
+                R.drawable.ic_bid_history_white,
+                "Bid History"
+            )
+        )
+        arDrawer.add(
+            DrawerData(
+                3,
+                R.drawable.ic_transaction_history_white,
+                R.drawable.ic_transaction_history,
+                "Transaction History"
+            )
+        )
+        arDrawer.add(
+            DrawerData(
+                4,
+                R.drawable.ic_fav,
+                R.drawable.ic_fav_white,
+                "Favourite Searches"
+            )
+        )
+        arDrawer.add(
+            DrawerData(
+                5,
+                R.drawable.ic_how_work,
+                R.drawable.ic_how_work_white,
+                "How it works"
+            )
+        )
+        arDrawer.add(
+            DrawerData(
+                6,
+                R.drawable.ic_contact,
+                R.drawable.ic_contact_white,
+                "Contact Support"
+            )
+        )
+        arDrawer.add(DrawerData(7, R.drawable.ic_legal, R.drawable.ic_legal_white, "Legal"))
     }
 
     private fun setNavDrawerData() {
@@ -91,7 +127,7 @@ class MainActivity : BaseActivity(),
         rvNavigation.adapter = adapterDrawer
         adapterDrawer.addAll(arDrawer)
 
-        loadFragment(HomeFragment(), getString(R.string.app_name))
+        loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
     }
 
     override fun getViewActivity(): Activity {
@@ -121,7 +157,7 @@ class MainActivity : BaseActivity(),
         if (item.isChecked) {
             super.onBackPressed()
         } else {
-            loadFragment(HomeFragment(), getString(R.string.app_name))
+            loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
             item.isChecked = true
         }
     }
@@ -171,25 +207,25 @@ class MainActivity : BaseActivity(),
             R.id.ivCloseDrawer -> {
                 drawer.closeDrawer(Gravity.RIGHT)
             }
+            R.id.ivEdit -> {
+                loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
+            }
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(HomeFragment(), getString(R.string.app_name))
+                loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
             }
             R.id.itemBottom2 -> {
-
+                loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
             }
             R.id.itemBottom3 -> {
-                loadFragment(UnlockedCarDealFragment(), getString(R.string.unlocked_car_deals))
+                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+//                loadFragment(UnlockedCarDealFragment(), getString(R.string.unlocked_car_deals))
             }
             R.id.itemBottom4 -> {
-                loadFragment(SearchFragment(), getString(R.string.search_deals))
-
-            }
-            R.id.itemBottom5 -> {
                 loadFragment(AccountFragment(), getString(R.string.account))
             }
         }

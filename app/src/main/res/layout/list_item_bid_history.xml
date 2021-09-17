@@ -113,70 +113,77 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/_8sdp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_8sdp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llLastBid"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/bg_left_half_round"
-                android:backgroundTint="@color/orange"
-                android:gravity="center"
-                android:padding="@dimen/_12sdp">
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_1sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_1sdp">
 
-                <TextView
-                    style="@style/light"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llLastBid"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/last_bid"
-                    android:textColor="@color/offWhite"
-                    android:textSize="@dimen/_9sdp" />
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_left_half_round"
+                    android:backgroundTint="@color/orange"
+                    android:gravity="center"
+                    android:padding="@dimen/_12sdp">
 
-                <TextView
-                    style="@style/medium"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        style="@style/light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_bid"
+                        android:textColor="@color/offWhite"
+                        android:textSize="@dimen/_9sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:text="$47,000.00"
+                        android:textColor="@color/offWhite"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:text="$47,000.00"
-                    android:textColor="@color/offWhite"
-                    android:textSize="@dimen/_11sdp" />
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_6sdp">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/submitted"
+                        android:textColor="?textGreyColor"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:singleLine="true"
+                        android:text="24-Feb-2019| 12:37pm"
+                        android:textColor="@color/textDarkGrey"
+                        android:textSize="@dimen/_9sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/bg_right_half_round_border"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/_6sdp">
-
-                <TextView
-                    style="@style/medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/submitted"
-                    android:textColor="?textGreyColor"
-                    android:textSize="@dimen/_10sdp" />
-
-                <TextView
-                    style="@style/medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:singleLine="true"
-                    android:text="24-Feb-2019| 12:37pm"
-                    android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_9sdp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>
