@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.login.LoginActivity
 import org.jetbrains.anko.startActivity
 
@@ -16,12 +17,18 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun init() {
+
         Handler().postDelayed({
-            startActivity<LoginActivity>()
+            if (pref?.isLogin()!!) {
+                startActivity<MainActivity>()
+            } else {
+                startActivity<LoginActivity>()
+            }
+
         }, 3000)
     }
 
-    override fun getViewActivity(): Activity? {
+    override fun getViewActivity(): Activity {
         return this
     }
 

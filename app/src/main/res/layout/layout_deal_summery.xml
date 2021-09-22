@@ -24,9 +24,57 @@
         android:textSize="@dimen/_16sdp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/interior_color"
+            android:textColor="?textGreyColor"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:text="Super Black Metalic"
+            android:textColor="@color/textDarkGrey"
+            android:textSize="@dimen/_12sdp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exterior_color"
+            android:textColor="?textGreyColor"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:text="Cashmere"
+            android:textColor="@color/textDarkGrey"
+            android:textSize="@dimen/_12sdp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -36,57 +84,10 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/interior_color"
-                    android:textColor="?textGreyColor"
-                    android:textSize="@dimen/_12sdp" />
-
-                <TextView
-                    style="@style/bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="Super Black Metalic"
-                    android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_12sdp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/exterior_color"
-                    android:textColor="?textGreyColor"
-                    android:textSize="@dimen/_12sdp" />
-
-                <TextView
-                    style="@style/bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="Cashmere"
-                    android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_12sdp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -136,7 +137,7 @@
             android:id="@+id/spLoan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_spinner" />
+            android:background="@drawable/bg_spinner_dark1" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -188,7 +189,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:hint="INITIALS"
+            android:backgroundTint="@color/color556473"
+            android:hint="@string/initials"
+            android:maxLength="3"
+            android:textColor="@color/white"
+            android:textColorHint="@color/offWhite1"
             android:background="@drawable/bg_edittext"
             android:inputType="text" />
 

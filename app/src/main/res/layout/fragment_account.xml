@@ -22,6 +22,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
+                    android:paddingRight="@dimen/_8sdp"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -64,6 +66,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -77,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
+                    android:paddingRight="@dimen/_8sdp"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -149,6 +153,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -158,6 +163,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
+                    android:paddingRight="@dimen/_8sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
@@ -190,6 +196,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -199,6 +206,8 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
+                    android:paddingRight="@dimen/_8sdp"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit"
@@ -254,6 +263,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,6 +273,8 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
+                    android:paddingRight="@dimen/_8sdp"
+
                     android:id="@+id/ivEditNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -312,6 +324,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -321,6 +334,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
+                    android:paddingRight="@dimen/_8sdp"
                     android:id="@+id/ivRefer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

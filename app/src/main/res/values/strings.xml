@@ -100,8 +100,11 @@
     <string name="have_a_promo_code"><u>Have a promo code?</u></string>
     <string name="buyer_information">Buyer Information</string>
     <string name="lighting_car_deals">Lighting Car Deals</string>
+    <string name="search_deals_title">SEARCH DEALS</string>
     <string name="gift_card_or_discount_code">Gift card or discount code</string>
+    <string name="enter_promo_code">Enter Promo Code</string>
     <string name="apply_promo">APPLY PROMO</string>
+    <string name="apply">APPLY</string>
     <string name="account">Account</string>
     <string name="unlocked_car_deals">Unlocked Car Deals</string>
     <string name="my_information">My Information</string>
@@ -146,6 +149,11 @@
     <string name="features">FEATURES</string>
     <string name="one_deal_near_you">One Deal Near You</string>
     <string name="submit_your_price">Submit Your Price</string>
+    <string name="initials">INITIALS</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="year">YEAR</string>
+    <string name="invalid_zip_code">Invalid Zip Code</string>
 
 
 </resources>

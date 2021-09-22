@@ -10,6 +10,7 @@ import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
 import com.letyouknow.view.account.editrefer.EditReferActivity
+import com.letyouknow.view.dashboard.MainActivity
 import kotlinx.android.synthetic.main.fragment_account.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -32,6 +33,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener {
         ivEditLogin.setOnClickListener(this)
         ivEditNotification.setOnClickListener(this)
         ivRefer.setOnClickListener(this)
+        MainActivity.getInstance().setVisibleEditImg(false)
+        MainActivity.getInstance().setVisibleLogoutImg(true)
     }
 
 

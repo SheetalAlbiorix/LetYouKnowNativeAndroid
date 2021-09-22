@@ -14,7 +14,9 @@ import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.LinearLayoutCompat
 import com.letyouknow.R
+import org.jetbrains.anko.singleLine
 
 class AppGlobal {
     companion object {
@@ -113,11 +115,29 @@ class AppGlobal {
             }
         }
 
-        fun setTextColor(spinner: Spinner, context: Context) {
+        fun setSpinnerTextColor(spinner: Spinner, context: Context) {
             spinner.setSelection(0, true)
             val v = spinner.selectedView as TextView
             v.setTextColor(context.resources.getColor(R.color.white))
             v.textSize = context.resources.getDimension(R.dimen._6sdp)
+        }
+
+        fun setSpinnerTextColorPos(pos: Int, spinner: Spinner, context: Context) {
+            spinner.setSelection(pos, true)
+            val v = spinner.selectedView as TextView
+            v.setTextColor(context.resources.getColor(R.color.white))
+            v.textSize = context.resources.getDimension(R.dimen._6sdp)
+        }
+
+        fun setSpinnerLayoutPos(pos: Int, spinner: Spinner, context: Context) {
+            spinner.setSelection(pos, true)
+            val v = spinner.selectedView as LinearLayoutCompat
+            val llView = v.getChildAt(0) as LinearLayoutCompat
+            llView.backgroundTintList = context.resources.getColorStateList(R.color.color556473)
+            val tvView = llView.getChildAt(0) as TextView
+            tvView.setTextColor(context.resources.getColor(R.color.white))
+            tvView.singleLine = true
+            tvView.textSize = context.resources.getDimension(R.dimen._6sdp)
         }
     }
 }

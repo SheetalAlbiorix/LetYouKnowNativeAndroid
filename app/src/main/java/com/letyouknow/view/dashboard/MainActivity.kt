@@ -1,29 +1,32 @@
 package com.letyouknow.view.dashboard
 
 import android.app.Activity
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.DrawerData
+import com.letyouknow.model.LoginData
 import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.home.HomeFragment
+import com.letyouknow.view.home.dealsummery.DealSummeryFragment
+import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Fragment
+import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.savedsearches.SavedSearchesActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.*
 
 
 class MainActivity : BaseActivity(),
@@ -52,7 +55,7 @@ class MainActivity : BaseActivity(),
 
     fun setVisibleEditImg(isVisible: Boolean) {
         if (isVisible) {
-            ivEdit.visibility = View.VISIBLE
+            ivEdit.visibility = View.GONE
             toolbar.backgroundColor = resources.getColor(R.color.colord3e6ff)
             toolbar.elevation = 0f
         } else {
@@ -62,13 +65,17 @@ class MainActivity : BaseActivity(),
         }
     }
 
+    fun setVisibleLogoutImg(isVisible: Boolean) {
+        ivLogOut.visibility = if (isVisible) View.GONE else View.GONE
+    }
+
     private fun init() {
+        userData = pref?.getUserData()!!
         main = this
         setSupportActionBar(toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar?.setHomeButtonEnabled(true)
         ivMenu.setOnClickListener(this)
         ivCloseDrawer.setOnClickListener(this)
+        ivLogOut.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
@@ -118,7 +125,10 @@ class MainActivity : BaseActivity(),
             )
         )
         arDrawer.add(DrawerData(7, R.drawable.ic_legal, R.drawable.ic_legal_white, "Legal"))
+        arDrawer.add(DrawerData(8, R.drawable.ic_logout, R.drawable.ic_logout, "Logout"))
     }
+
+    private lateinit var userData: LoginData
 
     private fun setNavDrawerData() {
         rvNavigation.layoutManager = LinearLayoutManager(this)
@@ -127,7 +137,9 @@ class MainActivity : BaseActivity(),
         rvNavigation.adapter = adapterDrawer
         adapterDrawer.addAll(arDrawer)
 
-        loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
+        tvUserName.text = userData.firstName + " " + userData.lastName
+        tvUserEmail.text = userData.userName
+        loadFragment(HomeFragment(), getString(R.string.search_deals_title))
     }
 
     override fun getViewActivity(): Activity {
@@ -136,8 +148,6 @@ class MainActivity : BaseActivity(),
 
     override fun onNetworkStateChange(isConnect: Boolean) {
     }
-
-
 
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -155,9 +165,20 @@ class MainActivity : BaseActivity(),
         }
         val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
         if (item.isChecked) {
-            super.onBackPressed()
+            val fragment = supportFragmentManager.findFragmentById(R.id.flContainer)
+            if (fragment is DealSummeryFragment || fragment is DealSummeryStep2Fragment) {
+                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+            } else {
+                super.onBackPressed()
+            }
         } else {
-            loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
+            if (selectDrawerPos != -1) {
+                val data = adapterDrawer.getItem(selectDrawerPos)
+                data.isSelect = false
+                adapterDrawer.update(selectDrawerPos, data)
+            }
+            selectDrawerPos = -1
+            loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             item.isChecked = true
         }
     }
@@ -178,7 +199,8 @@ class MainActivity : BaseActivity(),
                 selectDrawerPos = pos
                 when (pos) {
                     0 -> {
-
+                        bottomNavigation.selectedItemId = R.id.itemBottom4
+                        loadFragment(AccountFragment(), getString(R.string.account))
                     }
                     1 -> {
                         startActivity<BidHistoryActivity>()
@@ -188,6 +210,12 @@ class MainActivity : BaseActivity(),
                     }
                     3 -> {
                         startActivity<SavedSearchesActivity>()
+                    }
+                    7 -> {
+                        popupLogout()
+                    }
+                    4 -> {
+
                     }
                     4 -> {
 
@@ -208,7 +236,10 @@ class MainActivity : BaseActivity(),
                 drawer.closeDrawer(Gravity.RIGHT)
             }
             R.id.ivEdit -> {
-                loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
+                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+            }
+            R.id.ivLogOut -> {
+                popupLogout()
             }
         }
     }
@@ -216,7 +247,7 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(HomeFragment(), getString(R.string.lighting_car_deals))
+                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom2 -> {
                 loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
@@ -230,5 +261,34 @@ class MainActivity : BaseActivity(),
             }
         }
         return true
+    }
+
+    private fun popupLogout() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_logout)
+
+        dialog.run {
+            tvLogOut.setOnClickListener {
+                pref?.setLogin(false)
+                startActivity(intentFor<LoginActivity>().clearTask().newTask())
+                dialog.dismiss()
+            }
+            tvCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun setLayoutParam(dialog: Dialog) {
+        val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.attributes = layoutParams
     }
 }

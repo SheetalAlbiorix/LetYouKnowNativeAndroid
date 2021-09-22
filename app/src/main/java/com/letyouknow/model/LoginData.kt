@@ -1,7 +1,6 @@
-package com.pionymessenger.model
+package com.letyouknow.model
 
 import java.io.Serializable
-
 
 data class LoginData(
     val buyerId: Int? = 0,

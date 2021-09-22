@@ -9,6 +9,7 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityEditNotificationBinding
 import com.letyouknow.model.NotificationsData
 import kotlinx.android.synthetic.main.activity_edit_notification.*
+import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 
 class EditNotificationActivity : BaseActivity(), View.OnClickListener {
     private val arNotification: ArrayList<NotificationsData> = ArrayList()
@@ -23,7 +24,20 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         setNotificationData()
+        backButton()
     }
+
+    private fun backButton() {
+        toolbar.setNavigationIcon(R.drawable.ic_back)
+        toolbar.setTitleTextColor(resources.getColor(R.color.black))
+
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+    }
+
 
     private fun setNotificationData() {
         arNotification.add(NotificationsData("Promos and Deals", R.color.orange, false))
@@ -59,5 +73,10 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
                 adapterEditNotification.update(pos, data)
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

@@ -65,6 +65,7 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
         tvAddMore.setOnClickListener(this)
         btnSave.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
+        btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
 
         setOnChange()
@@ -205,6 +206,9 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
                 setClearData()
             }
             R.id.ivBackDeal -> {
+                MainActivity.getInstance().onBackPressed()
+            }
+            R.id.btnProceedDeal -> {
                 MainActivity.getInstance().onBackPressed()
             }
             R.id.tvAddMin -> {

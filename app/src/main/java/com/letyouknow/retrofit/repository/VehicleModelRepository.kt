@@ -1,0 +1,53 @@
+package com.letyouknow.retrofit.repository
+
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import com.letyouknow.model.VehicleModelData
+import com.letyouknow.retrofit.RetrofitClient
+import com.pionymessenger.utils.Constant
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+
+object VehicleModelRepository {
+
+    fun getVehicleModelApiCall(
+        context: Context,
+        productId: String?,
+        yearId: String?,
+        makeID: String?
+    ): MutableLiveData<ArrayList<VehicleModelData>> {
+        val loginVo = MutableLiveData<ArrayList<VehicleModelData>>()
+        val call = RetrofitClient.apiInterface.getVehicleModels(productId, yearId, makeID)
+
+        call.enqueue(object : Callback<ArrayList<VehicleModelData>> {
+            override fun onFailure(call: Call<ArrayList<VehicleModelData>>, t: Throwable) {
+                Log.v("DEBUG : ", t.message.toString())
+            }
+
+            override fun onResponse(
+                call: Call<ArrayList<VehicleModelData>>,
+                response: Response<ArrayList<VehicleModelData>>,
+            ) {
+                Log.v("DEBUG : ", response.body().toString())
+
+                val data = response.body()
+                if (response.code() == 200 || response.code() == 201) {
+                    loginVo.value = data!!
+                } else {
+                    Constant.dismissLoader()
+                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    Toast.makeText(
+                        context,
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        })
+        return loginVo
+    }
+}

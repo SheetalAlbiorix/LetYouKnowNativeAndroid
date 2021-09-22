@@ -5,20 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColor
+import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColorPos
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Fragment
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import kotlinx.android.synthetic.main.fragment_deal_summery.*
 import kotlinx.android.synthetic.main.layout_deal_summery.*
 
-class DealSummeryFragment : BaseFragment(), View.OnClickListener {
-    private var arLoan = arrayListOf("LOAN ")
+class DealSummeryFragment : BaseFragment(), View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
+    private var arLoan = arrayListOf("LOAN", "CARD")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +62,8 @@ class DealSummeryFragment : BaseFragment(), View.OnClickListener {
         )
         adapterLoan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spLoan.adapter = adapterLoan
+        setSpinnerTextColor(spLoan, requireActivity())
+        spLoan.onItemSelectedListener = this
     }
 
     private fun setInfoLink() {
@@ -102,6 +108,19 @@ class DealSummeryFragment : BaseFragment(), View.OnClickListener {
                 loadFragment(DealSummeryStep2Fragment())
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        when (parent?.id) {
+            R.id.spLoan -> {
+                setSpinnerTextColorPos(position, spLoan, requireActivity())
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 
 }

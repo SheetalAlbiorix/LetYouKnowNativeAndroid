@@ -172,6 +172,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             arCardList = pref?.getCardList()!!
             adapterCardList.addAll(arCardList)
             llCardViewDetail.visibility = View.GONE
+            for (i in 0 until arCardList.size) {
+                if (arCardList[i].isSelect!!) {
+                    selectCardPos = i
+                }
+            }
         } else {
             llCardList.visibility = View.GONE
             llCardViewDetail.visibility = View.VISIBLE

@@ -7,6 +7,9 @@
 
         <import type="android.view.View" />
 
+        <variable
+            name="loginData"
+            type="com.letyouknow.model.LoginData" />
 
     </data>
 
@@ -112,6 +115,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_edittext"
                     android:hint="@string/email_address"
+                    android:text="@{loginData.userName}"
                     android:inputType="textEmailAddress"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -11,7 +11,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentSubmitYourPriceBinding
 import com.letyouknow.model.UpDownData
-import com.letyouknow.utils.AppGlobal.Companion.setTextColor
+import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColor
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
@@ -63,6 +63,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         setOptions()
         btnSearch.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
+        MainActivity.getInstance().setVisibleLogoutImg(false)
     }
 
     private fun setYear() {
@@ -73,7 +74,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spYear.adapter = adapterYear
-        setTextColor(spYear, requireContext())
+        setSpinnerTextColor(spYear, requireContext())
     }
 
     private fun setMake() {
@@ -84,7 +85,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterMake.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spMake.adapter = adapterMake
-        setTextColor(spMake, requireContext())
+        setSpinnerTextColor(spMake, requireContext())
     }
 
     private fun setModel() {
@@ -95,7 +96,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spModel.adapter = adapterModel
-        setTextColor(spModel, requireContext())
+        setSpinnerTextColor(spModel, requireContext())
     }
 
     private fun setTrim() {
@@ -106,7 +107,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterTrim.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spTrim.adapter = adapterTrim
-        setTextColor(spTrim, requireContext())
+        setSpinnerTextColor(spTrim, requireContext())
     }
 
 
@@ -118,7 +119,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterExteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spExteriorColor.adapter = adapterExteriorColor
-        setTextColor(spExteriorColor, requireContext())
+        setSpinnerTextColor(spExteriorColor, requireContext())
     }
 
     private fun setInteriorColor() {
@@ -129,7 +130,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterInteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spInteriorColor.adapter = adapterInteriorColor
-        setTextColor(spInteriorColor, requireContext())
+        setSpinnerTextColor(spInteriorColor, requireContext())
     }
 
     private fun setPackages() {
@@ -140,7 +141,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterPackages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spPackages.adapter = adapterPackages
-        setTextColor(spPackages, requireContext())
+        setSpinnerTextColor(spPackages, requireContext())
     }
 
     private fun setOptions() {
@@ -151,7 +152,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
         )
         adapterOptions.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spOptionalAccessories.adapter = adapterOptions
-        setTextColor(spOptionalAccessories, requireContext())
+        setSpinnerTextColor(spOptionalAccessories, requireContext())
     }
 
     private fun loadFragment(fragment: Fragment, title: String) {

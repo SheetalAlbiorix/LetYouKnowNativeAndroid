@@ -6,10 +6,12 @@ import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityEditLoginBinding
+import com.letyouknow.model.LoginData
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class EditLoginActivity : BaseActivity() {
     private lateinit var binding: ActivityEditLoginBinding
+    private lateinit var userData: LoginData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_login)
@@ -19,6 +21,8 @@ class EditLoginActivity : BaseActivity() {
     }
 
     private fun init() {
+        userData = pref?.getUserData()!!
+        binding.loginData = userData
         backButton()
     }
 

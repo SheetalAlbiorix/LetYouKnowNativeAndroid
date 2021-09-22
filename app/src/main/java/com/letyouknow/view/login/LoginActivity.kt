@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.retrofit.ApiConstant
@@ -189,25 +190,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 tvErrorPassword.visibility = View.GONE
 
                 if (isValid()) {
-                    if (Constant.isOnline(this)) {
-                        Constant.showLoader(this)
-                        val request = HashMap<String, String>()
-                        request[ApiConstant.username] = edtEmailAddress.text.toString()
-                        request[ApiConstant.password] = edtPassword.text.toString()
-
-                        loginViewModel.getUser(this, request)!!.observe(this, Observer { loginVo ->
-                            Constant.dismissLoader()
-                            if (loginVo.buyerId != 0) {
-                                startActivity<MainActivity>()
-                                finish()
-                            } else {
-                                Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        )
-                    } else {
-                        Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-                    }
+                    callLoginAPI()
                 }
             }
 
@@ -223,6 +206,32 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         }
     }
+
+    private fun callLoginAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, String>()
+            request[ApiConstant.username] = edtEmailAddress.text.toString()
+            request[ApiConstant.password] = edtPassword.text.toString()
+
+            loginViewModel.getUser(this, request)!!.observe(this, Observer { loginVo ->
+                Constant.dismissLoader()
+                if (loginVo.buyerId != 0) {
+                    pref?.setLogin(true)
+                    pref?.setUserData(Gson().toJson(loginVo))
+                    startActivity<MainActivity>()
+                    finish()
+                } else {
+                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 
 
     private fun isValid(): Boolean {
