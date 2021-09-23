@@ -109,17 +109,22 @@
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </LinearLayout>
 
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtAddress1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@drawable/bg_edittext"
-                        android:hint="@string/address_line_1"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtAddress1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/bg_edittext"
+        android:hint="@string/address_line_1"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvErrorAddress1"
@@ -244,6 +249,7 @@
                                 android:visibility="gone" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtPhoneNumber"
@@ -393,6 +399,7 @@
                         android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
+                        android:visibility="gone"
                         android:id="@+id/chkIsPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -668,6 +675,7 @@
                     android:padding="@dimen/_20sdp">
 
                     <CheckBox
+                        android:visibility="gone"
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -679,6 +687,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <CheckBox
+                        android:visibility="gone"
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -700,7 +709,7 @@
                         android:text="@string/by_registering"
                         android:textColor="?blackText"
                         android:textColorHighlight="@android:color/transparent"
-                        android:textColorLink="@color/orange"
+                        android:textColorLink="@color/colorPrimary"
                         android:textSize="@dimen/_11ssp" />
 
                     <androidx.appcompat.widget.AppCompatTextView

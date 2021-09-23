@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/itemBottom1"
-        android:icon="@drawable/ic_bottom_menu1"
+        android:icon="@drawable/ic_bottom1"
         android:title="Home" />
     <item
+
         android:id="@+id/itemBottom2"
-        android:icon="@drawable/ic_bottom_menu2"
+        android:icon="@drawable/ic_bottom2"
         android:title="Home" />
     <item
         android:id="@+id/itemBottom3"
-        android:icon="@drawable/ic_bottom_menu3"
+        android:icon="@drawable/ic_bottom3"
         android:title="Home" />
    <!-- <item
         android:id="@+id/itemBottom4"
@@ -18,7 +19,7 @@
         android:title="Home" />-->
     <item
         android:id="@+id/itemBottom4"
-        android:icon="@drawable/ic_bottom_menu5"
+        android:icon="@drawable/ic_bottom4"
         android:title="Home" />
 
 </menu>

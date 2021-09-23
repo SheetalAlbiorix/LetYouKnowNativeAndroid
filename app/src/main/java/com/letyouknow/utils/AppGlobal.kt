@@ -11,11 +11,15 @@ import android.net.NetworkInfo
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.webkit.*
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.letyouknow.R
+import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
 import org.jetbrains.anko.singleLine
 
 class AppGlobal {
@@ -119,14 +123,14 @@ class AppGlobal {
             spinner.setSelection(0, true)
             val v = spinner.selectedView as TextView
             v.setTextColor(context.resources.getColor(R.color.white))
-            v.textSize = context.resources.getDimension(R.dimen._6sdp)
+//            v.textSize = context.resources.getDimension(R.dimen._6sdp)
         }
 
         fun setSpinnerTextColorPos(pos: Int, spinner: Spinner, context: Context) {
             spinner.setSelection(pos, true)
             val v = spinner.selectedView as TextView
             v.setTextColor(context.resources.getColor(R.color.white))
-            v.textSize = context.resources.getDimension(R.dimen._6sdp)
+//            v.textSize = context.resources.getDimension(R.dimen._6sdp)
         }
 
         fun setSpinnerLayoutPos(pos: Int, spinner: Spinner, context: Context) {
@@ -137,7 +141,69 @@ class AppGlobal {
             val tvView = llView.getChildAt(0) as TextView
             tvView.setTextColor(context.resources.getColor(R.color.white))
             tvView.singleLine = true
-            tvView.textSize = context.resources.getDimension(R.dimen._6sdp)
+        }
+
+        fun dialogWebView(context: Context, url: String) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window?.attributes?.windowAnimations = (R.style.dialogAnimation)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_privacy_policy_terms_conditions)
+            dialog.run {
+                ivClose.setOnClickListener {
+                    dismiss()
+                }
+
+                webView.settings.loadWithOverviewMode = true
+                webView.settings.useWideViewPort = true
+                webView.settings.pluginState = WebSettings.PluginState.ON
+                webView.settings.domStorageEnabled = true
+                webView.settings.javaScriptEnabled = true
+                webView.webViewClient = (object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                        view?.loadUrl(url!!)
+                        return true
+                    }
+
+                    override fun onReceivedError(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                        error: WebResourceError?
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        Log.e("WebView Wrror", error.toString())
+                    }
+                })
+
+                webView.loadUrl(url)
+
+            }
+            setLayoutParam(dialog)
+            dialog.show()
+        }
+
+        class WebClient : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                url: String?
+            ): Boolean {
+                view?.loadUrl(url!!)
+                return true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+            }
+        }
+
+        private fun setLayoutParam(dialog: Dialog) {
+            val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+            dialog.window?.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            dialog.window?.attributes = layoutParams
         }
     }
 }

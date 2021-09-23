@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_8sdp"
-    android:background="@drawable/bg_round_50"
+    android:background="@drawable/bg_button3"
     android:backgroundTint="@color/orange"
     android:orientation="horizontal"
     android:paddingStart="@dimen/_15sdp"

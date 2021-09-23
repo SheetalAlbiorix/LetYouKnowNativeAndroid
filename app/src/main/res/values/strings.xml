@@ -26,6 +26,7 @@
     <string name="edit_login">Edit Login</string>
     <string name="edit_my_information">Edit My Information</string>
     <string name="by_registering">By registering you agree to LetYouKnow\'s \nTerms and Conditions and Privacy Policy</string>
+    <string name="by_login">By Login you agree to LetYouKnow\'s \nTerms and Conditions and Privacy Policy</string>
     <string name="remember_me">Remember me</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">MI</string>
@@ -52,7 +53,7 @@
     <string name="tm"><Sup>TM</Sup></string>
     <string name="sign_up">Sign Up</string>
     <string name="new_password">New Password</string>
-    <string name="confirm_new_password">Confirm New Passord</string>
+    <string name="confirm_new_password">Confirm New Password</string>
     <string name="enter_email_address">Enter the email address associated with your account to receive a link to reset your password.</string>
     <string name="payment_options">Payment Options</string>
     <string name="select_cards_for_payment">Select Cards for Payment</string>
@@ -64,7 +65,7 @@
     <string name="card_number">Card Number</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="yes_send_me_promotinal_emails_from_letyouknow">Yes, send me promotinal emails from LetYouKnow.</string>
+    <string name="yes_send_me_promotinal_emails_from_letyouknow">Yes, send me promotional emails from LetYouKnow.</string>
     <string name="yes_text_me_promo">Yes, text me promo alerts (Msg&amp;Data Rates May Apply).</string>
     <string name="zip_code_colon">Zip Code:</string>
     <string name="we_want_you_to_be_completely_satisfied_with_your_car_buying_experience_please_read_the_important_information_here">We want you to be completely satisfied with your car buying experience. Please read the important information here.</string>
@@ -100,7 +101,7 @@
     <string name="have_a_promo_code"><u>Have a promo code?</u></string>
     <string name="buyer_information">Buyer Information</string>
     <string name="lighting_car_deals">Lighting Car Deals</string>
-    <string name="search_deals_title">SEARCH DEALS</string>
+    <string name="search_deals_title">Search Deals</string>
     <string name="gift_card_or_discount_code">Gift card or discount code</string>
     <string name="enter_promo_code">Enter Promo Code</string>
     <string name="apply_promo">APPLY PROMO</string>
@@ -154,6 +155,7 @@
     <string name="cancel">Cancel</string>
     <string name="year">YEAR</string>
     <string name="invalid_zip_code">Invalid Zip Code</string>
+    <string name="promo">PROMO</string>
 
 
 </resources>

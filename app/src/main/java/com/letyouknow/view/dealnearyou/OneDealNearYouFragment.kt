@@ -47,7 +47,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var adapterTrim: TrimsSpinnerAdapter
     private lateinit var adapterExterior: ExteriorSpinnerAdapter
     private lateinit var adapterInterior: InteriorSpinnerAdapter
-    private lateinit var adapterRadius: RadiusSpinnerAdapter
+
 
     private var productId = "3"
     private var yearId = ""
@@ -196,7 +196,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private fun setPackages() {
         val adapterPackages = ArrayAdapter<String?>(
-            activity!!,
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             arPackages as List<String?>
         )
@@ -208,7 +208,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private fun setOptions() {
         val adapterOptions = ArrayAdapter<String?>(
-            activity!!,
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             arOptionalAccessories as List<String?>
         )
@@ -225,11 +225,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     Constant.dismissLoader()
                     Log.e("ZipCode Data", Gson().toJson(data))
                     if (!data) {
-                        /* Toast.makeText(
-                             requireActivity(),
-                             getString(R.string.invalid_zip_code),
-                             Toast.LENGTH_SHORT
-                         ).show()*/
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
                         tvErrorZipCode.visibility = View.VISIBLE
                         setYear()

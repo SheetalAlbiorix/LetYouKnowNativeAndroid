@@ -12,6 +12,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.DrawerData
 import com.letyouknow.model.LoginData
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
@@ -20,9 +21,9 @@ import com.letyouknow.view.home.HomeFragment
 import com.letyouknow.view.home.dealsummery.DealSummeryFragment
 import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Fragment
 import com.letyouknow.view.login.LoginActivity
-import com.letyouknow.view.savedsearches.SavedSearchesActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
+import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -77,19 +78,20 @@ class MainActivity : BaseActivity(),
         ivCloseDrawer.setOnClickListener(this)
         ivLogOut.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
+        llLogout.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
     }
 
     private fun setDrawerData() {
-        arDrawer.add(DrawerData(1, R.drawable.ic_account, R.drawable.ic_account_white, "Account"))
+//        arDrawer.add(DrawerData(1, R.drawable.ic_account, R.drawable.ic_account_white, "Account"))
         arDrawer.add(
             DrawerData(
                 2,
                 R.drawable.ic_bid_history,
                 R.drawable.ic_bid_history_white,
-                "Bid History"
+                "Price Bid History"
             )
         )
         arDrawer.add(
@@ -100,14 +102,14 @@ class MainActivity : BaseActivity(),
                 "Transaction History"
             )
         )
-        arDrawer.add(
-            DrawerData(
-                4,
-                R.drawable.ic_fav,
-                R.drawable.ic_fav_white,
-                "Favourite Searches"
-            )
-        )
+        /* arDrawer.add(
+             DrawerData(
+                 4,
+                 R.drawable.ic_fav,
+                 R.drawable.ic_fav_white,
+                 "Favourite Searches"
+             )
+         )*/
         arDrawer.add(
             DrawerData(
                 5,
@@ -121,11 +123,26 @@ class MainActivity : BaseActivity(),
                 6,
                 R.drawable.ic_contact,
                 R.drawable.ic_contact_white,
-                "Contact Support"
+                "Help"
             )
         )
-        arDrawer.add(DrawerData(7, R.drawable.ic_legal, R.drawable.ic_legal_white, "Legal"))
-        arDrawer.add(DrawerData(8, R.drawable.ic_logout, R.drawable.ic_logout, "Logout"))
+        arDrawer.add(
+            DrawerData(
+                7,
+                R.drawable.ic_terms_conditions,
+                R.drawable.ic_terms_conditions_white,
+                "Terms & Conditions"
+            )
+        )
+        arDrawer.add(
+            DrawerData(
+                8,
+                R.drawable.ic_privacy_policy,
+                R.drawable.ic_privacy_policy_white,
+                "Privacy Policy"
+            )
+        )
+//        arDrawer.add(DrawerData(8, R.drawable.ic_logout, R.drawable.ic_logout, "Logout"))
     }
 
     private lateinit var userData: LoginData
@@ -139,7 +156,8 @@ class MainActivity : BaseActivity(),
 
         tvUserName.text = userData.firstName + " " + userData.lastName
         tvUserEmail.text = userData.userName
-        loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+//        loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+        loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
     }
 
     override fun getViewActivity(): Activity {
@@ -178,7 +196,8 @@ class MainActivity : BaseActivity(),
                 adapterDrawer.update(selectDrawerPos, data)
             }
             selectDrawerPos = -1
-            loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+//            loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+            loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
             item.isChecked = true
         }
     }
@@ -198,28 +217,27 @@ class MainActivity : BaseActivity(),
                 adapterDrawer.update(pos, data)
                 selectDrawerPos = pos
                 when (pos) {
+                    /* 0 -> {
+                         bottomNavigation.selectedItemId = R.id.itemBottom4
+                         loadFragment(AccountFragment(), getString(R.string.account))
+                     }*/
                     0 -> {
-                        bottomNavigation.selectedItemId = R.id.itemBottom4
-                        loadFragment(AccountFragment(), getString(R.string.account))
-                    }
-                    1 -> {
                         startActivity<BidHistoryActivity>()
                     }
-                    2 -> {
+                    1 -> {
                         startActivity<TransactionHistoryActivity>()
                     }
-                    3 -> {
-                        startActivity<SavedSearchesActivity>()
+                    2 -> {
+                        // startActivity<SavedSearchesActivity>()
                     }
-                    7 -> {
-                        popupLogout()
-                    }
-                    4 -> {
 
-                    }
                     4 -> {
-
+                        AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
                     }
+                    5 -> {
+                        AppGlobal.dialogWebView(this, Constant.PRIVACY_POLICY_LINK)
+                    }
+
                 }
                 Handler().postDelayed({
                     drawer.closeDrawer(Gravity.RIGHT)
@@ -241,20 +259,25 @@ class MainActivity : BaseActivity(),
             R.id.ivLogOut -> {
                 popupLogout()
             }
+            R.id.llLogout -> {
+                drawer.closeDrawer(Gravity.RIGHT)
+                popupLogout()
+            }
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+//                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom2 -> {
                 loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
             }
             R.id.itemBottom3 -> {
-                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
-//                loadFragment(UnlockedCarDealFragment(), getString(R.string.unlocked_car_deals))
+//                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom4 -> {
                 loadFragment(AccountFragment(), getString(R.string.account))

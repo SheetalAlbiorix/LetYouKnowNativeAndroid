@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -75,6 +77,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private var intColorId = ""
     private var radiusId = ""
 
+    private lateinit var animBlink: Animation
+    private lateinit var animSlideRightToLeft: Animation
+    private lateinit var animSlideLeftToRight: Animation
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,6 +103,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun init() {
+        animBlink = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_blink
+        )
+        animSlideRightToLeft = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_right
+        )
+        animSlideLeftToRight = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_left
+        )
+        tvPromo.startAnimation(animBlink)
+
         binding.upDownData = upDownData
 
         vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
@@ -115,6 +135,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         setInteriorColor()
         setRadius()
         btnProceedDeal.setOnClickListener(this)
+        tvPromo.setOnClickListener(this)
+        ivClosePromo.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(false)
         callVehicleYearAPI()
@@ -227,6 +249,17 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 loadFragment(DealSummeryFragment(), getString(R.string.search_deals_title))
+            }
+            R.id.tvPromo -> {
+                tvPromo.clearAnimation()
+                tvPromo.visibility = View.GONE
+                llPromoOffer.visibility = View.VISIBLE
+                llPromoOffer.startAnimation(animSlideRightToLeft)
+            }
+            R.id.ivClosePromo -> {
+                tvPromo.startAnimation(animBlink)
+                tvPromo.visibility = View.VISIBLE
+                llPromoOffer.visibility = View.GONE
             }
         }
     }

@@ -24,8 +24,13 @@ class Constant {
 
         //String
         var noInternet = "No internet connection"
-        var TERMS_CONDITIONS_LINK = "https://www.letyouknow.com/termsandconditions"
-        var PRIVACY_POLICY_LINK = "https://www.letyouknow.com/privacypolicy"
+
+        //        var TERMS_CONDITIONS_LINK = "https://github.com/flutter/flutter/issues/70284"
+        var TERMS_CONDITIONS_LINK = "https://demo.letyouknow.com/termsandconditions"
+
+        //        var TERMS_CONDITIONS_LINK = "https://www.demo.letyouknow.com/termsandconditions"
+        var PRIVACY_POLICY_LINK = "https://demo.letyouknow.com/privacypolicy"
+//        var PRIVACY_POLICY_LINK = "https://letyouknow.com/privacypolicy"
 
         //blank error
         var emailBlank = "email can not be blank"

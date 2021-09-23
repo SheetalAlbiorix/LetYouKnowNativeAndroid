@@ -31,7 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_20sdp">
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:paddingBottom="@dimen/_20sdp">
 
                 <!--<TextView
                     style="@style/bold"
@@ -44,7 +47,6 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
                     app:cardBackgroundColor="@color/color3B495A"
                     app:cardCornerRadius="@dimen/_8sdp">
 
@@ -127,7 +129,7 @@
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_24sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
                             <androidx.appcompat.widget.AppCompatSpinner
@@ -144,7 +146,7 @@
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_24sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
                             <androidx.appcompat.widget.AppCompatSpinner

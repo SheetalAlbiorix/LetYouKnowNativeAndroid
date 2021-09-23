@@ -36,12 +36,11 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.LoginViewModel
+import com.letyouknow.utils.AppGlobal.Companion.dialogWebView
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.forgotpassword.ForgotPasswordActivity
-import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
 import com.letyouknow.view.signup.SignUpActivity
 import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_POLICY
 import com.pionymessenger.utils.Constant.Companion.PRIVACY_POLICY_LINK
 import com.pionymessenger.utils.Constant.Companion.TERMS_CONDITIONS_LINK
 import com.pionymessenger.utils.Constant.Companion.emailValidator
@@ -161,10 +160,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun setTermsLink() {
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
-                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to TERMS_CONDITIONS_LINK)
+//                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to TERMS_CONDITIONS_LINK)
+                dialogWebView(this, TERMS_CONDITIONS_LINK)
             }),
             Pair("Privacy Policy", View.OnClickListener {
-                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to PRIVACY_POLICY_LINK)
+//                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to PRIVACY_POLICY_LINK)
+                dialogWebView(this, PRIVACY_POLICY_LINK)
             })
         )
     }

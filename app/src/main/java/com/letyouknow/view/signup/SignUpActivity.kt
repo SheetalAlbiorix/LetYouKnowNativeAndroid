@@ -39,16 +39,16 @@ import com.letyouknow.databinding.ActivitySignUpBinding
 import com.letyouknow.model.CardListData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.SignUpViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
-import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.onTextChange
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.dialog_password_hint.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
-import org.jetbrains.anko.startActivity
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapterCardList: CardListAdapter
@@ -117,10 +117,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun setLink() {
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
-                startActivity<PrivacyPolicyTermsCondActivity>(Constant.ARG_POLICY to Constant.TERMS_CONDITIONS_LINK)
+//                startActivity<PrivacyPolicyTermsCondActivity>(Constant.ARG_POLICY to Constant.TERMS_CONDITIONS_LINK)
+                AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
             }),
             Pair("Privacy Policy", View.OnClickListener {
-                startActivity<PrivacyPolicyTermsCondActivity>(Constant.ARG_POLICY to Constant.PRIVACY_POLICY_LINK)
+//                startActivity<PrivacyPolicyTermsCondActivity>(Constant.ARG_POLICY to Constant.PRIVACY_POLICY_LINK)
+                AppGlobal.dialogWebView(this, Constant.PRIVACY_POLICY_LINK)
             })
         )
 
@@ -312,7 +314,13 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         val dialog = Dialog(this, R.style.FullScreenDialog)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
         dialog.setContentView(R.layout.dialog_password_hint)
+        dialog.run {
+            ivClose.setOnClickListener {
+                dismiss()
+            }
+        }
         setLayoutParam(dialog)
         dialog.show()
     }
@@ -336,23 +344,23 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 Constant.setErrorBorder(edtLastName, tvErrorLastName)
                 return false
             }
-            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
-                return false
-            }
-            TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
-                return false
-            }
-            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtCity, tvErrorCity)
-                return false
-            }
+            /* TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                 Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                 return false
+             }
+             TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
+                 Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
+                 return false
+             }
+             TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
+                 Constant.setErrorBorder(edtCity, tvErrorCity)
+                 return false
+             }
 
-            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
-                return false
-            }
+             TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                 Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                 return false
+             }*/
             TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
                 return false
