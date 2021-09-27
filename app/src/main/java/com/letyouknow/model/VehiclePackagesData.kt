@@ -5,11 +5,12 @@ import java.io.Serializable
 
 
 class VehiclePackagesData : Serializable {
-    val vehiclePackageID: String? = ""
+    var vehiclePackageID: String? = ""
     val mfgCode: String? = ""
 
     @SerializedName("package")
-    val packageName: String? = ""
+    var packageName: String? = ""
     val msrp: String? = ""
     val id: Boolean? = false
+    var isSelect: Boolean? = false
 }

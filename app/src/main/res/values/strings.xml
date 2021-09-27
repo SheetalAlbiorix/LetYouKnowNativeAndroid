@@ -47,6 +47,8 @@
     <string name="confirm_user_id">Confirm User ID</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <string name="any">ANY</string>
+    <string name="none">NONE</string>
     <string name="add_payment"> Would you like to add a payment method?</string>
     <string name="on_the_go">On The Go,</string>
     <string name="on_your_terms">On Your Terms</string>
@@ -156,6 +158,7 @@
     <string name="year">YEAR</string>
     <string name="invalid_zip_code">Invalid Zip Code</string>
     <string name="promo">PROMO</string>
+    <string name="reset">Reset</string>
 
 
 </resources>

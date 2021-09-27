@@ -1,35 +1,63 @@
 package com.letyouknow.view.unlockedcardeal.submitprice
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentSubmitYourPriceBinding
-import com.letyouknow.model.UpDownData
+import com.letyouknow.model.*
+import com.letyouknow.retrofit.viewmodel.*
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColor
 import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.spinneradapter.*
 import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
+import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
 import org.jetbrains.anko.support.v4.startActivity
 
 
-class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
-    private var arYear = arrayListOf("YEAR")
-    private var arMake = arrayListOf("MAKE")
-    private var arModel = arrayListOf("MODEL")
-    private var arTrim = arrayListOf("TRIM")
+class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
+    private var isValidSpinner = false
+    private lateinit var vehicleYearModel: VehicleYearViewModel
+    private lateinit var vehicleMakeModel: VehicleMakeViewModel
+    private lateinit var vehicleModelModel: VehicleModelViewModel
+    private lateinit var vehicleTrimModel: VehicleTrimViewModel
+    private lateinit var exteriorColorModel: ExteriorColorViewModel
+    private lateinit var interiorColorModel: InteriorColorViewModel
+    private lateinit var zipCodeModel: VehicleZipCodeViewModel
+
+    private lateinit var adapterYear: YearSpinnerAdapter
+    private lateinit var adapterMake: MakeSpinnerAdapter
+    private lateinit var adapterModel: ModelSpinnerAdapter
+    private lateinit var adapterTrim: TrimsSpinnerAdapter
+    private lateinit var adapterExterior: ExteriorSpinnerAdapter
+    private lateinit var adapterInterior: InteriorSpinnerAdapter
+    private lateinit var binding: FragmentSubmitYourPriceBinding
+
     private var arPackages = arrayListOf("PACKAGES")
     private var arOptionalAccessories = arrayListOf("OPTIONAL & ACCESSORIES")
-    private var arExteriorColor = arrayListOf("EXTERIOR COLOR")
-    private var arInteriorColor = arrayListOf("INTERIOR COLOR")
 
-    private lateinit var binding: FragmentSubmitYourPriceBinding
     private var upDownData = UpDownData()
+    private var productId = "3"
+    private var yearId = ""
+    private var makeId = ""
+    private var modelId = ""
+    private var trimId = ""
+    private var extColorId = ""
+    private var intColorId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,89 +81,94 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
 
     private fun init() {
         binding.upDownData = upDownData
+        vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
+        vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
+        vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
+        vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
+        exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
+        interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
+        zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+
         setYear()
         setMake()
         setModel()
         setTrim()
         setExteriorColor()
         setInteriorColor()
+
         setPackages()
         setOptions()
         btnSearch.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(false)
+
+        callVehicleYearAPI()
     }
 
     private fun setYear() {
-        val adapterYear = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arYear as List<String?>
-        )
-        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val arData = ArrayList<VehicleYearData>()
+        val yearData = VehicleYearData()
+        yearData.year = "YEAR"
+        arData.add(0, yearData)
+        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
         spYear.adapter = adapterYear
-        setSpinnerTextColor(spYear, requireContext())
+        AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
+
     }
 
     private fun setMake() {
-        val adapterMake = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arMake as List<String?>
-        )
-        adapterMake.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val arData = ArrayList<VehicleMakeData>()
+        val makeData = VehicleMakeData()
+        makeData.make = "MAKE"
+        arData.add(0, makeData)
+        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
         spMake.adapter = adapterMake
-        setSpinnerTextColor(spMake, requireContext())
+        AppGlobal.setSpinnerLayoutPos(0, spMake, requireActivity())
     }
 
     private fun setModel() {
-        val adapterModel = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arModel as List<String?>
-        )
-        adapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val arData = ArrayList<VehicleModelData>()
+        val modelData = VehicleModelData()
+        modelData.model = "MODEL"
+        arData.add(0, modelData)
+        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
         spModel.adapter = adapterModel
-        setSpinnerTextColor(spModel, requireContext())
+        AppGlobal.setSpinnerLayoutPos(0, spModel, requireActivity())
     }
 
     private fun setTrim() {
-        val adapterTrim = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arTrim as List<String?>
-        )
-        adapterTrim.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val arData = ArrayList<VehicleTrimData>()
+        val trimData = VehicleTrimData()
+        trimData.trim = "TRIM"
+        arData.add(0, trimData)
+        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
         spTrim.adapter = adapterTrim
-        setSpinnerTextColor(spTrim, requireContext())
+        AppGlobal.setSpinnerLayoutPos(0, spTrim, requireActivity())
     }
 
-
     private fun setExteriorColor() {
-        val adapterExteriorColor = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arExteriorColor as List<String?>
-        )
-        adapterExteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spExteriorColor.adapter = adapterExteriorColor
-        setSpinnerTextColor(spExteriorColor, requireContext())
+        val arData = ArrayList<ExteriorColorData>()
+        val trimData = ExteriorColorData()
+        trimData.exteriorColor = "EXTERIOR COLOR"
+        arData.add(0, trimData)
+        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+        spExteriorColor.adapter = adapterExterior
+        AppGlobal.setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
     }
 
     private fun setInteriorColor() {
-        val adapterInteriorColor = ArrayAdapter<String?>(
-            activity!!,
-            android.R.layout.simple_spinner_item,
-            arInteriorColor as List<String?>
-        )
-        adapterInteriorColor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spInteriorColor.adapter = adapterInteriorColor
-        setSpinnerTextColor(spInteriorColor, requireContext())
+        val arData = ArrayList<InteriorColorData>()
+        val interiorData = InteriorColorData()
+        interiorData.interiorColor = "INTERIOR COLOR"
+        arData.add(0, interiorData)
+        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+        spInteriorColor.adapter = adapterInterior
+        AppGlobal.setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
     }
 
     private fun setPackages() {
         val adapterPackages = ArrayAdapter<String?>(
-            activity!!,
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             arPackages as List<String?>
         )
@@ -146,7 +179,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
 
     private fun setOptions() {
         val adapterOptions = ArrayAdapter<String?>(
-            activity!!,
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             arOptionalAccessories as List<String?>
         )
@@ -172,4 +205,298 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener {
 
         }
     }
+
+
+    private fun callVehicleYearAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            vehicleYearModel.getYear(requireActivity(), productId)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Year Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val yearData = VehicleYearData()
+                        yearData.year = "YEAR"
+                        data.add(0, yearData)
+                        adapterYear = YearSpinnerAdapter(requireActivity(), data)
+                        spYear.adapter = adapterYear
+                        spYear.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<VehicleYearData>()
+                        val yearData = VehicleYearData()
+                        yearData.year = "YEAR"
+                        arData.add(0, yearData)
+                        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+                        spYear.adapter = adapterYear
+                        spYear.onItemSelectedListener = this
+
+                    }
+
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callVehicleMakeAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            vehicleMakeModel.getMake(requireActivity(), productId, yearId)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val makeData = VehicleMakeData()
+                        makeData.make = "MAKE"
+                        data.add(0, makeData)
+                        adapterMake = MakeSpinnerAdapter(requireActivity(), data)
+                        spMake.adapter = adapterMake
+                        spMake.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<VehicleMakeData>()
+                        val makeData = VehicleMakeData()
+                        makeData.make = "MAKE"
+                        arData.add(0, makeData)
+                        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+                        spMake.adapter = adapterMake
+                        spMake.onItemSelectedListener = this
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callVehicleModelAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val modelData = VehicleModelData()
+                        modelData.model = "MODEL"
+                        data.add(0, modelData)
+                        adapterModel = ModelSpinnerAdapter(requireActivity(), data)
+                        spModel.adapter = adapterModel
+                        spModel.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<VehicleModelData>()
+                        val modelData = VehicleModelData()
+                        modelData.model = "MODEL"
+                        arData.add(0, modelData)
+                        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+                        spModel.adapter = adapterModel
+                        spModel.onItemSelectedListener = this
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callVehicleTrimAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val trimData = VehicleTrimData()
+                        trimData.trim = "TRIM"
+                        data.add(0, trimData)
+                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
+                        spTrim.adapter = adapterTrim
+                        spTrim.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<VehicleTrimData>()
+                        val trimData = VehicleTrimData()
+                        trimData.trim = "TRIM"
+                        arData.add(0, trimData)
+                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+                        spTrim.adapter = adapterTrim
+                        spTrim.onItemSelectedListener = this
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callExteriorColorAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            exteriorColorModel.getExteriorColor(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                trimId
+            )!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val exteriorColorData = ExteriorColorData()
+                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                        data.add(0, exteriorColorData)
+                        val exteriorColorData1 = ExteriorColorData()
+                        exteriorColorData1.vehicleExteriorColorID = "0"
+                        exteriorColorData1.exteriorColor = "ANY"
+                        data.add(1, exteriorColorData1)
+                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
+                        spExteriorColor.adapter = adapterExterior
+                        spExteriorColor.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<ExteriorColorData>()
+                        val exteriorColorData = ExteriorColorData()
+                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                        arData.add(0, exteriorColorData)
+                        val exteriorColorData1 = ExteriorColorData()
+                        exteriorColorData1.vehicleExteriorColorID = "0"
+                        exteriorColorData1.exteriorColor = "ANY"
+                        arData.add(1, exteriorColorData1)
+                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+                        spExteriorColor.adapter = adapterExterior
+                        spExteriorColor.onItemSelectedListener = this
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callInteriorColorAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            interiorColorModel.getInteriorColor(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                trimId,
+                extColorId
+            )!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val interiorColorData = InteriorColorData()
+                        interiorColorData.interiorColor = "INTERIOR COLOR"
+                        data.add(0, interiorColorData)
+                        val interiorColorData1 = InteriorColorData()
+                        interiorColorData1.vehicleInteriorColorID = "0"
+                        interiorColorData1.interiorColor = "ANY"
+                        data.add(1, interiorColorData1)
+                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
+                        spInteriorColor.adapter = adapterInterior
+                        spInteriorColor.onItemSelectedListener = this
+                    } else {
+                        val arData = ArrayList<InteriorColorData>()
+                        val interiorColorData = InteriorColorData()
+                        interiorColorData.interiorColor = "INTERIOR COLOR"
+                        arData.add(0, interiorColorData)
+                        val interiorColorData1 = InteriorColorData()
+                        interiorColorData1.vehicleInteriorColorID = "0"
+                        interiorColorData1.interiorColor = "ANY"
+                        arData.add(1, interiorColorData1)
+                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+                        spInteriorColor.adapter = adapterInterior
+                        spInteriorColor.onItemSelectedListener = this
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (parent?.id) {
+            R.id.spYear -> {
+                val data = adapterYear.getItem(position) as VehicleYearData
+                yearId = data.vehicleYearID!!
+                if (data.year != "YEAR") {
+                    callVehicleMakeAPI()
+                    setModel()
+                    setTrim()
+                    setExteriorColor()
+                    setInteriorColor()
+                }
+                AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+            }
+            R.id.spMake -> {
+                val data = adapterMake.getItem(position) as VehicleMakeData
+                makeId = data.vehicleMakeID!!
+                AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
+                if (data.make != "MAKE") {
+                    callVehicleModelAPI()
+                    setTrim()
+                    setExteriorColor()
+                    setInteriorColor()
+                }
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+            }
+            R.id.spModel -> {
+                val data = adapterModel.getItem(position) as VehicleModelData
+                modelId = data.vehicleModelID!!
+                AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
+                if (data.model != "MODEL") {
+                    callVehicleTrimAPI()
+                    setExteriorColor()
+                    setInteriorColor()
+                }
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+            }
+            R.id.spTrim -> {
+                val data = adapterTrim.getItem(position) as VehicleTrimData
+                trimId = data.vehicleTrimID!!
+                AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
+                if (data.trim != "TRIM") {
+                    callExteriorColorAPI()
+                    setInteriorColor()
+                }
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+            }
+            R.id.spExteriorColor -> {
+                val data = adapterExterior.getItem(position) as ExteriorColorData
+//                extColorId = "0"
+                extColorId = data.vehicleExteriorColorID!!
+                AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
+                if (data.exteriorColor != "EXTERIOR COLOR") {
+                    callInteriorColorAPI()
+                }
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+            }
+            R.id.spInteriorColor -> {
+                val data = adapterInterior.getItem(position) as InteriorColorData
+                intColorId = data.vehicleInteriorColorID!!
+                AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
+//                if (data.interiorColor != "INTERIOR COLOR") callVehiclePackagesAPI()
+                isValidSpinner = false
+                btnSearch.isEnabled = true
+            }
+        }
+    }
+
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
 }

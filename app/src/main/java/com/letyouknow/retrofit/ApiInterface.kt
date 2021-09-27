@@ -78,6 +78,6 @@ interface ApiInterface {
         @Query("trimId") trimId: String?,
         @Query("exteriorColorId") exteriorColorId: String?,
         @Query("interiorColorId") interiorColorId: String?
-    ): Call<Boolean>
+    ): Call<ArrayList<VehiclePackagesData>>
 
 }

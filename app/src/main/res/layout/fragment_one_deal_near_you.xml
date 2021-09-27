@@ -141,13 +141,26 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/spPackages"
-                                android:spinnerMode="dropdown"
+                            <!-- <androidx.appcompat.widget.AppCompatSpinner
+                                 android:id="@+id/spPackages"
+                                 android:spinnerMode="dropdown"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="@dimen/_24sdp"
+                                 android:background="@drawable/bg_spinner_dark" />
+ -->
+
+                            <TextView
+                                android:id="@+id/tvPackages"
+                                style="@style/medium"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_24sdp"
-                                android:background="@drawable/bg_spinner_dark" />
+                                android:background="@drawable/bg_spinner_dark"
+                                android:padding="@dimen/_12sdp"
+                                android:text="PACKAGES"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spOptionalAccessories"
