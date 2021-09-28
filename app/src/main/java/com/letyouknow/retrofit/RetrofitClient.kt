@@ -7,7 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val MainServer = "https://lykbuyerapi.azurewebsites.net/api/"
+//    private const val MainServer = "https://lykbuyerapi.azurewebsites.net/api/"
+private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api/"
 
     const val ImageMainServer = "http://api.drfriday.in/";
 

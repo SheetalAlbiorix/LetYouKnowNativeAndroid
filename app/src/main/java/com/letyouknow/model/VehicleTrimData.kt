@@ -2,6 +2,7 @@ package com.letyouknow.model
 
 import java.io.Serializable
 
+
 data class VehicleTrimData(
     val vehicleTrimID: String? = "",
     var trim: String? = "",

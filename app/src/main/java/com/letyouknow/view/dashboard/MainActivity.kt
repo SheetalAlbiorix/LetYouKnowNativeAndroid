@@ -18,8 +18,6 @@ import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.home.HomeFragment
-import com.letyouknow.view.home.dealsummery.DealSummeryFragment
-import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Fragment
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
@@ -184,11 +182,11 @@ class MainActivity : BaseActivity(),
         val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
         if (item.isChecked) {
             val fragment = supportFragmentManager.findFragmentById(R.id.flContainer)
-            if (fragment is DealSummeryFragment || fragment is DealSummeryStep2Fragment) {
+           /* if (fragment is DealSummeryActivity || fragment is DealSummeryStep2Fragment) {
                 loadFragment(HomeFragment(), getString(R.string.search_deals_title))
-            } else {
+            } else {*/
                 super.onBackPressed()
-            }
+//            }
         } else {
             if (selectDrawerPos != -1) {
                 val data = adapterDrawer.getItem(selectDrawerPos)

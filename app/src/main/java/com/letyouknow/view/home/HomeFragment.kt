@@ -23,10 +23,11 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.home.dealsummery.DealSummeryFragment
+import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.startActivity
 
 
 class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -248,7 +249,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-                loadFragment(DealSummeryFragment(), getString(R.string.search_deals_title))
+                startActivity<DealSummeryActivity>()
+//                loadFragment(DealSummeryActivity(), getString(R.string.search_deals_title))
             }
             R.id.tvPromo -> {
                 tvPromo.clearAnimation()
@@ -526,8 +528,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     setRadius()
                 }
                 setSpinnerLayoutPos(position, spYear, requireActivity())
-                isValidSpinner = false
-                btnProceedDeal.isEnabled = false
+//                isValidSpinner = false
+//                btnProceedDeal.isEnabled = false
             }
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData

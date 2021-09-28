@@ -20,7 +20,10 @@ interface ApiInterface {
     fun forgotPassword(@Body request: HashMap<String, String>): Call<Void>
 
     @GET("vehiclecriteria/getvehicleyears")
-    fun getVehicleYears(@Query("productId") productId: String?): Call<ArrayList<VehicleYearData>>
+    fun getVehicleYears(
+        @Query("productId") productId: String?,
+        @Query("zipCode") zipCode: String?
+    ): Call<ArrayList<VehicleYearData>>
 
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
@@ -80,4 +83,9 @@ interface ApiInterface {
         @Query("interiorColorId") interiorColorId: String?
     ): Call<ArrayList<VehiclePackagesData>>
 
+    @POST("vehiclecriteria/getvehicledealeraccessories")
+    fun getVehicleDealerAccessories(@Body request: HashMap<String, String>): Call<SignupData>
+
+    @POST("vehiclecriteria/checkVehiclePackagesInventory")
+    fun checkVehiclePackagesInventory(@Body request: HashMap<String, Any>): Call<SignupData>
 }

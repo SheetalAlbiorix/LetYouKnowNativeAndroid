@@ -11,22 +11,58 @@
             type="com.letyouknow.model.LightDealBindData" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--     <com.google.android.material.appbar.AppBarLayout
+                 android:id="@+id/appbar"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
+                 <com.google.android.material.appbar.CollapsingToolbarLayout
+                     android:id="@+id/toolbar_layout"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:fitsSystemWindows="true"
+                     app:contentScrim="@color/colord3e6ff"
+                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+
+
+                 </com.google.android.material.appbar.CollapsingToolbarLayout>
+             </com.google.android.material.appbar.AppBarLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical"
+                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+             </LinearLayout>-->
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar_blue"
+            app:toolbarTitle="@{@string/app_name}" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colord3e6ff"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@color/colord3e6ff"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:background="@drawable/bg_half_round"
+                android:backgroundTint="?pageBgColor"
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -144,36 +180,6 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </FrameLayout>
 
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-        </LinearLayout>
-
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colord3e6ff"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_half_round"
-                android:backgroundTint="?pageBgColor"
-                android:orientation="vertical">
-
-
                 <include
                     layout="@layout/layout_deal_summery_step2"
                     app:lightDealBindData="@{lightDealBindData}" />
@@ -184,31 +190,32 @@
         </androidx.core.widget.NestedScrollView>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_23sdp"
-            android:visibility="gone"
-            app:backgroundTint="@color/white"
-            app:fabSize="mini"
-            app:layout_anchor="@id/appbar"
-            app:layout_anchorGravity="bottom|start"
-            app:srcCompat="@drawable/bg_circle_shape" />
+        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/_23sdp"
+             android:visibility="gone"
+             app:backgroundTint="@color/white"
+             app:fabSize="mini"
+             app:layout_anchor="@id/appbar"
+             app:layout_anchorGravity="bottom|start"
+             app:srcCompat="@drawable/bg_circle_shape" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/ivInteriorColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_80sdp"
-            android:foregroundTint="@color/lightGray"
-            android:tint="@color/textLightGrey"
-            android:visibility="gone"
-            app:backgroundTint="@color/white"
-            app:fabSize="mini"
-            app:layout_anchor="@id/appbar"
-            app:layout_anchorGravity="bottom|start"
-            app:srcCompat="@drawable/bg_circle_shape" />
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/ivInteriorColor"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/_80sdp"
+             android:foregroundTint="@color/lightGray"
+             android:tint="@color/textLightGrey"
+             android:visibility="gone"
+             app:backgroundTint="@color/white"
+             app:fabSize="mini"
+             app:layout_anchor="@id/appbar"
+             app:layout_anchorGravity="bottom|start"
+             app:srcCompat="@drawable/bg_circle_shape" />-->
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    >
 </layout>

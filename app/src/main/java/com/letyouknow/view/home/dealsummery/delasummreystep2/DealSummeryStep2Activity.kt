@@ -1,28 +1,28 @@
 package com.letyouknow.view.home.dealsummery.delasummreystep2
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
 import com.letyouknow.R
-import com.letyouknow.base.BaseFragment
-import com.letyouknow.databinding.FragmentDealSummeryStep2Binding
+import com.letyouknow.base.BaseActivity
+import com.letyouknow.databinding.ActivityDealSummeryStep2Binding
 import com.letyouknow.model.CardListData
 import com.letyouknow.model.LightDealBindData
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
-import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.signup.CardListAdapter
-import kotlinx.android.synthetic.main.fragment_deal_summery_step2.*
+import kotlinx.android.synthetic.main.activity_deal_summery_step2.*
 import kotlinx.android.synthetic.main.layout_deal_summery_step2.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 
-class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
-    lateinit var binding: FragmentDealSummeryStep2Binding
+class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
+    lateinit var binding: ActivityDealSummeryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
     private var selectPaymentType = 0
@@ -31,27 +31,12 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
     private lateinit var cTimer: CountDownTimer
     private var seconds = 10
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_deal_summery_step2,
-            container,
-            false
-        )
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_deal_summery_step2)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery_step2)
         init()
-
     }
-
 
     private fun init() {
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
@@ -67,9 +52,30 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
+        ivEdit.setOnClickListener(this)
 
         setOnChange()
         startTimer()
+        backButton()
+    }
+
+    private fun backButton() {
+        toolbar.setNavigationIcon(R.drawable.ic_back)
+        toolbar.setTitleTextColor(resources.getColor(R.color.black))
+
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+    }
+
+    override fun getViewActivity(): Activity? {
+        return this
+    }
+
+    override fun onNetworkStateChange(isConnect: Boolean) {
+
     }
 
     private fun startTimer() {
@@ -206,10 +212,13 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
                 setClearData()
             }
             R.id.ivBackDeal -> {
-                MainActivity.getInstance().onBackPressed()
+                onBackPressed()
+            }
+            R.id.ivEdit -> {
+                onBackPressed()
             }
             R.id.btnProceedDeal -> {
-                MainActivity.getInstance().onBackPressed()
+                onBackPressed()
             }
             R.id.tvAddMin -> {
                 seconds += 120;
@@ -236,5 +245,10 @@ class DealSummeryStep2Fragment : BaseFragment(), View.OnClickListener {
         } else {
             "ic_camera"
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
