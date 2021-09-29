@@ -21,7 +21,8 @@ object InteriorColorRepository {
         makeId: String?,
         modelId: String?,
         trimId: String?,
-        exteriorColorId: String?
+        exteriorColorId: String?,
+        zipCode: String?
     ): MutableLiveData<ArrayList<InteriorColorData>> {
         val loginVo = MutableLiveData<ArrayList<InteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleInteriorColors(
@@ -30,7 +31,8 @@ object InteriorColorRepository {
             makeId,
             modelId,
             trimId,
-            exteriorColorId
+            exteriorColorId,
+            zipCode
         )
 
         call.enqueue(object : Callback<ArrayList<InteriorColorData>> {

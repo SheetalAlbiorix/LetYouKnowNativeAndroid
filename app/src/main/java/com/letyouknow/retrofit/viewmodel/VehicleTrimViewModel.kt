@@ -15,10 +15,18 @@ class VehicleTrimViewModel : ViewModel() {
         productId: String?,
         yearId: String?,
         makeId: String?,
-        modelId: String?
+        modelId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<VehicleTrimData>>? {
         liveData =
-            VehicleTrimRepository.getVehicleTrimApiCall(context, productId, yearId, makeId, modelId)
+            VehicleTrimRepository.getVehicleTrimApiCall(
+                context,
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                zipCode
+            )
         return liveData
     }
 }

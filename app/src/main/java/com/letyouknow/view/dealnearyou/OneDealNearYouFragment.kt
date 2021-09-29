@@ -12,22 +12,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentOneDealNearYouBinding
 import com.letyouknow.model.*
+import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
-import kotlinx.android.synthetic.main.dialog_password_hint.*
-import kotlinx.android.synthetic.main.dialog_vehicle_options.view.*
+import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
-import kotlinx.android.synthetic.main.dialog_vehicle_packages.view.*
 import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
 import org.jetbrains.anko.support.v4.startActivity
+import java.lang.reflect.Type
 
 class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -42,7 +44,9 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var interiorColorModel: InteriorColorViewModel
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
     private lateinit var packagesModel: VehiclePackagesViewModel
+    private lateinit var checkedPackageModel: CheckedPackageInventoryViewModel
     private lateinit var packagesOptional: VehicleOptionalViewModel
+    private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -54,17 +58,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var adapterOptions: OptionsAdapter
 
 
-    private var productId = "3"
+    private var productId = "2"
     private var yearId = ""
     private var makeId = ""
     private var modelId = ""
     private var trimId = ""
     private var extColorId = ""
     private var intColorId = ""
-    private var radiusId = ""
-
-    private var arPackages = arrayListOf("PACKAGES")
-    private var arOptionalAccessories = arrayListOf("OPTIONAL & ACCESSORIES")
 
     private lateinit var binding: FragmentOneDealNearYouBinding
     private var upDownData = UpDownData()
@@ -99,6 +99,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
         packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
         packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+        checkedPackageModel =
+            ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
+        checkedAccessoriesModel =
+            ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
 
         setYear()
         setMake()
@@ -259,7 +263,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleYearAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleYearModel.getYear(requireActivity(), productId)!!
+            vehicleYearModel.getYear(
+                requireActivity(),
+                productId,
+                edtZipCode.text.toString().trim()
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Year Data", Gson().toJson(data))
@@ -291,7 +299,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleMakeAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleMakeModel.getMake(requireActivity(), productId, yearId)!!
+            vehicleMakeModel.getMake(
+                requireActivity(),
+                productId,
+                yearId,
+                edtZipCode.text.toString().trim()
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -321,7 +334,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleModelAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId)!!
+            vehicleModelModel.getModel(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                edtZipCode.text.toString().trim()
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -351,7 +370,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleTrimAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId)!!
+            vehicleTrimModel.getTrim(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                edtZipCode.text.toString().trim()
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -387,7 +413,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 yearId,
                 makeId,
                 modelId,
-                trimId
+                trimId,
+                edtZipCode.text.toString().trim()
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -433,7 +460,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 makeId,
                 modelId,
                 trimId,
-                extColorId
+                extColorId,
+                edtZipCode.text.toString().trim()
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -480,7 +508,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 modelId,
                 trimId,
                 extColorId,
-                intColorId
+                intColorId, edtZipCode.text.toString().trim()
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -510,36 +538,108 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callOptionalAccessoriesAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            packagesModel.getPackages(
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+
+            packagesOptional.getOptional(
                 requireActivity(),
-                productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId,
-                extColorId,
-                intColorId
+                request
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
                     if (data != null || data?.size!! > 0) {
-                        val packagesData = VehiclePackagesData()
-                        packagesData.vehiclePackageID = "0"
-                        packagesData.packageName = "ANY"
-                        data.add(0, packagesData)
+                        val accessoriesData = VehicleAccessoriesData()
+                        accessoriesData.dealerAccessoryID = "0"
+                        accessoriesData.accessory = "ANY"
+                        data.add(0, accessoriesData)
                         popupOptions(data)
-
                     } else {
-                        val arData = ArrayList<VehiclePackagesData>()
-                        val packagesData = VehiclePackagesData()
-                        packagesData.vehiclePackageID = "0"
-                        packagesData.packageName = "ANY"
-                        arData.add(0, packagesData)
+                        val arData = ArrayList<VehicleAccessoriesData>()
+                        val accessoriesData = VehicleAccessoriesData()
+                        accessoriesData.dealerAccessoryID = "0"
+                        accessoriesData.accessory = "ANY"
+                        arData.add(0, accessoriesData)
                         popupOptions(arData)
                     }
                 }
                 )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callCheckedPackageAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+
+            checkedPackageModel.checkedPackage(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callCheckedAccessoriesAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterOptions.itemCount) {
+                if (adapterOptions.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterOptions.getItem(i).dealerAccessoryID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+
+            checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                }
+                )
+
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -554,6 +654,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private var arSelectPackage: ArrayList<VehiclePackagesData> = ArrayList()
+    private var selectPackageStr = ""
+
+    private var arSelectOption: ArrayList<VehicleAccessoriesData> = ArrayList()
+    private var selectOptionStr = ""
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -562,50 +667,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 startActivity<DealSummeryActivity>()
             }
             R.id.tvPackages -> {
+                arSelectPackage = ArrayList()
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect == true) {
-                        arSelectPackage.add(adapterPackages.getItem(i))
-                    }
+                    arSelectPackage.add(adapterPackages.getItem(i))
                 }
+                selectPackageStr = Gson().toJson(arSelectPackage)
                 dialogPackage.show()
             }
             R.id.tvApplyPackage -> {
-                callOptionalAccessoriesAPI()
-                dialogPackage.dismiss()
-            }
-            R.id.tvCancelPackage -> {
-
-                if (arPackages.size > 0) {
-
-                }
-                callOptionalAccessoriesAPI()
-                dialogPackage.dismiss()
-            }
-            R.id.tvOptionalAccessories -> {
-                popupOptions.showAsDropDown(tvOptionalAccessories)
-
-            }
-            R.id.llPackages -> {
-                val pos = v.tag as Int
-
-                /* if (lastSelectPackage != -1) {
-                     val data = adapterPackages.getItem(lastSelectPackage)
-                     data.isSelect = false
-                     adapterPackages.update(lastSelectPackage, data)
-                 }
-
-                 val data = adapterPackages.getItem(pos)
-                 data.isSelect = true
-                 adapterPackages.update(pos, data)
-
-                 lastSelectPackage = pos
-                 tvPackages.text = data.packageName*/
-                val data = adapterPackages.getItem(pos)
-                data.isSelect = !data.isSelect!!
-                if (data.isSelect == true) {
-
-                }
-                adapterPackages.update(pos, data)
                 var packagesStr = ""
                 var isFirst = true
                 for (i in 0 until adapterPackages.itemCount) {
@@ -622,34 +691,114 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 tvPackages.text = packagesStr
                 if (packagesStr.length > 0) {
                     setOptions(true)
-
+                    callOptionalAccessoriesAPI()
                 } else {
                     setOptions(false)
                 }
+
+                dialogPackage.dismiss()
             }
-            R.id.llOptions -> {
+            R.id.tvCancelPackage -> {
+                val gson = Gson()
+                val type: Type = object : TypeToken<ArrayList<VehiclePackagesData>?>() {}.type
+                arSelectPackage = gson.fromJson(selectPackageStr, type)
+                for (i in 0 until arSelectPackage.size) {
+                    adapterPackages.update(i, arSelectPackage[i])
+                }
+                dialogPackage.dismiss()
+            }
+            R.id.llPackages -> {
+                Log.e("select1", selectPackageStr)
                 val pos = v.tag as Int
-                val data = adapterOptions.getItem(pos)
+
+                val data = adapterPackages.getItem(pos)
                 data.isSelect = !data.isSelect!!
-                adapterOptions.update(pos, data)
+                adapterPackages.update(pos, data)
+                if (data.isSelect!! && pos == 0) {
+                    for (i in 1 until adapterPackages.itemCount) {
+                        val dataPackage = adapterPackages.getItem(i)
+                        dataPackage.isSelect = false
+                        adapterPackages.update(i, dataPackage)
+                    }
+                } else {
+                    val data0 = adapterPackages.getItem(0)
+                    data0.isSelect = false
+                    adapterPackages.update(0, data0)
+                    callCheckedPackageAPI()
+                }
+
+
+                Log.e("clickupdate", selectPackageStr)
+
+            }
+            R.id.tvResetPackage -> {
+                for (i in 0 until adapterPackages.itemCount) {
+                    val data = adapterPackages.getItem(i)
+                    data.isSelect = false
+                    adapterPackages.update(i, data)
+                }
+            }
+            R.id.tvApplyOption -> {
                 var optionsStr = ""
                 var isFirst = true
                 for (i in 0 until adapterOptions.itemCount) {
                     if (adapterOptions.getItem(i).isSelect == true) {
                         if (isFirst) {
-                            optionsStr = adapterOptions.getItem(i).packageName.toString()
+                            optionsStr = adapterOptions.getItem(i).accessory.toString()
                             isFirst = false
                         } else {
                             optionsStr =
-                                optionsStr + ", " + adapterOptions.getItem(i).packageName.toString()
+                                optionsStr + ", " + adapterOptions.getItem(i).accessory.toString()
                         }
                     }
                 }
                 tvOptionalAccessories.text = optionsStr
-                if (optionsStr.length > 0) {
-                    isValidSpinner = true
-                    btnSearch.isEnabled = true
+                dialogOptions.dismiss()
+            }
+            R.id.tvResetOption -> {
+                for (i in 0 until adapterOptions.itemCount) {
+                    val data = adapterOptions.getItem(i)
+                    data.isSelect = false
+                    adapterOptions.update(i, data)
                 }
+            }
+            R.id.tvCancelOption -> {
+                val gson = Gson()
+                val type: Type = object : TypeToken<ArrayList<VehicleAccessoriesData>?>() {}.type
+                arSelectOption = gson.fromJson(selectOptionStr, type)
+                for (i in 0 until arSelectOption.size) {
+                    adapterOptions.update(i, arSelectOption[i])
+                }
+                dialogOptions.dismiss()
+            }
+            R.id.tvOptionalAccessories -> {
+                arSelectOption = ArrayList()
+                for (i in 0 until adapterOptions.itemCount) {
+                    arSelectOption.add(adapterOptions.getItem(i))
+                }
+                selectOptionStr = Gson().toJson(arSelectOption)
+                dialogOptions.show()
+            }
+            R.id.llOptions -> {
+                Log.e("select1", selectOptionStr)
+                val pos = v.tag as Int
+
+                val data = adapterOptions.getItem(pos)
+                data.isSelect = !data.isSelect!!
+                adapterOptions.update(pos, data)
+                if (data.isSelect!! && pos == 0) {
+                    for (i in 1 until adapterOptions.itemCount) {
+                        val dataOptions = adapterOptions.getItem(i)
+                        dataOptions.isSelect = false
+                        adapterOptions.update(i, dataOptions)
+                    }
+                } else {
+                    val data0 = adapterOptions.getItem(0)
+                    data0.isSelect = false
+                    adapterOptions.update(0, data0)
+                    callCheckedAccessoriesAPI()
+                }
+                Log.e("clickupdate", selectPackageStr)
             }
         }
     }
@@ -747,8 +896,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private lateinit var dialogPackage: Dialog
-    private lateinit var popUpPackage: PopupWindow
-    private var lastSelectPackage = -1
     private fun popupPackages(data: ArrayList<VehiclePackagesData>) {
         dialogPackage = Dialog(requireActivity(), R.style.FullScreenDialog)
         dialogPackage.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -787,27 +934,24 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     }
 
-    private lateinit var dialogOptions: View
-    private lateinit var popupOptions: PopupWindow
-    private fun popupOptions(data: ArrayList<VehiclePackagesData>) {
-        dialogOptions = LayoutInflater.from(requireActivity())
-            .inflate(R.layout.dialog_vehicle_options, null, false)
-        popupOptions = PopupWindow(
-            dialogOptions,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            false
-        )
-        popupOptions.isTouchable = true
-        popupOptions.isFocusable = true
-        popupOptions.isOutsideTouchable = true
-//        dialogPackage.run {
-        adapterOptions =
-            OptionsAdapter(R.layout.list_item_options, this@OneDealNearYouFragment)
-        dialogOptions.rvOptions.adapter = adapterOptions
-        adapterOptions.addAll(data)
-//        }
+    private lateinit var dialogOptions: Dialog
+    private fun popupOptions(data: ArrayList<VehicleAccessoriesData>) {
+        dialogOptions = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogOptions.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogOptions.setCancelable(true)
+        dialogOptions.setCanceledOnTouchOutside(true)
+        dialogOptions.setContentView(R.layout.dialog_vehicle_options)
+        dialogOptions.run {
+            adapterOptions =
+                OptionsAdapter(R.layout.list_item_options, this@OneDealNearYouFragment)
+            rvOptions.adapter = adapterOptions
+            adapterOptions.addAll(data)
 
+            tvCancelOption.setOnClickListener(this@OneDealNearYouFragment)
+            tvResetOption.setOnClickListener(this@OneDealNearYouFragment)
+            tvApplyOption.setOnClickListener(this@OneDealNearYouFragment)
+        }
+        setLayoutParam(dialogOptions)
     }
 
     private fun setLayoutParam(dialog: Dialog) {

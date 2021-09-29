@@ -10,5 +10,15 @@ class ApiConstant {
         var email = "email"
         var userName = "userName"
         var phoneNumber = "phoneNumber"
+        var packageList = "packageList"
+        var checkedList = "checkedList"
+        var productId = "productId"
+        var yearId = "yearId"
+        var makeId = "makeId"
+        var modelId = "modelId"
+        var trimId = "trimId"
+        var exteriorColorId = "exteriorColorId"
+        var interiorColorId = "interiorColorId"
+        var zipCode = "zipCode"
     }
 }

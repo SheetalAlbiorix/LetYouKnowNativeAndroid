@@ -18,7 +18,8 @@ class VehiclePackagesViewModel : ViewModel() {
         modelId: String?,
         trimId: String?,
         exteriorColorId: String?,
-        interiorColorId: String?
+        interiorColorId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<VehiclePackagesData>>? {
         liveData = VehiclePackagesRepository.getVehiclePackagesCall(
             context,
@@ -28,7 +29,8 @@ class VehiclePackagesViewModel : ViewModel() {
             modelId,
             trimId,
             exteriorColorId,
-            interiorColorId
+            interiorColorId,
+            zipCode
         )
         return liveData
     }

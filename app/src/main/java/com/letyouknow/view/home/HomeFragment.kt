@@ -23,8 +23,8 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
+import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -249,7 +249,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-                startActivity<DealSummeryActivity>()
+                startActivity<UnlockedCarDealActivity>()
 //                loadFragment(DealSummeryActivity(), getString(R.string.search_deals_title))
             }
             R.id.tvPromo -> {
@@ -297,7 +297,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun callVehicleYearAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleYearModel.getYear(requireActivity(), productId)!!
+            vehicleYearModel.getYear(requireActivity(), productId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Year Data", Gson().toJson(data))
@@ -329,7 +329,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun callVehicleMakeAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleMakeModel.getMake(requireActivity(), productId, yearId)!!
+            vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -359,7 +359,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun callVehicleModelAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId)!!
+            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -389,7 +389,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun callVehicleTrimAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId)!!
+            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -425,7 +425,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 yearId,
                 makeId,
                 modelId,
-                trimId
+                trimId, ""
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -471,7 +471,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 makeId,
                 modelId,
                 trimId,
-                extColorId
+                extColorId, ""
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()

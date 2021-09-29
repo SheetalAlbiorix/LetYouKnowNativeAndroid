@@ -17,10 +17,11 @@ object VehicleMakeRepository {
     fun getVehicleMakeApiCall(
         context: Context,
         productId: String?,
-        yearId: String?
+        yearId: String?,
+        zipCode: String?
     ): MutableLiveData<ArrayList<VehicleMakeData>> {
         val loginVo = MutableLiveData<ArrayList<VehicleMakeData>>()
-        val call = RetrofitClient.apiInterface.getVehicleMake(productId, yearId)
+        val call = RetrofitClient.apiInterface.getVehicleMake(productId, yearId, zipCode)
 
         call.enqueue(object : Callback<ArrayList<VehicleMakeData>> {
             override fun onFailure(call: Call<ArrayList<VehicleMakeData>>, t: Throwable) {

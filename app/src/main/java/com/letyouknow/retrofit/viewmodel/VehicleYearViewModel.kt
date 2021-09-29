@@ -12,9 +12,10 @@ class VehicleYearViewModel : ViewModel() {
 
     fun getYear(
         context: Context,
-        productId: String?
+        productId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<VehicleYearData>>? {
-        liveData = VehicleYearRepository.getVehicleYearApiCall(context, productId)
+        liveData = VehicleYearRepository.getVehicleYearApiCall(context, productId, zipCode)
         return liveData
     }
 }

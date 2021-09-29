@@ -17,7 +17,8 @@ class InteriorColorViewModel : ViewModel() {
         makeId: String?,
         modelId: String?,
         trimId: String?,
-        exteriorColorId: String?
+        exteriorColorId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<InteriorColorData>>? {
         liveData = InteriorColorRepository.getInteriorColorCall(
             context,
@@ -26,7 +27,8 @@ class InteriorColorViewModel : ViewModel() {
             makeId,
             modelId,
             trimId,
-            exteriorColorId
+            exteriorColorId,
+            zipCode
         )
         return liveData
     }

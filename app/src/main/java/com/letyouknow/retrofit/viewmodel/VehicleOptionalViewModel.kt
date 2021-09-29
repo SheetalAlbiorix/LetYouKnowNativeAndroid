@@ -4,31 +4,19 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.letyouknow.model.VehiclePackagesData
-import com.letyouknow.retrofit.repository.VehiclePackagesRepository
+import com.letyouknow.model.VehicleAccessoriesData
+import com.letyouknow.retrofit.repository.VehicleOptionalAccessoriesRepository
 
 class VehicleOptionalViewModel : ViewModel() {
-    var liveData: MutableLiveData<ArrayList<VehiclePackagesData>>? = null
+    var liveData: MutableLiveData<ArrayList<VehicleAccessoriesData>>? = null
 
     fun getOptional(
         context: Context,
-        productId: String?,
-        yearId: String?,
-        makeId: String?,
-        modelId: String?,
-        trimId: String?,
-        exteriorColorId: String?,
-        interiorColorId: String?
-    ): LiveData<ArrayList<VehiclePackagesData>>? {
-        liveData = VehiclePackagesRepository.getVehiclePackagesCall(
+        request: HashMap<String, Any>
+    ): LiveData<ArrayList<VehicleAccessoriesData>>? {
+        liveData = VehicleOptionalAccessoriesRepository.getOptionalCall(
             context,
-            productId,
-            yearId,
-            makeId,
-            modelId,
-            trimId,
-            exteriorColorId,
-            interiorColorId
+            request
         )
         return liveData
     }

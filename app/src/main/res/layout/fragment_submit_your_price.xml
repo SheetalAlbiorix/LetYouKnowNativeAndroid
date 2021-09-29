@@ -22,6 +22,7 @@
 
 
         <androidx.core.widget.NestedScrollView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
@@ -31,22 +32,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/_20sdp"
-                android:paddingTop="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:paddingBottom="@dimen/_20sdp">
 
-                <!-- <TextView
-                     style="@style/bold"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="@string/search_deals"
-                     android:textColor="@color/orange"
-                     android:textSize="@dimen/_13sdp" />-->
+                <!--<TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_deals"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_13sdp" />-->
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
                     app:cardBackgroundColor="@color/color3B495A"
                     app:cardCornerRadius="@dimen/_8sdp">
 
@@ -63,12 +63,24 @@
                             android:orientation="vertical"
                             android:visibility="@{upDownData.isCarOptions() ? View.VISIBLE : View.GONE}">
 
+
+                            <TextView
+                                android:id="@+id/tvErrorZipCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/invalid_zip_code"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spYear"
                                 android:padding="0dp"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
 
@@ -117,23 +129,41 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/spPackages"
-                                android:padding="0dp"
-                                android:spinnerMode="dropdown"
+                            <!-- <androidx.appcompat.widget.AppCompatSpinner
+                                 android:id="@+id/spPackages"
+                                 android:spinnerMode="dropdown"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="@dimen/_24sdp"
+                                 android:background="@drawable/bg_spinner_dark" />
+ -->
+
+                            <TextView
+                                android:id="@+id/tvPackages"
+                                style="@style/medium"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_24sdp"
-                                android:background="@drawable/bg_spinner_dark" />
+                                android:background="@drawable/bg_spinner_dark"
+                                android:padding="@dimen/_12sdp"
+                                android:singleLine="true"
+                                android:text="PACKAGES"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
 
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/spOptionalAccessories"
-                                android:padding="0dp"
-                                android:spinnerMode="dropdown"
+                            <TextView
+                                android:id="@+id/tvOptionalAccessories"
+                                style="@style/medium"
+                                android:background="@drawable/bg_spinner_dark"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_12sdp"
-                                android:background="@drawable/bg_spinner_dark" />
+                                android:padding="@dimen/_12sdp"
+                                android:singleLine="true"
+                                android:text="OPTIONAL &amp; ACCESSORIES"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_12sdp" />
+
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -149,9 +179,7 @@
                     android:text="@string/search"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
-
             </androidx.appcompat.widget.LinearLayoutCompat>
-
         </androidx.core.widget.NestedScrollView>
 
 

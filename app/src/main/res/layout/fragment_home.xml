@@ -242,7 +242,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
+                    android:enabled="false"
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"

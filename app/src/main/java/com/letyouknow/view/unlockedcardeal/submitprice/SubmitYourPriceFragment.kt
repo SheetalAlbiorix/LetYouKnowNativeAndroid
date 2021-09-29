@@ -1,36 +1,41 @@
 package com.letyouknow.view.unlockedcardeal.submitprice
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentSubmitYourPriceBinding
 import com.letyouknow.model.*
+import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
-import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColor
 import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
-import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
 import com.pionymessenger.utils.Constant
+import kotlinx.android.synthetic.main.dialog_vehicle_options.*
+import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
 import org.jetbrains.anko.support.v4.startActivity
+import java.lang.reflect.Type
 
 
 class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var isValidSpinner = false
+    private var isValidZipCode = false
+
     private lateinit var vehicleYearModel: VehicleYearViewModel
     private lateinit var vehicleMakeModel: VehicleMakeViewModel
     private lateinit var vehicleModelModel: VehicleModelViewModel
@@ -38,6 +43,10 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private lateinit var exteriorColorModel: ExteriorColorViewModel
     private lateinit var interiorColorModel: InteriorColorViewModel
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
+    private lateinit var packagesModel: VehiclePackagesViewModel
+    private lateinit var checkedPackageModel: CheckedPackageInventoryViewModel
+    private lateinit var packagesOptional: VehicleOptionalViewModel
+    private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -45,19 +54,24 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private lateinit var adapterTrim: TrimsSpinnerAdapter
     private lateinit var adapterExterior: ExteriorSpinnerAdapter
     private lateinit var adapterInterior: InteriorSpinnerAdapter
-    private lateinit var binding: FragmentSubmitYourPriceBinding
+    private lateinit var adapterPackages: PackagesAdapter
+    private lateinit var adapterOptions: OptionsAdapter
 
-    private var arPackages = arrayListOf("PACKAGES")
-    private var arOptionalAccessories = arrayListOf("OPTIONAL & ACCESSORIES")
 
-    private var upDownData = UpDownData()
-    private var productId = "3"
+    private var productId = "1"
     private var yearId = ""
     private var makeId = ""
     private var modelId = ""
     private var trimId = ""
     private var extColorId = ""
     private var intColorId = ""
+    private var radiusId = ""
+
+    private var arPackages = arrayListOf("PACKAGES")
+    private var arOptionalAccessories = arrayListOf("OPTIONAL & ACCESSORIES")
+
+    private lateinit var binding: FragmentSubmitYourPriceBinding
+    private var upDownData = UpDownData()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,6 +102,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
         interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+        packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
+        packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+        checkedPackageModel =
+            ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
+        checkedAccessoriesModel =
+            ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
 
         setYear()
         setMake()
@@ -95,15 +115,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         setTrim()
         setExteriorColor()
         setInteriorColor()
+        setPackages(false)
+        setOptions(false)
 
-        setPackages()
-        setOptions()
         btnSearch.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(false)
 
+
         callVehicleYearAPI()
     }
+
 
     private fun setYear() {
         val arData = ArrayList<VehicleYearData>()
@@ -113,7 +135,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
         spYear.adapter = adapterYear
         AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
-
     }
 
     private fun setMake() {
@@ -134,6 +155,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
         spModel.adapter = adapterModel
         AppGlobal.setSpinnerLayoutPos(0, spModel, requireActivity())
+
     }
 
     private fun setTrim() {
@@ -166,51 +188,38 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         AppGlobal.setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
     }
 
-    private fun setPackages() {
-        val adapterPackages = ArrayAdapter<String?>(
-            requireActivity(),
-            android.R.layout.simple_spinner_item,
-            arPackages as List<String?>
-        )
-        adapterPackages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spPackages.adapter = adapterPackages
-        setSpinnerTextColor(spPackages, requireContext())
-    }
-
-    private fun setOptions() {
-        val adapterOptions = ArrayAdapter<String?>(
-            requireActivity(),
-            android.R.layout.simple_spinner_item,
-            arOptionalAccessories as List<String?>
-        )
-        adapterOptions.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spOptionalAccessories.adapter = adapterOptions
-        setSpinnerTextColor(spOptionalAccessories, requireContext())
-    }
-
-    private fun loadFragment(fragment: Fragment, title: String) {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.flContainer, fragment)
-        transaction?.addToBackStack(null)
-        transaction?.commit()
-        MainActivity.getInstance().setTitle(title)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btnSearch -> {
-                startActivity<UnlockedCarDealActivity>()
-//                loadFragment(DealSummeryFragment(), getString(R.string.lighting_car_deals))
-            }
-
+    private fun setPackages(isEnable: Boolean) {
+        tvPackages.text = "PACKAGES"
+        if (isEnable) {
+            tvPackages.isEnabled = true
+            tvPackages.setOnClickListener(this)
+        } else {
+            tvPackages.isEnabled = false
+            tvPackages.setOnClickListener(null)
         }
     }
 
+    private fun setOptions(isEnable: Boolean) {
+
+        tvOptionalAccessories.text = "OPTIONAL & ACCESSORIES"
+        if (isEnable) {
+            tvOptionalAccessories.isEnabled = true
+            tvOptionalAccessories.setOnClickListener(this)
+        } else {
+            tvOptionalAccessories.isEnabled = false
+            tvOptionalAccessories.setOnClickListener(null)
+        }
+
+    }
 
     private fun callVehicleYearAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleYearModel.getYear(requireActivity(), productId)!!
+            vehicleYearModel.getYear(
+                requireActivity(),
+                productId,
+                ""
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Year Data", Gson().toJson(data))
@@ -242,7 +251,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleMakeAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleMakeModel.getMake(requireActivity(), productId, yearId)!!
+            vehicleMakeModel.getMake(
+                requireActivity(),
+                productId,
+                yearId,
+                ""
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -272,7 +286,13 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleModelAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId)!!
+            vehicleModelModel.getModel(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                ""
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -302,7 +322,14 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleTrimAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId)!!
+            vehicleTrimModel.getTrim(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                ""
+            )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
@@ -338,7 +365,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 yearId,
                 makeId,
                 modelId,
-                trimId
+                trimId,
+                ""
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -384,7 +412,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 makeId,
                 modelId,
                 trimId,
-                extColorId
+                extColorId,
+                ""
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -420,6 +449,314 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun callVehiclePackagesAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            packagesModel.getPackages(
+                requireActivity(),
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                trimId,
+                extColorId,
+                intColorId, ""
+            )!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val packagesData = VehiclePackagesData()
+                        packagesData.vehiclePackageID = "0"
+                        packagesData.packageName = "ANY"
+                        data.add(0, packagesData)
+                        popupPackages(data)
+
+                    } else {
+                        val arData = ArrayList<VehiclePackagesData>()
+                        val packagesData = VehiclePackagesData()
+                        packagesData.vehiclePackageID = "0"
+                        packagesData.packageName = "ANY"
+                        arData.add(0, packagesData)
+                        popupPackages(arData)
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callOptionalAccessoriesAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = ""
+
+            packagesOptional.getOptional(
+                requireActivity(),
+                request
+            )!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Make Data", Gson().toJson(data))
+                    if (data != null || data?.size!! > 0) {
+                        val accessoriesData = VehicleAccessoriesData()
+                        accessoriesData.dealerAccessoryID = "0"
+                        accessoriesData.accessory = "ANY"
+                        data.add(0, accessoriesData)
+                        popupOptions(data)
+                    } else {
+                        val arData = ArrayList<VehicleAccessoriesData>()
+                        val accessoriesData = VehicleAccessoriesData()
+                        accessoriesData.dealerAccessoryID = "0"
+                        accessoriesData.accessory = "ANY"
+                        arData.add(0, accessoriesData)
+                        popupOptions(arData)
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callCheckedPackageAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = ""
+
+            checkedPackageModel.checkedPackage(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callCheckedAccessoriesAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterOptions.itemCount) {
+                if (adapterOptions.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterOptions.getItem(i).dealerAccessoryID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = ""
+
+            checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment, title: String) {
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.replace(R.id.flContainer, fragment)
+//        transaction?.addToBackStack(null)
+        transaction?.commit()
+        MainActivity.getInstance().setTitle(title)
+    }
+
+    private var arSelectPackage: ArrayList<VehiclePackagesData> = ArrayList()
+    private var selectPackageStr = ""
+
+    private var arSelectOption: ArrayList<VehicleAccessoriesData> = ArrayList()
+    private var selectOptionStr = ""
+
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnSearch -> {
+                startActivity<DealSummeryActivity>()
+            }
+            R.id.tvPackages -> {
+                arSelectPackage = ArrayList()
+                for (i in 0 until adapterPackages.itemCount) {
+                    arSelectPackage.add(adapterPackages.getItem(i))
+                }
+                selectPackageStr = Gson().toJson(arSelectPackage)
+                dialogPackage.show()
+            }
+            R.id.tvApplyPackage -> {
+                var packagesStr = ""
+                var isFirst = true
+                for (i in 0 until adapterPackages.itemCount) {
+                    if (adapterPackages.getItem(i).isSelect == true) {
+                        if (isFirst) {
+                            packagesStr = adapterPackages.getItem(i).packageName.toString()
+                            isFirst = false
+                        } else {
+                            packagesStr =
+                                packagesStr + ", " + adapterPackages.getItem(i).packageName.toString()
+                        }
+                    }
+                }
+                tvPackages.text = packagesStr
+                if (packagesStr.length > 0) {
+                    setOptions(true)
+                    callOptionalAccessoriesAPI()
+                } else {
+                    setOptions(false)
+                }
+                isValidSpinner = false
+                btnSearch.isEnabled = false
+                dialogPackage.dismiss()
+            }
+            R.id.tvCancelPackage -> {
+                val gson = Gson()
+                val type: Type = object : TypeToken<ArrayList<VehiclePackagesData>?>() {}.type
+                arSelectPackage = gson.fromJson(selectPackageStr, type)
+                for (i in 0 until arSelectPackage.size) {
+                    adapterPackages.update(i, arSelectPackage[i])
+                }
+                dialogPackage.dismiss()
+            }
+            R.id.llPackages -> {
+                Log.e("select1", selectPackageStr)
+                val pos = v.tag as Int
+
+                val data = adapterPackages.getItem(pos)
+                data.isSelect = !data.isSelect!!
+                adapterPackages.update(pos, data)
+                if (data.isSelect!! && pos == 0) {
+                    for (i in 1 until adapterPackages.itemCount) {
+                        val dataPackage = adapterPackages.getItem(i)
+                        dataPackage.isSelect = false
+                        adapterPackages.update(i, dataPackage)
+                    }
+                } else {
+                    val data0 = adapterPackages.getItem(0)
+                    data0.isSelect = false
+                    adapterPackages.update(0, data0)
+                    callCheckedPackageAPI()
+                }
+
+
+                Log.e("clickupdate", selectPackageStr)
+
+            }
+            R.id.tvResetPackage -> {
+                for (i in 0 until adapterPackages.itemCount) {
+                    val data = adapterPackages.getItem(i)
+                    data.isSelect = false
+                    adapterPackages.update(i, data)
+                }
+            }
+            R.id.tvApplyOption -> {
+                var optionsStr = ""
+                var isFirst = true
+                for (i in 0 until adapterOptions.itemCount) {
+                    if (adapterOptions.getItem(i).isSelect == true) {
+                        if (isFirst) {
+                            optionsStr = adapterOptions.getItem(i).accessory.toString()
+                            isFirst = false
+                        } else {
+                            optionsStr =
+                                optionsStr + ", " + adapterOptions.getItem(i).accessory.toString()
+                        }
+                    }
+                }
+                tvOptionalAccessories.text = optionsStr
+                isValidSpinner = true
+                btnSearch.isEnabled = true
+                dialogOptions.dismiss()
+            }
+            R.id.tvResetOption -> {
+                for (i in 0 until adapterOptions.itemCount) {
+                    val data = adapterOptions.getItem(i)
+                    data.isSelect = false
+                    adapterOptions.update(i, data)
+                }
+            }
+            R.id.tvCancelOption -> {
+                val gson = Gson()
+                val type: Type = object : TypeToken<ArrayList<VehicleAccessoriesData>?>() {}.type
+                arSelectOption = gson.fromJson(selectOptionStr, type)
+                for (i in 0 until arSelectOption.size) {
+                    adapterOptions.update(i, arSelectOption[i])
+                }
+                dialogOptions.dismiss()
+            }
+            R.id.tvOptionalAccessories -> {
+                arSelectOption = ArrayList()
+                for (i in 0 until adapterOptions.itemCount) {
+                    arSelectOption.add(adapterOptions.getItem(i))
+                }
+                selectOptionStr = Gson().toJson(arSelectOption)
+                dialogOptions.show()
+            }
+            R.id.llOptions -> {
+                Log.e("select1", selectOptionStr)
+                val pos = v.tag as Int
+
+                val data = adapterOptions.getItem(pos)
+                data.isSelect = !data.isSelect!!
+                adapterOptions.update(pos, data)
+                if (data.isSelect!! && pos == 0) {
+                    for (i in 1 until adapterOptions.itemCount) {
+                        val dataOptions = adapterOptions.getItem(i)
+                        dataOptions.isSelect = false
+                        adapterOptions.update(i, dataOptions)
+                    }
+                } else {
+                    val data0 = adapterOptions.getItem(0)
+                    data0.isSelect = false
+                    adapterOptions.update(0, data0)
+                    callCheckedAccessoriesAPI()
+                }
+                Log.e("clickupdate", selectPackageStr)
+            }
+        }
+    }
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             R.id.spYear -> {
@@ -431,6 +768,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    setPackages(false)
+                    setOptions(false)
                 }
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
                 isValidSpinner = false
@@ -445,6 +784,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    setPackages(false)
+                    setOptions(false)
                 }
                 isValidSpinner = false
                 btnSearch.isEnabled = false
@@ -457,6 +798,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
+                    setPackages(false)
+                    setOptions(false)
                 }
                 isValidSpinner = false
                 btnSearch.isEnabled = false
@@ -468,6 +811,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.trim != "TRIM") {
                     callExteriorColorAPI()
                     setInteriorColor()
+                    setPackages(false)
+                    setOptions(false)
                 }
                 isValidSpinner = false
                 btnSearch.isEnabled = false
@@ -479,6 +824,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     callInteriorColorAPI()
+                    setPackages(false)
+                    setOptions(false)
                 }
                 isValidSpinner = false
                 btnSearch.isEnabled = false
@@ -487,16 +834,88 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 val data = adapterInterior.getItem(position) as InteriorColorData
                 intColorId = data.vehicleInteriorColorID!!
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
-//                if (data.interiorColor != "INTERIOR COLOR") callVehiclePackagesAPI()
+                if (data.interiorColor != "INTERIOR COLOR") {
+                    setPackages(true)
+                    callVehiclePackagesAPI()
+                    setOptions(false)
+                }
                 isValidSpinner = false
                 btnSearch.isEnabled = true
             }
         }
     }
 
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
+
+    private lateinit var dialogPackage: Dialog
+    private fun popupPackages(data: ArrayList<VehiclePackagesData>) {
+        dialogPackage = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogPackage.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogPackage.setCancelable(true)
+        dialogPackage.setCanceledOnTouchOutside(true)
+        dialogPackage.setContentView(R.layout.dialog_vehicle_packages)
+        dialogPackage.run {
+            adapterPackages =
+                PackagesAdapter(R.layout.list_item_packages, this@SubmitYourPriceFragment)
+            dialogPackage.rvPackages.adapter = adapterPackages
+            adapterPackages.addAll(data)
+
+            tvCancelPackage.setOnClickListener(this@SubmitYourPriceFragment)
+            tvResetPackage.setOnClickListener(this@SubmitYourPriceFragment)
+            tvApplyPackage.setOnClickListener(this@SubmitYourPriceFragment)
+        }
+        setLayoutParam(dialogPackage)
+
+        /*dialogPackage = LayoutInflater.from(requireActivity())
+            .inflate(R.layout.dialog_vehicle_packages, null, false)
+        popUpPackage = PopupWindow(
+            dialogPackage,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            false
+        )
+        popUpPackage.isTouchable = true
+        popUpPackage.isFocusable = true
+        popUpPackage.isOutsideTouchable = true
+//        dialogPackage.run {
+        adapterPackages =
+            PackagesAdapter(R.layout.list_item_packages, this@OneDealNearYouFragment)
+        dialogPackage.rvPackages.adapter = adapterPackages
+        adapterPackages.addAll(data)
+//        }*/
+
+    }
+
+    private lateinit var dialogOptions: Dialog
+    private fun popupOptions(data: ArrayList<VehicleAccessoriesData>) {
+        dialogOptions = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogOptions.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogOptions.setCancelable(true)
+        dialogOptions.setCanceledOnTouchOutside(true)
+        dialogOptions.setContentView(R.layout.dialog_vehicle_options)
+        dialogOptions.run {
+            adapterOptions =
+                OptionsAdapter(R.layout.list_item_options, this@SubmitYourPriceFragment)
+            rvOptions.adapter = adapterOptions
+            adapterOptions.addAll(data)
+
+            tvCancelOption.setOnClickListener(this@SubmitYourPriceFragment)
+            tvResetOption.setOnClickListener(this@SubmitYourPriceFragment)
+            tvApplyOption.setOnClickListener(this@SubmitYourPriceFragment)
+        }
+        setLayoutParam(dialogOptions)
+    }
+
+    private fun setLayoutParam(dialog: Dialog) {
+        val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.attributes = layoutParams
+    }
+
 
 }

@@ -14,9 +14,16 @@ class VehicleModelViewModel : ViewModel() {
         context: Context,
         productId: String?,
         yearId: String?,
-        makeId: String?
+        makeId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<VehicleModelData>>? {
-        liveData = VehicleModelRepository.getVehicleModelApiCall(context, productId, yearId, makeId)
+        liveData = VehicleModelRepository.getVehicleModelApiCall(
+            context,
+            productId,
+            yearId,
+            makeId,
+            zipCode
+        )
         return liveData
     }
 }

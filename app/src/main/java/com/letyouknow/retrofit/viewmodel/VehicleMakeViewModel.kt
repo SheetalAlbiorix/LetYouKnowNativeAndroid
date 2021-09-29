@@ -13,9 +13,10 @@ class VehicleMakeViewModel : ViewModel() {
     fun getMake(
         context: Context,
         productId: String?,
-        yearId: String?
+        yearId: String?,
+        zipCode: String?
     ): LiveData<ArrayList<VehicleMakeData>>? {
-        liveData = VehicleMakeRepository.getVehicleMakeApiCall(context, productId, yearId)
+        liveData = VehicleMakeRepository.getVehicleMakeApiCall(context, productId, yearId, zipCode)
         return liveData
     }
 }

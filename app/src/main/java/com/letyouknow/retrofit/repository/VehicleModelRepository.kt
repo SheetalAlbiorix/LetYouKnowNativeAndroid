@@ -18,10 +18,11 @@ object VehicleModelRepository {
         context: Context,
         productId: String?,
         yearId: String?,
-        makeID: String?
+        makeID: String?,
+        zipCode: String?
     ): MutableLiveData<ArrayList<VehicleModelData>> {
         val loginVo = MutableLiveData<ArrayList<VehicleModelData>>()
-        val call = RetrofitClient.apiInterface.getVehicleModels(productId, yearId, makeID)
+        val call = RetrofitClient.apiInterface.getVehicleModels(productId, yearId, makeID, zipCode)
 
         call.enqueue(object : Callback<ArrayList<VehicleModelData>> {
             override fun onFailure(call: Call<ArrayList<VehicleModelData>>, t: Throwable) {

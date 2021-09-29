@@ -28,14 +28,16 @@ interface ApiInterface {
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
         @Query("productId") productId: String?,
-        @Query("yearId") yearId: String?
+        @Query("yearId") yearId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<VehicleMakeData>>
 
     @GET("vehiclecriteria/getvehiclemodels")
     fun getVehicleModels(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
-        @Query("makeId") makeId: String?
+        @Query("makeId") makeId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<VehicleModelData>>
 
     @GET("vehiclecriteria/getvehicletrims")
@@ -43,7 +45,8 @@ interface ApiInterface {
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
-        @Query("modelId") modelId: String?
+        @Query("modelId") modelId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<VehicleTrimData>>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
@@ -52,7 +55,8 @@ interface ApiInterface {
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
-        @Query("trimId") trimId: String?
+        @Query("trimId") trimId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<ExteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleinteriorcolors")
@@ -62,7 +66,8 @@ interface ApiInterface {
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
-        @Query("exteriorColorId") exteriorColorId: String?
+        @Query("exteriorColorId") exteriorColorId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<InteriorColorData>>
 
 
@@ -80,12 +85,16 @@ interface ApiInterface {
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
         @Query("exteriorColorId") exteriorColorId: String?,
-        @Query("interiorColorId") interiorColorId: String?
+        @Query("interiorColorId") interiorColorId: String?,
+        @Query("zipCode") zipCode: String?
     ): Call<ArrayList<VehiclePackagesData>>
 
     @POST("vehiclecriteria/getvehicledealeraccessories")
-    fun getVehicleDealerAccessories(@Body request: HashMap<String, String>): Call<SignupData>
+    fun getVehicleDealerAccessories(@Body request: HashMap<String, Any>): Call<ArrayList<VehicleAccessoriesData>>
 
     @POST("vehiclecriteria/checkVehiclePackagesInventory")
-    fun checkVehiclePackagesInventory(@Body request: HashMap<String, Any>): Call<SignupData>
+    fun checkVehiclePackagesInventory(@Body request: HashMap<String, Any>): Call<CheckedPackageData>
+
+    @POST("vehiclecriteria/checkVehicleDealerAccessoriesInventory")
+    fun checkVehicleAccessoriesInventory(@Body request: HashMap<String, Any>): Call<CheckedPackageData>
 }

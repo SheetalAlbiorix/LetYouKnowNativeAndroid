@@ -22,7 +22,8 @@ object VehiclePackagesRepository {
         modelId: String?,
         trimId: String?,
         exteriorColorId: String?,
-        interiorColorId: String?
+        interiorColorId: String?,
+        zipCode: String?
     ): MutableLiveData<ArrayList<VehiclePackagesData>> {
         val loginVo = MutableLiveData<ArrayList<VehiclePackagesData>>()
         val call = RetrofitClient.apiInterface.getVehiclePackages(
@@ -32,7 +33,8 @@ object VehiclePackagesRepository {
             modelId,
             trimId,
             exteriorColorId,
-            interiorColorId
+            interiorColorId,
+            zipCode
         )
 
         call.enqueue(object : Callback<ArrayList<VehiclePackagesData>> {
