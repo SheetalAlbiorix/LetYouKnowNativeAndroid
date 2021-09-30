@@ -45,6 +45,7 @@ class Constant {
         var ARG_LINK = "ARG_LINK"
         var ARG_TITLE = "ARG_TITLE"
         var ARG_POLICY = "ARG_POLICY"
+        var ARG_TYPE_VIEW = "ARG_TYPE_VIEW"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2

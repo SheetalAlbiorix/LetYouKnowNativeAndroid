@@ -14,6 +14,8 @@ import com.letyouknow.databinding.ActivityDealSummeryBinding
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColor
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerTextColorPos
 import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity
+import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
+import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import kotlinx.android.synthetic.main.activity_deal_summery.*
 import kotlinx.android.synthetic.main.layout_deal_summery.*
@@ -130,7 +132,10 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
                 finish()
             }
             R.id.llGallery -> {
-
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0)
+            }
+            R.id.ll360 -> {
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 1)
             }
         }
     }

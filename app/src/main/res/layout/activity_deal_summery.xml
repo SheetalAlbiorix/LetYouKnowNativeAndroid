@@ -39,35 +39,16 @@
         android:layout_height="@dimen/_250sdp"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_250sdp"
-            android:background="@color/colord3e6ff"
-            android:gravity="center"
+            android:background="?pageBgColor"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_image_car"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/expandedImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:padding="@dimen/_20sdp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_car" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.AppCompatImageView>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -76,69 +57,70 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/bg_half_round" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/_20sdp"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <FrameLayout
                     android:id="@+id/llGallery"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_round_transparent"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="@dimen/_8sdp">
 
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:alpha="0.4"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_image_car"
+                        app:riv_border_color="@color/black"
+                        app:riv_corner_radius="@dimen/_5sdp" />
+
                     <ImageView
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:alpha="0.5"
-                        android:background="@drawable/ic_image_car"
-                        android:padding="@dimen/_10sdp"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:padding="@dimen/_8sdp"
                         android:src="@drawable/ic_gallery"
                         android:text="Gallery"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                </FrameLayout>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/ll360"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_8sdp">
+                <FrameLayout
+                    android:id="@+id/ll360"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="360"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:alpha="0.4"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_image_car"
+                        app:riv_border_color="@color/black"
+                        app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_8sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:padding="@dimen/_6sdp"
+                        android:src="@drawable/ic_360"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </FrameLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Gallery"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp" />
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </FrameLayout>

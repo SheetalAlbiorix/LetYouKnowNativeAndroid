@@ -8,6 +8,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-anydpi/ic_user.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-mdpi/checked.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-v24/bg_shadow_round_rectangle.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button3.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_checkbox.xml" value="0.2203125" />
@@ -41,6 +42,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_close.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_edit_white.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_info.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_menu.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_radio_button_unchecked.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_un_checked_icon.xml" value="0.2203125" />
@@ -54,6 +56,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_edit_notification.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_edit_refer.xml" value="0.19010416666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_forgot_password.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_gallery360_tab.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_privacy_policy_terms_cond.xml" value="0.20416666666666666" />
@@ -64,16 +67,20 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_car_deal.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_view360_activty.xml" value="0.19010416666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_zoom_image.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_logout.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_password_hint.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_privacy_policy_terms_conditions.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_vehicle_options.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_vehicle_packages.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_360_view.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_account.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_bid_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_near_you.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_summery.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_summery_step2.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_gallery.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_one_deal_near_you.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_search.xml" value="0.20416666666666666" />
@@ -89,6 +96,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_card.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_drawer.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_edit_notification.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_gallery.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_options.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_packages.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/list_item_refer_step.xml" value="0.20416666666666666" />
