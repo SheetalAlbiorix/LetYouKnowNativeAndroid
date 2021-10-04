@@ -25,10 +25,10 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tvUnSuccessFulMatch"
                     style="@style/medium"
                     android:layout_width="wrap_content"
@@ -41,13 +41,27 @@
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="LCD"
                     android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_9sdp" />-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivLCDLTYUCD"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_bottom1"
+                    android:tint="@color/gray98" />
 
-                <ImageView
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_car" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:padding="@dimen/_8sdp"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_car" />
+                </FrameLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -60,12 +74,12 @@
 
                 <TextView
                     android:id="@+id/tvDetail"
-                    style="@style/medium"
+                    style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2019 audi a5 coupe premium Plus 2.0t, exterior color:any, interior color: any, dealer installed Accessories: any, optional packages: None"
-                    android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_11sdp" />
+                    android:text="2019 audi a5 coupe premium Plus 2.0t"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
@@ -74,22 +88,127 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tvExteriorTitle"
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/exterior_color_colon"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tvExterior"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="any"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvInteriorTitle"
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/interior_color_colon"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tvInterior"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="any"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvDealerTitle"
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dealer_installed_accessories"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDealer"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:singleLine="true"
+                        android:text="any"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvOptionalTitle"
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/optional_packages"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tvOptional"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:text="None"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:id="@+id/tvZipCodeTitle"
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/zip_code_colon"
-                        android:textColor="?textGreyColor"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
                     <TextView
                         android:id="@+id/tvZipCode"
-                        style="@style/bold"
+                        style="@style/regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="123456"
-                        android:textColor="@color/textDarkGrey"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -105,17 +224,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/disclosure"
-                        android:textColor="?textGreyColor"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
                     <TextView
                         android:id="@+id/tvDisclosure"
-                        style="@style/bold"
+                        style="@style/regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="50 miles"
-                        android:textColor="@color/textDarkGrey"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

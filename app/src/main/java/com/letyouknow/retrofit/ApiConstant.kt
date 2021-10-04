@@ -20,5 +20,15 @@ class ApiConstant {
         var exteriorColorId = "exteriorColorId"
         var interiorColorId = "interiorColorId"
         var zipCode = "zipCode"
+        var vehicleYearID = "vehicleYearID"
+        var vehicleMakeID = "vehicleMakeID"
+        var vehicleModelID = "vehicleModelID"
+        var vehicleTrimID = "vehicleTrimID"
+        var vehicleExteriorColorID = "vehicleExteriorColorID"
+        var vehicleInteriorColorID = "vehicleInteriorColorID"
+        var dealerAccessoryIDs = "dealerAccessoryIDs"
+        var vehiclePackageIDs = "vehiclePackageIDs"
+        var ImageId = "ImageId"
+        var ImageProduct = "ImageProduct"
     }
 }

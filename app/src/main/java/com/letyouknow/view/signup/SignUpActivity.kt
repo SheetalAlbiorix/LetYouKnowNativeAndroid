@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -49,6 +50,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.dialog_password_hint.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
+
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapterCardList: CardListAdapter
@@ -102,6 +104,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         googleInit()
         facebookInit()
         setState()
+        edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
     }
 
     private fun setState() {
@@ -363,6 +366,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
              }*/
             TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+            (edtPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
                 return false
             }
             TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
@@ -525,5 +534,50 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         LoginManager.getInstance().logOut()
         auth.signOut()
     }
+
+    var filter = InputFilter { source, start, end, dest, dstart, dend ->
+        var source = source
+
+        if (source.length > 0) {
+            if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                if (source.toString().length > 1) {
+                    val number = source.toString()
+                    val digits1 = number.toCharArray()
+                    val digits2 = number.split("(?<=.)").toTypedArray()
+                    source = digits2[digits2.size - 1]
+                }
+                if (edtPhoneNumber.text.toString().length < 1) {
+                    return@InputFilter "($source"
+                } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                        .length <= 3
+                ) {
+                    return@InputFilter source
+                } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                        .length <= 5
+                ) {
+                    val isContain = dest.toString().contains(")")
+                    return@InputFilter if (isContain) {
+                        source
+                    } else {
+                        ")$source"
+                    }
+                } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                        .length <= 7
+                ) {
+                    return@InputFilter source
+                } else if (edtPhoneNumber.text.toString().length > 7) {
+                    val isContain = dest.toString().contains("-")
+                    return@InputFilter if (isContain) {
+                        source
+                    } else {
+                        "-$source"
+                    }
+                }
+            }
+        } else {
+        }
+        source
+    }
+
 
 }

@@ -89,9 +89,12 @@
     <string name="enter_state">Enter State</string>
     <string name="enter_zipcode">Enter ZipCode</string>
     <string name="enter_phonenumber">Enter PhoneNumber</string>
+    <string name="enter_valid_phone_number">Enter valid PhoneNumber</string>
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="did_n_t_match_password">Password and Confirm Password didn\'t match</string>
+    <string name="exterior_color_colon">Exterior Color : </string>
     <string name="exterior_color">Exterior Color</string>
+    <string name="interior_color_colon">Interior Color : </string>
     <string name="interior_color">Interior Color</string>
     <string name="submit_my_deal">Submit My Deal</string>
     <string name="bid_price">Bid Price:</string>
@@ -159,6 +162,10 @@
     <string name="invalid_zip_code">Invalid Zip Code</string>
     <string name="promo">PROMO</string>
     <string name="reset">Reset</string>
+    <string name="dealer_installed_accessories">Dealer Installed Accessories :</string>
+    <string name="optional_packages">Optional Packages :</string>
+    <string name="price">%2$.2f.</string>
+    <string name="offer_price">%2$.2f.</string>
 
 
 </resources>

@@ -51,25 +51,52 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llGallery"
+                android:id="@+id/llExterior"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvGallery"
+                    android:id="@+id/tvExterior"
                     style="@style/medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
-                    android:text="GALLERY"
+                    android:text="EXTERIOR"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
                 <View
-                    android:id="@+id/viewGallery"
+                    android:id="@+id/viewExterior"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/colorPrimary" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llInterior"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvInterior"
+                    style="@style/medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="INTERIOR"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+                <View
+                    android:id="@+id/viewInterior"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_2sdp"
                     android:layout_marginTop="@dimen/_10sdp"

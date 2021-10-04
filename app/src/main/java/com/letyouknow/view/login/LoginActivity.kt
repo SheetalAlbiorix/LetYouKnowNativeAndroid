@@ -34,6 +34,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
+import com.letyouknow.model.RememberMeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.LoginViewModel
 import com.letyouknow.utils.AppGlobal.Companion.dialogWebView
@@ -49,6 +50,7 @@ import com.pionymessenger.utils.Constant.Companion.onTextChange
 import com.pionymessenger.utils.Constant.Companion.passwordValidator
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.startActivity
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -90,6 +92,30 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         onTextChange(this, edtEmailAddress, tvErrorEmailAddress)
         onTextChange(this, edtPassword, tvErrorPassword)
         hashKey()
+        setRememberData()
+    }
+
+    private fun setRememberData() {
+        val remData = pref?.isRememberData()
+        if (remData?.isChecked!!) {
+            edtEmailAddress.setText(remData.email)
+            edtPassword.setText(remData.password)
+            chkRememberMe.isChecked = remData.isChecked!!
+        }
+        chkRememberMe.onCheckedChange { buttonView, isChecked ->
+            val data = RememberMeData()
+
+            if (isChecked) {
+                data.email = edtEmailAddress.text.toString().trim()
+                data.password = edtPassword.text.toString().trim()
+
+            } else {
+                data.email = ""
+                data.password = ""
+            }
+            data.isChecked = isChecked
+            pref?.setRememberData(Gson().toJson(data))
+        }
     }
 
     private fun hashKey() {
@@ -187,6 +213,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity<ForgotPasswordActivity>()
             }
             R.id.btnSignIn -> {
+                val data = RememberMeData()
+
+                if (chkRememberMe.isChecked) {
+                    data.email = edtEmailAddress.text.toString().trim()
+                    data.password = edtPassword.text.toString().trim()
+
+                } else {
+                    data.email = ""
+                    data.password = ""
+                }
+                data.isChecked = chkRememberMe.isChecked
+                pref?.setRememberData(Gson().toJson(data))
+
                 tvErrorEmailAddress.visibility = View.GONE
                 tvErrorPassword.visibility = View.GONE
 

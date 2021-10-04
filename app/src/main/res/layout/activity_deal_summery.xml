@@ -9,6 +9,11 @@
         <variable
             name="type"
             type="Integer" />
+
+        <variable
+            name="lcdDealData"
+            type="com.letyouknow.model.FindLCDDealGuestData" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -40,6 +45,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMain"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_250sdp"
             android:background="?pageBgColor"
@@ -76,6 +82,7 @@
                     android:padding="@dimen/_8sdp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivBgGallery"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:alpha="0.4"
@@ -103,6 +110,7 @@
                     android:padding="@dimen/_8sdp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivBg360"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:alpha="0.4"
@@ -126,7 +134,9 @@
         </FrameLayout>
     </FrameLayout>
 
-    <include layout="@layout/layout_deal_summery" />
+    <include
+        layout="@layout/layout_deal_summery"
+        app:lcdDealData="@{lcdDealData}" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
 

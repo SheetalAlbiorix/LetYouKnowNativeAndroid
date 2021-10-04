@@ -6,6 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,6 +27,7 @@ import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
@@ -47,6 +50,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var checkedPackageModel: CheckedPackageInventoryViewModel
     private lateinit var packagesOptional: VehicleOptionalViewModel
     private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
+    private lateinit var findLCDDealGuestViewModel: FindLCDDealGuestViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -60,11 +64,22 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private var productId = "2"
     private var yearId = ""
+    private var yearStr = ""
     private var makeId = ""
+    private var makeStr = ""
     private var modelId = ""
+    private var modelStr = ""
     private var trimId = ""
+    private var trimStr = ""
     private var extColorId = ""
     private var intColorId = ""
+    private var intColorStr = ""
+    private var extColorStr = ""
+
+    private lateinit var animBlink: Animation
+    private lateinit var animSlideRightToLeft: Animation
+    private lateinit var animSlideLeftToRight: Animation
+
 
     private lateinit var binding: FragmentOneDealNearYouBinding
     private var upDownData = UpDownData()
@@ -89,6 +104,19 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun init() {
+        animBlink = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_blink
+        )
+        animSlideRightToLeft = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_right
+        )
+        animSlideLeftToRight = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_left
+        )
+        tvPromo.startAnimation(animBlink)
         binding.upDownData = upDownData
         vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
         vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
@@ -103,6 +131,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
         checkedAccessoriesModel =
             ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
+        findLCDDealGuestViewModel =
+            ViewModelProvider(this).get(FindLCDDealGuestViewModel::class.java)
 
         setYear()
         setMake()
@@ -116,6 +146,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         btnSearch.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(false)
+        tvPromo.setOnClickListener(this)
+        ivClosePromo.setOnClickListener(this)
 
 
         onChangeZipCode()
@@ -645,6 +677,60 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun callSearchFindDealAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArrayAccessories = JsonArray()
+            for (i in 0 until adapterOptions.itemCount) {
+                if (adapterOptions.getItem(i).isSelect!!) {
+                    jsonArrayAccessories.add(adapterOptions.getItem(i).dealerAccessoryID)
+                }
+            }
+            val jsonArrayPackage = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = yearId
+            request[ApiConstant.vehicleMakeID] = makeId
+            request[ApiConstant.vehicleModelID] = modelId
+            request[ApiConstant.vehicleTrimID] = trimId
+            request[ApiConstant.vehicleExteriorColorID] = extColorId
+            request[ApiConstant.vehicleInteriorColorID] = intColorId
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+            request[ApiConstant.dealerAccessoryIDs] = jsonArrayAccessories
+            request[ApiConstant.vehiclePackageIDs] = jsonArrayPackage
+
+            findLCDDealGuestViewModel.findDeal(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Response", Gson().toJson(data))
+                    /* val price = if(data.price?.length == 0) "0.0" else DecimalFormat("##.##").format(data.price)
+                     data.price = price*/
+                    data.productId = productId
+                    data.yearId = yearId
+                    data.makeId = makeId
+                    data.modelId = modelId
+                    data.trimId = trimId
+                    data.exteriorColorId = extColorId
+                    data.interiorColorId = intColorId
+                    data.yearStr = yearStr
+                    data.makeStr = makeStr
+                    data.modelStr = modelStr
+                    data.trimStr = trimStr
+                    data.exteriorColorStr = extColorStr
+                    data.interiorColorStr = intColorStr
+                    startActivity<DealSummeryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(R.id.flContainer, fragment)
@@ -662,9 +748,21 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvPromo -> {
+                tvPromo.clearAnimation()
+                tvPromo.visibility = View.GONE
+                llPromoOffer.visibility = View.VISIBLE
+                llPromoOffer.startAnimation(animSlideRightToLeft)
+            }
+            R.id.ivClosePromo -> {
+                tvPromo.startAnimation(animBlink)
+                tvPromo.visibility = View.VISIBLE
+                llPromoOffer.visibility = View.GONE
+            }
             R.id.btnSearch -> {
                 // loadFragment(DealSummeryActivity(), getString(R.string.one_deal_near_you))
-                startActivity<DealSummeryActivity>()
+                callSearchFindDealAPI()
+
             }
             R.id.tvPackages -> {
                 arSelectPackage = ArrayList()
@@ -824,6 +922,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
                 makeId = data.vehicleMakeID!!
+                makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
                     callVehicleModelAPI()
@@ -839,6 +938,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             R.id.spModel -> {
                 val data = adapterModel.getItem(position) as VehicleModelData
                 modelId = data.vehicleModelID!!
+                modelStr = data.model!!
                 AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
                     callVehicleTrimAPI()
@@ -853,6 +953,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             R.id.spTrim -> {
                 val data = adapterTrim.getItem(position) as VehicleTrimData
                 trimId = data.vehicleTrimID!!
+                trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
                     callExteriorColorAPI()
@@ -867,6 +968,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 val data = adapterExterior.getItem(position) as ExteriorColorData
 //                extColorId = "0"
                 extColorId = data.vehicleExteriorColorID!!
+                extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     callInteriorColorAPI()
@@ -878,7 +980,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             }
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
+
                 intColorId = data.vehicleInteriorColorID!!
+                intColorStr = data.interiorColor!!
+
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
                     setPackages(true)
@@ -913,25 +1018,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             tvApplyPackage.setOnClickListener(this@OneDealNearYouFragment)
         }
         setLayoutParam(dialogPackage)
-
-        /*dialogPackage = LayoutInflater.from(requireActivity())
-            .inflate(R.layout.dialog_vehicle_packages, null, false)
-        popUpPackage = PopupWindow(
-            dialogPackage,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            false
-        )
-        popUpPackage.isTouchable = true
-        popUpPackage.isFocusable = true
-        popUpPackage.isOutsideTouchable = true
-//        dialogPackage.run {
-        adapterPackages =
-            PackagesAdapter(R.layout.list_item_packages, this@OneDealNearYouFragment)
-        dialogPackage.rvPackages.adapter = adapterPackages
-        adapterPackages.addAll(data)
-//        }*/
-
     }
 
     private lateinit var dialogOptions: Dialog

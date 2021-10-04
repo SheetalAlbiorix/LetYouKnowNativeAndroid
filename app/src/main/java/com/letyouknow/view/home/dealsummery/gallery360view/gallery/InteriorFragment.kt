@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.view.home.dealsummery.gallery360view.gallery.zoomimage.ZoomImageActivity
-import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
 
-class GalleryFragment : BaseFragment(), View.OnClickListener {
+class InteriorFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapterGallery: GalleryAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_gallery, container, false)
+        return inflater.inflate(R.layout.fragment_exterior, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

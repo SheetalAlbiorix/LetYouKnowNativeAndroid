@@ -257,7 +257,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/phone_number"
-                        android:inputType="number"
+                        android:inputType="phone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

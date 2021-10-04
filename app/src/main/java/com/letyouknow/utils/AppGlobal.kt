@@ -14,10 +14,12 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.webkit.*
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.bumptech.glide.Glide
 import com.letyouknow.R
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
 import org.jetbrains.anko.singleLine
@@ -204,6 +206,15 @@ class AppGlobal {
                 WindowManager.LayoutParams.MATCH_PARENT
             )
             dialog.window?.attributes = layoutParams
+        }
+
+        fun loadImageUrl(context: Context, imageView: ImageView, url: String) {
+            Glide.with(context)
+                .load(url) // image url
+                .placeholder(R.drawable.ic_image_car) // any placeholder to load at start
+                .error(R.drawable.ic_image_car)  // any image in case of error
+                .centerCrop()
+                .into(imageView)
         }
     }
 }

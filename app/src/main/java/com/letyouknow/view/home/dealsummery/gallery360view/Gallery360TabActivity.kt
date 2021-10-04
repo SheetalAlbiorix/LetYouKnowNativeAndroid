@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityGallery360TabBinding
-import com.letyouknow.view.home.dealsummery.gallery360view.gallery.GalleryFragment
+import com.letyouknow.view.home.dealsummery.gallery360view.gallery.ExteriorFragment
+import com.letyouknow.view.home.dealsummery.gallery360view.gallery.InteriorFragment
 import com.letyouknow.view.home.dealsummery.gallery360view.view360.View360Fragment
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import kotlinx.android.synthetic.main.activity_gallery360_tab.*
@@ -32,7 +33,8 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         ivEdit.visibility = View.INVISIBLE
         rvView.setOnClickListener(this)
         ll360View.setOnClickListener(this)
-        llGallery.setOnClickListener(this)
+        llExterior.setOnClickListener(this)
+        llInterior.setOnClickListener(this)
         gallery360ViewPagerAdapter = Gallery360PagerAdapter(supportFragmentManager)
         pager.adapter = gallery360ViewPagerAdapter
         if (intent.hasExtra(ARG_TYPE_VIEW)) {
@@ -74,9 +76,12 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
                 Log.e("", "")
             }
             R.id.ll360View -> {
+                setTab(2)
+            }
+            R.id.llInterior -> {
                 setTab(1)
             }
-            R.id.llGallery -> {
+            R.id.llExterior -> {
                 setTab(0)
             }
         }
@@ -85,11 +90,36 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     private fun setTab(tab: Int) {
         when (tab) {
             0 -> {
-                setTabVisible(viewGallery, tvGallery, view360View, tv360View)
-                loadFragment(GalleryFragment())
+                setTabVisible(
+                    viewExterior,
+                    tvExterior,
+                    viewInterior,
+                    tvInterior,
+                    view360View,
+                    tv360View
+                )
+                loadFragment(ExteriorFragment())
             }
             1 -> {
-                setTabVisible(view360View, tv360View, viewGallery, tvGallery)
+                setTabVisible(
+                    viewInterior,
+                    tvInterior,
+                    view360View,
+                    tv360View,
+                    viewExterior,
+                    tvExterior
+                )
+                loadFragment(InteriorFragment())
+            }
+            2 -> {
+                setTabVisible(
+                    view360View,
+                    tv360View,
+                    viewExterior,
+                    tvExterior,
+                    viewInterior,
+                    tvInterior
+                )
                 loadFragment(View360Fragment())
             }
         }
@@ -99,12 +129,16 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         visibleView: View,
         tvTabActive: TextView,
         inVisibleView: View,
-        tvTabDeActive: TextView
+        tvTabDeActive: TextView,
+        inVisibleView1: View,
+        tvTabDeActive1: TextView
     ) {
         visibleView.visibility = View.VISIBLE
         tvTabActive.setTextColor(resources.getColor(R.color.colorPrimary))
         inVisibleView.visibility = View.GONE
         tvTabDeActive.setTextColor(resources.getColor(R.color.black))
+        inVisibleView1.visibility = View.GONE
+        tvTabDeActive1.setTextColor(resources.getColor(R.color.black))
     }
 
     private fun loadFragment(fragment: Fragment) {

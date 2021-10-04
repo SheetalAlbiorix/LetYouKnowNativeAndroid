@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -26,7 +28,17 @@ import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
+import kotlinx.android.synthetic.main.fragment_submit_your_price.ivClosePromo
+import kotlinx.android.synthetic.main.fragment_submit_your_price.llPromoOffer
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spExteriorColor
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spInteriorColor
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spMake
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spModel
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spTrim
+import kotlinx.android.synthetic.main.fragment_submit_your_price.spYear
+import kotlinx.android.synthetic.main.fragment_submit_your_price.tvPromo
 import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
 
@@ -65,10 +77,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private var trimId = ""
     private var extColorId = ""
     private var intColorId = ""
-    private var radiusId = ""
 
-    private var arPackages = arrayListOf("PACKAGES")
-    private var arOptionalAccessories = arrayListOf("OPTIONAL & ACCESSORIES")
+    private lateinit var animBlink: Animation
+    private lateinit var animSlideRightToLeft: Animation
+    private lateinit var animSlideLeftToRight: Animation
+
 
     private lateinit var binding: FragmentSubmitYourPriceBinding
     private var upDownData = UpDownData()
@@ -94,6 +107,19 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun init() {
+        animBlink = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_blink
+        )
+        animSlideRightToLeft = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_right
+        )
+        animSlideLeftToRight = AnimationUtils.loadAnimation(
+            requireActivity(),
+            R.anim.anim_slide_in_left
+        )
+        tvPromo.startAnimation(animBlink)
         binding.upDownData = upDownData
         vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
         vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
@@ -121,6 +147,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         btnSearch.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(false)
+        ivClosePromo.setOnClickListener(this)
+        tvPromo.setOnClickListener(this)
 
 
         callVehicleYearAPI()
@@ -614,6 +642,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvPromo -> {
+                tvPromo.clearAnimation()
+                tvPromo.visibility = View.GONE
+                llPromoOffer.visibility = View.VISIBLE
+                llPromoOffer.startAnimation(animSlideRightToLeft)
+            }
+            R.id.ivClosePromo -> {
+                tvPromo.startAnimation(animBlink)
+                tvPromo.visibility = View.VISIBLE
+                llPromoOffer.visibility = View.GONE
+            }
             R.id.btnSearch -> {
                 startActivity<DealSummeryActivity>()
             }
