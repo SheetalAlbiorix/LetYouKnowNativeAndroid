@@ -7,7 +7,9 @@
     <data>
 
         <import type="android.view.View" />
-
+<variable
+    name="searchRadius"
+    type="String" />
 
     </data>
 
@@ -44,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_3sdp"
-                android:text="(Search radius 100 miles)"
+                android:text="@{searchRadius}"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_11sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -145,6 +145,16 @@ class AppGlobal {
             tvView.singleLine = true
         }
 
+        fun setWhiteSpinnerLayoutPos(pos: Int, spinner: Spinner, context: Context) {
+            spinner.setSelection(pos, true)
+            val v = spinner.selectedView as LinearLayoutCompat
+            val llView = v.getChildAt(0) as LinearLayoutCompat
+            llView.backgroundTintList = context.resources.getColorStateList(R.color.offWhite)
+            val tvView = llView.getChildAt(0) as TextView
+            tvView.setTextColor(context.resources.getColor(R.color.color495a6b))
+            tvView.singleLine = true
+        }
+
         fun dialogWebView(context: Context, url: String) {
             val dialog = Dialog(context, R.style.FullScreenDialog)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

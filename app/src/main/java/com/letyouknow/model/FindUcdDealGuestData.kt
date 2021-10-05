@@ -2,13 +2,13 @@ package com.letyouknow.model
 
 import java.io.Serializable
 
-data class FindLCDDealGuestData(
+data class FindUcdDealGuestData(
     val dealID: String? = "",
     val userID: String? = "",
     val guestID: String? = "",
     val vehicleInventoryID: String? = "",
-    var price: String? = "",
-    var msrp: String? = "",
+    val price: String? = "",
+    val msrp: String? = "",
     val zipCode: String? = "",
     val searchRadius: String? = "",
     val loanType: String? = "",
@@ -16,25 +16,21 @@ data class FindLCDDealGuestData(
     val dealTimeStamp: String? = "",
     val promotionId: String? = "",
     val timeZoneOffset: String? = "",
+    val vehicleYear: String? = "",
+    val vehicleMake: String? = "",
+    val vehicleModel: String? = "",
+    val vehicleTrim: String? = "",
+    val vehicleExteriorColor: String? = "",
+    val vehicleInteriorColor: String? = "",
+    val vehicleAccessories: ArrayList<VehicleAccessoriesData>? = ArrayList(),
+    val miles: String? = "",
+    val condition: String? = "",
     val ip: String? = "",
     val canSavePayment: String? = "",
     val payment_method_id: String? = "",
     val payment_intent_id: String? = "",
     val card_brand: String? = "",
     val card_last4: String? = "",
-    var productId: String? = "",
-    var yearId: String? = "",
-    var makeId: String? = "",
-    var modelId: String? = "",
-    var trimId: String? = "",
-    var exteriorColorId: String? = "",
-    var interiorColorId: String? = "",
-    var yearStr: String? = "",
-    var makeStr: String? = "",
-    var modelStr: String? = "",
-    var trimStr: String? = "",
-    var exteriorColorStr: String? = "",
-    var interiorColorStr: String? = "",
-    var arPackage: String? = "",
-    var arAccessories: String? = ""
+    val imageId: String = "",
+    var isSelect: Boolean? = false
 ) : Serializable

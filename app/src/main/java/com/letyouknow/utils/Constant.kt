@@ -47,6 +47,8 @@ class Constant {
         var ARG_POLICY = "ARG_POLICY"
         var ARG_TYPE_VIEW = "ARG_TYPE_VIEW"
         var ARG_LCD_DEAL_GUEST = "ARG_LCD_DEAL_GUEST"
+        var ARG_UCD_DEAL = "ARG_UCD_DEAL"
+        var ARG_RADIUS = "ARG_RADIUS"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2

@@ -4,16 +4,21 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedCarDealBinding
+import com.letyouknow.model.FindUcdDealGuestData
+import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
+import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import kotlinx.android.synthetic.main.activity_unlocked_car_deal.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 
 class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
+    private var arUnlocked: ArrayList<FindUcdDealGuestData> = ArrayList()
     private lateinit var adapterUnlockedCarDeal: UnlockedCarDealAdapter
-    private var arUnlocked =
-        arrayListOf(false, false, false, false, false, false, false, false, false)
+    private var searchRadius = ""
 
     private lateinit var binding: ActivityUnlockedCarDealBinding
 
@@ -25,6 +30,13 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_RADIUS)) {
+            arUnlocked = Gson().fromJson(intent.getStringExtra(ARG_UCD_DEAL),
+                object : TypeToken<ArrayList<FindUcdDealGuestData>?>() {}.type)
+            searchRadius = intent.getStringExtra(ARG_RADIUS)!!
+            binding.searchRadius =
+                getString(R.string.search_radius_100_miles, searchRadius.replace("mi", "").trim())
+        }
         backButton()
         adapterUnlockedCarDeal = UnlockedCarDealAdapter(R.layout.list_item_unlocked_car, this)
         rvUnlockedCar.adapter = adapterUnlockedCarDeal
@@ -57,13 +69,13 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
             R.id.cardUnlocked -> {
                 val pos = v.tag as Int
                 if (selectPos != -1) {
-                    var data = adapterUnlockedCarDeal.getItem(selectPos)
-                    data = false
+                    val data = adapterUnlockedCarDeal.getItem(selectPos)
+                    data.isSelect = false
                     adapterUnlockedCarDeal.update(selectPos, data)
                 }
 
-                var data = adapterUnlockedCarDeal.getItem(pos)
-                data = true
+                val data = adapterUnlockedCarDeal.getItem(pos)
+                data.isSelect = true
                 adapterUnlockedCarDeal.update(pos, data)
                 selectPos = pos
             }

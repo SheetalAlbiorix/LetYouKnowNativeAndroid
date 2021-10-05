@@ -14,9 +14,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colord3e6ff"
+        android:background="@color/white"
         android:elevation="@dimen/_8sdp"
         android:gravity="center"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         android:minHeight="?attr/actionBarSize"
         app:title=""
         app:titleTextAppearance="@style/Toolbar.TitleText">
@@ -24,14 +27,30 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:src="@drawable/logo_redraw" />
+
             <TextView
+                android:singleLine="true"
                 style="@style/medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:visibility="visible"
                 android:text="@{toolbarTitle}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
@@ -44,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_80sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:src="@drawable/ic_edit"
                 android:visibility="visible" />

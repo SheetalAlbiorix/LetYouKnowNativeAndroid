@@ -10,8 +10,12 @@
     <color name="white">#FFFFFF</color>
     <color name="orange">#fe6f00</color>
     <color name="red">#FE0026</color>
+    <color name="colorbf4848">#bf4848</color>
     <color name="navyBlue">#3e5365</color>
     <color name="lightBlue">#0082cf</color>
+    <color name="colorcfeafa">#cfeafa</color>
+    <color name="color4f6375">#4f6375</color>
+    <color name="color495a6b">#495a6b</color>
     <color name="lightGray">#eaeaea</color>
     <color name="textGray">#9D9D9E</color>
     <color name="textDarkGrey">#3C4043</color>
@@ -33,4 +37,6 @@
     <color name="colorTransparent0">#00000000</color>
     <color name="color3B495A">#3B495A</color>
     <color name="color556473">#556473</color>
+    <color name="color545d64">#545d64</color>
+    <color name="color000000DE">#000000DE</color>
 </resources>

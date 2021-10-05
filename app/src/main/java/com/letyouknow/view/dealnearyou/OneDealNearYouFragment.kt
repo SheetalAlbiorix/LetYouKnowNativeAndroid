@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
 import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
+import java.text.DecimalFormat
 
 class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -681,15 +682,31 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             val jsonArrayAccessories = JsonArray()
+            var accessoriesStr = ""
+            var isFirstAcce = true
             for (i in 0 until adapterOptions.itemCount) {
                 if (adapterOptions.getItem(i).isSelect!!) {
                     jsonArrayAccessories.add(adapterOptions.getItem(i).dealerAccessoryID)
+                    if (isFirstAcce) {
+                        isFirstAcce = false
+                        accessoriesStr = adapterOptions.getItem(i).accessory!!
+                    } else
+                        accessoriesStr += "," + adapterOptions.getItem(i).accessory!!
                 }
             }
             val jsonArrayPackage = JsonArray()
+            var packageStr = ""
+            var isFirstPackage = false
+
             for (i in 0 until adapterPackages.itemCount) {
                 if (adapterPackages.getItem(i).isSelect!!) {
                     jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
+                    if (isFirstPackage) {
+                        isFirstPackage = false
+                        packageStr = adapterPackages.getItem(i).packageName!!
+                    } else {
+                        packageStr += adapterPackages.getItem(i).packageName!!
+                    }
                 }
             }
             val request = HashMap<String, Any>()
@@ -707,8 +724,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Response", Gson().toJson(data))
-                    /* val price = if(data.price?.length == 0) "0.0" else DecimalFormat("##.##").format(data.price)
-                     data.price = price*/
+                    val price =
+                        if (data.price?.length == 0) "0.0" else DecimalFormat("##.##").format(data.price?.toDouble())
+                    data.price = price
+                    val msrp =
+                        if (data.msrp?.length == 0) "0.0" else DecimalFormat("##.##").format(data.msrp?.toDouble())
+                    data.msrp = msrp
                     data.productId = productId
                     data.yearId = yearId
                     data.makeId = makeId
@@ -722,10 +743,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     data.trimStr = trimStr
                     data.exteriorColorStr = extColorStr
                     data.interiorColorStr = intColorStr
+                    data.arPackage = packageStr
+                    data.arAccessories = accessoriesStr
                     startActivity<DealSummeryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
                 }
                 )
-
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -906,6 +928,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             R.id.spYear -> {
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
+                yearStr = data.year!!
                 if (data.year != "YEAR") {
                     callVehicleMakeAPI()
                     setModel()

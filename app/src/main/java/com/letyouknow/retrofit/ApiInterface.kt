@@ -101,6 +101,9 @@ interface ApiInterface {
     @POST("findmydeal/findLCDDealGuest")
     fun findLCDDealGuest(@Body request: HashMap<String, Any>): Call<FindLCDDealGuestData>
 
+    @POST("findmydeal/FindUCDDealGuest")
+    fun findUCDDealGuest(@Body request: HashMap<String, Any>): Call<ArrayList<FindUcdDealGuestData>>
+
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
 

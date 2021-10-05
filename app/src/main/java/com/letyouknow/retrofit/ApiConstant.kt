@@ -30,5 +30,6 @@ class ApiConstant {
         var vehiclePackageIDs = "vehiclePackageIDs"
         var ImageId = "ImageId"
         var ImageProduct = "ImageProduct"
+        var searchRadius = "searchRadius"
     }
 }

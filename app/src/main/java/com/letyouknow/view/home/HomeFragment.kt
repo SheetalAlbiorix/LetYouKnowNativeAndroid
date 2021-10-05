@@ -20,12 +20,14 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentHomeBinding
 import com.letyouknow.model.*
+import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
 import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -60,6 +62,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private lateinit var exteriorColorModel: ExteriorColorViewModel
     private lateinit var interiorColorModel: InteriorColorViewModel
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
+    private lateinit var findUCDDealGuestViewModel: FindUCDDealGuestViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -127,6 +130,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
         interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+        findUCDDealGuestViewModel =
+            ViewModelProvider(this).get(FindUCDDealGuestViewModel::class.java)
 
         setYear()
         setMake()
@@ -237,6 +242,38 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         setSpinnerLayoutPos(0, spRadius, requireActivity())
     }
 
+    private fun callSearchFindDealAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = yearId
+            request[ApiConstant.vehicleMakeID] = makeId
+            request[ApiConstant.vehicleModelID] = modelId
+            request[ApiConstant.vehicleTrimID] = trimId
+            request[ApiConstant.vehicleExteriorColorID] = extColorId
+            request[ApiConstant.vehicleInteriorColorID] = intColorId
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+            request[ApiConstant.searchRadius] =
+                if (radiusId == "ALL") "6000" else radiusId.replace("mi", "").trim()
+            Log.e("Request Find Deal", Gson().toJson(request))
+            findUCDDealGuestViewModel.findDeal(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("Response", Gson().toJson(data))
+                    startActivity<UnlockedCarDealActivity>(
+                        Constant.ARG_UCD_DEAL to Gson().toJson(
+                            data
+                        ), ARG_RADIUS to radiusId
+                    )
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(R.id.flContainer, fragment)
@@ -249,8 +286,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-                startActivity<UnlockedCarDealActivity>()
-//                loadFragment(DealSummeryActivity(), getString(R.string.search_deals_title))
+                callSearchFindDealAPI()
             }
             R.id.tvPromo -> {
                 tvPromo.clearAnimation()
