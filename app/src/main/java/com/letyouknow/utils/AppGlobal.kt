@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -28,6 +29,10 @@ class AppGlobal {
     companion object {
         private var progressDialog: Dialog? = null;
         private val TAG: String = AppGlobal::class.java.simpleName
+
+        fun isNotEmpty(str: String?): Boolean {
+            return str != null && str != ""
+        }
 
         fun isNetworkAvailable(ctx: Context): Boolean {
             val connectivityManager = ctx
@@ -225,6 +230,10 @@ class AppGlobal {
                 .error(R.drawable.ic_image_car)  // any image in case of error
                 .centerCrop()
                 .into(imageView)
+        }
+
+        fun strikeThrough(tvStrike: TextView) {
+            tvStrike.paintFlags = tvStrike.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         }
     }
 }

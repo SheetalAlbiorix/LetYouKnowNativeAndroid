@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery
+package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
@@ -19,11 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityDealSummeryBinding
-import com.letyouknow.model.FindLCDDealGuestData
+import com.letyouknow.databinding.ActivityUnlockedDealSummeryBinding
+import com.letyouknow.model.FindUcdDealGuestData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
@@ -31,19 +32,19 @@ import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Act
 import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_deal_summery.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_deal_summery.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
+import kotlinx.android.synthetic.main.layout_unlocked_deal_summery.*
 import org.jetbrains.anko.startActivity
 
 
-class DealSummeryActivity : BaseActivity(), View.OnClickListener,
+class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var arLoan = arrayListOf("Financing Option", "LOAN", "CARD")
     private var financingStr = "Financing Option"
@@ -54,15 +55,15 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var imageUrlViewModel: ImageUrlViewModel
 
 
-    private lateinit var binding: ActivityDealSummeryBinding
-    private lateinit var dataLCDDeal: FindLCDDealGuestData
+    private lateinit var binding: ActivityUnlockedDealSummeryBinding
+    private lateinit var dataUCDDeal: FindUcdDealGuestData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deal_summery)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery)
+        setContentView(R.layout.activity_unlocked_deal_summery)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_deal_summery)
 //        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
@@ -71,13 +72,15 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
 
-        if (intent.hasExtra(ARG_LCD_DEAL_GUEST)) {
-            dataLCDDeal = Gson().fromJson(
-                intent.getStringExtra(ARG_LCD_DEAL_GUEST),
-                FindLCDDealGuestData::class.java
+        if (intent.hasExtra(Constant.ARG_UCD_DEAL)) {
+            dataUCDDeal = Gson().fromJson(
+                intent.getStringExtra(Constant.ARG_UCD_DEAL),
+                FindUcdDealGuestData::class.java
             )
-            callImageIdAPI()
-            binding.lcdDealData = dataLCDDeal
+            val imageId = intent.getStringExtra(ARG_IMAGE_ID)
+            if (imageId?.length != 0)
+                callImageUrlAPI(imageId!!)
+            binding.lcdDealData = dataUCDDeal
 
         }
         txtTerms.text =
@@ -98,7 +101,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         ivBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
         backButton()
-        tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
+        tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match_search_deal))
         scrollTouchListener()
     }
 
@@ -179,29 +182,6 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         )
     }
 
-    private fun callImageIdAPI() {
-        if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
-            val request = HashMap<String, Any>()
-            dataLCDDeal.run {
-                request[ApiConstant.vehicleYearID] = yearId!!
-                request[ApiConstant.vehicleMakeID] = makeId!!
-                request[ApiConstant.vehicleModelID] = modelId!!
-                request[ApiConstant.vehicleTrimID] = trimId!!
-            }
-
-            imageIdViewModel.imageIdCall(this, request)!!
-                .observe(this, Observer { data ->
-                    Constant.dismissLoader()
-
-                    callImageUrlAPI(data)
-                }
-                )
-
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun callImageUrlAPI(ImageId: String) {
         if (Constant.isOnline(this)) {
@@ -210,7 +190,8 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             val request = HashMap<String, Any>()
 
             request[ApiConstant.ImageId] = ImageId!!
-            request[ApiConstant.ImageProduct] = "Splash"
+            request[ApiConstant.ImageProduct] = "MultiAngle"
+            request[ApiConstant.ExteriorColor] = dataUCDDeal.vehicleExteriorColor!!
 
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->
@@ -234,8 +215,10 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         when (v?.id) {
             R.id.btnProceedDeal -> {
 //                startActivity<DealSummeryStep2Activity>()
-                if (isValid())
+                if (isValid()) {
+                    startActivity<UnlockedDealSummeryStep2Activity>()
                     finish()
+                }
                 //loadFragment(DealSummeryStep2Activity())
             }
             R.id.ivBackDeal -> {
@@ -311,12 +294,45 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
-            tvDialogTitle.text =
-                dataLCDDeal.yearStr + " " + dataLCDDeal.makeStr + " " + dataLCDDeal.modelStr + " " + dataLCDDeal.trimStr
-            tvDialogExteriorColor.text = dataLCDDeal.exteriorColorStr
-            tvDialogInteriorColor.text = dataLCDDeal.interiorColorStr
-            tvDialogPackage.text = dataLCDDeal.arPackage
-            tvDialogOptions.text = dataLCDDeal.arAccessories
+            dataUCDDeal.run {
+
+
+                tvDialogTitle.text =
+                    dataUCDDeal.vehicleYear + " " + vehicleMake + " " + vehicleModel + " " + vehicleTrim
+                tvDialogExteriorColor.text = vehicleExteriorColor
+                tvDialogInteriorColor.text = vehicleInteriorColor
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+                if (accessories.isEmpty())
+                    tvDialogOptions.visibility = View.GONE
+
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+                if (packages.isEmpty())
+                    tvDialogPackage.visibility = View.GONE
+
+                tvDialogPackage.text = packages
+                tvDialogOptions.text = accessories
+                if (AppGlobal.isNotEmpty(miles)) {
+                    tvDialogDisclosure.text =
+                        getString(R.string.miles_approximate_odometer_reading, miles)
+                    llDialogDisclosure.visibility = View.VISIBLE
+                } else {
+                    llDialogDisclosure.visibility = View.GONE
+                }
+            }
         }
         setLayoutParam(dialog)
         dialog.show()

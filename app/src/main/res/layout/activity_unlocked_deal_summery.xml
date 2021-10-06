@@ -12,7 +12,7 @@
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindLCDDealGuestData" />
+            type="com.letyouknow.model.FindUcdDealGuestData" />
 
     </data>
 
@@ -24,7 +24,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar_blue"
-            app:toolbarTitle="@{@string/step_2_of_3}" />
+            app:toolbarTitle="@{@string/step_3_of_4}" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedSc"
@@ -94,6 +94,8 @@
                         android:text="Car Summary"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
+
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <FrameLayout
@@ -122,92 +124,92 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_gravity="bottom"
-                            android:backgroundTint="@color/offWhite"
-                            android:background="@drawable/bg_half_round" />
+                            android:background="@drawable/bg_half_round"
+                            android:backgroundTint="@color/offWhite" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_20sdp"
-                android:orientation="horizontal">
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/_20sdp">
 
-                <FrameLayout
-                    android:id="@+id/llGallery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_8sdp">
+                            <FrameLayout
+                                android:id="@+id/llGallery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/ivBgGallery"
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:alpha="0.4"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_image_car"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBgGallery"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <ImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:padding="@dimen/_8sdp"
-                        android:src="@drawable/ic_gallery"
-                        android:text="Gallery"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_8sdp"
+                                    android:src="@drawable/ic_gallery"
+                                    android:text="Gallery"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/ll360"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBg360"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_6sdp"
+                                    android:src="@drawable/ic_360"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
+
+                            <TextView
+                                style="@style/regular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_25sdp"
+                                android:gravity="end"
+                                android:paddingStart="@dimen/_12sdp"
+                                android:paddingEnd="@dimen/_8sdp"
+                                android:singleLine="true"
+                                android:text="Actual Model may vary"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_11sdp" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </FrameLayout>
                 </FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/ll360"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_8sdp">
+                <include
+                    layout="@layout/layout_unlocked_deal_summery"
+                    app:lcdDealData="@{lcdDealData}" />
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/ivBg360"
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:alpha="0.4"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_image_car"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:padding="@dimen/_6sdp"
-                        android:src="@drawable/ic_360"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-                </FrameLayout>
-
-                <TextView
-                    style="@style/regular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:gravity="end"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:singleLine="true"
-                    android:text="Actual Model may vary"
-                    android:textColor="@color/color545d64"
-                    android:textSize="@dimen/_11sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </FrameLayout>
-    </FrameLayout>
-
-    <include
-        layout="@layout/layout_deal_summery"
-        app:lcdDealData="@{lcdDealData}" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
 
 
         </androidx.core.widget.NestedScrollView>

@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
 import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
-import java.text.DecimalFormat
 
 class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -691,7 +690,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         isFirstAcce = false
                         accessoriesStr = adapterOptions.getItem(i).accessory!!
                     } else
-                        accessoriesStr += "," + adapterOptions.getItem(i).accessory!!
+                        accessoriesStr += ",\n" + adapterOptions.getItem(i).accessory!!
                 }
             }
             val jsonArrayPackage = JsonArray()
@@ -705,7 +704,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         isFirstPackage = false
                         packageStr = adapterPackages.getItem(i).packageName!!
                     } else {
-                        packageStr += adapterPackages.getItem(i).packageName!!
+                        packageStr = packageStr + ",\n" + adapterPackages.getItem(i).packageName!!
                     }
                 }
             }
@@ -724,12 +723,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Response", Gson().toJson(data))
-                    val price =
-                        if (data.price?.length == 0) "0.0" else DecimalFormat("##.##").format(data.price?.toDouble())
-                    data.price = price
-                    val msrp =
-                        if (data.msrp?.length == 0) "0.0" else DecimalFormat("##.##").format(data.msrp?.toDouble())
-                    data.msrp = msrp
+//                    val price =
+//                        getString(R.string.price_data,data.price)
+//                    data.price = price.toFloat()
+//                    val msrp =
+//                        if (data.msrp?.length == 0) "0.0" else DecimalFormat("##.##").format(data.msrp?.toDouble())
+//                    data.msrp = msrp
                     data.productId = productId
                     data.yearId = yearId
                     data.makeId = makeId

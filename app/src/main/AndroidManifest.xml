@@ -110,6 +110,14 @@
             android:name=".view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryStep2Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

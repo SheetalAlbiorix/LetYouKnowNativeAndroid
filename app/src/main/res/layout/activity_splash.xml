@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash_gradient"
+    android:background="?pageBgColor"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".view.splash.SplashActivity">
@@ -19,7 +19,6 @@
         android:layout_height="@dimen/_80sdp"
         android:layout_marginTop="@dimen/_40sdp"
         android:src="@drawable/logo_redraw"
-        app:tint="@color/white"
         tools:ignore="ContentDescription" />
 
     <Space
@@ -27,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 <FrameLayout
+    android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_7sdp"
     android:layout_gravity="center"

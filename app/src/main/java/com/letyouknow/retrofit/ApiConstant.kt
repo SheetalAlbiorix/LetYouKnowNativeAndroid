@@ -31,5 +31,7 @@ class ApiConstant {
         var ImageId = "ImageId"
         var ImageProduct = "ImageProduct"
         var searchRadius = "searchRadius"
+        var ExteriorColor = "ExteriorColor"
+
     }
 }

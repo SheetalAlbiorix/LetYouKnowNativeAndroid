@@ -7,13 +7,15 @@
 
         <import type="android.view.View" />
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="type"
             type="Integer" />
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindLCDDealGuestData" />
+            type="com.letyouknow.model.FindUcdDealGuestData" />
 
     </data>
 
@@ -35,7 +37,7 @@
                 style="@style/bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{lcdDealData.yearStr+' '+lcdDealData.makeStr+' '+' '+lcdDealData.modelStr+'-'+lcdDealData.trimStr}"
+                android:text="@{lcdDealData.vehicleYear+' '+lcdDealData.vehicleMake+' '+' '+lcdDealData.vehicleModel+'-'+lcdDealData.vehicleTrim}"
                 android:textColor="@color/color545d64"
                 android:textSize="@dimen/_16sdp"
                 tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
@@ -60,36 +62,62 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="@{lcdDealData.exteriorColorStr}"
+                    android:text="@{lcdDealData.vehicleExteriorColor}"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_12sdp"
                     tool:text="Cashmere" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/bold"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/interior_color"
-                android:textColor="@color/color545d64"
-                android:textSize="@dimen/_12sdp" />
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/regular"
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interior_color"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:text="@{lcdDealData.vehicleInteriorColor}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp"
+                    tool:text="Super Black Metalic" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:text="@{lcdDealData.interiorColorStr}"
-                tool:text="Super Black Metalic"
-                android:textColor="@color/color545d64"
-                android:textSize="@dimen/_12sdp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal"
+                android:visibility="@{TextUtils.isEmpty(lcdDealData.miles)? View.GONE : View.VISIBLE}">
+
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disclosure"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:text="@{@string/miles_approximate_odometer_reading(lcdDealData.miles)}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp"
+                    tool:text="Super Black Metalic" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:id="@+id/tvViewOptions"
@@ -138,98 +166,98 @@
                     tool:text="$47000.00" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:gravity="center"
-            android:orientation="horizontal">
-
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/zip_code_colon"
-                        android:textColor="?textGreyColor"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:text="@{lcdDealData.zipCode}"
-                        style="@style/bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        tool:text="123456"
-                        android:textColor="?blackHeaderText"
-                        android:textSize="@dimen/_12sdp" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TextView
-                        style="@style/bold"
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Package"
-                        android:textColor="?textGreyColor"
-                        android:textSize="@dimen/_12sdp" />
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-                    <TextView
-                        style="@style/bold"
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/zip_code_colon"
+                            android:textColor="?textGreyColor"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:text="@{lcdDealData.zipCode}"
+                            android:textColor="?blackHeaderText"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="123456" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:textColor="?blackHeaderText"
-                        android:textSize="@dimen/_12sdp"
-                        tool:text="123456" />
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Package"
+                            android:textColor="?textGreyColor"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:textColor="?blackHeaderText"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="123456" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Option &amp; Accessories"
+                            android:textColor="?textGreyColor"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tvAccessories"
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:text="50 miles"
+                            android:textColor="?blackHeaderText"
+                            android:textSize="@dimen/_12sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        style="@style/bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Option &amp; Accessories"
-                        android:textColor="?textGreyColor"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/tvAccessories"
-                        style="@style/bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="50 miles"
-                        android:textColor="?blackHeaderText"
-                        android:textSize="@dimen/_12sdp" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -271,12 +299,12 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
+                        android:id="@+id/tvYourPrice"
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="@{@string/price_data(lcdDealData.price)}"
-                        tool:text="$47,000.00"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_13sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -351,7 +379,8 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:text="@{@string/price_data(lcdDealData.price - 799.0f)}"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_15sdp"
+                            tool:text="46,201.00" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -510,7 +539,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="PROCEED WITH YOUR DEAL"
+                    android:text="@string/proceed_to_review_page"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

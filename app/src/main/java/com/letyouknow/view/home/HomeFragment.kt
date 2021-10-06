@@ -28,6 +28,8 @@ import com.letyouknow.view.spinneradapter.*
 import com.letyouknow.view.unlockedcardeal.UnlockedCarDealActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.pionymessenger.utils.Constant.Companion.ARG_ZIPCODE
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -77,6 +79,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private var makeId = ""
     private var modelId = ""
     private var trimId = ""
+
+    private var yearStr = ""
+    private var makeStr = ""
+    private var modelStr = ""
+    private var trimStr = ""
+
     private var extColorId = ""
     private var intColorId = ""
     private var radiusId = ""
@@ -261,10 +269,22 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Response", Gson().toJson(data))
+                    val dataYear = YearModelMakeData()
+                    dataYear.vehicleYearID = yearId
+                    dataYear.vehicleMakeID = makeId
+                    dataYear.vehicleModelID = modelId
+                    dataYear.vehicleTrimID = trimId
+                    dataYear.vehicleYearStr = yearStr
+                    dataYear.vehicleMakeStr = makeStr
+                    dataYear.vehicleModelStr = modelStr
+                    dataYear.vehicleTrimStr = trimStr
                     startActivity<UnlockedCarDealActivity>(
                         Constant.ARG_UCD_DEAL to Gson().toJson(
                             data
-                        ), ARG_RADIUS to radiusId
+                        ),
+                        ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
+                        ARG_RADIUS to radiusId,
+                        ARG_ZIPCODE to edtZipCode.text.toString().trim()
                     )
                 }
                 )
@@ -555,6 +575,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             R.id.spYear -> {
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
+                yearStr = data.year!!
                 if (data.year != "YEAR") {
                     callVehicleMakeAPI()
                     setModel()
@@ -570,6 +591,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
                 makeId = data.vehicleMakeID!!
+                makeStr = data.make!!
                 setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
                     callVehicleModelAPI()
@@ -584,6 +606,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             R.id.spModel -> {
                 val data = adapterModel.getItem(position) as VehicleModelData
                 modelId = data.vehicleModelID!!
+                modelStr = data.model!!
                 setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
                     callVehicleTrimAPI()
@@ -597,6 +620,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             R.id.spTrim -> {
                 val data = adapterTrim.getItem(position) as VehicleTrimData
                 trimId = data.vehicleTrimID!!
+                trimStr = data.trim!!
                 setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
                     callExteriorColorAPI()

@@ -38,11 +38,14 @@ object ImageIdRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    Toast.makeText(
-                        context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()
+                            ?.utf8() != null
+                    )
+                        Toast.makeText(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                            Toast.LENGTH_LONG
+                        ).show()
                 }
             }
         })
