@@ -145,10 +145,10 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
 
         if (type != null) {
             Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), type.getImageResourceName());
-            this.editText.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+            this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         } else {
             Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), "ic_camera");
-            this.editText.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+            this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         }
         return type;
     }

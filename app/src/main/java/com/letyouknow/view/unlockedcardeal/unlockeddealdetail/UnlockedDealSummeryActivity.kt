@@ -20,10 +20,12 @@ import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedDealSummeryBinding
-import com.letyouknow.model.FindUcdDealGuestData
+import com.letyouknow.model.FindUcdDealData
+import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.retrofit.viewmodel.SubmitPendingUCDDealViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
@@ -33,10 +35,14 @@ import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
+import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
+import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
-import kotlinx.android.synthetic.main.activity_deal_summery.*
+import kotlinx.android.synthetic.main.activity_unlocked_deal_summery.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
@@ -56,9 +62,12 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
 
 
     private lateinit var binding: ActivityUnlockedDealSummeryBinding
-    private lateinit var dataUCDDeal: FindUcdDealGuestData
-    private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
 
+    private lateinit var dataUCDDeal: FindUcdDealData
+    private var yearModelMakeData = YearModelMakeData()
+
+    private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
+    private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,11 +80,17 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
+        submitPendingUCDDealViewModel =
+            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
 
-        if (intent.hasExtra(Constant.ARG_UCD_DEAL)) {
+        if (intent.hasExtra(Constant.ARG_UCD_DEAL) && intent.hasExtra(Constant.ARG_YEAR_MAKE_MODEL)) {
             dataUCDDeal = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_UCD_DEAL),
-                FindUcdDealGuestData::class.java
+                FindUcdDealData::class.java
+            )
+            yearModelMakeData = Gson().fromJson(
+                intent.getStringExtra(Constant.ARG_YEAR_MAKE_MODEL),
+                YearModelMakeData::class.java
             )
             val imageId = intent.getStringExtra(ARG_IMAGE_ID)
             if (imageId?.length != 0)
@@ -159,14 +174,6 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
         spLoan.onItemSelectedListener = this
     }
 
-    private fun setInfoLink() {
-        txtInformation.makeLinks(
-            Pair("information here", View.OnClickListener {
-                Toast.makeText(this, "Information Clicked", Toast.LENGTH_SHORT)
-                    .show()
-            })
-        )
-    }
 
     private fun setPrivacyPolicyLink() {
 
@@ -211,13 +218,50 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    private fun callSubmitPendingUCDDealAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.price] = dataUCDDeal.price!!
+            request[ApiConstant.zipCode] = dataUCDDeal.zipCode!!
+            request[ApiConstant.searchRadius] = yearModelMakeData.radius!!.replace(" mi", "").trim()
+            request[ApiConstant.loanType] = financingStr
+            request[ApiConstant.initial] = edtInitials.text.toString().trim()
+            request[ApiConstant.timeZoneOffset] = dataUCDDeal.timeZoneOffset!!
+            request[ApiConstant.vehicleInventoryID] = dataUCDDeal.vehicleInventoryID!!
+            request[ApiConstant.dealID] = dataUCDDeal.dealID!!
+            request[ApiConstant.guestID] = dataUCDDeal.guestID!!
+
+            submitPendingUCDDealViewModel.pendingDeal(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    startActivity<UnlockedDealSummeryStep2Activity>(
+                        ARG_UCD_DEAL to Gson().toJson(dataUCDDeal),
+                        ARG_UCD_DEAL_PENDING to Gson().toJson(data),
+                        ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                        ARG_IMAGE_URL to Gson().toJson(arImageUrl)
+                    )
+                }
+                )
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
 //                startActivity<DealSummeryStep2Activity>()
                 if (isValid()) {
-                    startActivity<UnlockedDealSummeryStep2Activity>()
-                    finish()
+                    callSubmitPendingUCDDealAPI()
+
                 }
                 //loadFragment(DealSummeryStep2Activity())
             }
@@ -271,13 +315,42 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
+        if (financingStr == "Financing Option" && !isScrollable && TextUtils.isEmpty(
+                edtInitials.text.toString().trim()
+            )
+        ) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (financingStr == "Financing Option" && !isScrollable) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            return false
+        }
+        if (financingStr == "Financing Option" && TextUtils.isEmpty(
+                edtInitials.text.toString().trim()
+            )
+        ) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (!isScrollable && TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
         if (financingStr == "Financing Option") {
             tvErrorFinancingOption.visibility = View.VISIBLE
             return false
-        } else if (!isScrollable) {
+        }
+        if (!isScrollable) {
             tvErrorFullDisclouser.visibility = View.VISIBLE
             return false
-        } else if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+        }
+        if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }

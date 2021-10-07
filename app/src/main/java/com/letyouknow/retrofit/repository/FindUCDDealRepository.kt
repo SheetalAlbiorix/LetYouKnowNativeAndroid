@@ -4,30 +4,32 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal.Companion.isAuthorizationFailed
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-object ImageUrlRepository {
+object FindUCDDealRepository {
 
-    fun imageUrlApiCall(
+    fun findUCDDealApiCall(
         context: Context,
         request: HashMap<String, Any>
-    ): MutableLiveData<ArrayList<String>> {
-        val forgotPasswordVo = MutableLiveData<ArrayList<String>>()
-        val call = RetrofitClient.apiInterface.getImageURL(request)
+    ): MutableLiveData<ArrayList<FindUcdDealData>> {
+        val forgotPasswordVo = MutableLiveData<ArrayList<FindUcdDealData>>()
+        val call = RetrofitClient.apiInterface.findUCDDeal(request)
 
-        call.enqueue(object : Callback<ArrayList<String>> {
-            override fun onFailure(call: Call<ArrayList<String>>, t: Throwable) {
+        call.enqueue(object : Callback<ArrayList<FindUcdDealData>> {
+            override fun onFailure(call: Call<ArrayList<FindUcdDealData>>, t: Throwable) {
                 Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
-                call: Call<ArrayList<String>>,
-                response: Response<ArrayList<String>>,
+                call: Call<ArrayList<FindUcdDealData>>,
+                response: Response<ArrayList<FindUcdDealData>>,
             ) {
                 Log.v("DEBUG : ", response.body().toString())
 
@@ -35,15 +37,16 @@ object ImageUrlRepository {
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
                     forgotPasswordVo.value = data!!
+                } else if (response.code() == 401) {
+                    isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        Toast.makeText(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    Toast.makeText(
+                        context,
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })

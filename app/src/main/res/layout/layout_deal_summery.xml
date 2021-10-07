@@ -13,7 +13,7 @@
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindLCDDealGuestData" />
+            type="com.letyouknow.model.FindLCDDeaData" />
 
     </data>
 
@@ -130,7 +130,6 @@
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:text="@{@string/price_data(lcdDealData.msrp)}"
                     android:textColor="@color/navyBlue"

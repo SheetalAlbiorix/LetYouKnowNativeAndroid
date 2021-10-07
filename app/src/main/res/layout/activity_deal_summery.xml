@@ -12,7 +12,7 @@
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindLCDDealGuestData" />
+            type="com.letyouknow.model.FindLCDDeaData" />
 
     </data>
 
@@ -30,7 +30,6 @@
             android:id="@+id/nestedSc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colord3e6ff"
             android:fillViewport="true"
             android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -105,7 +104,6 @@
                         android:id="@+id/ivMain"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_250sdp"
-                        android:background="?pageBgColor"
                         android:orientation="vertical"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_image_car">

@@ -2,7 +2,7 @@ package com.letyouknow.view.unlockedcardeal
 
 import android.view.View
 import com.letyouknow.R
-import com.letyouknow.model.FindUcdDealGuestData
+import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
 import com.logispeed.ui.base.BaseAdapter
@@ -10,13 +10,13 @@ import kotlinx.android.synthetic.main.list_item_unlocked_car.view.*
 import java.text.DecimalFormat
 
 class UnlockedCarDealAdapter(layout: Int, val clickListener: View.OnClickListener) :
-    BaseAdapter<FindUcdDealGuestData>(layout), BaseAdapter.OnBind<FindUcdDealGuestData> {
+    BaseAdapter<FindUcdDealData>(layout), BaseAdapter.OnBind<FindUcdDealData> {
 
     init {
         setOnBinding(this)
     }
 
-    override fun onBind(view: View, position: Int, data: FindUcdDealGuestData) {
+    override fun onBind(view: View, position: Int, data: FindUcdDealData) {
         view.run {
             tvSelectDeal.tag = position
             tvSelectDeal.setOnClickListener(clickListener)

@@ -4,30 +4,32 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.letyouknow.model.SubmitPendingUcdData
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-object ImageUrlRepository {
+object SubmitPendingLCDDealRepository {
 
-    fun imageUrlApiCall(
+    fun pendinLCDDealApiCall(
         context: Context,
         request: HashMap<String, Any>
-    ): MutableLiveData<ArrayList<String>> {
-        val forgotPasswordVo = MutableLiveData<ArrayList<String>>()
-        val call = RetrofitClient.apiInterface.getImageURL(request)
+    ): MutableLiveData<SubmitPendingUcdData> {
+        val forgotPasswordVo = MutableLiveData<SubmitPendingUcdData>()
+        val call = RetrofitClient.apiInterface.submitPendingDealLCD(request)
 
-        call.enqueue(object : Callback<ArrayList<String>> {
-            override fun onFailure(call: Call<ArrayList<String>>, t: Throwable) {
+        call.enqueue(object : Callback<SubmitPendingUcdData> {
+            override fun onFailure(call: Call<SubmitPendingUcdData>, t: Throwable) {
                 Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
-                call: Call<ArrayList<String>>,
-                response: Response<ArrayList<String>>,
+                call: Call<SubmitPendingUcdData>,
+                response: Response<SubmitPendingUcdData>,
             ) {
                 Log.v("DEBUG : ", response.body().toString())
 
@@ -35,15 +37,16 @@ object ImageUrlRepository {
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
                     forgotPasswordVo.value = data!!
+                } else if (response.code() == 401) {
+                    AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        Toast.makeText(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    Toast.makeText(
+                        context,
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })

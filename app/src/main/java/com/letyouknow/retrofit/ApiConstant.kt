@@ -32,6 +32,13 @@ class ApiConstant {
         var ImageProduct = "ImageProduct"
         var searchRadius = "searchRadius"
         var ExteriorColor = "ExteriorColor"
+        var price = "price"
+        var loanType = "loanType"
+        var initial = "initial"
+        var timeZoneOffset = "timeZoneOffset"
+        var vehicleInventoryID = "vehicleInventoryID"
+        var dealID = "dealID"
+        var guestID = "guestID"
 
     }
 }

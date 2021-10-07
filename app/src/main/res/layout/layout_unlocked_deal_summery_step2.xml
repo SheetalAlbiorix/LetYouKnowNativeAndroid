@@ -16,13 +16,18 @@
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindUcdDealGuestData" />
+            type="com.letyouknow.model.FindUcdDealData" />
+
+        <variable
+            name="pendingUCDData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
     </data>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -163,7 +168,6 @@
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="@{@string/price_data(lcdDealData.msrp)}"
                         android:textColor="@color/navyBlue"
@@ -280,8 +284,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/bg_button"
-                android:backgroundTint="@color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/_20sdp">
 
@@ -291,21 +293,21 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/your_price"
-                        android:textColor="@color/coloracadad"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
 
                     <TextView
-                        style="@style/bold"
+                        style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="$47,000.00"
-                        android:textColor="@color/textDarkGrey"
+                        android:text="@{@string/price_data(lcdDealData.price)}"
+                        android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -339,7 +341,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_round_border_off_white"
+                        android:background="@drawable/bg_edittext"
                         android:hint="@string/gift_card_or_discount_code"
                         android:inputType="text"
                         android:paddingStart="@dimen/_12sdp"
@@ -365,6 +367,33 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_round_border_off_white"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10sdp">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/letyouknow_dollars"
+                        android:textColor="@color/lightGray"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDollar"
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$0.0"
+                        android:textColor="@color/lightGray"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal">
 
@@ -374,8 +403,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/service_and_reserve_fee"
-                        android:textColor="@color/coloracadad"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
 
                     <TextView
                         style="@style/bold"
@@ -383,7 +412,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:text="-$799.00"
-                        android:textColor="@color/textDarkGrey"
+                        android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -424,7 +453,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="46,201.00"
+                        android:text="@{@string/price_data(lcdDealData.price - 799.0f)}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -460,38 +489,44 @@
                 tool:text="799.00" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llDebitCreditCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/_25sdp"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingRight="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_12sdp">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:src="@drawable/ic_card" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llDebitCreditCard"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:paddingRight="@dimen/_20sdp"
-                    android:text="Debit/Credit Cards"
-                    android:textColor="?textDarkColor"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_25sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingRight="@dimen/_25sdp"
+                    android:paddingBottom="@dimen/_12sdp">
 
-                <ImageView
-                    android:id="@+id/ivNextCard"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:src="@{lightDealBindData.selectPaymentType==1 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/ic_card" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/_8sdp"
+                        android:paddingRight="@dimen/_20sdp"
+                        android:text="Debit/Credit Cards"
+                        android:textColor="?textDarkColor"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivNextCard"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@{lightDealBindData.selectPaymentType==1 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
                 android:layout_width="match_parent"
@@ -542,80 +577,73 @@
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <LinearLayout
-                    android:id="@+id/llCardViewDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <!-- <LinearLayout
+                     android:id="@+id/llCardViewDetail"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical">
 
+                     <androidx.appcompat.widget.AppCompatEditText
+                         android:id="@+id/edtCardNumber"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_15sdp"
+                         android:background="@drawable/bg_edittext"
+                         android:digits="1234567890"
+                         android:drawableRight="@drawable/ic_camera"
+                         android:hint="@string/card_holder"
+                         android:inputType="number" />
 
-                    <!--<com.letyouknow.utils.CreditCardEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:digits="1234567890"
-                        android:hint="@string/card_number"
-                        android:inputType="number" />-->
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtCardNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:background="@drawable/bg_edittext"
-                        android:digits="1234567890"
-                        android:drawableRight="@drawable/ic_camera"
-                        android:hint="@string/card_holder"
-                        android:inputType="number" />
+                     <androidx.appcompat.widget.AppCompatEditText
+                         android:id="@+id/edtCardHolder"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_15sdp"
+                         android:background="@drawable/bg_edittext"
+                         android:hint="@string/card_holder"
+                         android:inputType="text" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtCardHolder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:background="@drawable/bg_edittext"
-                        android:hint="@string/card_holder"
-                        android:inputType="text" />
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_15sdp"
+                         android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:orientation="horizontal">
+                         <androidx.appcompat.widget.AppCompatEditText
+                             android:id="@+id/edtExpiresDate"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:background="@drawable/bg_edittext"
+                             android:digits="1234567890"
+                             android:hint="@string/expire_date"
+                             android:inputType="number"
+                             android:maxLength="5" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/edtExpiresDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_edittext"
-                            android:digits="1234567890"
-                            android:hint="@string/expire_date"
-                            android:inputType="number"
-                            android:maxLength="5" />
+                         <androidx.appcompat.widget.AppCompatEditText
+                             android:id="@+id/edtCVV"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:background="@drawable/bg_edittext"
+                             android:hint="@string/cvv"
+                             android:inputType="number"
+                             android:maxLength="3" />
+                     </LinearLayout>
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/edtCVV"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/bg_edittext"
-                            android:hint="@string/cvv"
-                            android:inputType="number"
-                            android:maxLength="3" />
-                    </LinearLayout>
+                     <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/btnSave"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_20sdp"
+                         android:background="@drawable/bg_button"
+                         android:gravity="center_horizontal"
+                         android:padding="@dimen/_12sdp"
+                         android:text="@string/save"
+                         android:textColor="@color/white"
+                         android:textSize="@dimen/_14sdp" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/btnSave"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:background="@drawable/bg_button"
-                        android:gravity="center_horizontal"
-                        android:padding="@dimen/_12sdp"
-                        android:text="@string/save"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_14sdp" />
-
-                </LinearLayout>
+                 </LinearLayout>-->
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -694,10 +722,84 @@
                     android:src="@{lightDealBindData.selectPaymentType==3 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <View
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/dividerColor" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@color/dividerColor" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_button3"
+                android:backgroundTint="@color/offWhite"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext"
+                    android:digits="1234567890"
+                    android:drawableLeft="@drawable/ic_camera"
+                    android:hint="@string/card_number"
+                    android:inputType="number" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCardHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/card_holder"
+                    android:inputType="text"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtExpiresDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_4sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext"
+                        android:digits="1234567890"
+                        android:hint="@string/expire_date"
+                        android:inputType="number"
+                        android:maxLength="5" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtCVV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/cvv"
+                        android:inputType="number"
+                        android:maxLength="3" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_button"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_12sdp"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp" />
+
+            </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
@@ -707,8 +809,8 @@
             android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_25sdp"
-            android:text="@string/buyer_information"
-            android:textColor="?blackHeaderText"
+            android:text="@string/buyer_info"
+            android:textColor="@color/color3e5365"
             android:textSize="@dimen/_16sdp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -717,43 +819,249 @@
             android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_25sdp"
-            android:background="@drawable/bg_button"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/bg_button3"
+            android:backgroundTint="@color/offWhite"
             android:orientation="vertical"
             android:padding="@dimen/_8sdp">
 
-            <TextView
-                style="@style/medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(this person must be present when picking up the vehicle)"
-                android:textColor="@color/coloracadad"
-                android:textSize="@dimen/_10sdp" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/medium"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/remaining_balance_due_at_dealer"
-                    android:textColor="@color/coloracadad"
-                    android:textSize="@dimen/_10sdp" />
+                    android:layout_weight="1.5"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/bold"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/first_name"
+                        android:inputType="text"
+                        android:text="@{pendingUCDData.buyer.firstName}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvErrorFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_firstname"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <Space
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_weight="0.5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="$799.00"
-                    android:textColor="@color/textDarkGrey"
-                    android:textSize="@dimen/_12sdp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/middle_name"
+                        android:inputType="text"
+                        android:text="@{pendingUCDData.buyer.middleName}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_lastname"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/last_name"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.lastName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvErrorLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_lastname"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/address_line_1"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.address1}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvErrorAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_addressline1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/address_line_2"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.address2}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvErrorAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_addressline2"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/city"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.city}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvErrorCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_city"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_spinner" />
+
+            <TextView
+                android:id="@+id/tvErrorState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_state"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:digits="1234567890"
+                android:hint="@string/zip_code"
+                android:inputType="number"
+                android:maxLength="6"
+                android:text="@{pendingUCDData.buyer.zipcode}" />
+
+            <TextView
+                android:id="@+id/tvErrorZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_zipcode"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:text="@{pendingUCDData.buyer.phoneNumber}" />
+
+            <TextView
+                android:id="@+id/tvErrorPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_phonenumber"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                android:text="@{pendingUCDData.buyer.email}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvErrorEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_email_address_vali"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -762,6 +1070,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_25sdp"
             android:background="@drawable/bg_button"
@@ -779,12 +1088,14 @@
                 app:tint="@color/white" />
 
             <TextView
+                android:id="@+id/tvSubmitStartOver"
                 style="@style/bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/submit_my_deal"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
 

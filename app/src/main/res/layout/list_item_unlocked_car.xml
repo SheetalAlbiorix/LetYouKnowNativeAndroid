@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                style="@style/medium"
+                style="@style/bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2019 Toyota Carmy Hybrid XLE"
@@ -149,7 +149,6 @@
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:textColor="@color/navyBlue"
                     android:textSize="@dimen/_14sdp"

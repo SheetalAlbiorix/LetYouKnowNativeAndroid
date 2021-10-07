@@ -202,14 +202,14 @@
                                 android:background="@drawable/bg_spinner_dark" />
 
                             <androidx.appcompat.widget.AppCompatEditText
+                                style="@style/medium"
                                 android:id="@+id/edtZipCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_24sdp"
                                 android:background="@drawable/bg_edittext_dark"
-
                                 android:digits="1234567890"
-                                android:hint="@string/zip_code"
+                                android:hint="ZIP CODE"
                                 android:inputType="number"
                                 android:maxLength="5"
                                 android:textColor="@color/white"

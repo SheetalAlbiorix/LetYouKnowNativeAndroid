@@ -1,26 +1,53 @@
 package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
+import android.text.InputFilter
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedDealSummeryStep2Binding
-import com.letyouknow.model.CardListData
-import com.letyouknow.model.LightDealBindData
+import com.letyouknow.model.*
+import com.letyouknow.retrofit.viewmodel.LYKDollarViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.signup.CardListAdapter
+import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
+import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summery_step2.*
+import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
+import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.*
+import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.btnProceedDeal
+import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.edtZipCode
+import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.tvErrorZipCode
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     lateinit var binding: ActivityUnlockedDealSummeryStep2Binding
@@ -30,7 +57,18 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     private var arCardList: ArrayList<CardListData> = ArrayList()
     private var lightBindData: LightDealBindData = LightDealBindData()
     private lateinit var cTimer: CountDownTimer
-    private var seconds = 10
+    private var seconds = 300
+    private var isFirst60 = true
+    private var imageUrl = ""
+
+    private lateinit var yearModelMakeData: YearModelMakeData
+    private lateinit var pendingUCDData: SubmitPendingUcdData
+    private lateinit var lykDollarViewModel: LYKDollarViewModel
+    private lateinit var ucdData: FindUcdDealData
+    private lateinit var arImage: ArrayList<String>
+    private var isTimeOver = false
+    private var arState = arrayListOf("State")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +79,44 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
+        if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
+                ARG_YEAR_MAKE_MODEL
+            ) && intent.hasExtra(
+                ARG_IMAGE_URL
+            )
+        ) {
+            arImage = Gson().fromJson(
+                intent.getStringExtra(ARG_IMAGE_URL),
+                object : TypeToken<ArrayList<String>?>() {}.type
+            )
+            if (arImage.size != 0) {
+                AppGlobal.loadImageUrl(this, ivMain, arImage[0])
+                AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
+                AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
+            }
+
+            ucdData =
+                Gson().fromJson(intent.getStringExtra(ARG_UCD_DEAL), FindUcdDealData::class.java)
+            yearModelMakeData = Gson().fromJson(
+                intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
+                YearModelMakeData::class.java
+            )
+            pendingUCDData = Gson().fromJson(
+                intent.getStringExtra(ARG_UCD_DEAL_PENDING),
+                SubmitPendingUcdData::class.java
+            )
+
+            binding.ucdData = ucdData
+            binding.pendingUcdData = pendingUCDData
+            callDollarAPI()
+
+        }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
 
         initCardAdapter()
+        binding.lightDealBindData = lightBindData
         llDebitCreditCard.setOnClickListener(this)
         llPayPal.setOnClickListener(this)
         llBankAccount.setOnClickListener(this)
@@ -55,11 +127,41 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
+        tvViewOptions.setOnClickListener(this)
+        ivBack.setOnClickListener(this)
 
         setOnChange()
         startTimer()
 //        backButton()
         onStateChange()
+        setState()
+        AppGlobal.strikeThrough(tvPrice)
+
+        edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
+    }
+
+    private fun callDollarAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            lykDollarViewModel.getDollar(this, pendingUCDData.dealID)!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    tvDollar.text = "$$data"
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setState() {
+        val adapterYear = ArrayAdapter<String?>(
+            applicationContext,
+            android.R.layout.simple_spinner_item,
+            arState as List<String?>
+        )
+        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spState.adapter = adapterYear
     }
 
     private fun onStateChange() {
@@ -112,7 +214,17 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 seconds -= 1
                 tvTimer.text = (String.format("%02d", seconds / 60)
                         + ":" + String.format("%02d", seconds % 60))
+                if (seconds == 60 && isFirst60) {
+                    tvAddMin.visibility = View.VISIBLE
+                    isFirst60 = false
+                }
                 if (seconds == 0) {
+                    tvDealGuaranteed.text = "Reserved Deal has expired"
+                    tvAddMin.visibility = View.GONE
+                    tvTimer.visibility = View.GONE
+                    tvPerc.visibility = View.VISIBLE
+                    isTimeOver = true
+                    tvSubmitStartOver.text = getString(R.string.start_over)
                     cancelTimer()
                     return
                 }
@@ -150,17 +262,44 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                var working = edtExpiresDate.text.toString()
+                var isValid = true
+                if (working.length == 2 && before == 0) {
+                    if (Integer.parseInt(working) < 1 || Integer.parseInt(working) > 12) {
+                        isValid = false
+                    } else {
+                        working += "/"
+                        edtExpiresDate.setText(working)
+                        edtExpiresDate.setSelection(working.length)
+                    }
+                } else if (working.length == 5 && before == 0) {
+                    val enteredYear = working.substring(3)
+                    val currentYear = Calendar.getInstance()
+                        .get(Calendar.YEAR) % 100//getting last 2 digits of current year i.e. 2018 % 100 = 18
+                    if (Integer.parseInt(enteredYear) < currentYear) {
+                        isValid = false
+                    }
+                } else if (working.length != 5) {
+                    isValid = false
+                }
+
+                if (!isValid) {
+                    edtExpiresDate.error = getString(R.string.enter_valid_date_mm_yy)
+                } else {
+                    edtExpiresDate.error = null
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
                 val inputLength = edtExpiresDate.text.toString().length
-                if (inputLength == 2) {
-                    edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
-                    edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
-                }
-                if (inputLength == 5) {
+                /* if (inputLength == 2) {
+                     edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
+                     edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
+                 }*/
+
+                /*if (inputLength == 5) {
                     edtCVV.requestFocus()
-                }
+                }*/
             }
         })
     }
@@ -173,7 +312,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             llCardList.visibility = View.VISIBLE
             arCardList = pref?.getCardList()!!
             adapterCardList.addAll(arCardList)
-            llCardViewDetail.visibility = View.GONE
+//            llCardViewDetail.visibility = View.GONE
             for (i in 0 until arCardList.size) {
                 if (arCardList[i].isSelect!!) {
                     selectCardPos = i
@@ -181,12 +320,22 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             }
         } else {
             llCardList.visibility = View.GONE
-            llCardViewDetail.visibility = View.VISIBLE
+//            llCardViewDetail.visibility = View.VISIBLE
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.ivBack -> {
+                if (isTimeOver) {
+                    onBackPressed()
+                } else {
+                    popupLeaveDeal()
+                }
+            }
+            R.id.tvViewOptions -> {
+                popupOption()
+            }
             R.id.cardMain -> {
                 val pos = v.tag as Int
                 if (selectCardPos != -1) {
@@ -221,10 +370,10 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 binding.lightDealBindData = lightBindData
             }
             R.id.tvAddMore -> {
-                llCardViewDetail.visibility = View.VISIBLE
+//                llCardViewDetail.visibility = View.VISIBLE
             }
             R.id.btnSave -> {
-                arCardList.add(
+                /*arCardList.add(
                     CardListData(
                         getDetectedCreditCardImage(),
                         edtCardNumber.text.toString().trim(),
@@ -236,7 +385,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 )
                 adapterCardList.addAll(arCardList)
                 pref?.setCardList(Gson().toJson(arCardList))
-                llCardList.visibility = View.VISIBLE
+                llCardList.visibility = View.VISIBLE*/
                 setClearData()
             }
             R.id.ivBackDeal -> {
@@ -246,7 +395,14 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
-                onBackPressed()
+                if (isTimeOver) {
+                    onBackPressed()
+                } else if (isValid()) {
+                    startActivity(
+                        intentFor<MainActivity>().clearTask().newTask()
+                    )
+                }
+//
             }
             R.id.tvAddMin -> {
                 seconds += 120;
@@ -263,7 +419,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         edtCardHolder.setText("")
         edtExpiresDate.setText("")
         edtCVV.setText("")
-        llCardViewDetail.visibility = View.GONE
+//        llCardViewDetail.visibility = View.GONE
     }
 
     private fun getDetectedCreditCardImage(): String {
@@ -278,5 +434,182 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    private fun isValid(): Boolean {
+        when {
+            TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                return false
+            }
+            TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                return false
+            }
+            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                return false
+            }
+            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
+                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
+                  return false
+              }*/
+            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                return false
+            }
+
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                return false
+            }
+            TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+            (edtPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                return false
+            }
+            TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
+                return false
+            }
+            !Constant.emailValidator(edtEmail.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
+                return false
+            }
+            else -> return true
+        }
+    }
+
+    private fun popupOption() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_option_accessories)
+        dialog.run {
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+            ucdData.run {
+                tvDialogTitle.text =
+                    "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
+                tvDialogExteriorColor.text = vehicleExteriorColor
+                tvDialogInteriorColor.text = vehicleInteriorColor
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+                if (accessories.isEmpty())
+                    tvDialogOptions.visibility = View.GONE
+
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+                if (packages.isEmpty())
+                    tvDialogPackage.visibility = View.GONE
+
+                tvDialogPackage.text = packages
+                tvDialogOptions.text = accessories
+                if (AppGlobal.isNotEmpty(miles)) {
+                    tvDialogDisclosure.text =
+                        getString(R.string.miles_approximate_odometer_reading, miles)
+                    llDialogDisclosure.visibility = View.VISIBLE
+                } else {
+                    llDialogDisclosure.visibility = View.GONE
+                }
+            }
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun popupLeaveDeal() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_leave_my_deal)
+        dialog.run {
+            tvCancel.setOnClickListener {
+                dismiss()
+            }
+            tvLeaveDeal.setOnClickListener {
+                dismiss()
+                startActivity(
+                    intentFor<MainActivity>().clearTask().newTask()
+                )
+            }
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun setLayoutParam(dialog: Dialog) {
+        val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.attributes = layoutParams
+    }
+
+    var filter = InputFilter { source, start, end, dest, dstart, dend ->
+        var source = source
+
+        if (source.length > 0) {
+            if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                if (source.toString().length > 1) {
+                    val number = source.toString()
+                    val digits1 = number.toCharArray()
+                    val digits2 = number.split("(?<=.)").toTypedArray()
+                    source = digits2[digits2.size - 1]
+                }
+                if (edtPhoneNumber.text.toString().length < 1) {
+                    return@InputFilter "($source"
+                } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                        .length <= 3
+                ) {
+                    return@InputFilter source
+                } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                        .length <= 5
+                ) {
+                    val isContain = dest.toString().contains(")")
+                    return@InputFilter if (isContain) {
+                        source
+                    } else {
+                        ")$source"
+                    }
+                } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                        .length <= 7
+                ) {
+                    return@InputFilter source
+                } else if (edtPhoneNumber.text.toString().length > 7) {
+                    val isContain = dest.toString().contains("-")
+                    return@InputFilter if (isContain) {
+                        source
+                    } else {
+                        "-$source"
+                    }
+                }
+            }
+        } else {
+        }
+        source
     }
 }

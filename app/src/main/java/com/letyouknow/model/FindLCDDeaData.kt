@@ -2,7 +2,7 @@ package com.letyouknow.model
 
 import java.io.Serializable
 
-data class FindLCDDealGuestData(
+data class FindLCDDeaData(
     val dealID: String? = "",
     val userID: String? = "",
     val guestID: String? = "",
@@ -36,5 +36,7 @@ data class FindLCDDealGuestData(
     var exteriorColorStr: String? = "",
     var interiorColorStr: String? = "",
     var arPackage: String? = "",
-    var arAccessories: String? = ""
+    var arAccessories: String? = "",
+    var arPackageId: ArrayList<String> = ArrayList(),
+    var arAccessoriesId: ArrayList<String> = ArrayList()
 ) : Serializable

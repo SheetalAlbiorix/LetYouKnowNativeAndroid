@@ -20,10 +20,11 @@ import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityDealSummeryBinding
-import com.letyouknow.model.FindLCDDealGuestData
+import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
@@ -55,8 +56,9 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
 
 
     private lateinit var binding: ActivityDealSummeryBinding
-    private lateinit var dataLCDDeal: FindLCDDealGuestData
+    private lateinit var dataLCDDeal: FindLCDDeaData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
+    private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,11 +72,13 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
+        submitPendingLCDDealViewModel =
+            ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST)) {
             dataLCDDeal = Gson().fromJson(
                 intent.getStringExtra(ARG_LCD_DEAL_GUEST),
-                FindLCDDealGuestData::class.java
+                FindLCDDeaData::class.java
             )
             callImageIdAPI()
             binding.lcdDealData = dataLCDDeal
@@ -156,15 +160,6 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         spLoan.onItemSelectedListener = this
     }
 
-    private fun setInfoLink() {
-        txtInformation.makeLinks(
-            Pair("information here", View.OnClickListener {
-                Toast.makeText(this, "Information Clicked", Toast.LENGTH_SHORT)
-                    .show()
-            })
-        )
-    }
-
     private fun setPrivacyPolicyLink() {
 
         txtTerms.makeLinks(
@@ -230,12 +225,51 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    private fun callSubmitPendingLCDDealAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
+            request[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
+            request[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
+            request[ApiConstant.vehicleTrimID] = dataLCDDeal.trimId!!
+            request[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
+            request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
+            request[ApiConstant.price] = dataLCDDeal.price!!
+            request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
+            request[ApiConstant.searchRadius] = "1000"
+            request[ApiConstant.loanType] = financingStr
+            request[ApiConstant.initial] = edtInitials.text.toString().trim()
+            request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
+            request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
+            request[ApiConstant.dealID] = dataLCDDeal.dealID!!
+            request[ApiConstant.guestID] = dataLCDDeal.guestID!!
+            request[ApiConstant.dealerAccessoryIDs] = Gson().toJson(dataLCDDeal.arAccessoriesId)
+            request[ApiConstant.vehiclePackageIDs] = Gson().toJson(dataLCDDeal.arPackageId)
+
+            submitPendingLCDDealViewModel.pendingDeal(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    startActivity<DealSummeryStep2Activity>(
+                        Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
+                        Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
+                        Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl)
+                    )
+                }
+                )
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-//                startActivity<DealSummeryStep2Activity>()
-                if (isValid())
-                    finish()
+                if (isValid()) {
+                    callSubmitPendingLCDDealAPI()
+                }
                 //loadFragment(DealSummeryStep2Activity())
             }
             R.id.ivBackDeal -> {
@@ -288,13 +322,42 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
+        if (financingStr == "Financing Option" && !isScrollable && TextUtils.isEmpty(
+                edtInitials.text.toString().trim()
+            )
+        ) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (financingStr == "Financing Option" && !isScrollable) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            return false
+        }
+        if (financingStr == "Financing Option" && TextUtils.isEmpty(
+                edtInitials.text.toString().trim()
+            )
+        ) {
+            tvErrorFinancingOption.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (!isScrollable && TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+            tvErrorFullDisclouser.visibility = View.VISIBLE
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
         if (financingStr == "Financing Option") {
             tvErrorFinancingOption.visibility = View.VISIBLE
             return false
-        } else if (!isScrollable) {
+        }
+        if (!isScrollable) {
             tvErrorFullDisclouser.visibility = View.VISIBLE
             return false
-        } else if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+        }
+        if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }

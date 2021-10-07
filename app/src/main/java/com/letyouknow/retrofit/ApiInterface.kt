@@ -98,15 +98,28 @@ interface ApiInterface {
     @POST("vehiclecriteria/checkVehicleDealerAccessoriesInventory")
     fun checkVehicleAccessoriesInventory(@Body request: HashMap<String, Any>): Call<CheckedPackageData>
 
-    @POST("findmydeal/findLCDDealGuest")
-    fun findLCDDealGuest(@Body request: HashMap<String, Any>): Call<FindLCDDealGuestData>
+    @POST("findmydeal/findLCDDeal")
+    fun findLCDDeal(@Body request: HashMap<String, Any>): Call<FindLCDDeaData>
 
-    @POST("findmydeal/FindUCDDealGuest")
-    fun findUCDDealGuest(@Body request: HashMap<String, Any>): Call<ArrayList<FindUcdDealGuestData>>
+
+    @POST("findmydeal/FindUCDDeal")
+    fun findUCDDeal(@Body request: HashMap<String, Any>): Call<ArrayList<FindUcdDealData>>
+
+    @POST("proceedwithdeal/submitpendingdealucd")
+    fun submitPendingDealUcd(@Body request: HashMap<String, Any>): Call<SubmitPendingUcdData>
+
+    @POST("proceedwithdeal/submitpendingdeallcd")
+    fun submitPendingDealLCD(@Body request: HashMap<String, Any>): Call<SubmitPendingUcdData>
+
 
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
 
     @POST("image/getimageurl")
     fun getImageURL(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
+
+    @GET("lykdollar/getlykdollar")
+    fun getlykdollar(
+        @Query("dealId") dealId: String?
+    ): Call<String>
 }

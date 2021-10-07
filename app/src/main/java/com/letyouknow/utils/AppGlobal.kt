@@ -18,11 +18,16 @@ import android.webkit.*
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
 import com.letyouknow.R
+import com.letyouknow.view.login.LoginActivity
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.singleLine
 
 class AppGlobal {
@@ -234,6 +239,14 @@ class AppGlobal {
 
         fun strikeThrough(tvStrike: TextView) {
             tvStrike.paintFlags = tvStrike.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        }
+
+        fun isAuthorizationFailed(context: Context) {
+            Toast.makeText(context, "Unauthorized User. Please Login Again", Toast.LENGTH_SHORT)
+                .show()
+            context.startActivity(
+                context.intentFor<LoginActivity>().clearTask().newTask()
+            )
         }
     }
 }

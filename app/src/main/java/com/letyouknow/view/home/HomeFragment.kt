@@ -64,7 +64,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private lateinit var exteriorColorModel: ExteriorColorViewModel
     private lateinit var interiorColorModel: InteriorColorViewModel
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
-    private lateinit var findUCDDealGuestViewModel: FindUCDDealGuestViewModel
+    private lateinit var findUCDDealGuestViewModel: FindUCDDealViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -84,9 +84,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private var makeStr = ""
     private var modelStr = ""
     private var trimStr = ""
+    private var extColorStr = "Any"
+    private var intColorStr = "Any"
 
-    private var extColorId = ""
-    private var intColorId = ""
+    private var extColorId = "0"
+    private var intColorId = "0"
     private var radiusId = ""
 
     private lateinit var animBlink: Animation
@@ -139,7 +141,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
         findUCDDealGuestViewModel =
-            ViewModelProvider(this).get(FindUCDDealGuestViewModel::class.java)
+            ViewModelProvider(this).get(FindUCDDealViewModel::class.java)
 
         setYear()
         setMake()
@@ -274,10 +276,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     dataYear.vehicleMakeID = makeId
                     dataYear.vehicleModelID = modelId
                     dataYear.vehicleTrimID = trimId
+                    dataYear.vehicleExtColorID = extColorId
+                    dataYear.vehicleIntColorID = intColorId
                     dataYear.vehicleYearStr = yearStr
                     dataYear.vehicleMakeStr = makeStr
                     dataYear.vehicleModelStr = modelStr
                     dataYear.vehicleTrimStr = trimStr
+                    dataYear.vehicleExtColorStr = extColorStr
+                    dataYear.vehicleIntColorStr = intColorStr
+                    dataYear.radius = radiusId
                     startActivity<UnlockedCarDealActivity>(
                         Constant.ARG_UCD_DEAL to Gson().toJson(
                             data
@@ -634,6 +641,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 val data = adapterExterior.getItem(position) as ExteriorColorData
 //                extColorId = "0"
                 extColorId = data.vehicleExteriorColorID!!
+                extColorStr = data.exteriorColor!!
                 setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     callInteriorColorAPI()
@@ -645,6 +653,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
                 intColorId = data.vehicleInteriorColorID!!
+                intColorStr = data.interiorColor!!
                 setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") callRadiusAPI()
                 isValidSpinner = false

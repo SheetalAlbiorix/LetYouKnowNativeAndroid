@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedCarDealBinding
-import com.letyouknow.model.FindUcdDealGuestData
+import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
@@ -37,7 +37,7 @@ import org.jetbrains.anko.startActivity
 import java.text.DecimalFormat
 
 class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
-    private var arUnlocked: ArrayList<FindUcdDealGuestData> = ArrayList()
+    private var arUnlocked: ArrayList<FindUcdDealData> = ArrayList()
     private var yearModelMakeData = YearModelMakeData()
     private lateinit var adapterUnlockedCarDeal: UnlockedCarDealAdapter
     private var searchRadius = ""
@@ -68,7 +68,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
         ) {
             arUnlocked = Gson().fromJson(
                 intent.getStringExtra(ARG_UCD_DEAL),
-                object : TypeToken<ArrayList<FindUcdDealGuestData>?>() {}.type
+                object : TypeToken<ArrayList<FindUcdDealData>?>() {}.type
             )
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
@@ -124,6 +124,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 selectPos = pos
                 startActivity<UnlockedDealSummeryActivity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
+                    ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                     ARG_IMAGE_ID to imageId
                 )
             }
@@ -142,7 +143,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
         return true
     }
 
-    private fun popupOption(data: FindUcdDealGuestData) {
+    private fun popupOption(data: FindUcdDealData) {
         val dialog = Dialog(this, R.style.FullScreenDialog)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)

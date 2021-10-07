@@ -2,7 +2,7 @@ package com.letyouknow.model
 
 import java.io.Serializable
 
-data class FindUcdDealGuestData(
+data class FindUcdDealData(
     val dealID: String? = "",
     val userID: String? = "",
     val guestID: String? = "",

@@ -44,7 +44,6 @@ import com.letyouknow.view.signup.SignUpActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.PRIVACY_POLICY_LINK
 import com.pionymessenger.utils.Constant.Companion.TERMS_CONDITIONS_LINK
-import com.pionymessenger.utils.Constant.Companion.emailValidator
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.onTextChange
 import com.pionymessenger.utils.Constant.Companion.passwordValidator
@@ -281,11 +280,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 setErrorBorder(edtEmailAddress, tvErrorEmailAddress)
                 return false
             }
-            !emailValidator(edtEmailAddress.text.toString().trim()) -> {
+           /* !emailValidator(edtEmailAddress.text.toString().trim()) -> {
                 tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
                 setErrorBorder(edtEmailAddress, tvErrorEmailAddress)
                 return false
-            }
+            }*/
             TextUtils.isEmpty(edtPassword.text.toString().trim()) -> {
                 tvErrorPassword.text = getString(R.string.enter_password)
                 setErrorBorder(edtPassword, tvErrorPassword)

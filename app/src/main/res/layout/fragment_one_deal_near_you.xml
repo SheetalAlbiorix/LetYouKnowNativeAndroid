@@ -134,13 +134,14 @@
                             android:visibility="@{upDownData.isCarOptions() ? View.VISIBLE : View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatEditText
+                                style="@style/medium"
                                 android:id="@+id/edtZipCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_edittext"
                                 android:backgroundTint="@color/color556473"
                                 android:digits="1234567890"
-                                android:hint="@string/zip_code"
+                                android:hint="ZIP CODE"
                                 android:inputType="number"
                                 android:maxLength="6"
                                 android:textColor="@color/white"

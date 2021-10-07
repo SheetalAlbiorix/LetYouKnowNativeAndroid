@@ -50,7 +50,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var checkedPackageModel: CheckedPackageInventoryViewModel
     private lateinit var packagesOptional: VehicleOptionalViewModel
     private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
-    private lateinit var findLCDDealGuestViewModel: FindLCDDealGuestViewModel
+    private lateinit var findLCDDealGuestViewModel: FindLCDDealViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -132,7 +132,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         checkedAccessoriesModel =
             ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
         findLCDDealGuestViewModel =
-            ViewModelProvider(this).get(FindLCDDealGuestViewModel::class.java)
+            ViewModelProvider(this).get(FindLCDDealViewModel::class.java)
 
         setYear()
         setMake()
@@ -683,9 +683,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             val jsonArrayAccessories = JsonArray()
             var accessoriesStr = ""
             var isFirstAcce = true
+            var arAccId: ArrayList<String> = ArrayList()
             for (i in 0 until adapterOptions.itemCount) {
                 if (adapterOptions.getItem(i).isSelect!!) {
                     jsonArrayAccessories.add(adapterOptions.getItem(i).dealerAccessoryID)
+                    arAccId.add(adapterOptions.getItem(i).dealerAccessoryID!!)
                     if (isFirstAcce) {
                         isFirstAcce = false
                         accessoriesStr = adapterOptions.getItem(i).accessory!!
@@ -696,10 +698,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             val jsonArrayPackage = JsonArray()
             var packageStr = ""
             var isFirstPackage = false
+            var arPackageId: ArrayList<String> = ArrayList()
 
             for (i in 0 until adapterPackages.itemCount) {
                 if (adapterPackages.getItem(i).isSelect!!) {
                     jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
+                    arPackageId.add(adapterPackages.getItem(i).vehiclePackageID!!)
                     if (isFirstPackage) {
                         isFirstPackage = false
                         packageStr = adapterPackages.getItem(i).packageName!!
@@ -718,7 +722,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
             request[ApiConstant.dealerAccessoryIDs] = jsonArrayAccessories
             request[ApiConstant.vehiclePackageIDs] = jsonArrayPackage
-
+            Log.e("Request LCDDeal", Gson().toJson(request))
             findLCDDealGuestViewModel.findDeal(requireActivity(), request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -744,6 +748,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     data.interiorColorStr = intColorStr
                     data.arPackage = packageStr
                     data.arAccessories = accessoriesStr
+                    data.arAccessoriesId = arAccId
+                    data.arPackageId = arPackageId
                     startActivity<DealSummeryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
                 }
                 )

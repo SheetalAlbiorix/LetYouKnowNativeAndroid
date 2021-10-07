@@ -12,7 +12,7 @@
 
         <variable
             name="lcdDealData"
-            type="com.letyouknow.model.FindUcdDealGuestData" />
+            type="com.letyouknow.model.FindUcdDealData" />
 
     </data>
 
@@ -30,7 +30,6 @@
             android:id="@+id/nestedSc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colord3e6ff"
             android:fillViewport="true"
             android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -38,7 +37,6 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="?pageBgColor"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -107,7 +105,6 @@
                         android:id="@+id/ivMain"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_250sdp"
-                        android:background="?pageBgColor"
                         android:orientation="vertical"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_image_car">

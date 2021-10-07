@@ -7,8 +7,13 @@ data class YearModelMakeData(
     var vehicleMakeID: String? = "",
     var vehicleModelID: String? = "",
     var vehicleTrimID: String? = "",
+    var vehicleExtColorID: String? = "",
+    var vehicleIntColorID: String? = "",
     var vehicleYearStr: String? = "",
     var vehicleMakeStr: String? = "",
     var vehicleModelStr: String? = "",
-    var vehicleTrimStr: String? = ""
+    var vehicleTrimStr: String? = "",
+    var vehicleExtColorStr: String? = "",
+    var vehicleIntColorStr: String? = "",
+    var radius: String? = ""
 ) : Serializable

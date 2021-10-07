@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.letyouknow.model.FindUcdDealGuestData
 import com.letyouknow.retrofit.RetrofitClient
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
@@ -12,30 +11,29 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-object FindUCDDealGuestRepository {
+object LYKDollarRepository {
 
-    fun findUCDDealApiCall(
+    fun getDollarApiCall(
         context: Context,
-        request: HashMap<String, Any>
-    ): MutableLiveData<ArrayList<FindUcdDealGuestData>> {
-        val forgotPasswordVo = MutableLiveData<ArrayList<FindUcdDealGuestData>>()
-        val call = RetrofitClient.apiInterface.findUCDDealGuest(request)
+        dealerId: String?
+    ): MutableLiveData<String> {
+        val loginVo = MutableLiveData<String>()
+        val call = RetrofitClient.apiInterface.getlykdollar(dealerId)
 
-        call.enqueue(object : Callback<ArrayList<FindUcdDealGuestData>> {
-            override fun onFailure(call: Call<ArrayList<FindUcdDealGuestData>>, t: Throwable) {
+        call.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
-                call: Call<ArrayList<FindUcdDealGuestData>>,
-                response: Response<ArrayList<FindUcdDealGuestData>>,
+                call: Call<String>,
+                response: Response<String>,
             ) {
                 Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    loginVo.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -47,6 +45,6 @@ object FindUCDDealGuestRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return loginVo
     }
 }
