@@ -37,7 +37,7 @@
                 style="@style/bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{lcdDealData.vehicleYear+' '+lcdDealData.vehicleMake+' '+' '+lcdDealData.vehicleModel+'-'+lcdDealData.vehicleTrim}"
+                android:text="@{lcdDealData.vehicleYear+' '+lcdDealData.vehicleMake+' '+' '+lcdDealData.vehicleModel+' '+lcdDealData.vehicleTrim}"
                 android:textColor="@color/color545d64"
                 android:textSize="@dimen/_16sdp"
                 tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
@@ -53,7 +53,7 @@
                     style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/exterior_color"
+                    android:text="@string/exterior_color_colon"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_12sdp" />
 
@@ -78,7 +78,7 @@
                     style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/interior_color"
+                    android:text="@string/interior_color_colon"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_12sdp" />
 
@@ -417,7 +417,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtInformation"
-                style="@style/medium"
+                style="@style/regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -437,6 +437,7 @@
                 android:padding="@dimen/_15sdp">
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/tvInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -450,7 +451,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:textColor="?blackHeaderText"
+                android:textColor="@color/color545d64"
                 android:textColorHighlight="@android:color/transparent"
                 android:textColorLink="@color/colorPrimary"
                 android:textSize="@dimen/_11sdp" />

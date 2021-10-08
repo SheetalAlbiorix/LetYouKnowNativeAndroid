@@ -27,7 +27,7 @@
                 style="@style/bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Authorization"
+                android:text="Session Expired"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_16sdp" />
 
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/_25sdp"
-                android:text="Your Authentication Failed. \nPlease Login Again."
+                android:text="Your Session is Expired. \nPlease Login Again."
                 android:textColor="@color/textDarkGrey"
                 android:textSize="@dimen/_12sdp" />
 

@@ -229,7 +229,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     private fun setOptions(isEnable: Boolean) {
 
-        tvOptionalAccessories.text = "OPTIONAL & ACCESSORIES"
+        tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
         if (isEnable) {
             tvOptionalAccessories.isEnabled = true
             tvOptionalAccessories.setOnClickListener(this)

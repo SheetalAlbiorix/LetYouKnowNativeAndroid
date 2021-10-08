@@ -77,23 +77,36 @@
                     android:layout_height="wrap_content"
                     android:background="@color/offWhite"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_8sdp"
                     android:visibility="visible">
 
                     <TextView
                         style="@style/bold"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:paddingStart="@dimen/_12sdp"
                         android:paddingEnd="@dimen/_12sdp"
                         android:singleLine="true"
                         android:text="Car Summary"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
+
+                    <TextView
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/_12sdp"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_3sdp"
+                        android:singleLine="true"
+                        android:text="Actual Model may vary"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_8sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -147,6 +160,14 @@
                         app:riv_border_color="@color/black"
                         app:riv_corner_radius="@dimen/_5sdp" />
 
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:scaleType="fitXY"
+                        android:src="@color/colorTransparent3"
+                        app:riv_border_color="@color/black"
+                        app:riv_corner_radius="@dimen/_5sdp" />
+
                     <ImageView
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
@@ -172,6 +193,14 @@
                         android:alpha="0.4"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_image_car"
+                        app:riv_border_color="@color/black"
+                        app:riv_corner_radius="@dimen/_5sdp" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:scaleType="fitXY"
+                        android:src="@color/colorTransparent3"
                         app:riv_border_color="@color/black"
                         app:riv_corner_radius="@dimen/_5sdp" />
 

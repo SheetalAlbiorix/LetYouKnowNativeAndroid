@@ -18,12 +18,12 @@ import android.webkit.*
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
 import com.letyouknow.R
 import com.letyouknow.view.login.LoginActivity
+import kotlinx.android.synthetic.main.dialog_authorization.*
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -242,11 +242,20 @@ class AppGlobal {
         }
 
         fun isAuthorizationFailed(context: Context) {
-            Toast.makeText(context, "Unauthorized User. Please Login Again", Toast.LENGTH_SHORT)
-                .show()
-            context.startActivity(
-                context.intentFor<LoginActivity>().clearTask().newTask()
-            )
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setContentView(R.layout.dialog_authorization)
+            dialog.run {
+                tvOk.setOnClickListener {
+                    context.startActivity(
+                        context.intentFor<LoginActivity>().clearTask().newTask()
+                    )
+                }
+            }
+            setLayoutParam(dialog)
+            dialog.show()
         }
     }
 }

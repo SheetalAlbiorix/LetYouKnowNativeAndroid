@@ -2,6 +2,7 @@ package com.letyouknow.view.home.dealsummery.delasummreystep2
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -38,8 +39,7 @@ import kotlinx.android.synthetic.main.activity_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_deal_summery_step2.*
-import kotlinx.android.synthetic.main.layout_toolbar_blue.*
-import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
+import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -94,6 +94,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             )
             binding.ucdData = dataLCDDeal
             binding.pendingUcdData = dataPendingDeal
+            binding.lightDealBindData = lightBindData
             if (arImage.size != 0) {
                 AppGlobal.loadImageUrl(this, ivMain, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
@@ -115,7 +116,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
-        ivEdit.setOnClickListener(this)
+//        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
         setOnChange()
@@ -125,6 +126,32 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
         edtPhoneNumber.filters =
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
+        onStateChange()
+    }
+
+    private fun onStateChange() {
+        edtGiftCard.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                if (str.isNotEmpty()) {
+                    tvApplyPromo.isEnabled = true
+                    tvApplyPromo.backgroundTintList =
+                        ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
+                } else {
+                    tvApplyPromo.isEnabled = false
+                    tvApplyPromo.backgroundTintList =
+                        ColorStateList.valueOf(resources.getColor(R.color.color88898A))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
     }
 
     private fun setState() {
@@ -153,16 +180,6 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun backButton() {
-        toolbar.setNavigationIcon(R.drawable.ic_back)
-        toolbar.setTitleTextColor(resources.getColor(R.color.black))
-
-        setSupportActionBar(toolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-    }
 
     override fun getViewActivity(): Activity? {
         return this
@@ -183,10 +200,9 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                     isFirst60 = false
                 }
                 if (seconds == 0) {
-                    tvDealGuaranteed.text = "Reserved Deal has expired"
                     tvAddMin.visibility = View.GONE
                     tvTimer.visibility = View.GONE
-                    tvPerc.visibility = View.VISIBLE
+                    llExpired.visibility = View.VISIBLE
                     isTimeOver = true
                     tvSubmitStartOver.text = getString(R.string.start_over)
                     cancelTimer()
@@ -212,12 +228,12 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     override fun onPause() {
         super.onPause()
-        cancelTimer()
+//        cancelTimer()
     }
 
     override fun onStop() {
         super.onStop()
-        cancelTimer()
+//        cancelTimer()
     }
 
     private fun setOnChange() {
@@ -384,9 +400,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             }
             tvLeaveDeal.setOnClickListener {
                 dismiss()
-                startActivity(
-                    intentFor<MainActivity>().clearTask().newTask()
-                )
+                onBackPressed()
             }
         }
         setLayoutParam(dialog)

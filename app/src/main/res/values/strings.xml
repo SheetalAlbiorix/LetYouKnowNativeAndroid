@@ -33,19 +33,26 @@
     <string name="by_login">By Login you agree to LetYouKnow\'s \nTerms and Conditions and Privacy Policy</string>
     <string name="remember_me">Remember me</string>
     <string name="first_name">First Name</string>
+    <string name="first_name_required">First Name*</string>
     <string name="middle_name">MI</string>
     <string name="last_name">Last Name</string>
+    <string name="last_name_required">Last Name*</string>
     <string name="address_1">Address 1</string>
     <string name="address_2">Address 2</string>
     <string name="city">City</string>
+    <string name="city_required">City*</string>
     <string name="forgot_user_id">Forgot User ID?</string>
     <string name="forgot_user_name"><u>Forgot User Name?</u></string>
     <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_1_required">Address Line 1*</string>
     <string name="address_line_2">Address Line 2</string>
     <string name="state">State</string>
     <string name="zip_code">Zip Code</string>
+    <string name="zip_code_required">Zip Code*</string>
     <string name="phone_number">Phone Number</string>
+    <string name="phone_number_required">Phone Number*</string>
     <string name="email_address">Email</string>
+    <string name="email_address_required">Email*</string>
     <string name="email">Email</string>
     <string name="confirm_email">Confirm Email</string>
     <string name="confirm_user_id">Confirm User ID</string>
@@ -100,14 +107,15 @@
     <string name="enter_valid_phone_number">Enter valid PhoneNumber</string>
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="did_n_t_match_password">Password and Confirm Password didn\'t match</string>
-    <string name="exterior_color_colon">Exterior Color : </string>
+    <string name="exterior_color_colon">Exterior Color: </string>
     <string name="exterior_color">Exterior Color</string>
-    <string name="interior_color_colon">Interior Color : </string>
+    <string name="interior_color_colon">Interior Color: </string>
     <string name="interior_color">Interior Color</string>
     <string name="submit_my_deal">Submit My Deal</string>
     <string name="start_over">Start Over</string>
     <string name="bid_price">Bid Price:</string>
-    <string name="price_summery">Price Summery:</string>
+    <string name="price_summary">Price Summary</string>
+    <string name="price_summary_colon">Price Summary:</string>
     <string name="balance_preview">Balance Preview:</string>
     <string name="your_lightingcardeals_price">Your LightingCarDeals Price:</string>
     <string name="for_non_refundable">For nonrefundable service &amp; reservation fee of $%1s$ if your deal is accepted</string>
@@ -187,7 +195,7 @@
     <string name="if_there_is_match_search_deal"><![CDATA[<html><p>If there is a match, you agree to the following:</p><p><b>1. Reservation</b> - You agree that you have 5 minutes to reserve the vehicle you selected after initialing this disclosure and proceeding to the Payment page. When you have 1 minute left of the initial 5-minute period, you will then be given an option to add 2 minutes, which will give you a total of 7 minutes. If you do not take any action (by extending the time or submitting your deal) before the 5-minute period has expired, the vehicle you selected will no longer be reserved.</p><p><b>2. Vehicle Condition</b> – By choosing the UnlockedCarDeals option, you are agreeing that you may be matched with a new vehicle that may have a high odometer reading (more than 199 miles) and/or blemishes (such as scratch and dent and other visible or invisible to the naked eye blemishes) that are known to the matched dealership. Any known disclosures will be listed in the vehicle description.</p><p><b>3. Search Radius Distance</b> – Your matched vehicle will be within the selected search radius distance of the zip code that you input. The distance will be measured by the radius distance from the geographic centroid (sourced from the U.S. Census Bureau) of the zip code that you input or by MAPQUEST Geocoding API coordinates of the zip code that you input.</p><p><b>4. Time Limit</b> – You must complete your vehicle transaction at the matched dealership within 10 calendar days of your transaction with LetYouKnow (excluding cases where the 10th day falls on the day the dealership is closed, which will then result in a shorter than 10-day period. See full Terms and Conditions for more details).<br> Failing to complete your vehicle transaction during the allocated 10 calendar day period, will result in losing your matched vehicle reservation and you will not be refunded the $799.00 nonrefundable Service and Reservation Fee.</p><p><b>5. Nonrefundable Service and Reservation Fee</b> – A nonrefundable Service and Reservation Fee is included in your price and you will be instantly charged this nonrefundable Service and Reservation Fee of $799.00 if your price is accepted. You will not be charged if your price is not accepted.</p><p><b>6. Taxes and Registration/Licensing Fees</b> - The accepted price for your matched vehicle includes all dealership fees, but does not include taxes, titling fees, registration fees and/or license plate fees and any other fees and/or taxes based on all applicable local, state and federal laws.</p><p><b>7. Finance and Payment Responsibility</b> – You are responsible for paying the remaining balance of your matched vehicle (your price plus taxes, titling fees, registration fees and license plate fees, minus your prepayment of the $799.00 nonrefundable Service and Reservation Fee). If you are financing your matched vehicle, it is your responsibility to secure financing for your matched vehicle. If you cannot secure financing, we will not refund the $799.00 nonrefundable Service and Reservation Fee.</p><p><b>8. Personal Information</b> – Your contact details along with your price and vehicle\'s financing-related information will be shared with the matched dealership.</p><p><b>9. Trade-In Vehicle Responsibility</b> - If you wish to trade in a vehicle, you must come to an agreement regarding the trade-in terms with your matched dealership. LetYouKnow assumes no responsibility and is not liable for any agreements that you make with the matched dealership regarding trade-in vehicles.</p></div></div></html>]]> </string>
     <string name="initials_required">Initials Required</string>
     <string name="option_amp_accessories"><![CDATA[Option & Accessories]]></string>
-    <string name="option_amp_accessories_colon"><![CDATA[Option & Accessories :]]></string>
+    <string name="option_amp_accessories_colon"><![CDATA[Option & Accessories:]]></string>
     <string name="select_deal">Select Deal</string>
     <string name="unlockedcardeals">UnlockedCarDeals:</string>
     <string name="search_summary">Search Summary</string>
@@ -197,9 +205,10 @@
     <string name="price_data">$%1$.2f</string>
     <string name="enter_lastname">Enter LastName</string>
     <string name="enter_valid_date_mm_yy">Enter Valid Date MM YY</string>
-    <string name="okay">OkAY</string>
+    <string name="okay">OKAY</string>
     <string name="letyouknow_dollars">LetYouKnow Dollars</string>
     <string name="leave_my_deal">Leave My Deal</string>
+    <string name="actual_model_may_vary">Actual Model may vary</string>
 
 
 </resources>

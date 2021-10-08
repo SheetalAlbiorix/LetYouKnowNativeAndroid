@@ -28,8 +28,9 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/layout_toolbar_blue"
+            layout="@layout/layout_toolbar_timer"
             app:toolbarTitle="@{@string/deal_summary}" />
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -45,6 +46,19 @@
                 android:background="@drawable/bg_half_round"
                 android:backgroundTint="?pageBgColor"
                 android:orientation="vertical">
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:singleLine="true"
+                    android:text="Actual Model may vary"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_8sdp" />
 
                 <FrameLayout
                     android:layout_height="@dimen/_250sdp"
@@ -63,83 +77,7 @@
 
                     </androidx.appcompat.widget.AppCompatImageView>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvPerc"
-                            style="@style/medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:background="@drawable/bg_round_border_blue"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_8sdp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:paddingBottom="@dimen/_8sdp"
-                            android:text="0%"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/_12sdp"
-                            android:visibility="gone" />
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:background="@drawable/bg_shadow_round_rectangle"
-                            android:backgroundTint="@color/navyBlue"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_6sdp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:paddingBottom="@dimen/_6sdp">
-
-                            <TextView
-                                android:id="@+id/tvDealGuaranteed"
-                                style="@style/medium"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/_8sdp"
-                                android:text="Deal Guaranteed For"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <TextView
-                                android:id="@+id/tvTimer"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@drawable/bg_white_border_round_rect7"
-                                android:gravity="center"
-                                android:padding="@dimen/_8sdp"
-                                android:text="00.00"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_9sdp" />
-
-                            <TextView
-                                android:id="@+id/tvAddMin"
-                                style="@style/medium"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/_8sdp"
-                                android:background="@drawable/bg_button3"
-                                android:backgroundTint="@color/white"
-                                android:gravity="center"
-                                android:padding="@dimen/_8sdp"
-                                android:text="Add 2 Min"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_9sdp"
-                                android:visibility="gone" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -171,9 +109,17 @@
                                     android:id="@+id/ivBgGallery"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:alpha="0.4"
                                     android:scaleType="fitXY"
+                                    android:alpha="0.4"
                                     android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
 
@@ -199,9 +145,17 @@
                                     android:id="@+id/ivBg360"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:alpha="0.4"
                                     android:scaleType="fitXY"
+                                    android:alpha="0.4"
                                     android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
 
@@ -214,18 +168,7 @@
                                     android:textSize="@dimen/_12sdp" />
                             </FrameLayout>
 
-                            <!--<TextView
-                                style="@style/regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_25sdp"
-                                android:gravity="end"
-                                android:paddingStart="@dimen/_12sdp"
-                                android:paddingEnd="@dimen/_8sdp"
-                                android:singleLine="true"
-                                android:text="Actual Model may vary"
-                                android:textColor="@color/color545d64"
-                                android:textSize="@dimen/_11sdp" />-->
+
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </FrameLayout>

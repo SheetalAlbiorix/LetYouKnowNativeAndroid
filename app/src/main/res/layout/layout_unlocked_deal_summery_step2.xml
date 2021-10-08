@@ -47,7 +47,7 @@
                     style="@style/bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{lcdDealData.vehicleYear+' '+lcdDealData.vehicleMake+' '+' '+lcdDealData.vehicleModel+'-'+lcdDealData.vehicleTrim}"
+                    android:text="@{lcdDealData.vehicleYear+' '+lcdDealData.vehicleMake+' '+' '+lcdDealData.vehicleModel+' '+lcdDealData.vehicleTrim}"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_16sdp"
                     tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
@@ -63,7 +63,7 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/exterior_color"
+                        android:text="@string/exterior_color_colon"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
 
@@ -276,7 +276,7 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/price_summery"
+                android:text="@string/price_summary"
                 android:textColor="?blackHeaderText"
                 android:textSize="@dimen/_16sdp" />
 
@@ -842,7 +842,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/first_name"
+                        android:hint="@string/first_name_required"
                         android:inputType="text"
                         android:text="@{pendingUCDData.buyer.firstName}"
                         app:layout_constraintStart_toStartOf="parent"
@@ -898,7 +898,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/last_name"
+                android:hint="@string/last_name_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.lastName}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -920,7 +920,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/address_line_1"
+                android:hint="@string/address_line_1_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.address1}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -964,7 +964,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/city"
+                android:hint="@string/city_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.city}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1004,7 +1004,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
                 android:digits="1234567890"
-                android:hint="@string/zip_code"
+                android:hint="@string/zip_code_required"
                 android:inputType="number"
                 android:maxLength="6"
                 android:text="@{pendingUCDData.buyer.zipcode}" />
@@ -1026,7 +1026,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/phone_number"
+                android:hint="@string/phone_number_required"
                 android:inputType="phone"
                 android:text="@{pendingUCDData.buyer.phoneNumber}" />
 
@@ -1046,7 +1046,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/email_address"
+                android:hint="@string/email_address_required"
                 android:inputType="textEmailAddress"
                 android:text="@{pendingUCDData.buyer.email}"
                 app:layout_constraintStart_toStartOf="parent"

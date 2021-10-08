@@ -47,7 +47,7 @@
                     style="@style/bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{lcdDealData.yearStr+' '+lcdDealData.makeStr+' '+' '+lcdDealData.modelStr+'-'+lcdDealData.trimStr}"
+                    android:text="@{lcdDealData.yearStr+' '+lcdDealData.makeStr+' '+' '+lcdDealData.modelStr+' '+lcdDealData.trimStr}"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_16sdp"
                     tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
@@ -63,7 +63,7 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/exterior_color"
+                        android:text="@string/exterior_color_colon"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
 
@@ -88,7 +88,7 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/interior_color"
+                        android:text="@string/interior_color_colon"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
 
@@ -251,7 +251,7 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/price_summery"
+                android:text="@string/price_summary_colon"
                 android:textColor="?blackHeaderText"
                 android:textSize="@dimen/_16sdp" />
 

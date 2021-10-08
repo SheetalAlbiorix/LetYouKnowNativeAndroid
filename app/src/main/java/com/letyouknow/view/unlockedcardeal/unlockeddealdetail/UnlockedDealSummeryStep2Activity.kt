@@ -36,13 +36,8 @@ import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.layout_toolbar_blue.*
-import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
+import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.*
-import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.btnProceedDeal
-import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.edtZipCode
-import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.tvErrorZipCode
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -126,7 +121,6 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
-        ivEdit.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
@@ -189,16 +183,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    private fun backButton() {
-        toolbar.setNavigationIcon(R.drawable.ic_back)
-        toolbar.setTitleTextColor(resources.getColor(R.color.black))
 
-        setSupportActionBar(toolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-    }
 
     override fun getViewActivity(): Activity? {
         return this
@@ -219,10 +204,10 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                     isFirst60 = false
                 }
                 if (seconds == 0) {
-                    tvDealGuaranteed.text = "Reserved Deal has expired"
+//                    tvDealGuaranteed.text = "Reserved Deal has expired"
                     tvAddMin.visibility = View.GONE
                     tvTimer.visibility = View.GONE
-                    tvPerc.visibility = View.VISIBLE
+                    llExpired.visibility = View.VISIBLE
                     isTimeOver = true
                     tvSubmitStartOver.text = getString(R.string.start_over)
                     cancelTimer()
@@ -248,12 +233,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     override fun onPause() {
         super.onPause()
-        cancelTimer()
+//        cancelTimer()
     }
 
     override fun onStop() {
         super.onStop()
-        cancelTimer()
+//        cancelTimer()
     }
 
     private fun setOnChange() {

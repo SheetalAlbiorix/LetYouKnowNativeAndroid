@@ -52,7 +52,7 @@ import org.jetbrains.anko.startActivity
 
 class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    private var arLoan = arrayListOf("Financing Option", "LOAN", "CARD")
+    private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
     private var financingStr = "Financing Option"
 
     private var arImageUrl: ArrayList<String> = ArrayList()

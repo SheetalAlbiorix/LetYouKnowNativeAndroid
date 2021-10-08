@@ -67,6 +67,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
+                        android:layout_marginLeft="@dimen/_2sdp"
                         android:id="@+id/tvDialogExteriorColor"
                         style="@style/regular"
                         android:layout_width="wrap_content"
@@ -99,6 +100,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.87"
                         android:text="abc"
+                        android:layout_marginLeft="@dimen/_2sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
@@ -174,7 +176,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18sdp"
-                    tool:text="Price : $200.00" />
+                    tool:text="Price: $200.00" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

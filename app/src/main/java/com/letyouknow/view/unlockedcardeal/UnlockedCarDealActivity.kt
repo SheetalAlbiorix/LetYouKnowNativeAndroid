@@ -104,7 +104,6 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onNetworkStateChange(isConnect: Boolean) {
-        TODO("Not yet implemented")
     }
 
     private var selectPos = -1
@@ -180,7 +179,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 if (accessories.isEmpty())
                     tvDialogOptions.visibility = View.GONE
                 tvDialogOptions.text = accessories
-                tvPrice.text = "Price : $" + if (price != null) DecimalFormat("##.##").format(
+                tvPrice.text = "Price: $" + if (price != null) DecimalFormat("##.##").format(
                     price?.toDouble()
                 ) else "$0.0"
 

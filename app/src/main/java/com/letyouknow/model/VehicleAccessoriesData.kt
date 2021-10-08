@@ -10,5 +10,6 @@ data class VehicleAccessoriesData(
     val isFromDMS: Boolean? = false,
     val isInInventory: Boolean? = false,
     val id: String? = "",
-    var isSelect: Boolean? = false
+    var isSelect: Boolean? = false,
+    var isGray: Boolean? = false
 ) : Serializable
