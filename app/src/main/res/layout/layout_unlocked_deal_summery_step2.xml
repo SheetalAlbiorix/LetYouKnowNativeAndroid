@@ -43,6 +43,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_25sdp">
                 <!--                -->
+
                 <TextView
                     style="@style/bold"
                     android:layout_width="match_parent"
@@ -837,7 +838,7 @@
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.stripe.android.view.CardInputWidget
+        <com.stripe.android.view.AddPaymentMethodCardView
             android:id="@+id/cardInputWidget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
