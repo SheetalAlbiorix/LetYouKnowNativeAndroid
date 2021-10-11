@@ -26,6 +26,7 @@ import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.model.LightDealBindData
 import com.letyouknow.model.SubmitPendingUcdData
 import com.letyouknow.retrofit.viewmodel.LYKDollarViewModel
+import com.letyouknow.retrofit.viewmodel.PromoCodeViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
@@ -57,6 +58,8 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     private lateinit var dataLCDDeal: FindLCDDeaData
     private lateinit var dataPendingDeal: SubmitPendingUcdData
     private lateinit var lykDollarViewModel: LYKDollarViewModel
+    private lateinit var promoCodeViewModel: PromoCodeViewModel
+
 
     private lateinit var arImage: ArrayList<String>
 
@@ -75,7 +78,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
-
+        promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
             )
@@ -116,6 +119,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
+        tvApplyPromo.setOnClickListener(this)
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
@@ -128,6 +132,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
         onStateChange()
     }
+
 
     private fun onStateChange() {
         edtGiftCard.addTextChangedListener(object : TextWatcher {
@@ -179,6 +184,39 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun callPromoCodeAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            promoCodeViewModel.getPromoCode(
+                this,
+                edtGiftCard.text.toString().trim(),
+                dataPendingDeal.dealID
+            )!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    if (data.discount!! > 0) {
+                        tvPromoData.visibility = View.VISIBLE
+                        tvPromoData.text = "-$${data.discount}"
+                        dataLCDDeal.discount = data.discount!!
+                        binding.ucdData = dataLCDDeal
+                    } else {
+                        tvPromoData.visibility = View.GONE
+                        dataLCDDeal.discount = 0.0f
+                        binding.ucdData = dataLCDDeal
+                        if (data.promotionID == "-1") {
+                            tvErrorPromo.text = getString(R.string.enter_promo_code_is_not_valid)
+                        } else {
+                            tvErrorPromo.text =
+                                getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
+                        }
+                        tvErrorPromo.visibility = View.VISIBLE
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
     override fun getViewActivity(): Activity? {
@@ -279,6 +317,10 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvApplyPromo -> {
+                tvErrorPromo.visibility = View.GONE
+                callPromoCodeAPI()
+            }
             R.id.tvViewOptions -> {
                 popupOption()
             }

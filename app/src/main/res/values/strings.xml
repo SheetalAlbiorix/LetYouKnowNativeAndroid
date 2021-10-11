@@ -209,6 +209,9 @@
     <string name="letyouknow_dollars">LetYouKnow Dollars</string>
     <string name="leave_my_deal">Leave My Deal</string>
     <string name="actual_model_may_vary">Actual Model may vary</string>
+    <string name="enter_promo_code_is_not_valid">Enter Promo Code is not valid</string>
+    <string name="promo_code_cannot_be_applied_due_to_negative_balance">Promo code cannot be applied due to negative balance</string>
+    <string name="stripe_publishable_key">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
 
 
 </resources>

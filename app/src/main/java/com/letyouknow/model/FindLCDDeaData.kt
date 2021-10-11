@@ -37,6 +37,7 @@ data class FindLCDDeaData(
     var interiorColorStr: String? = "",
     var arPackage: String? = "",
     var arAccessories: String? = "",
+    var discount: Float? = 0.0f,
     var arPackageId: ArrayList<String> = ArrayList(),
     var arAccessoriesId: ArrayList<String> = ArrayList()
 ) : Serializable

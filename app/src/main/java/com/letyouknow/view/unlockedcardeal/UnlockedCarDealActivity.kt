@@ -121,6 +121,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 data.isSelect = true
                 adapterUnlockedCarDeal.update(pos, data)
                 selectPos = pos
+
                 startActivity<UnlockedDealSummeryActivity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
                     ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),

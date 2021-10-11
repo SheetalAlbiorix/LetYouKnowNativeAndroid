@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.letyouknow.utils.AppGlobal" />
+
         <variable
             name="type"
             type="Integer" />
@@ -14,6 +16,10 @@
         <variable
             name="lcdDealData"
             type="com.letyouknow.model.FindLCDDeaData" />
+
+        <variable
+            name="appGlobalData"
+            type="com.letyouknow.utils.AppGlobalBindData" />
 
     </data>
 

@@ -100,7 +100,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
         }
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))
-        strikeThrough(tvPrice)
+        strikeThrough(tvMSRP)
         setLoan()
 //        setInfoLink()
         setPrivacyPolicyLink()

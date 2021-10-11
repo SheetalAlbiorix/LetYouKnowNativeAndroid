@@ -257,5 +257,8 @@ class AppGlobal {
             setLayoutParam(dialog)
             dialog.show()
         }
+
+
     }
+
 }

@@ -118,6 +118,12 @@ interface ApiInterface {
     @POST("image/getimageurl")
     fun getImageURL(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
 
+    @GET("promotion/validatepromocode")
+    fun validatePromoCode(
+        @Query("promoCode") promoCode: String?,
+        @Query("dealId") dealId: String?
+    ): Call<PromoCodeData>
+
     @GET("lykdollar/getlykdollar")
     fun getlykdollar(
         @Query("dealId") dealId: String?

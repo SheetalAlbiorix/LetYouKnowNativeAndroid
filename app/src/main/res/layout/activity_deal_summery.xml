@@ -213,18 +213,6 @@
                         android:textSize="@dimen/_12sdp" />
                 </FrameLayout>
 
-                <TextView
-                    style="@style/regular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:gravity="end"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:singleLine="true"
-                    android:text="Actual Model may vary"
-                    android:textColor="@color/color545d64"
-                    android:textSize="@dimen/_11sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </FrameLayout>
@@ -238,32 +226,6 @@
 
 
         </androidx.core.widget.NestedScrollView>
-
-
-        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="@dimen/_23sdp"
-             app:backgroundTint="@color/white"
-             app:fabSize="mini"
-             app:layout_anchor="@id/appbar"
-             android:visibility="gone"
-             app:layout_anchorGravity="bottom|start"
-             app:srcCompat="@drawable/bg_circle_shape" />
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/ivInteriorColor"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="@dimen/_80sdp"
-             android:visibility="gone"
-             android:foregroundTint="@color/lightGray"
-             android:tint="@color/textLightGrey"
-             app:backgroundTint="@color/white"
-             app:fabSize="mini"
-             app:layout_anchor="@id/appbar"
-             app:layout_anchorGravity="bottom|start"
-             app:srcCompat="@drawable/bg_circle_shape" />-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

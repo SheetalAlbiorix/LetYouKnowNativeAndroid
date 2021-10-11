@@ -2,6 +2,7 @@ package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -9,11 +10,14 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -23,6 +27,7 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedDealSummeryStep2Binding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.viewmodel.LYKDollarViewModel
+import com.letyouknow.retrofit.viewmodel.PromoCodeViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
@@ -33,6 +38,10 @@ import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.stripe.android.ApiResultCallback
+import com.stripe.android.Stripe
+import com.stripe.android.model.PaymentMethod
+import com.stripe.android.model.PaymentMethodCreateParams
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -59,6 +68,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var pendingUCDData: SubmitPendingUcdData
     private lateinit var lykDollarViewModel: LYKDollarViewModel
+    private lateinit var promoCodeViewModel: PromoCodeViewModel
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
     private var isTimeOver = false
@@ -74,7 +84,9 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        stripe = Stripe(this, getString(R.string.stripe_publishable_key))
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
+        promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -122,6 +134,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
+        tvApplyPromo.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
         setOnChange()
@@ -132,6 +145,34 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         AppGlobal.strikeThrough(tvPrice)
 
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
+        edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
+        stripPayment()
+    }
+
+    private var stripe: Stripe? = null
+
+    private fun stripPayment() {
+        val paymentMethodCreateParams =
+            cardInputWidget.paymentMethodCreateParams
+        if (paymentMethodCreateParams != null)
+            addStripeCard(paymentMethodCreateParams)
+    }
+
+    private fun addStripeCard(paymentMethodCreateParams: PaymentMethodCreateParams) {
+        stripe!!.createPaymentMethod(
+            paymentMethodCreateParams, null,
+            object : ApiResultCallback<PaymentMethod> {
+                override fun onSuccess(result: PaymentMethod) {
+
+                    // add a call to own server to save the details
+                    Log.e("Payment Result", Gson().toJson(result))
+                }
+
+                override fun onError(e: java.lang.Exception) {
+                    Log.e("Payment Error", e.message!!)
+                }
+
+            })
     }
 
     private fun callDollarAPI() {
@@ -141,6 +182,40 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     tvDollar.text = "$$data"
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callPromoCodeAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            promoCodeViewModel.getPromoCode(
+                this,
+                edtGiftCard.text.toString().trim(),
+                pendingUCDData.dealID
+            )!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    if (data.discount!! > 0) {
+                        tvPromoData.visibility = View.VISIBLE
+                        tvPromoData.text = "-$${data.discount}"
+                        ucdData.discount = data.discount!!
+                        binding.ucdData = ucdData
+                    } else {
+                        tvPromoData.visibility = View.GONE
+                        ucdData.discount = 0.0f
+                        binding.ucdData = ucdData
+                        if (data.promotionID == "-1") {
+                            tvErrorPromo.text = getString(R.string.enter_promo_code_is_not_valid)
+                        } else {
+                            tvErrorPromo.text =
+                                getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
+                        }
+                        tvErrorPromo.visibility = View.VISIBLE
+                    }
                 }
                 )
         } else {
@@ -311,6 +386,10 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvApplyPromo -> {
+                tvErrorPromo.visibility = View.GONE
+                callPromoCodeAPI()
+            }
             R.id.ivBack -> {
                 if (isTimeOver) {
                     onBackPressed()
@@ -371,6 +450,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 adapterCardList.addAll(arCardList)
                 pref?.setCardList(Gson().toJson(arCardList))
                 llCardList.visibility = View.VISIBLE*/
+                checkPermission()
                 setClearData()
             }
             R.id.ivBackDeal -> {
@@ -396,6 +476,33 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 cancelTimer()
                 startTimer()
             }
+        }
+    }
+
+    private val REQUEST_CODE_LOCATION = 1001
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            // REQUEST_CODE_LOCATION should be defined on your app level
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_LOCATION)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.isNotEmpty()
+            && grantResults[0] != PackageManager.PERMISSION_GRANTED
+        ) {
+            throw RuntimeException("Location services are required in order to " + "connect to a reader.")
         }
     }
 
