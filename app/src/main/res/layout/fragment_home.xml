@@ -104,6 +104,10 @@
                 android:paddingLeft="@dimen/_20sdp"
                 android:paddingRight="@dimen/_20sdp">
 
+                <com.stripe.android.view.AddPaymentMethodCardView
+                    android:id="@+id/cardInputWidget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
                 <!--<TextView
                     style="@style/bold"
                     android:layout_width="wrap_content"

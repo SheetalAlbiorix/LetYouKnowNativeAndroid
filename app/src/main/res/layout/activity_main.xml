@@ -71,7 +71,11 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.Toolbar>
 
-
+<com.stripe.android.view.AddPaymentMethodCardView
+    android:id="@+id/cardInputWidget"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" />
 
         <FrameLayout
             android:id="@+id/flContainer"

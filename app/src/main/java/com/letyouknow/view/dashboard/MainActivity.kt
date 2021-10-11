@@ -22,6 +22,8 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
 import com.pionymessenger.utils.Constant
+import com.stripe.android.PaymentConfiguration
+import com.stripe.android.Stripe
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -311,5 +313,16 @@ class MainActivity : BaseActivity(),
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+
+    private lateinit var stripe: Stripe
+
+    private fun initStripe() {
+        stripe = Stripe(this, PaymentConfiguration.getInstance(applicationContext).publishableKey)
+
+    }
+
+    private fun startCheckOut() {
     }
 }

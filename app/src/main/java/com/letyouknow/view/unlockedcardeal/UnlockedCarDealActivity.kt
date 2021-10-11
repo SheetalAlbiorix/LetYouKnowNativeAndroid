@@ -70,6 +70,9 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 intent.getStringExtra(ARG_UCD_DEAL),
                 object : TypeToken<ArrayList<FindUcdDealData>?>() {}.type
             )
+            if (arUnlocked.isNullOrEmpty()) {
+                tvNotFound.visibility = View.VISIBLE
+            }
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java

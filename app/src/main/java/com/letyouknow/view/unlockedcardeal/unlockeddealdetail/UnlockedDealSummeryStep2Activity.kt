@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -38,10 +37,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
-import com.stripe.android.model.PaymentMethod
-import com.stripe.android.model.PaymentMethodCreateParams
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -153,28 +149,28 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
     private fun stripPayment() {
         val paymentMethodCreateParams =
-            cardInputWidget.paymentMethodCreateParams
-        if (paymentMethodCreateParams != null)
-            addStripeCard(paymentMethodCreateParams)
+            cardInputWidget
+        /* if (paymentMethodCreateParams != null)
+             addStripeCard(paymentMethodCreateParams)*/
     }
 
-    private fun addStripeCard(paymentMethodCreateParams: PaymentMethodCreateParams) {
-        stripe!!.createPaymentMethod(
-            paymentMethodCreateParams, null,
-            object : ApiResultCallback<PaymentMethod> {
-                override fun onSuccess(result: PaymentMethod) {
+    /* private fun addStripeCard(paymentMethodCreateParams: PaymentMethodCreateParams) {
+         stripe!!.createPaymentMethod(
+             paymentMethodCreateParams, null,
+             object : ApiResultCallback<PaymentMethod> {
+                 override fun onSuccess(result: PaymentMethod) {
 
-                    // add a call to own server to save the details
-                    Log.e("Payment Result", Gson().toJson(result))
-                }
+                     // add a call to own server to save the details
+                     Log.e("Payment Result", Gson().toJson(result))
+                 }
 
-                override fun onError(e: java.lang.Exception) {
-                    Log.e("Payment Error", e.message!!)
-                }
+                 override fun onError(e: java.lang.Exception) {
+                     Log.e("Payment Error", e.message!!)
+                 }
 
-            })
-    }
-
+             })
+     }
+ */
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)

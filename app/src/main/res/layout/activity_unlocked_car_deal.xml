@@ -230,6 +230,20 @@
                     android:paddingEnd="@dimen/_12sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/list_item_unlocked_car" />
+
+                <TextView
+                    android:id="@+id/tvNotFound"
+                    style="@style/regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:background="@drawable/bg_button3"
+                    android:backgroundTint="@color/offWhite"
+                    android:padding="@dimen/_8sdp"
+                    android:text="@string/no_results_for_your_zip_code"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
