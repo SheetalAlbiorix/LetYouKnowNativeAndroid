@@ -30,9 +30,8 @@ class UnlockedCarDealAdapter(layout: Int, val clickListener: View.OnClickListene
                 tvTitle.text = "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
                 tvExterior.text = vehicleExteriorColor
                 tvInterior.text = vehicleInteriorColor
-                val format: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
-                val currency: String = format.format(price)
-                val msrpcurrency: String = format.format(msrp)
+                val currency: String = NumberFormat.getCurrencyInstance(Locale.US).format(price)
+                val msrpcurrency: String = NumberFormat.getCurrencyInstance(Locale.US).format(msrp)
                 tvPrice.text = currency
                 tvMSRP.text = msrpcurrency
                 if (AppGlobal.isNotEmpty(miles)) {

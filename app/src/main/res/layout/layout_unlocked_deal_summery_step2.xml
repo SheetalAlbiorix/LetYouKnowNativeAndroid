@@ -8,6 +8,10 @@
 
         <import type="android.view.View" />
 
+        <import type="java.text.NumberFormat" />
+
+        <import type="java.util.Locale" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -159,7 +163,7 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/price_data(lcdDealData.price)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                         android:textColor="@color/colorbf4848"
                         android:textSize="@dimen/_16sdp"
                         tool:text="$47000.00" />
@@ -170,7 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{@string/price_data(lcdDealData.msrp)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)}"
                         android:textColor="@color/navyBlue"
                         android:textSize="@dimen/_14sdp"
                         tool:text="$47000.00" />
@@ -307,7 +311,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{@string/price_data(lcdDealData.price)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -488,7 +492,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{@string/price_data(lcdDealData.price - (799.0f + lcdDealData.discount))}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price - (799.0f + lcdDealData.discount))}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -505,7 +509,7 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/_25sdp"
             android:paddingRight="@dimen/_25sdp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/bold"

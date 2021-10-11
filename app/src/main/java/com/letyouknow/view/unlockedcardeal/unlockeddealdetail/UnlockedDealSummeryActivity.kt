@@ -129,7 +129,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             scrollInfo.parent.requestDisallowInterceptTouchEvent(false)
             false
         }
-        scrollInfo.setOnTouchListener { v, event ->
+        scrollInfo.setOnTouchListener { v, _ ->
             v.parent.requestDisallowInterceptTouchEvent(true)
             false
         }

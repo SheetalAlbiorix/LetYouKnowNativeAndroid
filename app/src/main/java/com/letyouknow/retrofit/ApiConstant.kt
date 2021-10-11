@@ -39,6 +39,17 @@ class ApiConstant {
         var vehicleInventoryID = "vehicleInventoryID"
         var dealID = "dealID"
         var guestID = "guestID"
+        var type = "type"
+        var cardnumber = "card[number]"
+        var cardcvc = "card[cvc]"
+        var card_exp_month = "card[exp_month]"
+        var card_exp_year = "card[exp_year]"
+        var billing_details = "billing_details[address][postal_code]"
+        var guid = "guid"
+        var muid = "muid"
+        var sid = "sid"
+        var time_on_page = "time_on_page"
+        var key = "key"
 
     }
 }

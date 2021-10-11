@@ -3,10 +3,7 @@ package com.letyouknow.retrofit
 import com.letyouknow.model.*
 import com.pionymessenger.model.SignupData
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiInterface {
 
@@ -128,4 +125,9 @@ interface ApiInterface {
     fun getlykdollar(
         @Query("dealId") dealId: String?
     ): Call<String>
+
+    @Headers("Authorization: Bearer pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA")
+    @POST("https://api.stripe.com/v1/payment_methods")
+    fun paymentMethods(@Body request: HashMap<String, Any>): Call<CardStripeData>
+
 }

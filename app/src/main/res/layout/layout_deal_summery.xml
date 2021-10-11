@@ -7,6 +7,10 @@
 
         <import type="android.view.View" />
 
+        <import type="java.text.NumberFormat" />
+
+        <import type="java.util.Locale" />
+
         <import type="com.letyouknow.utils.AppGlobal" />
 
         <variable
@@ -126,7 +130,7 @@
                     style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/price_data(lcdDealData.price)}"
+                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                     android:textColor="@color/colorbf4848"
                     android:textSize="@dimen/_16sdp"
                     tool:text="$47000.00" />
@@ -137,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="@{@string/price_data(lcdDealData.msrp)}"
+                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)}"
                     android:textColor="@color/navyBlue"
                     android:textSize="@dimen/_14sdp"
                     tool:text="$47000.00" />
@@ -280,7 +284,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{@string/price_data(lcdDealData.price)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                         tool:text="$47,000.00"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_13sdp" />
@@ -354,7 +358,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
-                            android:text="@{@string/price_data(lcdDealData.price - 799.0f)}"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price - 799.0f)}"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp" />
 

@@ -25,7 +25,9 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedDealSummeryStep2Binding
 import com.letyouknow.model.*
+import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.LYKDollarViewModel
+import com.letyouknow.retrofit.viewmodel.PaymentMethodViewModel
 import com.letyouknow.retrofit.viewmodel.PromoCodeViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.CreditCardNumberTextWatcher
@@ -48,6 +50,7 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     lateinit var binding: ActivityUnlockedDealSummeryStep2Binding
@@ -65,6 +68,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     private lateinit var pendingUCDData: SubmitPendingUcdData
     private lateinit var lykDollarViewModel: LYKDollarViewModel
     private lateinit var promoCodeViewModel: PromoCodeViewModel
+    private lateinit var paymentMethodViewModel: PaymentMethodViewModel
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
     private var isTimeOver = false
@@ -83,6 +87,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         stripe = Stripe(this, getString(R.string.stripe_publishable_key))
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
+        paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -178,6 +183,34 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     tvDollar.text = "$$data"
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callPaymentMethodAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request: HashMap<String, Any> = HashMap()
+            request[ApiConstant.type] = "card"
+            request[ApiConstant.cardnumber] = "4242424242424242"
+            request[ApiConstant.cardcvc] = "542"
+            request[ApiConstant.card_exp_month] = "12"
+            request[ApiConstant.card_exp_year] = "22"
+            request[ApiConstant.billing_details] = "27519"
+            request[ApiConstant.guid] = "ab09ffc0-f83e-4ecc-b198-eb375bfbbc57b41768"
+            request[ApiConstant.muid] = "c25c4e63-970f-4c89-b9e1-9c983c4a99224e8f02"
+            request[ApiConstant.sid] = "a7908fc4-1b17-44f4-801c-0d404cee2f1ad7ad95"
+            request[ApiConstant.time_on_page] = "899065"
+            request[ApiConstant.key] =
+                "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
+
+            paymentMethodViewModel.callPayment(this, request)!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    setClearData()
                 }
                 )
         } else {
@@ -446,8 +479,9 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 adapterCardList.addAll(arCardList)
                 pref?.setCardList(Gson().toJson(arCardList))
                 llCardList.visibility = View.VISIBLE*/
-                checkPermission()
-                setClearData()
+//                checkPermission()
+
+                callPaymentMethodAPI()
             }
             R.id.ivBackDeal -> {
                 onBackPressed()
