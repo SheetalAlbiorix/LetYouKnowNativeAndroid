@@ -8,7 +8,6 @@
     <!--Google Client ID-->
     <string name="google_web_client_id">701813435131-6v2o8gk49vbc3o85sh14r5nthh528q2t.apps.googleusercontent.com</string>
 
-
     <!--    FaceBook AppID-->
     <string name="facebook_app_id">246218917393547</string>
     <string name="fb_login_protocol_scheme">fb246218917393547</string>

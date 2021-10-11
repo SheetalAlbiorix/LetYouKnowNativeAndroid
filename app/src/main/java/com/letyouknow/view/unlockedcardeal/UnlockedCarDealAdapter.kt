@@ -7,7 +7,8 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
 import com.logispeed.ui.base.BaseAdapter
 import kotlinx.android.synthetic.main.list_item_unlocked_car.view.*
-import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 class UnlockedCarDealAdapter(layout: Int, val clickListener: View.OnClickListener) :
     BaseAdapter<FindUcdDealData>(layout), BaseAdapter.OnBind<FindUcdDealData> {
@@ -29,10 +30,11 @@ class UnlockedCarDealAdapter(layout: Int, val clickListener: View.OnClickListene
                 tvTitle.text = "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
                 tvExterior.text = vehicleExteriorColor
                 tvInterior.text = vehicleInteriorColor
-                tvPrice.text =
-                    "$" + if (price != null) DecimalFormat("##.##").format(price?.toDouble()) else "$0.0"
-                tvMSRP.text =
-                    "$" + if (msrp != null) DecimalFormat("##.##").format(msrp?.toDouble()) else "$0.0"
+                val format: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
+                val currency: String = format.format(price)
+                val msrpcurrency: String = format.format(msrp)
+                tvPrice.text = currency
+                tvMSRP.text = msrpcurrency
                 if (AppGlobal.isNotEmpty(miles)) {
                     tvDisclosure.text =
                         resources.getString(R.string.miles_approximate_odometer_reading, miles)

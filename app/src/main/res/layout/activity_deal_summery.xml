@@ -107,7 +107,6 @@
                         android:textSize="@dimen/_8sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_250sdp"
