@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="type"
+            type="Integer" />
+
+        <variable
+            name="lcdDealData"
+            type="com.letyouknow.model.FindUcdDealData" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar_blue"
+            app:toolbarTitle="@{@string/step_3_of_4}" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedSc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:text="@string/great_deal"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:text="9877.0"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_10sdp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:text="@string/you_have_10days"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:text="@string/submitted_colon"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:text="12-Oct-2021 16:36"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_14sdp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/car_summary"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/lightGray" />
+
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/year_colon"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/make"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Jeep"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/model"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLines="5"
+                            android:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/transaction_id"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="JO31747183"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/financing_option"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/exterior_color_colon"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Oasis Blue"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/interior_color_colon"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="Dark Galvanized/Sky Cool Gray"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+                    </TableRow>
+                </TableLayout>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/price_summary"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/lightGray" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="@string/unlocked_cardeals_price"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="@string/nonrefundable_service"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow android:layout_marginTop="@dimen/_20sdp">
+
+                        <TextView
+                            android:text="@string/promo_code_colon"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="@string/lyk_dollars_colon"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="@string/remaining_balance"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:text="@string/balance_excludes"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+                </TableLayout>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/payment_method"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/lightGray" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow>
+
+                        <TextView
+                            android:text="VISA "
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:text="2011"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:text="@string/for_nonrefundable"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/buyer_info_star"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/lightGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jaymin  Suchak \n 1120\nParkside Main St<br>Cary, NC 27519 \n(990)097-89956\njaymin.albiorix@gmail.com "
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:text="@string/dealer_info"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/lightGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chapman Chevrolet\n1511 3rd Avenue Suite 601\nSeattle, WA 98101\n aaron@letyouknow.com\n(888)888-9999 "
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@color/lightGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/if_you_have_any_questions"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number"
+                    android:textColor="@color/lightBlue"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/savings_are_calculated"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/this_person_must"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/_23sdp"
+             app:backgroundTint="@color/white"
+             app:fabSize="mini"
+             app:layout_anchor="@id/appbar"
+             android:visibility="gone"
+             app:layout_anchorGravity="bottom|start"
+             app:srcCompat="@drawable/bg_circle_shape" />
+
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/ivInteriorColor"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="@dimen/_80sdp"
+             android:visibility="gone"
+             android:foregroundTint="@color/lightGray"
+             android:tint="@color/textLightGrey"
+             app:backgroundTint="@color/white"
+             app:fabSize="mini"
+             app:layout_anchor="@id/appbar"
+             app:layout_anchorGravity="bottom|start"
+             app:srcCompat="@drawable/bg_circle_shape" />-->
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
