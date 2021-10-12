@@ -44,7 +44,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
             setTab(0)
         }
 //        pager.isEnabled=(false)
-        backButton()
+        //backButton()
     }
 
     private fun backButton() {
