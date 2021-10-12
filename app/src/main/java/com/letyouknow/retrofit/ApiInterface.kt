@@ -146,4 +146,8 @@ interface ApiInterface {
 
 //    fun paymentMethods(@Body request: HashMap<String, Any>): Call<CardStripeData>
 
+    @POST("test/getimageurls")
+    fun interior360(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
+
+
 }

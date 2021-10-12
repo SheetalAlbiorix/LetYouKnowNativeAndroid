@@ -21,7 +21,9 @@ class View360Fragment : BaseFragment() {
     }
 
     //    val DEMO_PANORAMA_LINK = "https://image.shutterstock.com/image-photo/tbilisi-georgia-may-6-2021-260nw-1985063774.jpg"
-    val DEMO_PANORAMA_LINK = "http://reznik.lt/wp-content/uploads/2017/09/preview3000.jpg"
+    val DEMO_PANORAMA_LINK1 = "http://reznik.lt/wp-content/uploads/2017/09/preview3000.jpg"
+    val DEMO_PANORAMA_LINK =
+        "https://dbhdyzvm8lm25.cloudfront.net/interior_eq_4000/MY2021/14904_ineq_4000.png"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,9 +45,15 @@ class View360Fragment : BaseFragment() {
 
     private fun View360() {
         var imagesTag360 = ""
-        for (i in 1 until 19) {
-            imagesTag360 =
-                imagesTag360 + "<img src=\"file:///android_asset/images/image1_" + i + ".jpg\"/>"
+        for (i in 1 until 36) {
+            if (i < 10) {
+                imagesTag360 =
+                    imagesTag360 + "<img src=\"https://dbhdyzvm8lm25.cloudfront.net/exterior_036_spinframes_0640/MY2020/13655/13655_sp0640_00" + i + ".jpg\"/>"
+            } else {
+                imagesTag360 =
+                    imagesTag360 + "<img src=\"https://dbhdyzvm8lm25.cloudfront.net/exterior_036_spinframes_0640/MY2020/13655/13655_sp0640_0" + i + ".jpg\"/>"
+            }
+            //imagesTag360 = imagesTag360 + "<img src=\"file:///android_asset/images/image1_" + i + ".jpg\"/>"
         }
 
         Log.d("", imagesTag360)
