@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -21,15 +22,16 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedDealSummeryStep2Binding
 import com.letyouknow.model.*
-import com.letyouknow.retrofit.viewmodel.LYKDollarViewModel
-import com.letyouknow.retrofit.viewmodel.PaymentMethodViewModel
-import com.letyouknow.retrofit.viewmodel.PromoCodeViewModel
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.dashboard.MainActivity
@@ -54,8 +56,10 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
-class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
+class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
+    AdapterView.OnItemSelectedListener {
     lateinit var binding: ActivityUnlockedDealSummeryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
@@ -66,16 +70,18 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     private var seconds = 300
     private var isFirst60 = true
     private var imageUrl = ""
+    private var state = "NC"
 
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var pendingUCDData: SubmitPendingUcdData
     private lateinit var lykDollarViewModel: LYKDollarViewModel
     private lateinit var promoCodeViewModel: PromoCodeViewModel
     private lateinit var paymentMethodViewModel: PaymentMethodViewModel
+    private lateinit var buyerViewModel: BuyerViewModel
+    private lateinit var submitDealUCDViewModel: SubmitDealUCDViewModel
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
     private var isTimeOver = false
-    private var arState = arrayListOf("State")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,10 +93,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        stripe = Stripe(this, getString(R.string.stripe_publishable_key))
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
+        buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
+        submitDealUCDViewModel = ViewModelProvider(this).get(SubmitDealUCDViewModel::class.java)
+
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -150,6 +158,9 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
+        /*for(i in 0 until pendingUCDData.buyer?.phoneNumber?.length!!){
+            val data = edtPhoneNumber.text.toString().trim()
+        }*/
         initPayment()
     }
 
@@ -174,6 +185,97 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun callBuyerAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.buyerId] = pendingUCDData.buyer?.buyerId!!
+            map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
+            map[ApiConstant.middleName] = edtFirstName.text.toString().trim()
+            map[ApiConstant.lastName] = edtLastName.text.toString().trim()
+            map[ApiConstant.phoneNumber] = pendingUCDData.buyer?.phoneNumber!!
+            map[ApiConstant.email] = edtEmail.text.toString().trim()
+            map[ApiConstant.addressId] = pendingUCDData.buyer?.addressId!!
+            map[ApiConstant.address1] = edtAddress1.text.toString().trim()
+            map[ApiConstant.address2] = edtAddress2.text.toString().trim()
+            map[ApiConstant.city] = edtCity.text.toString().trim()
+            map[ApiConstant.state] = state
+            map[ApiConstant.zipcode] = edtZipCode.text.toString().trim()
+            map[ApiConstant.country] = "US"
+
+            buyerViewModel.buyerCall(this, map)!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    callSubmitDealLCDAPI()
+
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callSubmitDealLCDAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.dealID] = pendingUCDData.dealID!!
+            map[ApiConstant.buyerID] = pendingUCDData.buyer?.buyerId!!
+            map[ApiConstant.payment_method_id] = cardStripeData.id!!
+            map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
+            map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            map[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            map[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            map[ApiConstant.price] = ucdData.price!!
+            map[ApiConstant.timeZoneOffset] = "-330"
+            map[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+            map[ApiConstant.searchRadius] =
+                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius?.replace(
+                    " mi",
+                    ""
+                )!!
+            map[ApiConstant.loanType] = yearModelMakeData.loanType!!
+            map[ApiConstant.initial] = yearModelMakeData.initials!!
+//            map[ApiConstant.timeZoneOffset] = pendingUCDData.buyer?.buyerId!!
+            map[ApiConstant.vehicleInventoryID] = ucdData.vehicleInventoryID!!
+            map[ApiConstant.guestID] = ucdData.guestID!!
+            val arJsonPackage = JsonArray()
+            arJsonPackage.add("0")
+            /* for (i in 0 until ucdData.vehiclePackages?.size!!) {
+                 arJsonPackage.add(ucdData.vehiclePackages!![i].vehiclePackageID)
+             }*/
+            val arJsonAccessories = JsonArray()
+            arJsonAccessories.add("0")
+            /*for (i in 0 until ucdData.vehicleAccessories?.size!!) {
+                arJsonAccessories.add(ucdData.vehicleAccessories!![i].dealerAccessoryID)
+            }*/
+
+            map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
+            map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
+
+            submitDealUCDViewModel.submitDealLCDCall(this, map)!!
+                .observe(this, { data ->
+                    Constant.dismissLoader()
+                    Toast.makeText(
+                        applicationContext,
+                        "Your Deal Successfully Booked",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(
+                        intentFor<MainActivity>().clearTask().newTask()
+                    )
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private lateinit var cardStripeData: CardStripeData
     private fun callPaymentMethodAPI(card: Card) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
@@ -195,7 +297,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             )!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-
+                    cardStripeData = data
                 }
                 )
         } else {
@@ -237,14 +339,16 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private lateinit var adapterState: ArrayAdapter<String?>
     private fun setState() {
-        val adapterYear = ArrayAdapter<String?>(
+        adapterState = ArrayAdapter<String?>(
             applicationContext,
             android.R.layout.simple_spinner_item,
             arState as List<String?>
         )
-        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spState.adapter = adapterYear
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spState.adapter = adapterState
+        spState.onItemSelectedListener = this
     }
 
     private fun onStateChange() {
@@ -482,9 +586,8 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
-                    startActivity(
-                        intentFor<MainActivity>().clearTask().newTask()
-                    )
+                    callBuyerAPI()
+
                 }
 //
             }
@@ -548,7 +651,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isValid(): Boolean {
+        if (!::cardStripeData.isInitialized) {
+            Toast.makeText(this, "enter valid data", Toast.LENGTH_SHORT).show()
+            return false
+        }
         when {
+
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
                 return false
@@ -577,6 +685,10 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
                 tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+            state == "State" -> {
+                tvErrorState.visibility = View.VISIBLE
                 return false
             }
             (edtPhoneNumber.text.toString().length != 13) -> {
@@ -722,5 +834,18 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         } else {
         }
         source
+    }
+
+    override fun onItemSelected(v: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (v?.id) {
+            R.id.spState -> {
+                val data = adapterState.getItem(position) as String
+                state = data
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 }
