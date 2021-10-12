@@ -126,4 +126,12 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="Stripe.CardInputWidget.EditText" parent="Stripe.Base.CardInputWidget.EditText">
+        <item name="android:textColorHint">#808080</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColor">@color/color545d64</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+
+    </style>
+
 </resources>

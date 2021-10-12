@@ -115,7 +115,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         tvHavePromoCode.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
         tvAddMore.setOnClickListener(this)
-        btnSave.setOnClickListener(this)
+//        btnSave.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)

@@ -828,7 +828,6 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -842,12 +841,27 @@
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.stripe.android.view.AddPaymentMethodCardView
+        <com.stripe.android.view.CardInputWidget
+            style="@style/Stripe.CardInputWidget.EditText"
             android:id="@+id/cardInputWidget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_25sdp"
-            android:layout_marginRight="@dimen/_25sdp" />
+            android:background="@drawable/bg_button3"
+            android:backgroundTint="@color/offWhite"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_8sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/bg_button"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_12sdp"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp" />
 
         <TextView
             style="@style/bold"

@@ -7,7 +7,7 @@
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="AutoImportSettings">
@@ -16,16 +16,15 @@
   <component name="ChangeListManager">
     <list default="true" id="d67a0397-bc62-4ee4-90da-56c8e26aed02" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/LetYouKnowApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/LetYouKnowApp.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/PaymentMethodViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/PaymentMethodViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppPreferencesHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppPreferencesHelper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summery_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summery_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_unlocked_deal_summery_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_unlocked_deal_summery_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +122,12 @@
     <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.4.0/51035a8f6342c20d4d8f242d100e6f25e0c271ac/material-1.4.0-sources.jar!/com/google/android/material/navigation/NavigationBarView.java_SELECTED" value="NavigationBarView" />
     <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/payments-core/16.10.2/2867a52726f1364c495ad694f09d23f8095f118/payments-core-16.10.2-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_AddPaymentMethodCardView_DIMENSIONS" value="1080&#10;1920" />
     <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/payments-core/16.10.2/2867a52726f1364c495ad694f09d23f8095f118/payments-core-16.10.2-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_SELECTED" value="AddPaymentMethodCardView" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_AddPaymentMethodCardView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_SELECTED" value="AddPaymentMethodCardView" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardInputWidget.kt_CardInputWidget_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardInputWidget.kt_SELECTED" value="CardInputWidget" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardMultilineWidget.kt_CardMultilineWidget_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardMultilineWidget.kt_SELECTED" value="CardMultilineWidget" />
     <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_SELECTED" value="View" />
     <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_View_DIMENSIONS" value="1080&#10;1920" />
     <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/widget/TextView.java_SELECTED" value="TextView" />
@@ -498,7 +503,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633956492113</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="-- implement of paymentMethod api">
+      <created>1634018365164</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1634018365165</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -551,7 +563,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>55</line>
+          <line>58</line>
           <option name="timeStamp" value="309" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -706,72 +718,72 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>231</line>
+          <line>224</line>
           <option name="timeStamp" value="347" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>232</line>
+          <line>225</line>
           <option name="timeStamp" value="348" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>234</line>
+          <line>227</line>
           <option name="timeStamp" value="349" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>237</line>
+          <line>230</line>
           <option name="timeStamp" value="350" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>50</line>
+          <line>52</line>
           <option name="timeStamp" value="356" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>51</line>
+          <line>53</line>
           <option name="timeStamp" value="357" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>52</line>
+          <line>54</line>
           <option name="timeStamp" value="358" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>54</line>
+          <line>56</line>
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>57</line>
+          <line>62</line>
           <option name="timeStamp" value="360" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>60</line>
+          <line>65</line>
           <option name="timeStamp" value="361" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>60</line>
+          <line>63</line>
           <option name="timeStamp" value="362" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>61</line>
+          <line>64</line>
           <option name="timeStamp" value="363" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>62</line>
+          <line>65</line>
           <option name="timeStamp" value="364" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>63</line>
+          <line>66</line>
           <option name="timeStamp" value="365" />
         </line-breakpoint>
       </breakpoints>

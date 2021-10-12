@@ -71,24 +71,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.Toolbar>
 
-        <com.stripe.android.view.CardInputWidget
-            android:id="@+id/cardInputWidget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/bg_button"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/_12sdp"
-            android:text="@string/save"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp" />
-
         <FrameLayout
             android:id="@+id/flContainer"
             android:layout_width="match_parent"

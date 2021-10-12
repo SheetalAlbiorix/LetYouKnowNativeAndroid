@@ -14,25 +14,30 @@ import retrofit2.Response
 
 
 object PaymentMethodRepository {
-
-    fun paymentMethodApiCall(
-        context: Context,
-        type: String?,
-        cardnumber: String?,
-        cardcvc: String?,
-        cardexp_month: String?,
-        cardexp_year: String?,
-        billing_detailsaddresspostal_code: String?,
-        guid: String?,
-        muid: String?,
+//    ,
+//    billing_detailsaddresspostal_code, guid, muid, sid, time_on_page, key
+fun paymentMethodApiCall(
+    context: Context,
+    type: String?,
+    cardnumber: String?,
+    cardcvc: String?,
+    cardexp_month: String?,
+    cardexp_year: String?,
+    billing_detailsaddresspostal_code: String?,
+    guid: String?,
+    muid: String?,
         sid: String?,
         time_on_page: String?,
         key: String?
     ): MutableLiveData<CardStripeData> {
         val forgotPasswordVo = MutableLiveData<CardStripeData>()
         val call = RetrofitClient.apiInterface.paymentMethods(
-            type, cardnumber, cardcvc, cardexp_month, cardexp_year,
-            billing_detailsaddresspostal_code, guid, muid, sid, time_on_page, key
+            type,
+            cardnumber,
+            cardcvc,
+            cardexp_month,
+            cardexp_year,
+            billing_detailsaddresspostal_code
         )
         val pref = LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
 

@@ -134,13 +134,14 @@ interface ApiInterface {
         @Field("card[cvc]") cardcvc: String?,
         @Field("card[exp_month]") cardexp_month: String?,
         @Field("card[exp_year]") cardexp_year: String?,
-        @Field("billing_details[address][postal_code]") billing_details: String?,
-        @Field("guid") guid: String?,
-        @Field("muid") muid: String?,
-        @Field("sid") sid: String?,
-        @Field("time_on_page") time_on_page: String?,
-        @Field("key") key: String?
+        @Field("billing_details[address][postal_code]") billing_details: String?
     ): Call<CardStripeData>
+
+    /* @Field("guid") guid: String?,
+     @Field("muid") muid: String?,
+     @Field("sid") sid: String?,
+     @Field("time_on_page") time_on_page: String?,
+     @Field("key") key: String?*/
 //    @Headers("Authorization: Bearer pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA")
 
 //    fun paymentMethods(@Body request: HashMap<String, Any>): Call<CardStripeData>

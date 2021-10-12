@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -38,7 +39,11 @@ import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
+import com.stripe.android.model.Card
+import com.stripe.android.model.Source
+import com.stripe.android.model.SourceParams
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -145,35 +150,16 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
-        stripPayment()
+        initPayment()
     }
 
-    private var stripe: Stripe? = null
+    private lateinit var stripe: Stripe
 
-    private fun stripPayment() {
-        val paymentMethodCreateParams =
-            cardInputWidget
-        /* if (paymentMethodCreateParams != null)
-             addStripeCard(paymentMethodCreateParams)*/
+    private fun initPayment() {
+        stripe =
+            Stripe(this, Objects.requireNonNull(getString(R.string.stripe_publishable_key)))
     }
 
-    /* private fun addStripeCard(paymentMethodCreateParams: PaymentMethodCreateParams) {
-         stripe!!.createPaymentMethod(
-             paymentMethodCreateParams, null,
-             object : ApiResultCallback<PaymentMethod> {
-                 override fun onSuccess(result: PaymentMethod) {
-
-                     // add a call to own server to save the details
-                     Log.e("Payment Result", Gson().toJson(result))
-                 }
-
-                 override fun onError(e: java.lang.Exception) {
-                     Log.e("Payment Error", e.message!!)
-                 }
-
-             })
-     }
- */
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -188,7 +174,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun callPaymentMethodAPI() {
+    private fun callPaymentMethodAPI(card: Card) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -196,11 +182,11 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
             paymentMethodViewModel.callPayment(
                 this,
                 "card",
-                "4242424242424242",
-                "542",
-                "12",
-                "22",
-                "27519",
+                card.number,
+                card.cvc,
+                card.expMonth.toString(),
+                card.expYear.toString(),
+                card.addressZip.toString(),
                 "ab09ffc0-f83e-4ecc-b198-eb375bfbbc57b41768",
                 "c25c4e63-970f-4c89-b9e1-9c983c4a99224e8f02",
                 "a7908fc4-1b17-44f4-801c-0d404cee2f1ad7ad95",
@@ -465,22 +451,26 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener {
 //                llCardViewDetail.visibility = View.VISIBLE
             }
             R.id.btnSave -> {
-                /*arCardList.add(
-                    CardListData(
-                        getDetectedCreditCardImage(),
-                        edtCardNumber.text.toString().trim(),
-                        edtCardHolder.text.toString().trim(),
-                        edtExpiresDate.text.toString().trim(),
-                        edtCVV.text.toString().trim(),
-                        false
-                    )
-                )
-                adapterCardList.addAll(arCardList)
-                pref?.setCardList(Gson().toJson(arCardList))
-                llCardList.visibility = View.VISIBLE*/
-//                checkPermission()
+                val card = cardInputWidget.card
+                if (card == null) {
+                    Toast.makeText(this, "Invalid card data", Toast.LENGTH_LONG).show()
+                    return
+                }
+                val cardSourceParams = SourceParams.createCardParams(card!!)
 
-                callPaymentMethodAPI()
+                stripe.createSource(
+                    cardSourceParams,
+                    callback = object : ApiResultCallback<Source> {
+                        override fun onSuccess(source: Source) {
+                            Log.e("Success", Gson().toJson(source))
+                            callPaymentMethodAPI(card)
+                        }
+
+                        override fun onError(error: Exception) {
+                            Log.e("error", Gson().toJson(error))
+                        }
+                    }
+                )
             }
             R.id.ivBackDeal -> {
                 onBackPressed()

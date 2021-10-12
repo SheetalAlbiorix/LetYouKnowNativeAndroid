@@ -742,6 +742,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -800,17 +801,6 @@
                         android:maxLength="3" />
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/btnSave"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/bg_button"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/_12sdp"
-                    android:text="@string/save"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp" />
 
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
