@@ -16,6 +16,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_USER_DATA = "KEY_USER_DATA"
         val KEY_REMEMBER_DATA = "KEY_REMEMBER_DATA"
         val KEY_CARD_LIST = "KEY_CARD_LIST"
+        val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -29,6 +30,14 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     fun isLogin(): Boolean {
         return sharedpreferences.getBoolean(KEY_IS_LOGIN, false)
+    }
+
+    fun setPaymentToken(isPayment: Boolean) {
+        prefs.putBoolean(KEY_IS_PAYMENT, isPayment).apply()
+    }
+
+    fun isPayment(): Boolean {
+        return sharedpreferences.getBoolean(KEY_IS_PAYMENT, false)
     }
 
     fun setCardList(cardList: String) {

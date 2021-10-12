@@ -12,11 +12,22 @@ class PaymentMethodViewModel : ViewModel() {
 
     fun callPayment(
         context: Context,
-        request: HashMap<String, Any>
+        type: String?,
+        cardnumber: String?,
+        cardcvc: String?,
+        cardexp_month: String?,
+        cardexp_year: String?,
+        billing_detailsaddresspostal_code: String?,
+        guid: String?,
+        muid: String?,
+        sid: String?,
+        time_on_page: String?,
+        key: String?
     ): LiveData<CardStripeData>? {
         liveData = PaymentMethodRepository.paymentMethodApiCall(
             context,
-            request
+            type, cardnumber, cardcvc, cardexp_month, cardexp_year,
+            billing_detailsaddresspostal_code, guid, muid, sid, time_on_page, key
         )
         return liveData
     }

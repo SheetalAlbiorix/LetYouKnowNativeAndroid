@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,10 +25,14 @@ import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
 import com.pionymessenger.utils.Constant
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.Stripe
+import com.stripe.android.model.Card
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
+import okhttp3.OkHttpClient
 import org.jetbrains.anko.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : BaseActivity(),
@@ -79,6 +84,7 @@ class MainActivity : BaseActivity(),
         ivLogOut.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
         llLogout.setOnClickListener(this)
+        btnSave.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
@@ -205,6 +211,29 @@ class MainActivity : BaseActivity(),
     var selectDrawerPos = -1
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btnSave -> {
+                val cardDetails: Card? = cardInputWidget.card
+
+                if (cardDetails == null)
+                    Toast.makeText(this, "Invalid card data", Toast.LENGTH_LONG).show()
+
+                /* cardDetails?.let {
+                         Stripe(applicationContext).createToken(
+                             it,
+                             API_KEY,
+                             object : TokenCallback {
+                                 override fun onSuccess(token: Token) {
+ //Send this token to server
+                                     Toast.makeText(context, "Token received from Stripe", Toast.LENGTH_LONG).show()
+                                 }
+
+                                 override fun onError(error: Exception) {
+                                     Toast.makeText(context, error.localizedMessage.toString(), Toast.LENGTH_LONG).show()
+                                 }
+                             })
+
+                 }*/
+            }
             R.id.llDrawer -> {
                 val pos = v.tag as Int
                 if (selectDrawerPos != -1) {
@@ -270,13 +299,11 @@ class MainActivity : BaseActivity(),
         when (item.itemId) {
             R.id.itemBottom1 -> {
                 loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
-//                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom2 -> {
                 loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
             }
             R.id.itemBottom3 -> {
-//                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
                 loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom4 -> {
@@ -316,13 +343,16 @@ class MainActivity : BaseActivity(),
     }
 
 
+    private val backendUrl = "http://10.0.2.2:4242/"
+    private val httpClient = OkHttpClient()
+    private lateinit var paymentIntentClientSecret: String
     private lateinit var stripe: Stripe
 
-    private fun initStripe() {
-        stripe = Stripe(this, PaymentConfiguration.getInstance(applicationContext).publishableKey)
-
+    private fun initPayment() {
+        val paymentConfiguration = PaymentConfiguration.getInstance(applicationContext)
+        stripe = Stripe(this, Objects.requireNonNull(getString(R.string.stripe_publishable_key)))
+//        startCheckout()
     }
 
-    private fun startCheckOut() {
-    }
+
 }

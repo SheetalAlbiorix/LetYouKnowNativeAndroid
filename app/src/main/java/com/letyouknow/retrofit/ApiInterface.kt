@@ -126,8 +126,23 @@ interface ApiInterface {
         @Query("dealId") dealId: String?
     ): Call<String>
 
-    @Headers("Authorization: Bearer pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA")
+    @FormUrlEncoded
     @POST("https://api.stripe.com/v1/payment_methods")
-    fun paymentMethods(@Body request: HashMap<String, Any>): Call<CardStripeData>
+    fun paymentMethods(
+        @Field("type") type: String?,
+        @Field("card[number]") cardNumbaer: String?,
+        @Field("card[cvc]") cardcvc: String?,
+        @Field("card[exp_month]") cardexp_month: String?,
+        @Field("card[exp_year]") cardexp_year: String?,
+        @Field("billing_details[address][postal_code]") billing_details: String?,
+        @Field("guid") guid: String?,
+        @Field("muid") muid: String?,
+        @Field("sid") sid: String?,
+        @Field("time_on_page") time_on_page: String?,
+        @Field("key") key: String?
+    ): Call<CardStripeData>
+//    @Headers("Authorization: Bearer pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA")
+
+//    fun paymentMethods(@Body request: HashMap<String, Any>): Call<CardStripeData>
 
 }

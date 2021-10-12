@@ -2,6 +2,7 @@ package com.letyouknow
 
 import android.app.Application
 import com.logispeed.data.prefs.AppPreferencesHelper
+import com.stripe.android.PaymentConfiguration
 
 class LetYouKnowApp : Application() {
     private var appPreferencesHelper: AppPreferencesHelper? = null
@@ -24,6 +25,10 @@ class LetYouKnowApp : Application() {
 //        Fabric.with(this, Crashlytics())
 
         appPreferencesHelper = AppPreferencesHelper(this, getString(R.string.app_name))
+        PaymentConfiguration.init(
+            applicationContext,
+            "pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+        )
 //        FirebaseApp.initializeApp(this)
 
         //Generate 11 digit key for sms retrive
