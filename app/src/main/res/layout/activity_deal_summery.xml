@@ -214,14 +214,22 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </FrameLayout>
-    </FrameLayout>
+                    </FrameLayout>
+                </FrameLayout>
 
-    <include
-        layout="@layout/layout_deal_summery"
-        app:lcdDealData="@{lcdDealData}" />
+                <include
+                    layout="@layout/layout_deal_summery"
+                    android:visibility='@{lcdDealData.dealID.equals("0") ? View.GONE : View.VISIBLE}'
+                    app:lcdDealData="@{lcdDealData}" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+                <include
+                    layout="@layout/layout_deal_summery_hot_market"
+                    android:visibility='@{lcdDealData.dealID.equals("0") ? View.VISIBLE : View.GONE}'
+                    app:lcdDealData="@{lcdDealData}" />
+                <!--                layout='@{lcdDealData.dealID == ("0") ? @layout/layout_deal_summery_hot_market : @layout/layout_deal_summery}'-->
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         </androidx.core.widget.NestedScrollView>

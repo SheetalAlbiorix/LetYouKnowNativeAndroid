@@ -234,4 +234,8 @@
     <string name="savings_are_calculated">*savings are calculated based on MSRP parameters</string>
     <string name="this_person_must">**This person must be present when picking up the vehicle</string>
     <string name="submitted_colon">Submitted:</string>
+    <string name="hot_market">Hot Market!</string>
+    <string name="go_back_and_try_again">GO BACK AND TRY AGAIN</string>
+
+
 </resources>

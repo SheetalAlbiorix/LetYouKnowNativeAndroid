@@ -50,6 +50,18 @@ class ApiConstant {
         var sid = "sid"
         var time_on_page = "time_on_page"
         var key = "key"
+        var buyerId = "buyerId"
+        var addressId = "addressId"
+        var address1 = "address1"
+        var address2 = "address2"
+        var city = "city"
+        var state = "state"
+        var zipcode = "zipcode"
+        var country = "country"
+        var buyerID = "buyerID"
+        var card_last4 = "card_last4"
+        var payment_method_id = "payment_method_id"
+        var card_brand = "card_brand"
 
     }
 }

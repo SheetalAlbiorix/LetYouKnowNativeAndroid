@@ -112,6 +112,7 @@ interface ApiInterface {
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
 
+
     @POST("image/getimageurl")
     fun getImageURL(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
 
@@ -125,6 +126,18 @@ interface ApiInterface {
     fun getlykdollar(
         @Query("dealId") dealId: String?
     ): Call<String>
+
+    @PUT("buyer")
+    fun buyer(
+        @Body request: HashMap<String, Any>
+    ): Call<BuyerInfoData>
+
+
+    @POST("submitmydeal/submitdeallcd")
+    fun submitdeallcd(@Body request: HashMap<String, Any>): Call<SubmitDealLCDData>
+
+    @POST("submitmydeal/submitdealucd")
+    fun submitdealucd(@Body request: HashMap<String, Any>): Call<SubmitDealLCDData>
 
     @FormUrlEncoded
     @POST("https://api.stripe.com/v1/payment_methods")

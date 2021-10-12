@@ -39,6 +39,8 @@ import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_deal_summery.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_deal_summery.*
+import kotlinx.android.synthetic.main.layout_deal_summery.ivForwardDeal
+import kotlinx.android.synthetic.main.layout_deal_summery_hot_market.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
@@ -99,6 +101,8 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
+        tvViewOptionsHot.setOnClickListener(this)
+        btnGoBack.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
         backButton()
@@ -250,6 +254,8 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             submitPendingLCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
+                    dataLCDDeal.loanType = financingStr
+                    dataLCDDeal.initial = edtInitials.text.toString().trim()
                     startActivity<DealSummeryStep2Activity>(
                         Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
@@ -290,6 +296,12 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.tvViewOptions -> {
                 popupOption()
+            }
+            R.id.tvViewOptionsHot -> {
+                popupOption()
+            }
+            R.id.btnGoBack -> {
+                finish()
             }
             R.id.ivBack -> {
                 onBackPressed()

@@ -245,6 +245,9 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             submitPendingUCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
+                    yearModelMakeData.loanType = financingStr
+                    yearModelMakeData.initials = edtInitials.text.toString().trim()
+
                     startActivity<UnlockedDealSummeryStep2Activity>(
                         ARG_UCD_DEAL to Gson().toJson(dataUCDDeal),
                         ARG_UCD_DEAL_PENDING to Gson().toJson(data),
