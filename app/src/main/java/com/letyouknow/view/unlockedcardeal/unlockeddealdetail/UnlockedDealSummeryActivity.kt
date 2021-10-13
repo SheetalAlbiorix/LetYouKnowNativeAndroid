@@ -229,7 +229,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
             request[ApiConstant.price] = dataUCDDeal.price!!
-            request[ApiConstant.zipCode] = dataUCDDeal.zipCode!!
+            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
             request[ApiConstant.searchRadius] =
                 if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
                     " mi",
@@ -237,7 +237,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
                 ).trim()
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = dataUCDDeal.timeZoneOffset!!
+            request[ApiConstant.timeZoneOffset] = "-330"
             request[ApiConstant.vehicleInventoryID] = dataUCDDeal.vehicleInventoryID!!
             request[ApiConstant.dealID] = dataUCDDeal.dealID!!
             request[ApiConstant.guestID] = dataUCDDeal.guestID!!

@@ -16,6 +16,7 @@ data class YearModelMakeData(
     var vehicleExtColorStr: String? = "",
     var vehicleIntColorStr: String? = "",
     var radius: String? = "",
+    var zipCode: String? = "",
     var loanType: String? = "",
     var initials: String? = ""
 ) : Serializable

@@ -23,7 +23,6 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar"
             layout="@layout/layout_toolbar_blue"
             app:toolbarTitle="@{@string/step_2_of_3}" />
 
@@ -394,23 +393,36 @@
                     android:background="@color/lightGray" />
 
                 <TableLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
 
                     <TableRow>
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:text="@{data.successResult.transactionInfo.paymentMethod}"
+                            android:layout_width="@dimen/_25sdp"
+                            android:text="@string/interior_color_colon"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="@{@string/account_last_4digit(data.successResult.transactionInfo.paymentMethod,data.successResult.transactionInfo.paymentLast4)}" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:text="@{@string/account_last_4digit(data.successResult.transactionInfo.paymentLast4)}"
-                            android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
 
+                            android:text="@{data.successResult.transactionInfo.vehicleInteriorColor}"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Dark Galvanized/Sky Cool Gray" />
+                        <!--  <TextView
+                              tool:text="Visa"
+                              android:text="@{data.successResult.transactionInfo.paymentMethod}"
+                              android:textColor="@color/color3e5365"
+                              android:textSize="@dimen/_12sdp" />
+
+                          <TextView
+                              android:textAlignment="viewStart"
+                              tool:text="dsfdsfgsdfgd"
+                              android:text="@{@string/account_last_4digit(data.successResult.transactionInfo.paymentLast4)}"
+                              android:textColor="@color/color3e5365"
+                              android:textSize="@dimen/_12sdp" />-->
                     </TableRow>
 
                     <TableRow>
@@ -526,7 +538,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

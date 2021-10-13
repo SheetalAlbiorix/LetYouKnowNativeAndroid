@@ -12,6 +12,7 @@ import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import kotlinx.android.synthetic.main.activity_submit_deal_summary.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -36,6 +37,8 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             binding.data = submitDealData
         }
         btnFindYourCar.setOnClickListener(this)
+        ivBack.visibility = View.GONE
+        tvTitleTool.visibility = View.GONE
     }
 
     override fun getViewActivity(): Activity? {

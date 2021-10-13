@@ -286,6 +286,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     dataYear.vehicleExtColorStr = extColorStr
                     dataYear.vehicleIntColorStr = intColorStr
                     dataYear.radius = radiusId
+                    dataYear.zipCode = edtZipCode.text.toString().trim()
                     startActivity<UnlockedCarDealActivity>(
                         Constant.ARG_UCD_DEAL to Gson().toJson(
                             data
