@@ -3,27 +3,30 @@ package com.letyouknow.view.home.dealsummery.gallery360view.view360
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.InteriorViewModel
+import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_360_view.*
 
 class View360Fragment : BaseFragment() {
+    lateinit var interiorViewModel: InteriorViewModel
+
     val option = VrPanoramaView.Options().also {
         it.inputType = VrPanoramaView.Options.TYPE_MONO
     }
 
     //    val DEMO_PANORAMA_LINK = "https://image.shutterstock.com/image-photo/tbilisi-georgia-may-6-2021-260nw-1985063774.jpg"
-    val DEMO_PANORAMA_LINK1 = "http://reznik.lt/wp-content/uploads/2017/09/preview3000.jpg"
-    val DEMO_PANORAMA_LINK =
-        "https://dbhdyzvm8lm25.cloudfront.net/interior_eq_4000/MY2021/14904_ineq_4000.png"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +42,8 @@ class View360Fragment : BaseFragment() {
     }
 
     private fun init() {
-        View360()
-        interiorView()
+        interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
+        getInteriorAPI();
     }
 
     private fun View360() {
@@ -56,7 +59,7 @@ class View360Fragment : BaseFragment() {
             //imagesTag360 = imagesTag360 + "<img src=\"file:///android_asset/images/image1_" + i + ".jpg\"/>"
         }
 
-        Log.d("", imagesTag360)
+
         web_view.loadDataWithBaseURL(
             "",
             imagesTag360, "text/html", "UTF-8", null
@@ -65,13 +68,29 @@ class View360Fragment : BaseFragment() {
         web_view.isScrollbarFadingEnabled = true
     }
 
-    private fun interiorView() {
-        Glide.with(this).asBitmap().load(DEMO_PANORAMA_LINK).into(object : CustomTarget<Bitmap>() {
+    private fun interiorView(url: String) {
+        Glide.with(this).asBitmap().load(url).into(object : CustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {}
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 // "option": Declared at the step 3
                 vrPanoramaView.loadImageFromBitmap(resource, option)
             }
         })
+    }
+
+    private fun getInteriorAPI() {
+
+        val request = HashMap<String, Any>()
+        request[ApiConstant.ImageId] = "14904"
+        request[ApiConstant.ImageProduct] = "Interior360Pano"
+
+        interiorViewModel.getInterior(this.requireContext(), request)!!
+            .observe(this.requireActivity(), Observer { loginVo ->
+                Constant.dismissLoader()
+                View360()
+                interiorView(loginVo[0])
+            }
+            )
+
     }
 }

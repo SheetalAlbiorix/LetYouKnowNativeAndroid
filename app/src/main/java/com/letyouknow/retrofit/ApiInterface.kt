@@ -162,5 +162,4 @@ interface ApiInterface {
     @POST("test/getimageurls")
     fun interior360(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
 
-
 }
