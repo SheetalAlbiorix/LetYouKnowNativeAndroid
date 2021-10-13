@@ -35,6 +35,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         ll360View.setOnClickListener(this)
         llExterior.setOnClickListener(this)
         llInterior.setOnClickListener(this)
+        ivBack.setOnClickListener(this)
         gallery360ViewPagerAdapter = Gallery360PagerAdapter(supportFragmentManager)
         pager.adapter = gallery360ViewPagerAdapter
         if (intent.hasExtra(ARG_TYPE_VIEW)) {
@@ -83,6 +84,9 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.llExterior -> {
                 setTab(0)
+            }
+            R.id.ivBack -> {
+                onBackPressed()
             }
         }
     }
