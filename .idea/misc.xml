@@ -53,7 +53,6 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_bid_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_create_account.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_deal_summery.xml" value="0.20416666666666666" />
-        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_deal_summery_hot_market.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_deal_summery_step2.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_edit_information.xml" value="0.19010416666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_edit_login.xml" value="0.20416666666666666" />
@@ -72,7 +71,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_car_deal.xml" value="0.12345679012345678" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_deal_summery.xml" value="0.2" />
-        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_deal_summery_step2.xml" value="0.21" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_deal_summery_step2.xml" value="0.17709335899903753" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_view360_activty.xml" value="0.19010416666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_zoom_image.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_authorization.xml" value="0.20416666666666666" />
@@ -98,7 +97,6 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_unlocked_car_deal.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_appbar.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery.xml" value="0.20416666666666666" />
-        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery_hot_market.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery_step2.xml" value="0.22" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_nav_drawer.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_toolbar.xml" value="0.1" />
@@ -151,6 +149,18 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow/app/src/main/res/layout/nav_header.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow/app/src/main/res/menu/drawer_view.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow/app/src/main/res/menu/menu_bottom.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/drawable/ic_back.xml" value="0.2846153846153846" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_deal_summery.xml" value="0.26871794871794874" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_submit_deal_summery.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_transaction_history.xml" value="0.26871794871794874" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/activity_unlocked_deal_summery.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/layout_toolbar.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/layout_toolbar_blue.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/layout_toolbar_timer.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/list_item_gallery.xml" value="0.27291666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LYKBuyerAndroidNative/app/src/main/res/layout/nav_header.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>

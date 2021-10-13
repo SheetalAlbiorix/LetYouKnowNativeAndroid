@@ -414,7 +414,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jaymin  Suchak \n 1120\nParkside Main St<br>Cary, NC 27519 \n(990)097-89956\njaymin.albiorix@gmail.com "
+                    android:text="Jaymin  Suchak \n 1120\nParkside Main St\nCary, NC 27519 \n(990)097-89956\njaymin.albiorix@gmail.com "
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 
