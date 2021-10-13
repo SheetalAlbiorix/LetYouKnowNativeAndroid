@@ -152,6 +152,7 @@ class AppGlobal {
             llView.backgroundTintList = context.resources.getColorStateList(R.color.color556473)
             val tvView = llView.getChildAt(0) as TextView
             tvView.setTextColor(context.resources.getColor(R.color.white))
+            tvView.setTextAppearance(context, R.style.bold)
             tvView.singleLine = true
         }
 
@@ -162,6 +163,7 @@ class AppGlobal {
             llView.backgroundTintList = context.resources.getColorStateList(R.color.offWhite)
             val tvView = llView.getChildAt(0) as TextView
             tvView.setTextColor(context.resources.getColor(R.color.color495a6b))
+//            tvView.typeface = Typeface.createFromFile( "font/roboto_bold.ttf")
             tvView.singleLine = true
         }
 

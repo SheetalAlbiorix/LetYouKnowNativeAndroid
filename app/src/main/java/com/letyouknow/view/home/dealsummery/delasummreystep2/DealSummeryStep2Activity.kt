@@ -225,7 +225,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private lateinit var adapterState: ArrayAdapter<String?>
     private fun setState() {
-        val adapterState = ArrayAdapter<String?>(
+        adapterState = ArrayAdapter<String?>(
             applicationContext,
             android.R.layout.simple_spinner_item,
             arState as List<String?>

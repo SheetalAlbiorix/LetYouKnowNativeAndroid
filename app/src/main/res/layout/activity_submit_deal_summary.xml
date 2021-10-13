@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
 
-        <variable
-            name="type"
-            type="Integer" />
+        <import type="java.text.NumberFormat" />
+
+        <import type="java.util.Locale" />
 
         <variable
-            name="lcdDealData"
-            type="com.letyouknow.model.FindUcdDealData" />
+            name="data"
+            type="com.letyouknow.model.SubmitDealLCDData" />
 
     </data>
 
@@ -24,7 +25,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar_blue"
-            app:toolbarTitle="@{@string/step_3_of_4}" />
+            app:toolbarTitle="@{@string/step_2_of_3}" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedSc"
@@ -59,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:text="9877.0"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.savings)}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_10sdp" />
 
@@ -94,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:text="12-Oct-2021 16:36"
+                        android:text="@{data.successResult.transactionInfo.timeStampFormatted}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_14sdp" />
 
@@ -131,7 +132,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="2011"
+                            android:text="@{data.successResult.transactionInfo.vehicleYear}"
+                            tool:text="2011"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -146,7 +148,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="Jeep"
+                            android:text="@{data.successResult.transactionInfo.vehicleMake}"
+                            tool:text="Jeep"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -165,7 +168,8 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:maxLines="5"
-                            android:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I"
+                            android:text="@{data.successResult.transactionInfo.vehicleModel}"
+                            tool:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -180,7 +184,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="JO31747183"
+                            android:text="@{data.successResult.transactionInfo.transactionId}"
+                            tool:text="JO31747183"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -195,7 +200,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="2011"
+                            android:text="@{data.successResult.transactionInfo.financingOptions}"
+                            tool:text="2011"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -210,7 +216,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="Oasis Blue"
+                            android:text="@{data.successResult.transactionInfo.vehicleExteriorColor}"
+                            tool:text="Oasis Blue"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -225,7 +232,8 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="Dark Galvanized/Sky Cool Gray"
+                            android:text="@{data.successResult.transactionInfo.vehicleInteriorColor}"
+                            tool:text="Dark Galvanized/Sky Cool Gray"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
@@ -414,7 +422,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jaymin  Suchak \n 1120\nParkside Main St<br>Cary, NC 27519 \n(990)097-89956\njaymin.albiorix@gmail.com "
+                    android:text="@string/jaymin_suchak_n_1120_nparkside_main_st_br_cary_nc_27519_n_990_097_89956_njaymin_albiorix_gmail_com"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 
@@ -482,32 +490,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.core.widget.NestedScrollView>
-
-
-        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="@dimen/_23sdp"
-             app:backgroundTint="@color/white"
-             app:fabSize="mini"
-             app:layout_anchor="@id/appbar"
-             android:visibility="gone"
-             app:layout_anchorGravity="bottom|start"
-             app:srcCompat="@drawable/bg_circle_shape" />
-
-         <com.google.android.material.floatingactionbutton.FloatingActionButton
-             android:id="@+id/ivInteriorColor"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="@dimen/_80sdp"
-             android:visibility="gone"
-             android:foregroundTint="@color/lightGray"
-             android:tint="@color/textLightGrey"
-             app:backgroundTint="@color/white"
-             app:fabSize="mini"
-             app:layout_anchor="@id/appbar"
-             app:layout_anchorGravity="bottom|start"
-             app:srcCompat="@drawable/bg_circle_shape" />-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

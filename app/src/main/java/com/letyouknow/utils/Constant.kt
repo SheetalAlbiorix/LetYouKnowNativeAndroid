@@ -54,6 +54,7 @@ class Constant {
         var ARG_ZIPCODE = "ARG_ZIPCODE"
         var ARG_YEAR_MAKE_MODEL = "ARG_YEAR_MAKE_MODEL"
         var ARG_IMAGE_URL = "ARG_IMAGE_URL"
+        var ARG_SUBMIT_DEAL = "ARG_SUBMIT_DEAL"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
