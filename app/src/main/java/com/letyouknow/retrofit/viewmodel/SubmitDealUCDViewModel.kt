@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.letyouknow.retrofit.SubmitDealLCDData
+import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.retrofit.repository.SubmitDealUCDRepository
 
 class SubmitDealUCDViewModel : ViewModel() {

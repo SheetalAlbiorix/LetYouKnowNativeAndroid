@@ -1,4 +1,6 @@
-package com.letyouknow.retrofit
+package com.letyouknow.model
+
+import java.io.Serializable
 
 data class SubmitDealLCDData(
     val canDisplaySuccessResult: Boolean,
@@ -10,7 +12,7 @@ data class SubmitDealLCDData(
     val negativeResult: Any,
     val paymentResponse: PaymentResponse,
     val successResult: SuccessResult
-)
+) : Serializable
 
 data class AddressInfo(
     val address1: String,

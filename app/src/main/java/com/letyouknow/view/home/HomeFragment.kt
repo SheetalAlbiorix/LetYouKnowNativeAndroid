@@ -36,7 +36,7 @@ import org.jetbrains.anko.support.v4.startActivity
 
 class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
     private var arRadius = arrayListOf(
-        "RADIUS",
+        "SEARCH RADIUS",
         "25 mi",
         "50 mi",
         "75 mi",
@@ -664,7 +664,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 val data = adapterRadius.getItem(position) as String
                 radiusId = data
                 setSpinnerLayoutPos(position, spRadius, requireActivity())
-                isValidSpinner = data != "RADIUS"
+                isValidSpinner = data != "SEARCH RADIUS"
 
                 if (isValidZipCode && isValidSpinner) {
                     btnProceedDeal.isEnabled = true

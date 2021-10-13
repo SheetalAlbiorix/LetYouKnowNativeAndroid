@@ -11,6 +11,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button3.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_button3_white.xml" value="0.11927083333333334" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_checkbox.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_circle_shape.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/bg_edittext.xml" value="0.2203125" />
@@ -67,6 +68,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_saved_searches.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.14629629629629629" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_car_deal.xml" value="0.12345679012345678" />

@@ -140,6 +140,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spYear"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -150,6 +151,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spMake"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -159,6 +161,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spModel"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -168,6 +171,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spTrim"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -177,6 +181,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spExteriorColor"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -186,20 +191,13 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spInteriorColor"
                                 android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
-                            <!-- <androidx.appcompat.widget.AppCompatSpinner
-                                 android:id="@+id/spPackages"
-                                 android:spinnerMode="dropdown"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:layout_marginTop="@dimen/_24sdp"
-                                 android:background="@drawable/bg_spinner_dark" />
- -->
 
                             <TextView
                                 android:id="@+id/tvPackages"

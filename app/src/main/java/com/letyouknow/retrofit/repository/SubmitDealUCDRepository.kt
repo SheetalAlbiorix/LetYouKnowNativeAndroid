@@ -4,8 +4,9 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.retrofit.RetrofitClient
-import com.letyouknow.retrofit.SubmitDealLCDData
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,6 +37,8 @@ object SubmitDealUCDRepository {
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
                     forgotPasswordVo.value = data!!
+                } else if (response.code() == 401) {
+                    AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
