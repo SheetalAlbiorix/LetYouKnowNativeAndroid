@@ -270,7 +270,7 @@
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePrice)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -285,7 +285,8 @@
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="-$799.00"
+                            tool:text="2011"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -300,7 +301,7 @@
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="$0.00"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -315,7 +316,7 @@
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.lykDollar)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -330,7 +331,7 @@
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.remainingBalance)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -377,13 +378,13 @@
                     <TableRow>
 
                         <TextView
-                            android:text="VISA "
+                            android:text="@{data.successResult.transactionInfo.paymentMethod}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:layout_gravity="right"
-                            android:text="2011"
+                            android:text="@{data.successResult.transactionInfo.paymentLast4}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
