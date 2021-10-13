@@ -264,12 +264,16 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/unlocked_cardeals_price"
                             android:textColor="@color/color3e5365"
+                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePrice)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -279,14 +283,18 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/nonrefundable_service"
                             android:textColor="@color/color3e5365"
+                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
-                            android:text="-$799.00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             tool:text="2011"
+                            android:text="-$799.00"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -295,12 +303,16 @@
                     <TableRow android:layout_marginTop="@dimen/_20sdp">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/promo_code_colon"
                             android:textColor="@color/color3e5365"
+                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="$0.00"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -310,12 +322,16 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/lyk_dollars_colon"
                             android:textColor="@color/color3e5365"
+                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.lykDollar)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -325,12 +341,16 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/remaining_balance"
                             android:textColor="@color/color3e5365"
+                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.remainingBalance)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -340,16 +360,18 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/balance_excludes"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
-                        <TextView
-                            android:layout_gravity="right"
-                            android:text="2011"
-                            android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                        <!--  <TextView
+                              android:layout_gravity="right"
+                              android:text="2011"
+                              android:textColor="@color/color3e5365"
+                              android:textSize="@dimen/_12sdp" />-->
 
                     </TableRow>
                 </TableLayout>
@@ -378,13 +400,14 @@
                     <TableRow>
 
                         <TextView
+                            android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.paymentMethod}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_gravity="right"
-                            android:text="@{data.successResult.transactionInfo.paymentLast4}"
+                            android:layout_width="wrap_content"
+                            android:text="@{@string/account_last_4digit(data.successResult.transactionInfo.paymentLast4)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -423,7 +446,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/jaymin_suchak_n_1120_nparkside_main_st_br_cary_nc_27519_n_990_097_89956_njaymin_albiorix_gmail_com"
+                    android:text="@{@string/buyer_info_detail(data.successResult.transactionInfo.buyerName,data.successResult.transactionInfo.buyerAddress1,data.successResult.transactionInfo.buyerAddress2,data.successResult.transactionInfo.buyerCity,data.successResult.transactionInfo.buyerState,data.successResult.transactionInfo.buyerZipcode,data.successResult.transactionInfo.buyerPhone,data.successResult.transactionInfo.buyerEmail)}"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 
@@ -486,6 +509,18 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/this_person_must"
                     android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnFindYourCar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_button"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_12sdp"
+                    android:text="@string/findyourcar"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

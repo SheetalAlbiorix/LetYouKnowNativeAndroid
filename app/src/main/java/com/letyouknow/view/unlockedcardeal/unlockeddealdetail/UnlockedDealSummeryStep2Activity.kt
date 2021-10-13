@@ -38,6 +38,7 @@ import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
@@ -266,6 +267,9 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                     /*  startActivity(
                           intentFor<MainActivity>().clearTask().newTask()
                       )*/
+                    data.successResult.transactionInfo.vehiclePrice = ucdData.price!!
+                    data.successResult.transactionInfo.remainingBalance =
+                        (ucdData.price!! - (799.0f + ucdData.discount!!))
                     startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )
@@ -303,6 +307,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun callPromoCodeAPI() {
         if (Constant.isOnline(this)) {
