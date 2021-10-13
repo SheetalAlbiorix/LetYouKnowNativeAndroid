@@ -31,11 +31,12 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
-import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.signup.CardListAdapter
+import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
@@ -88,9 +89,7 @@ import kotlinx.android.synthetic.main.layout_deal_summery_step2.tvSubmitStartOve
 import kotlinx.android.synthetic.main.layout_deal_summery_step2.tvViewOptions
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import kotlinx.android.synthetic.main.layout_unlocked_deal_summery_step2.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
+import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -145,7 +144,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 FindLCDDeaData::class.java
             )
             dataPendingDeal = Gson().fromJson(
-                intent.getStringExtra(ARG_LCD_DEAL_GUEST),
+                intent.getStringExtra(ARG_UCD_DEAL_PENDING),
                 SubmitPendingUcdData::class.java
             )
             arImage = Gson().fromJson(
@@ -326,9 +325,13 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                         "Your Deal Successfully Booked",
                         Toast.LENGTH_SHORT
                     ).show()
-                    startActivity(
-                        intentFor<MainActivity>().clearTask().newTask()
-                    )
+                    /* startActivity(
+                         intentFor<MainActivity>().clearTask().newTask()
+                     )*/
+                    data.successResult.transactionInfo.vehiclePrice = dataLCDDeal.price!!
+                    data.successResult.transactionInfo.remainingBalance =
+                        (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
+                    startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )
         } else {
@@ -630,7 +633,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             tvLeaveDeal.setOnClickListener {
                 dismiss()
-                onBackPressed()
+                finish()
             }
         }
         setLayoutParam(dialog)

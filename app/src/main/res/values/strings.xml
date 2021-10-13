@@ -236,7 +236,7 @@
     <string name="submitted_colon">Submitted:</string>
     <string name="hot_market">Hot Market!</string>
     <string name="go_back_and_try_again">GO BACK AND TRY AGAIN</string>
-    <string name="account_last_4digit">*****%1s$</string>
+    <string name="account_last_4digit">%1s   *****%2s</string>
     <string name="buyer_info_detail"><![CDATA[%1s\n%2s\n%3s\n%4s, %5s %6s\n%7s\n%8s]]></string>
     <string name="findyourcar">Find Your Car</string>
 </resources>
