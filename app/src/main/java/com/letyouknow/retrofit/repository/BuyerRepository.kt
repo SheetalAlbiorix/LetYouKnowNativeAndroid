@@ -19,7 +19,7 @@ object BuyerRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<BuyerInfoData> {
-        val forgotPasswordVo = MutableLiveData<BuyerInfoData>()
+        val buyerData = MutableLiveData<BuyerInfoData>()
         val call = RetrofitClient.apiInterface.buyer(request)
 
         call.enqueue(object : Callback<BuyerInfoData> {
@@ -36,7 +36,7 @@ object BuyerRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    buyerData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -51,6 +51,6 @@ object BuyerRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return buyerData
     }
 }

@@ -24,7 +24,7 @@ object InteriorColorRepository {
         exteriorColorId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<InteriorColorData>> {
-        val loginVo = MutableLiveData<ArrayList<InteriorColorData>>()
+        val getInteriorColorData = MutableLiveData<ArrayList<InteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleInteriorColors(
             productId,
             yearId,
@@ -48,7 +48,7 @@ object InteriorColorRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getInteriorColorData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -60,6 +60,6 @@ object InteriorColorRepository {
                 }
             }
         })
-        return loginVo
+        return getInteriorColorData
     }
 }

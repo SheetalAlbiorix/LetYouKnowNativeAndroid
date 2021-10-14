@@ -6,6 +6,9 @@ import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityZoomImageBinding
+import com.letyouknow.utils.AppGlobal
+import com.pionymessenger.utils.Constant
+import kotlinx.android.synthetic.main.activity_zoom_image.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class ZoomImageActivity : BaseActivity() {
@@ -18,6 +21,11 @@ class ZoomImageActivity : BaseActivity() {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_zoom_image)
+        if (intent.hasExtra(Constant.ARG_IMAGE_URL)) {
+//            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
+            var data = intent.getStringExtra(Constant.ARG_IMAGE_URL)
+            AppGlobal.loadImageUrl(this.applicationContext, imViewedImage, data.toString())
+        }
         backButton()
     }
 

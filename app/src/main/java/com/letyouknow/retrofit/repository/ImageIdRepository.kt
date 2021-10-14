@@ -17,7 +17,7 @@ object ImageIdRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<String> {
-        val forgotPasswordVo = MutableLiveData<String>()
+        val imageIdData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.getImageId(request)
 
         call.enqueue(object : Callback<String> {
@@ -34,7 +34,7 @@ object ImageIdRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    imageIdData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -49,6 +49,6 @@ object ImageIdRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return imageIdData
     }
 }

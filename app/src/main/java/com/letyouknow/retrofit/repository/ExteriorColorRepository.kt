@@ -23,7 +23,7 @@ object ExteriorColorRepository {
         trimId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<ExteriorColorData>> {
-        val loginVo = MutableLiveData<ArrayList<ExteriorColorData>>()
+        val getExteriorColorData = MutableLiveData<ArrayList<ExteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleExteriorColors(
             productId,
             yearId,
@@ -46,7 +46,7 @@ object ExteriorColorRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getExteriorColorData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -58,6 +58,6 @@ object ExteriorColorRepository {
                 }
             }
         })
-        return loginVo
+        return getExteriorColorData
     }
 }

@@ -21,7 +21,7 @@ object VehicleModelRepository {
         makeID: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleModelData>> {
-        val loginVo = MutableLiveData<ArrayList<VehicleModelData>>()
+        val getVehicleModelData = MutableLiveData<ArrayList<VehicleModelData>>()
         val call = RetrofitClient.apiInterface.getVehicleModels(productId, yearId, makeID, zipCode)
 
         call.enqueue(object : Callback<ArrayList<VehicleModelData>> {
@@ -37,7 +37,7 @@ object VehicleModelRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getVehicleModelData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -49,6 +49,6 @@ object VehicleModelRepository {
                 }
             }
         })
-        return loginVo
+        return getVehicleModelData
     }
 }

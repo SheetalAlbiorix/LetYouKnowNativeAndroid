@@ -19,7 +19,7 @@ object SubmitPendingLCDDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitPendingUcdData> {
-        val forgotPasswordVo = MutableLiveData<SubmitPendingUcdData>()
+        val pendinLCDDealData = MutableLiveData<SubmitPendingUcdData>()
         val call = RetrofitClient.apiInterface.submitPendingDealLCD(request)
 
         call.enqueue(object : Callback<SubmitPendingUcdData> {
@@ -36,7 +36,7 @@ object SubmitPendingLCDDealRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    pendinLCDDealData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -50,6 +50,6 @@ object SubmitPendingLCDDealRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return pendinLCDDealData
     }
 }

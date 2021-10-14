@@ -19,7 +19,7 @@ object SubmitPendingUCDDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitPendingUcdData> {
-        val forgotPasswordVo = MutableLiveData<SubmitPendingUcdData>()
+        val pendingUCDDealData = MutableLiveData<SubmitPendingUcdData>()
         val call = RetrofitClient.apiInterface.submitPendingDealUcd(request)
 
         call.enqueue(object : Callback<SubmitPendingUcdData> {
@@ -36,7 +36,7 @@ object SubmitPendingUCDDealRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    pendingUCDDealData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -50,6 +50,6 @@ object SubmitPendingUCDDealRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return pendingUCDDealData
     }
 }

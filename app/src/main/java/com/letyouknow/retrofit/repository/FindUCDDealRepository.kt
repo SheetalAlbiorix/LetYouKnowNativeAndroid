@@ -19,7 +19,7 @@ object FindUCDDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<ArrayList<FindUcdDealData>> {
-        val forgotPasswordVo = MutableLiveData<ArrayList<FindUcdDealData>>()
+        val findUCDDealData = MutableLiveData<ArrayList<FindUcdDealData>>()
         val call = RetrofitClient.apiInterface.findUCDDeal(request)
 
         call.enqueue(object : Callback<ArrayList<FindUcdDealData>> {
@@ -36,7 +36,7 @@ object FindUCDDealRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    findUCDDealData.value = data!!
                 } else if (response.code() == 401) {
                     isAuthorizationFailed(context)
                 } else {
@@ -50,6 +50,6 @@ object FindUCDDealRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return findUCDDealData
     }
 }

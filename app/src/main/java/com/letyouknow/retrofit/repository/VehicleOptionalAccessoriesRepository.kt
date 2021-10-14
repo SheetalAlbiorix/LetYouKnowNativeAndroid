@@ -17,7 +17,7 @@ object VehicleOptionalAccessoriesRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<ArrayList<VehicleAccessoriesData>> {
-        val loginVo = MutableLiveData<ArrayList<VehicleAccessoriesData>>()
+        val getOptionalData = MutableLiveData<ArrayList<VehicleAccessoriesData>>()
         val call = RetrofitClient.apiInterface.getVehicleDealerAccessories(
             request
         )
@@ -35,7 +35,7 @@ object VehicleOptionalAccessoriesRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getOptionalData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -47,6 +47,6 @@ object VehicleOptionalAccessoriesRepository {
                 }
             }
         })
-        return loginVo
+        return getOptionalData
     }
 }

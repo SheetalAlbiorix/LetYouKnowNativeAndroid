@@ -31,15 +31,15 @@ fun paymentMethodApiCall(
         time_on_page: String?,
         key: String?
     ): MutableLiveData<CardStripeData> {
-        val forgotPasswordVo = MutableLiveData<CardStripeData>()
-        val call = RetrofitClient.apiInterface.paymentMethods(
-            type,
-            cardnumber,
-            cardcvc,
-            cardexp_month,
-            cardexp_year,
-            billing_detailsaddresspostal_code
-        )
+        val paymentMethodData = MutableLiveData<CardStripeData>()
+    val call = RetrofitClient.apiInterface.paymentMethods(
+        type,
+        cardnumber,
+        cardcvc,
+        cardexp_month,
+        cardexp_year,
+        billing_detailsaddresspostal_code
+    )
         val pref = LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
 
         call.enqueue(object : Callback<CardStripeData> {
@@ -58,7 +58,7 @@ fun paymentMethodApiCall(
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    paymentMethodData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -76,6 +76,6 @@ fun paymentMethodApiCall(
                 }
             }
         })
-        return forgotPasswordVo
+    return paymentMethodData
     }
 }

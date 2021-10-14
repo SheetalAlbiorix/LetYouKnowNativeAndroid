@@ -25,7 +25,7 @@ object VehiclePackagesRepository {
         interiorColorId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehiclePackagesData>> {
-        val loginVo = MutableLiveData<ArrayList<VehiclePackagesData>>()
+        val getVehiclePackagesData = MutableLiveData<ArrayList<VehiclePackagesData>>()
         val call = RetrofitClient.apiInterface.getVehiclePackages(
             productId,
             yearId,
@@ -50,7 +50,7 @@ object VehiclePackagesRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getVehiclePackagesData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -62,6 +62,6 @@ object VehiclePackagesRepository {
                 }
             }
         })
-        return loginVo
+        return getVehiclePackagesData
     }
 }

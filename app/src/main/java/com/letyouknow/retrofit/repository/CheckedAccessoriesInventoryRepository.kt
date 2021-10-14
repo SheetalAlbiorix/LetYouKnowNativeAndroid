@@ -18,7 +18,7 @@ object CheckedAccessoriesInventoryRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<CheckedPackageData> {
-        val forgotPasswordVo = MutableLiveData<CheckedPackageData>()
+        val checkedAccessoriesInventoryData = MutableLiveData<CheckedPackageData>()
         val call = RetrofitClient.apiInterface.checkVehicleAccessoriesInventory(request)
 
         call.enqueue(object : Callback<CheckedPackageData> {
@@ -35,7 +35,7 @@ object CheckedAccessoriesInventoryRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    checkedAccessoriesInventoryData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -47,6 +47,6 @@ object CheckedAccessoriesInventoryRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return checkedAccessoriesInventoryData
     }
 }
