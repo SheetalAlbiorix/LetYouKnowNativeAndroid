@@ -62,6 +62,9 @@ class ApiConstant {
         var card_last4 = "card_last4"
         var payment_method_id = "payment_method_id"
         var card_brand = "card_brand"
+        var exterior360 = "Exterior360"
+        var interior360 = "Interior360"
+        var interior360Pano = "Interior360Pano"
 
     }
 }

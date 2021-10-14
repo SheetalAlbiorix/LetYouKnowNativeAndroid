@@ -44,7 +44,7 @@ class InteriorFragment : BaseFragment(), View.OnClickListener {
 
         val request = HashMap<String, Any>()
         request[ApiConstant.ImageId] = "13655"
-        request[ApiConstant.ImageProduct] = "Interior360"
+        request[ApiConstant.ImageProduct] = ApiConstant.interior360
 
         interiorViewModel.getInterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->

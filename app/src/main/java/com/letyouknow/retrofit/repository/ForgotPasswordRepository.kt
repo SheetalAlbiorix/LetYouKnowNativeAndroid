@@ -22,7 +22,7 @@ object ForgotPasswordRepository {
         context: Context,
         request: HashMap<String, String>
     ): MutableLiveData<Void> {
-        val forgotPasswordVo = MutableLiveData<Void>()
+        val getForgotPasswordData = MutableLiveData<Void>()
         val call = RetrofitClient.apiInterface.forgotPassword(request)
 
         call.enqueue(object : Callback<Void> {
@@ -61,6 +61,6 @@ object ForgotPasswordRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return getForgotPasswordData
     }
 }

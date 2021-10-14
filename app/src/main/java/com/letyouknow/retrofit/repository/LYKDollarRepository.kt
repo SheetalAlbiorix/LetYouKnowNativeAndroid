@@ -17,7 +17,7 @@ object LYKDollarRepository {
         context: Context,
         dealerId: String?
     ): MutableLiveData<String> {
-        val loginVo = MutableLiveData<String>()
+        val getDollarData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.getlykdollar(dealerId)
 
         call.enqueue(object : Callback<String> {
@@ -33,7 +33,7 @@ object LYKDollarRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getDollarData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -45,6 +45,6 @@ object LYKDollarRepository {
                 }
             }
         })
-        return loginVo
+        return getDollarData
     }
 }

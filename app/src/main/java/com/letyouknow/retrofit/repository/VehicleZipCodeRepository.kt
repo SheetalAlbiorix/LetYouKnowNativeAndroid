@@ -17,7 +17,7 @@ object VehicleZipCodeRepository {
         context: Context,
         zipCode: String?
     ): MutableLiveData<Boolean> {
-        val loginVo = MutableLiveData<Boolean>()
+        val getVehicleZipCodeData = MutableLiveData<Boolean>()
         val call = RetrofitClient.apiInterface.isValidZip(zipCode)
 
         call.enqueue(object : Callback<Boolean> {
@@ -33,7 +33,7 @@ object VehicleZipCodeRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getVehicleZipCodeData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -45,6 +45,6 @@ object VehicleZipCodeRepository {
                 }
             }
         })
-        return loginVo
+        return getVehicleZipCodeData
     }
 }

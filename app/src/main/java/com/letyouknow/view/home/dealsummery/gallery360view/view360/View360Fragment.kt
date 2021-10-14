@@ -46,19 +46,12 @@ class View360Fragment : BaseFragment() {
         getInteriorAPI();
     }
 
-    private fun View360() {
+    private fun View360(list: ArrayList<String>) {
         var imagesTag360 = ""
-        for (i in 1 until 36) {
-            if (i < 10) {
-                imagesTag360 =
-                    imagesTag360 + "<img src=\"https://dbhdyzvm8lm25.cloudfront.net/exterior_036_spinframes_0640/MY2020/13655/13655_sp0640_00" + i + ".jpg\"/>"
-            } else {
-                imagesTag360 =
-                    imagesTag360 + "<img src=\"https://dbhdyzvm8lm25.cloudfront.net/exterior_036_spinframes_0640/MY2020/13655/13655_sp0640_0" + i + ".jpg\"/>"
-            }
-            //imagesTag360 = imagesTag360 + "<img src=\"file:///android_asset/images/image1_" + i + ".jpg\"/>"
+        print(list.size)
+        for (i in 0 until list.size) {
+            imagesTag360 = imagesTag360 + "<img src=\"" + list[i] + "\"/>"
         }
-
 
         web_view.loadDataWithBaseURL(
             "",
@@ -74,21 +67,37 @@ class View360Fragment : BaseFragment() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 // "option": Declared at the step 3
                 vrPanoramaView.loadImageFromBitmap(resource, option)
+
             }
         })
+        getInteriorViewAPI();
     }
 
     private fun getInteriorAPI() {
-
         val request = HashMap<String, Any>()
         request[ApiConstant.ImageId] = "14904"
-        request[ApiConstant.ImageProduct] = "Interior360Pano"
+        request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano
 
         interiorViewModel.getInterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->
                 Constant.dismissLoader()
-                View360()
                 interiorView(loginVo[0])
+            }
+            )
+
+    }
+
+    private fun getInteriorViewAPI() {
+
+        val request = HashMap<String, Any>()
+        request[ApiConstant.ImageId] = "13655"
+        request[ApiConstant.ImageProduct] = ApiConstant.exterior360
+
+        interiorViewModel.getInterior(this.requireContext(), request)!!
+            .observe(this.requireActivity(), Observer { loginVo ->
+                Constant.dismissLoader()
+                print("data display " + loginVo.size.toString())
+                View360(loginVo)
             }
             )
 

@@ -19,7 +19,7 @@ object SubmitDealLCDRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitDealLCDData> {
-        val forgotPasswordVo = MutableLiveData<SubmitDealLCDData>()
+        val submitDealLCDData = MutableLiveData<SubmitDealLCDData>()
         val call = RetrofitClient.apiInterface.submitdeallcd(request)
 
         call.enqueue(object : Callback<SubmitDealLCDData> {
@@ -36,7 +36,7 @@ object SubmitDealLCDRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    submitDealLCDData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -51,6 +51,6 @@ object SubmitDealLCDRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return submitDealLCDData
     }
 }

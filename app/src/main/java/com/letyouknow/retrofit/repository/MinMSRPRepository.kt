@@ -17,7 +17,7 @@ object MinMSRPRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<Double> {
-        val forgotPasswordVo = MutableLiveData<Double>()
+        val minMsrpData = MutableLiveData<Double>()
         val call = RetrofitClient.apiInterface.getMinMSRP(request)
 
         call.enqueue(object : Callback<Double> {
@@ -27,7 +27,7 @@ object MinMSRPRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    minMsrpData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -44,6 +44,6 @@ object MinMSRPRepository {
                 Log.v("DEBUG : ", t.message.toString())
             }
         })
-        return forgotPasswordVo
+        return minMsrpData
     }
 }

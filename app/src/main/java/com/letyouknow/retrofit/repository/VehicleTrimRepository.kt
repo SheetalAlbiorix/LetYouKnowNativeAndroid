@@ -22,7 +22,7 @@ object VehicleTrimRepository {
         modelId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleTrimData>> {
-        val loginVo = MutableLiveData<ArrayList<VehicleTrimData>>()
+        val getVehicleTrimData = MutableLiveData<ArrayList<VehicleTrimData>>()
         val call =
             RetrofitClient.apiInterface.getVehicleTrims(productId, yearId, makeId, modelId, zipCode)
 
@@ -39,7 +39,7 @@ object VehicleTrimRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getVehicleTrimData.value = data!!
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
@@ -51,6 +51,6 @@ object VehicleTrimRepository {
                 }
             }
         })
-        return loginVo
+        return getVehicleTrimData
     }
 }

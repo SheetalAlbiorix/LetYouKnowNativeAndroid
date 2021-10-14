@@ -19,7 +19,7 @@ object FindLCDDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<FindLCDDeaData> {
-        val forgotPasswordVo = MutableLiveData<FindLCDDeaData>()
+        val findLCDDealData = MutableLiveData<FindLCDDeaData>()
         val call = RetrofitClient.apiInterface.findLCDDeal(request)
 
         call.enqueue(object : Callback<FindLCDDeaData> {
@@ -36,7 +36,7 @@ object FindLCDDealRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    forgotPasswordVo.value = data!!
+                    findLCDDealData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
@@ -50,6 +50,6 @@ object FindLCDDealRepository {
                 }
             }
         })
-        return forgotPasswordVo
+        return findLCDDealData
     }
 }

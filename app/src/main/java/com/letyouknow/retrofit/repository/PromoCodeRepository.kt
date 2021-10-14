@@ -16,7 +16,7 @@ object PromoCodeRepository {
         promoCode: String?,
         dealerId: String?
     ): MutableLiveData<PromoCodeData> {
-        val loginVo = MutableLiveData<PromoCodeData>()
+        val getPromoCodeData = MutableLiveData<PromoCodeData>()
         val call = RetrofitClient.apiInterface.validatePromoCode(promoCode, dealerId)
 
         call.enqueue(object : Callback<PromoCodeData> {
@@ -32,15 +32,15 @@ object PromoCodeRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    loginVo.value = data!!
+                    getPromoCodeData.value = data!!
                 } else {
                     val loginVoData = PromoCodeData()
                     loginVoData?.discount = 0.0f
                     loginVoData?.promotionID = "-1"
-                    loginVo.value = loginVoData
+                    getPromoCodeData.value = loginVoData
                 }
             }
         })
-        return loginVo
+        return getPromoCodeData
     }
 }
