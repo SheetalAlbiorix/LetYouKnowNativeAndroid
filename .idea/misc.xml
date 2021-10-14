@@ -44,7 +44,9 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checkbox_unchecked_grey.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checked_icon.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_checked_icon_gray.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_close.xml" value="0.2203125" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_correct.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_edit_white.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_info.xml" value="0.2203125" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
@@ -70,6 +72,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.22" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_submit_price_deal_summary.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_transaction_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_unlocked_car_deal.xml" value="0.12345679012345678" />
@@ -83,6 +86,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_option_accessories.xml" value="0.2" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_option_accessories_unlocked.xml" value="0.2" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_password_hint.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_price_validation.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_privacy_policy_terms_conditions.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_vehicle_options.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_vehicle_packages.xml" value="0.20416666666666666" />
@@ -102,6 +106,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_deal_summery_step2.xml" value="0.22" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_nav_drawer.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_submit_price_deal_summery.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_toolbar.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_toolbar_blue.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/layout_toolbar_timer.xml" value="0.20416666666666666" />

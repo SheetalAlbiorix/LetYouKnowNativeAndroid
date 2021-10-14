@@ -18,5 +18,7 @@ data class YearModelMakeData(
     var radius: String? = "",
     var zipCode: String? = "",
     var loanType: String? = "",
-    var initials: String? = ""
+    var initials: String? = "",
+    var arPackages: ArrayList<VehiclePackagesData>? = ArrayList(),
+    var arOptions: ArrayList<VehicleAccessoriesData>? = ArrayList()
 ) : Serializable

@@ -23,9 +23,9 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.home.dealsummery.DealSummeryActivity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -82,6 +82,13 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private var trimId = ""
     private var extColorId = ""
     private var intColorId = ""
+
+    private var yearStr = ""
+    private var makeStr = ""
+    private var modelStr = ""
+    private var trimStr = ""
+    private var extColorStr = ""
+    private var intColorStr = ""
 
     private lateinit var animBlink: Animation
     private lateinit var animSlideRightToLeft: Animation
@@ -659,6 +666,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                                 if (adapterOptions.getItem(j).dealerAccessoryID == data.autoCheckList[i]) {
                                     val dataCheck = adapterOptions.getItem(j)
                                     dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
                                     adapterOptions.update(j, dataCheck)
                                 }
                             }
@@ -709,12 +717,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             request[ApiConstant.trimId] = trimId
             request[ApiConstant.exteriorColorId] = extColorId
             request[ApiConstant.interiorColorId] = intColorId
-            request[ApiConstant.zipCode] = ""
 
             minMSRPViewModel.minMSRPCall(requireActivity(), request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-                    startActivity<DealSummeryActivity>()
+
                 }
                 )
 
@@ -752,7 +759,41 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 llPromoOffer.visibility = View.GONE
             }
             R.id.btnSearch -> {
-                callMinMSRPAPI()
+                val arOptions: ArrayList<VehicleAccessoriesData> = ArrayList()
+                for (i in 0 until adapterOptions.itemCount) {
+                    if (adapterOptions.getItem(i).isSelect!! || adapterOptions.getItem(i).isOtherSelect!!) {
+                        arOptions.add(adapterOptions.getItem(i))
+                    }
+                }
+                val arPackage: ArrayList<VehiclePackagesData> = ArrayList()
+
+                for (i in 0 until adapterPackages.itemCount) {
+                    if (adapterPackages.getItem(i).isSelect!! && adapterPackages.getItem(i).isOtherSelect!!) {
+                        arPackage.add(adapterPackages.getItem(i))
+                    }
+                }
+                val data = YearModelMakeData()
+                data.vehicleYearID = yearId
+                data.vehicleMakeID = makeId
+                data.vehicleModelID = modelId
+                data.vehicleTrimID = trimId
+                data.vehicleExtColorID = extColorId
+                data.vehicleIntColorID = intColorId
+                data.vehicleYearStr = yearStr
+                data.vehicleMakeStr = makeStr
+                data.vehicleModelStr = modelStr
+                data.vehicleTrimStr = trimStr
+                data.vehicleExtColorStr = extColorStr
+                data.vehicleIntColorStr = extColorStr
+                data.arPackages = arPackage
+                data.arOptions = arOptions
+
+                startActivity<SubmitPriceDealSummaryActivity>(
+                    ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                        data
+                    )
+                )
+//                callMinMSRPAPI()
             }
             R.id.tvPackages -> {
                 arSelectPackage = ArrayList()
@@ -766,7 +807,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 var packagesStr = ""
                 var isFirst = true
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect == true) {
+                    if (adapterPackages.getItem(i).isSelect == true || adapterPackages.getItem(i).isOtherSelect == true) {
                         if (isFirst) {
                             packagesStr = adapterPackages.getItem(i).packageName.toString()
                             isFirst = false
@@ -810,6 +851,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                         adapterPackages.update(i, dataPackage)
                     }
                 } else {
+                    for (i in 1 until adapterPackages.itemCount) {
+                        val dataPackage = adapterPackages.getItem(i)
+                        dataPackage.isOtherSelect = false
+                        dataPackage.isGray = false
+                        adapterPackages.update(i, dataPackage)
+                    }
                     val data0 = adapterPackages.getItem(0)
                     data0.isSelect = false
                     adapterPackages.update(0, data0)
@@ -826,6 +873,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     val data = adapterPackages.getItem(i)
                     data.isSelect = false
                     data.isGray = false
+                    data.isOtherSelect = false
                     adapterPackages.update(i, data)
                 }
             }
@@ -833,7 +881,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 var optionsStr = ""
                 var isFirst = true
                 for (i in 0 until adapterOptions.itemCount) {
-                    if (adapterOptions.getItem(i).isSelect == true) {
+                    if (adapterOptions.getItem(i).isSelect == true || adapterOptions.getItem(i).isOtherSelect == true) {
                         if (isFirst) {
                             optionsStr = adapterOptions.getItem(i).accessory.toString()
                             isFirst = false
@@ -851,6 +899,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     val data = adapterOptions.getItem(i)
                     data.isSelect = false
                     data.isGray = false
+                    data.isOtherSelect = false
                     adapterOptions.update(i, data)
                 }
             }
@@ -882,10 +931,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     for (i in 1 until adapterOptions.itemCount) {
                         val dataOptions = adapterOptions.getItem(i)
                         dataOptions.isSelect = false
+                        dataOptions.isOtherSelect = false
                         dataOptions.isGray = false
                         adapterOptions.update(i, dataOptions)
                     }
                 } else {
+                    for (i in 1 until adapterOptions.itemCount) {
+                        val dataOptions = adapterOptions.getItem(i)
+                        dataOptions.isOtherSelect = false
+                        dataOptions.isGray = false
+                        adapterOptions.update(i, dataOptions)
+                    }
                     val data0 = adapterOptions.getItem(0)
                     data0.isSelect = false
                     adapterOptions.update(0, data0)
@@ -902,6 +958,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             R.id.spYear -> {
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
+                yearStr = data.year!!
                 if (data.year != "YEAR") {
                     callVehicleMakeAPI()
                     setModel()
@@ -918,6 +975,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
                 makeId = data.vehicleMakeID!!
+                makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
                     callVehicleModelAPI()
@@ -933,6 +991,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             R.id.spModel -> {
                 val data = adapterModel.getItem(position) as VehicleModelData
                 modelId = data.vehicleModelID!!
+                modelStr = data.model!!
                 AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
                     callVehicleTrimAPI()
@@ -947,6 +1006,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             R.id.spTrim -> {
                 val data = adapterTrim.getItem(position) as VehicleTrimData
                 trimId = data.vehicleTrimID!!
+                trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
                     callExteriorColorAPI()
@@ -961,6 +1021,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 val data = adapterExterior.getItem(position) as ExteriorColorData
 //                extColorId = "0"
                 extColorId = data.vehicleExteriorColorID!!
+                extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     callInteriorColorAPI()
@@ -973,6 +1034,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
                 intColorId = data.vehicleInteriorColorID!!
+                intColorStr = data.interiorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
                     setPackages(true)

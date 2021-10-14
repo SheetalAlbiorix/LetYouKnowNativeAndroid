@@ -2,54 +2,70 @@ package com.letyouknow.view.submitprice
 
 import android.app.Activity
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityDealSummeryBinding
-import com.letyouknow.model.FindLCDDeaData
+import com.letyouknow.databinding.ActivitySubmitPriceDealSummaryBinding
+import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
+import com.letyouknow.retrofit.viewmodel.VehicleZipCodeViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
-import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
 import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity
 import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
+import com.letyouknow.view.spinneradapter.RadiusSpinnerBlackDropAdapter
 import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
-import kotlinx.android.synthetic.main.activity_deal_summery.*
+import kotlinx.android.synthetic.main.activity_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_deal_summery.*
-import kotlinx.android.synthetic.main.layout_deal_summery.ivForwardDeal
-import kotlinx.android.synthetic.main.layout_deal_summery_hot_market.*
+import kotlinx.android.synthetic.main.dialog_price_validation.*
+import kotlinx.android.synthetic.main.layout_submit_price_deal_summery.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
 
-
 class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
+    private var arRadius = arrayListOf(
+        "SEARCH RADIUS",
+        "25 mi",
+        "50 mi",
+        "75 mi",
+        "100 mi",
+        "150 mi",
+        "200 mi",
+        "250 mi",
+        "300 mi",
+        "350 mi",
+        "500 mi",
+        "1000 mi",
+        "ALL"
+    )
     private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
     private var financingStr = "Financing Option"
+    private var radiusId = "SEARCH RADIUS"
 
     private var arImageUrl: ArrayList<String> = ArrayList()
 
@@ -57,16 +73,18 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var imageUrlViewModel: ImageUrlViewModel
 
 
-    private lateinit var binding: ActivityDealSummeryBinding
-    private lateinit var dataLCDDeal: FindLCDDeaData
+    private lateinit var binding: ActivitySubmitPriceDealSummaryBinding
+    private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
+    private lateinit var adapterRadius: RadiusSpinnerBlackDropAdapter
+    private lateinit var zipCodeModel: VehicleZipCodeViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deal_summery)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery)
+        setContentView(R.layout.activity_submit_price_deal_summary)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_submit_price_deal_summary)
 //        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
@@ -74,21 +92,21 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
+        zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
         submitPendingLCDDealViewModel =
             ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
 
-        if (intent.hasExtra(ARG_LCD_DEAL_GUEST)) {
-            dataLCDDeal = Gson().fromJson(
-                intent.getStringExtra(ARG_LCD_DEAL_GUEST),
-                FindLCDDeaData::class.java
+        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL)) {
+            yearModelMakeData = Gson().fromJson(
+                intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
+                YearModelMakeData::class.java
             )
             callImageIdAPI()
-            binding.lcdDealData = dataLCDDeal
+            binding.data = yearModelMakeData
 
         }
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))
-        strikeThrough(tvPrice)
         setLoan()
 //        setInfoLink()
         setPrivacyPolicyLink()
@@ -101,25 +119,146 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
-        tvViewOptionsHot.setOnClickListener(this)
-        btnGoBack.setOnClickListener(this)
+
         ivBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
-        backButton()
-        tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
+//        backButton()
+        tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match_submit_price))
         scrollTouchListener()
+        onChangeZipCodePrice()
+        callRadiusAPI()
+    }
+
+    private fun onChangeZipCodePrice() {
+        edtZipCode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+                if (str.length == 5) {
+                    callVehicleZipCodeAPI(str)
+                } else if (str.length < 5) {
+                    tvErrorZipCode.visibility = View.GONE
+                    edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+        edtPrice.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s.toString()
+
+                if (str.isNotEmpty()) {
+                    val price = edtPrice.text.toString().trim().toDouble()
+                    popupPrice(price)
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun popupPrice(price: Double) {
+        llViewPrice.visibility = View.VISIBLE
+
+        when {
+            price == 0.0 -> {
+                tvErrorDialogPrice.visibility = View.VISIBLE
+                tvErrorDialogPrice.text = getString(R.string.price_required)
+
+            }
+            price < 799 -> {
+                tvErrorDialogPrice.visibility = View.VISIBLE
+                tvErrorDialogPrice.text = getString(R.string.price_must_be_799_00)
+
+            }
+            else -> {
+                tvErrorDialogPrice.visibility = View.GONE
+            }
+        }
+        ivPriceCorrect.setOnClickListener {
+            edtPrice.setText(edtPrice.text.toString().trim() + ".00")
+            llViewPrice.visibility = View.GONE
+            edtPrice.setSelection(edtPrice.text.toString().length)
+            priceError(price)
+
+        }
+        ivPriceClose.setOnClickListener {
+            edtPrice.hint = "0"
+            llViewPrice.visibility = View.GONE
+            priceError(price)
+        }
+    }
+
+    fun priceError(price: Double) {
+        when {
+            price == 0.0 -> {
+                tvErrorPrice.visibility = View.VISIBLE
+                tvErrorPrice.text = getString(R.string.price_required)
+            }
+            price < 799 -> {
+                tvErrorPrice.visibility = View.VISIBLE
+                tvErrorPrice.text = getString(R.string.price_must_be_799_00)
+            }
+            else -> {
+                tvErrorPrice.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun callVehicleZipCodeAPI(zipCode: String?) {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            zipCodeModel.getZipCode(this, zipCode)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("ZipCode Data", Gson().toJson(data))
+                    if (!data) {
+                        /* Toast.makeText(
+                             requireActivity(),
+                             getString(R.string.invalid_zip_code),
+                             Toast.LENGTH_SHORT
+                         ).show()*/
+                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
+                        tvErrorZipCode.visibility = View.VISIBLE
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun callRadiusAPI() {
+        adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
+        spRadius.adapter = adapterRadius
+        spRadius.onItemSelectedListener = this
     }
 
     private var isScrollable = false
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun scrollTouchListener() {
 //        tvInfo.movementMethod = ScrollingMovementMethod()
-        nestedSc.setOnTouchListener { v, event ->
+        nestedSc.setOnTouchListener { _, _ ->
             scrollInfo.parent.requestDisallowInterceptTouchEvent(false)
             false
         }
-        scrollInfo.setOnTouchListener { v, event ->
+        scrollInfo.setOnTouchListener { v, _ ->
             v.parent.requestDisallowInterceptTouchEvent(true)
             false
         }
@@ -182,11 +321,11 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            dataLCDDeal.run {
-                request[ApiConstant.vehicleYearID] = yearId!!
-                request[ApiConstant.vehicleMakeID] = makeId!!
-                request[ApiConstant.vehicleModelID] = modelId!!
-                request[ApiConstant.vehicleTrimID] = trimId!!
+            yearModelMakeData.run {
+                request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
             }
 
             imageIdViewModel.imageIdCall(this, request)!!
@@ -229,7 +368,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitPendingLCDDealAPI() {
+    /*private fun callSubmitPendingLCDDealAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
@@ -267,14 +406,14 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 if (isValid()) {
-                    callSubmitPendingLCDDealAPI()
+//                    callSubmitPendingLCDDealAPI()
                 }
                 //loadFragment(DealSummeryStep2Activity())
             }
@@ -320,6 +459,16 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 }
                 setWhiteSpinnerLayoutPos(position, spLoan, this)
             }
+            R.id.spRadius -> {
+                val data = adapterRadius.getItem(position) as String
+                radiusId = data
+                AppGlobal.setWhiteSpinnerLayoutPos(position, spRadius, this)
+                if (data != "SEARCH RADIUS") {
+                    tvErrorRadius.visibility = View.GONE
+                }
+
+
+            }
         }
     }
 
@@ -334,31 +483,16 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
-        if (financingStr == "Financing Option" && !isScrollable && TextUtils.isEmpty(
-                edtInitials.text.toString().trim()
-            )
-        ) {
-            tvErrorFinancingOption.visibility = View.VISIBLE
-            tvErrorFullDisclouser.visibility = View.VISIBLE
-            setErrorBorder(edtInitials, tvErrorInitials)
+        if (TextUtils.isEmpty(edtZipCode.text.toString().trim())) {
+            setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
         }
-        if (financingStr == "Financing Option" && !isScrollable) {
-            tvErrorFinancingOption.visibility = View.VISIBLE
-            tvErrorFullDisclouser.visibility = View.VISIBLE
+        if (radiusId == "SEARCH RADIUS") {
+            tvErrorRadius.visibility = View.VISIBLE
             return false
         }
-        if (financingStr == "Financing Option" && TextUtils.isEmpty(
-                edtInitials.text.toString().trim()
-            )
-        ) {
-            tvErrorFinancingOption.visibility = View.VISIBLE
-            setErrorBorder(edtInitials, tvErrorInitials)
-            return false
-        }
-        if (!isScrollable && TextUtils.isEmpty(edtInitials.text.toString().trim())) {
-            tvErrorFullDisclouser.visibility = View.VISIBLE
-            setErrorBorder(edtInitials, tvErrorInitials)
+        if (TextUtils.isEmpty(edtPrice.text.toString().trim())) {
+            setErrorBorder(edtPrice, tvErrorPrice)
             return false
         }
         if (financingStr == "Financing Option") {
@@ -386,12 +520,41 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
-            tvDialogTitle.text =
-                dataLCDDeal.yearStr + " " + dataLCDDeal.makeStr + " " + dataLCDDeal.modelStr + " " + dataLCDDeal.trimStr
-            tvDialogExteriorColor.text = dataLCDDeal.exteriorColorStr
-            tvDialogInteriorColor.text = dataLCDDeal.interiorColorStr
-            tvDialogPackage.text = dataLCDDeal.arPackage
-            tvDialogOptions.text = dataLCDDeal.arAccessories
+            yearModelMakeData.run {
+
+                tvDialogTitle.text =
+                    vehicleYearStr + " " + vehicleMakeStr + " " + vehicleModelStr + " " + vehicleTrimStr
+                tvDialogExteriorColor.text = vehicleExtColorStr
+                tvDialogInteriorColor.text = vehicleIntColorStr
+                var accessoriesStr = ""
+                var isFirstAcce = true
+                val arAccId: ArrayList<String> = ArrayList()
+                for (i in 0 until arOptions?.size!!) {
+                    if (arOptions!![i].isSelect!!) {
+                        arAccId.add(arOptions!![i].dealerAccessoryID!!)
+                        if (isFirstAcce) {
+                            isFirstAcce = false
+                            accessoriesStr = arOptions!![i].accessory!!
+                        } else
+                            accessoriesStr += ",\n" + arOptions!![i].accessory!!
+                    }
+                }
+                var packageStr = ""
+                var isFirstPackage = true
+
+                for (i in 0 until arPackages?.size!!) {
+                    if (arPackages!![i].isSelect!!) {
+                        if (isFirstPackage) {
+                            isFirstPackage = false
+                            packageStr = arPackages!![i].packageName!!
+                        } else {
+                            packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
+                        }
+                    }
+                }
+                tvDialogPackage.text = packageStr
+                tvDialogOptions.text = accessoriesStr
+            }
         }
         setLayoutParam(dialog)
         dialog.show()

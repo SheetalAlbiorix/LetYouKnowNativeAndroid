@@ -12,5 +12,6 @@ class VehiclePackagesData : Serializable {
     val msrp: String? = ""
     val id: Int? = 0
     var isSelect: Boolean? = false
+    var isOtherSelect: Boolean? = false
     var isGray: Boolean? = false
 }

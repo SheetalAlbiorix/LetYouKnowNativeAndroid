@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="java.text.NumberFormat" />
+
+        <import type="java.util.Locale" />
+
+        <import type="com.letyouknow.utils.AppGlobal" />
+
+        <variable
+            name="type"
+            type="Integer" />
+
+        <variable
+            name="data"
+            type="com.letyouknow.model.YearModelMakeData" />
+
+        <variable
+            name="appGlobalData"
+            type="com.letyouknow.utils.AppGlobalBindData" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button"
+            android:backgroundTint="@color/offWhite"
+            android:orientation="vertical"
+            android:padding="@dimen/_25sdp">
+
+            <TextView
+                style="@style/bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{data.vehicleYearStr+' '+data.vehicleMakeStr+' '+' '+data.vehicleModelStr+' '+data.vehicleTrimStr}"
+                android:textColor="@color/color545d64"
+                android:textSize="@dimen/_16sdp"
+                tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exterior_color_colon"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:text="@{data.vehicleExtColorStr}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp"
+                    tool:text="Cashmere" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interior_color_colon"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:text="@{data.vehicleIntColorStr}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp"
+                    tool:text="Super Black Metalic" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:id="@+id/tvViewOptions"
+                style="@style/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_button3"
+                android:backgroundTint="@color/colorcfeafa"
+                android:padding="@dimen/_8sdp"
+                android:text="VIEW OPTIONS &amp; ACCESSORIES"
+                android:textColor="@color/color4f6375"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingTop="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:paddingBottom="@dimen/_25sdp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/edtZipCode"
+                                style="@style/medium"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_edittext"
+                                android:digits="1234567890"
+                                android:hint="@string/zip_code"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:paddingTop="@dimen/_10sdp"
+                                android:paddingBottom="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/tvErrorZipCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:digits="1234567890."
+                                android:text="@string/initials_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spRadius"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_spinner_light_white"
+                                android:padding="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
+                                android:spinnerMode="dropdown" />
+
+                            <TextView
+                                android:id="@+id/tvErrorRadius"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/search_radius_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/edtPrice"
+                                    style="@style/medium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_edittext"
+                                    android:hint="@string/price"
+                                    android:inputType="number"
+                                    android:paddingStart="@dimen/_25sdp"
+                                    android:paddingTop="@dimen/_10sdp"
+                                    android:paddingBottom="@dimen/_10sdp"
+                                    android:singleLine="true" />
+
+                                <TextView
+                                    style="@style/medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:text="$"
+                                    android:textColor="@color/color545d64"
+                                    android:textSize="@dimen/_13sdp" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/tvErrorPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/price_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/spLoan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_spinner_light_white"
+                                android:paddingTop="0dp"
+                                android:paddingBottom="0dp"
+                                android:popupBackground="@drawable/bg_button3_white"
+                                android:spinnerMode="dropdown" />
+
+                            <TextView
+                                android:id="@+id/tvErrorFinancingOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/financing_option_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <include layout="@layout/dialog_price_validation" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtInformation"
+                style="@style/regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/we_want_you_to_be"
+                android:textColor="@color/color545d64"
+                android:textColorHighlight="@android:color/transparent"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp" />
+
+            <ScrollView
+                android:id="@+id/scrollInfo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_230sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_round_border_off_white"
+                android:padding="@dimen/_15sdp">
+
+                <TextView
+                    android:id="@+id/tvInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+            </ScrollView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtTerms"
+                style="@style/medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/color545d64"
+                android:textColorHighlight="@android:color/transparent"
+                android:textColorLink="@color/colorPrimary"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:id="@+id/tvErrorFullDisclouser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Please Read Full Disclosure"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/initial_here_to_accept"
+                    android:textColor="?blackHeaderText"
+                    android:textColorHighlight="@android:color/transparent"
+                    android:textColorLink="@color/orange"
+                    android:textSize="@dimen/_11sdp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtInitials"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/initials"
+                        android:inputType="text"
+                        android:maxLength="3"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorInitials"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/initials_required"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/btnProceedDeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/bg_button"
+                android:paddingStart="@dimen/_18sdp"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_18sdp"
+                android:paddingBottom="@dimen/_12sdp">
+
+                <ImageView
+                    android:id="@+id/ivBackDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back"
+                    android:visibility="gone"
+                    app:tint="@color/white" />
+
+                <TextView
+                    style="@style/bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="PROCEED WITH YOUR DEAL"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <ImageView
+                    android:id="@+id/ivForwardDeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rotation="180"
+                    android:src="@drawable/ic_back"
+                    android:visibility="gone"
+                    app:tint="@color/white" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

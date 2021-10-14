@@ -15,11 +15,7 @@
             <item
                 android:width="@dimen/_20sdp"
                 android:height="@dimen/_20sdp"
-                android:bottom="@dimen/_7sdp"
-                android:drawable="@drawable/ic_arrow_drop_down"
-                android:gravity="center"
-                android:left="@dimen/_8sdp"
-                android:top="@dimen/_7sdp"></item>
+                android:drawable="@drawable/ic_arrow_drop_down"></item>
 
         </layer-list>
     </item>
