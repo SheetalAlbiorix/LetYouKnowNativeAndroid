@@ -166,7 +166,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:digits="1234567890."
-                                android:text="@string/initials_required"
+                                android:text="@string/zip_code_required"
                                 android:textColor="@color/red"
                                 android:textSize="@dimen/_11sdp"
                                 android:visibility="gone" />

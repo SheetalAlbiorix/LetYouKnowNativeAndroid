@@ -174,7 +174,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private fun popupPrice(price: Double) {
         llViewPrice.visibility = View.VISIBLE
-
+        tvErrorPrice.visibility = View.GONE
         when {
             price == 0.0 -> {
                 tvErrorDialogPrice.visibility = View.VISIBLE
@@ -199,6 +199,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         }
         ivPriceClose.setOnClickListener {
             edtPrice.hint = "0"
+            edtPrice.setText("")
             llViewPrice.visibility = View.GONE
             priceError(price)
         }
