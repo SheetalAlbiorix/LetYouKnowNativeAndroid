@@ -779,12 +779,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Response", Gson().toJson(data))
-//                    val price =
-//                        getString(R.string.price_data,data.price)
-//                    data.price = price.toFloat()
-//                    val msrp =
-//                        if (data.msrp?.length == 0) "0.0" else DecimalFormat("##.##").format(data.msrp?.toDouble())
-//                    data.msrp = msrp
                     data.productId = productId
                     data.yearId = yearId
                     data.makeId = makeId

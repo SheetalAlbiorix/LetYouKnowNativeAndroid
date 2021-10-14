@@ -19,8 +19,8 @@ import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.home.HomeFragment
 import com.letyouknow.view.login.LoginActivity
+import com.letyouknow.view.submitprice.SubmitYourPriceFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
-import com.letyouknow.view.unlockedcardeal.submitprice.SubmitYourPriceFragment
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*

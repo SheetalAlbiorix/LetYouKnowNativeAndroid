@@ -1,4 +1,4 @@
-package com.letyouknow.view.unlockedcardeal.submitprice
+package com.letyouknow.view.submitprice
 
 import android.app.Dialog
 import android.os.Bundle
@@ -29,7 +29,9 @@ import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
+import kotlinx.android.synthetic.main.fragment_submit_your_price.btnSearch
 import kotlinx.android.synthetic.main.fragment_submit_your_price.ivClosePromo
 import kotlinx.android.synthetic.main.fragment_submit_your_price.llPromoOffer
 import kotlinx.android.synthetic.main.fragment_submit_your_price.spExteriorColor
@@ -38,6 +40,8 @@ import kotlinx.android.synthetic.main.fragment_submit_your_price.spMake
 import kotlinx.android.synthetic.main.fragment_submit_your_price.spModel
 import kotlinx.android.synthetic.main.fragment_submit_your_price.spTrim
 import kotlinx.android.synthetic.main.fragment_submit_your_price.spYear
+import kotlinx.android.synthetic.main.fragment_submit_your_price.tvOptionalAccessories
+import kotlinx.android.synthetic.main.fragment_submit_your_price.tvPackages
 import kotlinx.android.synthetic.main.fragment_submit_your_price.tvPromo
 import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
@@ -59,6 +63,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private lateinit var checkedPackageModel: CheckedPackageInventoryViewModel
     private lateinit var packagesOptional: VehicleOptionalViewModel
     private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
+    private lateinit var minMSRPViewModel: MinMSRPViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -134,6 +139,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
         checkedAccessoriesModel =
             ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
+        minMSRPViewModel =
+            ViewModelProvider(this).get(MinMSRPViewModel::class.java)
 
         setYear()
         setMake()
@@ -586,6 +593,28 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             checkedPackageModel.checkedPackage(requireActivity(), request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
+                    if (!data.autoCheckList.isNullOrEmpty()) {
+                        for (i in 0 until data.autoCheckList.size) {
+                            for (j in 0 until adapterPackages.itemCount) {
+                                if (adapterPackages.getItem(j).vehiclePackageID == data.autoCheckList[i]) {
+                                    val dataCheck = adapterPackages.getItem(j)
+                                    dataCheck.isGray = false
+                                    adapterPackages.update(j, dataCheck)
+                                }
+                            }
+                        }
+                    }
+                    if (!data.grayOutList.isNullOrEmpty()) {
+                        for (i in 0 until data.grayOutList.size) {
+                            for (j in 0 until adapterPackages.itemCount) {
+                                if (adapterPackages.getItem(j).vehiclePackageID == data.grayOutList[i]) {
+                                    val dataGray = adapterPackages.getItem(j)
+                                    dataGray.isGray = true
+                                    adapterPackages.update(j, dataGray)
+                                }
+                            }
+                        }
+                    }
                 }
                 )
 
@@ -603,7 +632,14 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     jsonArray.add(adapterOptions.getItem(i).dealerAccessoryID)
                 }
             }
+            val jsonArrayPackage = JsonArray()
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
             val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArrayPackage
             request[ApiConstant.checkedList] = jsonArray
             request[ApiConstant.productId] = productId
             request[ApiConstant.yearId] = yearId
@@ -617,6 +653,68 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
+                    if (!data.autoCheckList.isNullOrEmpty()) {
+                        for (i in 0 until data.autoCheckList.size) {
+                            for (j in 0 until adapterOptions.itemCount) {
+                                if (adapterOptions.getItem(j).dealerAccessoryID == data.autoCheckList[i]) {
+                                    val dataCheck = adapterOptions.getItem(j)
+                                    dataCheck.isGray = false
+                                    adapterOptions.update(j, dataCheck)
+                                }
+                            }
+                        }
+                    }
+                    if (!data.grayOutList.isNullOrEmpty()) {
+                        for (i in 0 until data.grayOutList.size) {
+                            for (j in 0 until adapterOptions.itemCount) {
+                                if (adapterOptions.getItem(j).dealerAccessoryID == data.grayOutList[i]) {
+                                    val dataGray = adapterOptions.getItem(j)
+                                    dataGray.isGray = true
+                                    adapterOptions.update(j, dataGray)
+                                }
+                            }
+                        }
+                    }
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callMinMSRPAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val jsonArray = JsonArray()
+            for (i in 0 until adapterOptions.itemCount) {
+                if (adapterOptions.getItem(i).isSelect!!) {
+                    jsonArray.add(adapterOptions.getItem(i).dealerAccessoryID)
+                }
+            }
+            val jsonArrayPackage = JsonArray()
+
+            for (i in 0 until adapterPackages.itemCount) {
+                if (adapterPackages.getItem(i).isSelect!!) {
+                    jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArrayPackage
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.productId] = productId
+            request[ApiConstant.yearId] = yearId
+            request[ApiConstant.makeId] = makeId
+            request[ApiConstant.modelId] = modelId
+            request[ApiConstant.trimId] = trimId
+            request[ApiConstant.exteriorColorId] = extColorId
+            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.zipCode] = ""
+
+            minMSRPViewModel.minMSRPCall(requireActivity(), request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    startActivity<DealSummeryActivity>()
                 }
                 )
 
@@ -654,7 +752,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 llPromoOffer.visibility = View.GONE
             }
             R.id.btnSearch -> {
-                startActivity<DealSummeryActivity>()
+                callMinMSRPAPI()
             }
             R.id.tvPackages -> {
                 arSelectPackage = ArrayList()
@@ -685,8 +783,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 } else {
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
+
                 dialogPackage.dismiss()
             }
             R.id.tvCancelPackage -> {
@@ -709,13 +806,15 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     for (i in 1 until adapterPackages.itemCount) {
                         val dataPackage = adapterPackages.getItem(i)
                         dataPackage.isSelect = false
+                        dataPackage.isGray = false
                         adapterPackages.update(i, dataPackage)
                     }
                 } else {
                     val data0 = adapterPackages.getItem(0)
                     data0.isSelect = false
                     adapterPackages.update(0, data0)
-                    callCheckedPackageAPI()
+                    if (!data0.isGray!!)
+                        callCheckedPackageAPI()
                 }
 
 
@@ -726,6 +825,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 for (i in 0 until adapterPackages.itemCount) {
                     val data = adapterPackages.getItem(i)
                     data.isSelect = false
+                    data.isGray = false
                     adapterPackages.update(i, data)
                 }
             }
@@ -744,14 +844,13 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     }
                 }
                 tvOptionalAccessories.text = optionsStr
-                isValidSpinner = true
-                btnSearch.isEnabled = true
                 dialogOptions.dismiss()
             }
             R.id.tvResetOption -> {
                 for (i in 0 until adapterOptions.itemCount) {
                     val data = adapterOptions.getItem(i)
                     data.isSelect = false
+                    data.isGray = false
                     adapterOptions.update(i, data)
                 }
             }
@@ -783,13 +882,15 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     for (i in 1 until adapterOptions.itemCount) {
                         val dataOptions = adapterOptions.getItem(i)
                         dataOptions.isSelect = false
+                        dataOptions.isGray = false
                         adapterOptions.update(i, dataOptions)
                     }
                 } else {
                     val data0 = adapterOptions.getItem(0)
                     data0.isSelect = false
                     adapterOptions.update(0, data0)
-                    callCheckedAccessoriesAPI()
+                    if (!data0.isGray!!)
+                        callCheckedAccessoriesAPI()
                 }
                 Log.e("clickupdate", selectPackageStr)
             }

@@ -16,16 +16,18 @@ class OptionsAdapter(layout: Int, val clickListener: View.OnClickListener) :
     override fun onBind(view: View, position: Int, data: VehicleAccessoriesData) {
         view.run {
             data.run {
-                if (isSelect!!)
-                    ivSelectOptions.setImageResource(R.drawable.ic_checked_icon)
-                else
-                    ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked)
+
 
                 llOptions.isEnabled = !isGray!!
                 if (isGray!!) {
                     llOptions.setBackgroundColor(resources.getColor(R.color.textLightGrey))
+                    ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked_grey)
                 } else {
                     llOptions.setBackgroundColor(resources.getColor(R.color.white))
+                    if (isSelect!!)
+                        ivSelectOptions.setImageResource(R.drawable.ic_checked_icon)
+                    else
+                        ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked)
                 }
                 chkOptions.text = accessory
 

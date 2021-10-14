@@ -162,4 +162,7 @@ interface ApiInterface {
     @POST("test/getimageurls")
     fun interior360(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
 
+    @POST("msrp/GetMinMSRP")
+    fun getMinMSRP(@Body request: HashMap<String, Any>): Call<Double>
+
 }
