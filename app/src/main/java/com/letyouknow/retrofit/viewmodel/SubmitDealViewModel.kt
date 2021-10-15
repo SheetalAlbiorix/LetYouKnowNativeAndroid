@@ -10,7 +10,7 @@ import com.letyouknow.retrofit.repository.SubmitDealRepository
 class SubmitDealViewModel : ViewModel() {
     var liveData: MutableLiveData<SubmitDealLCDData>? = null
 
-    fun submitDealLCDCall(
+    fun submitDealCall(
         context: Context,
         request: HashMap<String, Any>
     ): LiveData<SubmitDealLCDData>? {

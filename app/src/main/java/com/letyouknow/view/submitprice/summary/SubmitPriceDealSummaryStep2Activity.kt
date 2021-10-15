@@ -275,7 +275,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
             map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
 
-            submitDealViewModel.submitDealLCDCall(this, map)!!
+            submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     Toast.makeText(
