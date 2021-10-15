@@ -21,7 +21,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
+import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
+import com.letyouknow.model.LoginData
 import com.letyouknow.view.login.LoginActivity
 import kotlinx.android.synthetic.main.dialog_authorization.*
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
@@ -34,6 +36,8 @@ class AppGlobal {
     companion object {
         private var progressDialog: Dialog? = null;
         private val TAG: String = AppGlobal::class.java.simpleName
+        private var userData: LoginData? = null;
+        var pref = LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
 
         fun isNotEmpty(str: String?): Boolean {
             return str != null && str != ""
@@ -338,6 +342,12 @@ class AppGlobal {
             "WI",
             "WY"
         )
+
+        fun getUserID(): Int {
+            userData = pref?.getUserData()!!
+            return userData!!.buyerId!!;
+        }
+
 
     }
 

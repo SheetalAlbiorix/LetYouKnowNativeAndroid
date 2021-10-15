@@ -5,6 +5,7 @@ import com.pionymessenger.model.SignupData
 import retrofit2.Call
 import retrofit2.http.*
 
+
 interface ApiInterface {
 
     @POST("auth/login")
@@ -173,5 +174,17 @@ interface ApiInterface {
 
     @POST("msrp/GetMinMSRP")
     fun getMinMSRP(@Body request: HashMap<String, Any>): Call<Double>
+
+    @GET("userprofile")
+    fun getUserProfile(): Call<UserProfileData>
+
+    @GET("userprofile/savingstodate")
+    fun savingsToDate(): Call<Double>
+
+    @GET("userprofile/{getUserID}/notificationoptions")
+    fun notificationOptions(
+        @Path(value = "getUserID", encoded = true) planId: Int?,
+    ): Call<NotificationOptionsData>
+
 
 }
