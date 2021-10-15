@@ -1,4 +1,4 @@
-package com.letyouknow.view.submitprice
+package com.letyouknow.view.submitprice.summary
 
 import android.app.Activity
 import android.app.Dialog
@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivitySubmitPriceDealSummaryBinding
@@ -24,7 +25,7 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
-import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
+import com.letyouknow.retrofit.viewmodel.SubmitPendingDealViewModel
 import com.letyouknow.retrofit.viewmodel.VehicleZipCodeViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
@@ -76,9 +77,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var binding: ActivitySubmitPriceDealSummaryBinding
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
-    private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private lateinit var adapterRadius: RadiusSpinnerBlackDropAdapter
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
+    private lateinit var submitPendingDealViewModel: SubmitPendingDealViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,8 +94,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
-        submitPendingLCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
+        submitPendingDealViewModel =
+            ViewModelProvider(this).get(SubmitPendingDealViewModel::class.java)
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL)) {
             yearModelMakeData = Gson().fromJson(
@@ -369,35 +370,48 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    /*private fun callSubmitPendingLCDDealAPI() {
+    private fun callSubmitPendingLCDDealAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
-            request[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
-            request[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
-            request[ApiConstant.vehicleTrimID] = dataLCDDeal.trimId!!
-            request[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
-            request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
-            request[ApiConstant.price] = dataLCDDeal.price!!
-            request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
-            request[ApiConstant.searchRadius] = "1000"
+            val arJsonPackage = JsonArray()
+            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
+                arJsonPackage.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
+            }
+
+            val arJsonAccessories = JsonArray()
+            for (i in 0 until yearModelMakeData.arOptions?.size!!) {
+                arJsonAccessories.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+            }
+
+
+            request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.price] = edtPrice.text.toString().trim()
+            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+            request[ApiConstant.searchRadius] =
+                if (radiusId == "ALL") "6000" else radiusId.replace(" mi", "")
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
-            request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
-            request[ApiConstant.dealID] = dataLCDDeal.dealID!!
-            request[ApiConstant.guestID] = dataLCDDeal.guestID!!
-            request[ApiConstant.dealerAccessoryIDs] = Gson().toJson(dataLCDDeal.arAccessoriesId)
-            request[ApiConstant.vehiclePackageIDs] = Gson().toJson(dataLCDDeal.arPackageId)
+            request[ApiConstant.timeZoneOffset] = "-330"
+            request[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
+            request[ApiConstant.vehiclePackageIDs] = arJsonPackage
 
-            submitPendingLCDDealViewModel.pendingDeal(this, request)!!
+            submitPendingDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-                    dataLCDDeal.loanType = financingStr
-                    dataLCDDeal.initial = edtInitials.text.toString().trim()
-                    startActivity<DealSummeryStep2Activity>(
-                        Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
+                    yearModelMakeData.zipCode = edtZipCode.text.toString().trim()
+                    yearModelMakeData.price = edtPrice.text.toString().trim().toFloat()
+                    yearModelMakeData.loanType = financingStr
+                    yearModelMakeData.initials = edtInitials.text.toString().trim()
+                    yearModelMakeData.radius = radiusId
+
+                    startActivity<SubmitPriceDealSummaryStep2Activity>(
+                        Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
                         Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl)
                     )
@@ -407,16 +421,15 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
-    }*/
+    }
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 if (isValid()) {
-//                    callSubmitPendingLCDDealAPI()
+                    callSubmitPendingLCDDealAPI()
                 }
-                //loadFragment(DealSummeryStep2Activity())
             }
             R.id.ivBackDeal -> {
                 onBackPressed()

@@ -124,7 +124,11 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.submitprice.SubmitPriceDealSummaryActivity"
+            android:name=".view.submitprice.summary.SubmitPriceDealSummaryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.submitprice.summary.SubmitPriceDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
 

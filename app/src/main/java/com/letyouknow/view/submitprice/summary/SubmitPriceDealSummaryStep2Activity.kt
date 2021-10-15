@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.delasummreystep2
+package com.letyouknow.view.submitprice.summary
 
 import android.app.Activity
 import android.app.Dialog
@@ -23,7 +23,7 @@ import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityDealSummeryStep2Binding
+import com.letyouknow.databinding.ActivitySubmitPriceDealSummaryStep2Binding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -35,9 +35,9 @@ import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Card
@@ -46,16 +46,16 @@ import com.stripe.android.model.SourceParams
 import kotlinx.android.synthetic.main.activity_deal_summery_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_deal_summery_step2.*
+import kotlinx.android.synthetic.main.layout_submit_price_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
+class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    lateinit var binding: ActivityDealSummeryStep2Binding
+    lateinit var binding: ActivitySubmitPriceDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
     private var selectPaymentType = 0
@@ -64,13 +64,13 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var cTimer: CountDownTimer
     private var seconds = 300
 
-    private lateinit var dataLCDDeal: FindLCDDeaData
+    private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var dataPendingDeal: SubmitPendingUcdData
     private lateinit var lykDollarViewModel: LYKDollarViewModel
     private lateinit var promoCodeViewModel: PromoCodeViewModel
     private lateinit var paymentMethodViewModel: PaymentMethodViewModel
     private lateinit var buyerViewModel: BuyerViewModel
-    private lateinit var submitDealLCDViewModel: SubmitDealLCDViewModel
+    private lateinit var submitDealViewModel: SubmitDealViewModel
 
     private lateinit var arImage: ArrayList<String>
 
@@ -82,8 +82,9 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deal_summery_step2)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery_step2)
+        setContentView(R.layout.activity_submit_price_deal_summary_step2)
+        binding =
+            DataBindingUtil.setContentView(this, R.layout.activity_submit_price_deal_summary_step2)
         init()
     }
 
@@ -92,15 +93,15 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
-        submitDealLCDViewModel = ViewModelProvider(this).get(SubmitDealLCDViewModel::class.java)
+        submitDealViewModel = ViewModelProvider(this).get(SubmitDealViewModel::class.java)
 
-        if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
+        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
             )
         ) {
-            dataLCDDeal = Gson().fromJson(
-                intent.getStringExtra(ARG_LCD_DEAL_GUEST),
-                FindLCDDeaData::class.java
+            yearModelMakeData = Gson().fromJson(
+                intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
+                YearModelMakeData::class.java
             )
             dataPendingDeal = Gson().fromJson(
                 intent.getStringExtra(ARG_UCD_DEAL_PENDING),
@@ -110,7 +111,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 intent.getStringExtra(ARG_IMAGE_URL),
                 object : TypeToken<ArrayList<String>?>() {}.type
             )
-            binding.ucdData = dataLCDDeal
+            binding.data = yearModelMakeData
             binding.pendingUcdData = dataPendingDeal
             binding.lightDealBindData = lightBindData
             if (arImage.size != 0) {
@@ -141,7 +142,6 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         setOnChange()
         startTimer()
         setState()
-        AppGlobal.strikeThrough(tvPrice)
 
         edtPhoneNumber.filters =
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
@@ -229,7 +229,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    callSubmitDealLCDAPI()
+                    callSubmitDealAPI()
 
                 }
                 )
@@ -238,7 +238,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitDealLCDAPI() {
+    private fun callSubmitDealAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val map: HashMap<String, Any> = HashMap()
@@ -247,36 +247,35 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.payment_method_id] = cardStripeData.id!!
             map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
             map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
-            map[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
-            map[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
-            map[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
-            map[ApiConstant.vehicleTrimID] = dataLCDDeal.trimId!!
-            map[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
-            map[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
-            map[ApiConstant.price] = dataLCDDeal.price!!
+            map[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            map[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            map[ApiConstant.price] = yearModelMakeData.price!!
             map[ApiConstant.timeZoneOffset] = "-330"
-            map[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
-            map[ApiConstant.searchRadius] = "6000"
-            map[ApiConstant.loanType] = dataLCDDeal.loanType!!
-            map[ApiConstant.initial] = dataLCDDeal.initial!!
-//            map[ApiConstant.timeZoneOffset] = pendingUCDData.buyer?.buyerId!!
-            map[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
-            map[ApiConstant.guestID] = dataLCDDeal.guestID!!
+            map[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
+            map[ApiConstant.searchRadius] =
+                if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
+                    " mi",
+                    ""
+                )
+            map[ApiConstant.loanType] = yearModelMakeData.loanType!!
+            map[ApiConstant.initial] = yearModelMakeData.initials!!
             val arJsonPackage = JsonArray()
-//            arJsonPackage.add("0")
-            for (i in 0 until dataLCDDeal.arPackageId.size) {
-                arJsonPackage.add(dataLCDDeal.arPackageId[i])
+            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
+                arJsonPackage.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
             }
             val arJsonAccessories = JsonArray()
-//            arJsonAccessories.add("0")
-            for (i in 0 until dataLCDDeal.arAccessoriesId.size) {
-                arJsonAccessories.add(dataLCDDeal.arAccessoriesId[i])
+            for (i in 0 until yearModelMakeData.arOptions?.size!!) {
+                arJsonAccessories.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
 
             map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
             map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
 
-            submitDealLCDViewModel.submitDealLCDCall(this, map)!!
+            submitDealViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     Toast.makeText(
@@ -287,9 +286,9 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                     /* startActivity(
                          intentFor<MainActivity>().clearTask().newTask()
                      )*/
-                    data.successResult.transactionInfo.vehiclePrice = dataLCDDeal.price!!
+                    data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
                     data.successResult.transactionInfo.remainingBalance =
-                        (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
+                        (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
                     startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )
@@ -341,12 +340,12 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
                         tvPromoData.text = "-$${data.discount}"
-                        dataLCDDeal.discount = data.discount!!
-                        binding.ucdData = dataLCDDeal
+                        yearModelMakeData.discount = data.discount!!
+                        binding.data = yearModelMakeData
                     } else {
                         tvPromoData.visibility = View.GONE
-                        dataLCDDeal.discount = 0.0f
-                        binding.ucdData = dataLCDDeal
+                        yearModelMakeData.discount = 0.0f
+                        binding.data = yearModelMakeData
                         if (data.promotionID == "-1") {
                             tvErrorPromo.text = getString(R.string.enter_promo_code_is_not_valid)
                         } else {
@@ -723,12 +722,40 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
-            tvDialogTitle.text =
-                dataLCDDeal.yearStr + " " + dataLCDDeal.makeStr + " " + dataLCDDeal.modelStr + " " + dataLCDDeal.trimStr
-            tvDialogExteriorColor.text = dataLCDDeal.exteriorColorStr
-            tvDialogInteriorColor.text = dataLCDDeal.interiorColorStr
-            tvDialogPackage.text = dataLCDDeal.arPackage
-            tvDialogOptions.text = dataLCDDeal.arAccessories
+            yearModelMakeData.run {
+                tvDialogTitle.text =
+                    vehicleYearStr + " " + vehicleMakeStr + " " + vehicleModelStr + " " + vehicleTrimStr
+                tvDialogExteriorColor.text = vehicleIntColorStr
+                tvDialogInteriorColor.text = vehicleIntColorStr
+                var accessoriesStr = ""
+                var isFirstAcce = true
+                val arAccId: ArrayList<String> = ArrayList()
+                for (i in 0 until arOptions?.size!!) {
+                    if (arOptions!![i].isSelect!!) {
+                        arAccId.add(arOptions!![i].dealerAccessoryID!!)
+                        if (isFirstAcce) {
+                            isFirstAcce = false
+                            accessoriesStr = arOptions!![i].accessory!!
+                        } else
+                            accessoriesStr += ",\n" + arOptions!![i].accessory!!
+                    }
+                }
+                var packageStr = ""
+                var isFirstPackage = true
+
+                for (i in 0 until arPackages?.size!!) {
+                    if (arPackages!![i].isSelect!!) {
+                        if (isFirstPackage) {
+                            isFirstPackage = false
+                            packageStr = arPackages!![i].packageName!!
+                        } else {
+                            packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
+                        }
+                    }
+                }
+                tvDialogPackage.text = packageStr
+                tvDialogOptions.text = accessoriesStr
+            }
         }
         setLayoutParam(dialog)
         dialog.show()

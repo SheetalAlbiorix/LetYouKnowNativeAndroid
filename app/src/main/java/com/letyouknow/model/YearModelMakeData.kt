@@ -18,6 +18,8 @@ data class YearModelMakeData(
     var radius: String? = "",
     var zipCode: String? = "",
     var loanType: String? = "",
+    var price: Float? = 0.0f,
+    var discount: Float? = 0.0f,
     var initials: String? = "",
     var arPackages: ArrayList<VehiclePackagesData>? = ArrayList(),
     var arOptions: ArrayList<VehicleAccessoriesData>? = ArrayList()

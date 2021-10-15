@@ -24,6 +24,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
+import com.letyouknow.view.submitprice.summary.SubmitPriceDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
@@ -768,7 +769,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 val arPackage: ArrayList<VehiclePackagesData> = ArrayList()
 
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect!! && adapterPackages.getItem(i).isOtherSelect!!) {
+                    if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
                         arPackage.add(adapterPackages.getItem(i))
                     }
                 }

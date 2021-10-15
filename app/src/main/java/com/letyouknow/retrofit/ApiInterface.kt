@@ -108,6 +108,15 @@ interface ApiInterface {
     @POST("proceedwithdeal/submitpendingdeallcd")
     fun submitPendingDealLCD(@Body request: HashMap<String, Any>): Call<SubmitPendingUcdData>
 
+    @POST("proceedwithdeal/submitpendingdeal")
+    fun submitPendingDeal(@Body request: HashMap<String, Any>): Call<SubmitPendingUcdData>
+
+    @POST("submitmydeal/submitdeal")
+    fun submitdeal(@Body request: HashMap<String, Any>): Call<SubmitDealLCDData>
+
+    @POST("auth/refresh")
+    fun refresh(@Body request: HashMap<String, Any>): Call<RefreshTokenData>
+
 
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
