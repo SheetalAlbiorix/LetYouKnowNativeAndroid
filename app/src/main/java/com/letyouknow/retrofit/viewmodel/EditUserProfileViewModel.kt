@@ -10,9 +10,9 @@ import com.letyouknow.retrofit.repository.EditUserProfileRepository
 class EditUserProfileViewModel : ViewModel() {
     var liveData: MutableLiveData<EditUserProfileData>? = null
 
-    fun buyerCall(
+    fun editUserCall(
         context: Context,
-        request: HashMap<String, Any>
+        request: HashMap<String, String>
     ): LiveData<EditUserProfileData>? {
         liveData = EditUserProfileRepository.editUserProfileApiCall(
             context,

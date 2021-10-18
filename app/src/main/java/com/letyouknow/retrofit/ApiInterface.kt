@@ -189,7 +189,7 @@ interface ApiInterface {
     @PUT("userprofile/{getUserID}")
     fun editUserProfile(
         @Path(value = "getUserID", encoded = true) planId: Int?,
-        @Body request: HashMap<String, Any>
+        @Body request: HashMap<String, String>
     ): Call<EditUserProfileData>
 
 }

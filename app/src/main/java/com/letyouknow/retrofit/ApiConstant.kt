@@ -8,6 +8,7 @@ class ApiConstant {
         var firstName = "firstName"
         var lastName = "lastName"
         var email = "email"
+        var confirmEmail = "confirmEmail"
         var userName = "userName"
         var phoneNumber = "phoneNumber"
         var packageList = "packageList"

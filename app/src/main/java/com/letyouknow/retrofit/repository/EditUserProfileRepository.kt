@@ -16,7 +16,7 @@ object EditUserProfileRepository {
 
     fun editUserProfileApiCall(
         context: Context,
-        request: HashMap<String, Any>
+        request: HashMap<String, String>
     ): MutableLiveData<EditUserProfileData> {
         val editUserProfileData = MutableLiveData<EditUserProfileData>()
         val call = RetrofitClient.apiInterface.editUserProfile(AppGlobal.getUserID(), request)

@@ -10,10 +10,13 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
 import com.letyouknow.model.UserProfileData
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.EditUserProfileViewModel
 import com.letyouknow.retrofit.viewmodel.NotificationOptionsViewModel
 import com.letyouknow.retrofit.viewmodel.SavingsToDateViewModel
 import com.letyouknow.retrofit.viewmodel.UserProfileViewModel
@@ -33,6 +36,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var savingsToDateViewModel: SavingsToDateViewModel
     private lateinit var notificationOptionsViewModel: NotificationOptionsViewModel
     private lateinit var userProfileViewModel: UserProfileViewModel
+    private lateinit var editUserProfileViewModel: EditUserProfileViewModel
     private lateinit var binding: FragmentAccount1Binding
     private lateinit var userData: UserProfileData
     private var state = ""
@@ -62,13 +66,13 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         notificationOptionsViewModel =
             ViewModelProvider(this).get(NotificationOptionsViewModel::class.java)
         userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
+        editUserProfileViewModel = ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
 
         tvEditLogin.setOnClickListener(this)
         tvEditInfo.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(true)
-        callSavingsToDateAPI()
-        callNotificationOptionsAPI()
+
         callUserProfileAPI()
     }
 
@@ -103,7 +107,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         setEditInfoData()
         dialogEditInfo.btnDialogSave.setOnClickListener {
             if (isValid()) {
-                setClearEditInfoData()
+                callEditUserProfileAPI()
             }
         }
         setLayoutParam(dialogEditInfo)
@@ -178,6 +182,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     tvSavingsDate.text = "$$data"
+                    callNotificationOptionsAPI()
                 }
                 )
         } else {
@@ -208,6 +213,41 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.dismissLoader()
                     binding.userData = data
                     userData = data
+                    callSavingsToDateAPI()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callEditUserProfileAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val map: HashMap<String, String> = HashMap()
+            map[ApiConstant.middleName] = dialogEditInfo.edtMiddleName.text.toString().trim()
+            map[ApiConstant.firstName] = dialogEditInfo.edtFirstName.text.toString().trim()
+            map[ApiConstant.lastName] = dialogEditInfo.edtLastName.text.toString().trim()
+            map[ApiConstant.email] = dialogEditInfo.edtEmail.text.toString().trim()
+            map[ApiConstant.confirmEmail] = dialogEditInfo.edtConfirmEmail.text.toString().trim()
+            map[ApiConstant.userName] = dialogEditInfo.edtUserName.text.toString().trim()
+            map[ApiConstant.phoneNumber] = dialogEditInfo.edtPhoneNumber.text.toString().trim()
+            map[ApiConstant.address1] = dialogEditInfo.edtAddress1.text.toString().trim()
+            map[ApiConstant.address2] = dialogEditInfo.edtAddress2.text.toString().trim()
+            map[ApiConstant.city] = dialogEditInfo.edtCity.text.toString().trim()
+            map[ApiConstant.state] = state
+            map[ApiConstant.zipcode] = dialogEditInfo.edtZipCode.text.toString().trim()
+            editUserProfileViewModel.editUserCall(requireActivity(), map)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    val userData = pref?.getUserData()
+                    userData?.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
+                    userData?.lastName = dialogEditInfo.edtLastName.text.toString().trim()
+                    userData?.authToken = data.authToken
+                    userData?.refreshToken = data.refreshToken
+                    pref?.setUserData(Gson().toJson(userData))
+                    setClearEditInfoData()
                 }
                 )
 
