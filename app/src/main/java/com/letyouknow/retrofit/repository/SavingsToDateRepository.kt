@@ -1,0 +1,47 @@
+package com.letyouknow.retrofit.repository
+
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import com.letyouknow.retrofit.RetrofitClient
+import com.pionymessenger.utils.Constant
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+object SavingsToDateRepository {
+
+    fun savingstodateApiCall(
+        context: Context,
+    ): MutableLiveData<Double> {
+        val savingstodateData = MutableLiveData<Double>()
+        val call = RetrofitClient.apiInterface.savingsToDate()
+
+        call.enqueue(object : Callback<Double> {
+            override fun onResponse(call: Call<Double>, response: Response<Double>) {
+                Log.v("DEBUG : ", response.body().toString())
+
+                val data = response.body()
+                if (response.code() == 200 || response.code() == 201) {
+                    Constant.dismissLoader()
+                    savingstodateData.value = data!!
+                } else {
+                    Constant.dismissLoader()
+                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
+                        Toast.makeText(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Double>, t: Throwable) {
+                Log.v("DEBUG : ", t.message.toString())
+            }
+        })
+        return savingstodateData
+    }
+}
