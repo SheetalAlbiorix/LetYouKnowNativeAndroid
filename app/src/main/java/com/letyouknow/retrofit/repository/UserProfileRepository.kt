@@ -15,8 +15,7 @@ import retrofit2.Response
 object UserProfileRepository {
 
     fun userProfileApiCall(
-        context: Context,
-        request: HashMap<String, Any>
+        context: Context
     ): MutableLiveData<UserProfileData> {
         val buyerData = MutableLiveData<UserProfileData>()
         val call = RetrofitClient.apiInterface.getUserProfile()

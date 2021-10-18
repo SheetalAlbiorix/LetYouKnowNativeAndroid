@@ -10,7 +10,7 @@ import com.letyouknow.retrofit.repository.NotificationOptionsRepository
 class NotificationOptionsViewModel : ViewModel() {
     var liveData: MutableLiveData<NotificationOptionsData>? = null
 
-    fun buyerCall(
+    fun notificationCall(
         context: Context,
     ): LiveData<NotificationOptionsData>? {
         liveData = NotificationOptionsRepository.notificationOptionsRepositoryApiCall(

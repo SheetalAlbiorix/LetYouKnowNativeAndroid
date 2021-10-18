@@ -191,7 +191,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             }
         }
         ivPriceCorrect.setOnClickListener {
-            edtPrice.setText(edtPrice.text.toString().trim() + ".00")
+            edtPrice.setText(edtPrice.text.toString().trim().replace(".00", "") + ".00")
             llViewPrice.visibility = View.GONE
             edtPrice.setSelection(edtPrice.text.toString().length)
             priceError(price)

@@ -84,6 +84,8 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_view360_activty.xml" value="0.19010416666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/activity_zoom_image.xml" value="0.1" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_authorization.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_change_password.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_edit_info.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_leave_my_deal.xml" value="0.2" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_logout.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_option_accessories.xml" value="0.2" />
@@ -95,6 +97,7 @@
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/dialog_vehicle_packages.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_360_view.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_account.xml" value="0.20416666666666666" />
+        <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_account1.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_bid_history.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_near_you.xml" value="0.20416666666666666" />
         <entry key="..\:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/res/layout/fragment_deal_summery.xml" value="0.20416666666666666" />

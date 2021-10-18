@@ -15,35 +15,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d67a0397-bc62-4ee4-90da-56c8e26aed02" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FinalSubmitDealData.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SubmitPriceErrorData.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/FinalSubmitDealSummaryActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_final_submit_price_deal_summary.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_final_submit_price_deal_summery.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_change_password.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_info.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_account1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/LoginData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/LoginData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/RefreshTokenData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/RefreshTokenData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/YearModelMakeData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/YearModelMakeData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiConstant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiConstant.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/RefreshTokenRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/RefreshTokenRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SubmitDealViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SubmitDealViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppGlobal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppGlobal.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/UserProfileRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/UserProfileRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/NotificationOptionsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/NotificationOptionsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SavingsToDateViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SavingsToDateViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/UserProfileViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/UserProfileViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/AccountFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/AccountFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_submit_price_deal_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_submit_price_deal_summary.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
@@ -168,7 +151,7 @@
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../taptok" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/layout" />
     <property name="project.structure.last.edited" value="Suggestions" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -619,7 +602,21 @@
       <option name="project" value="LOCAL" />
       <updated>1634292129525</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="-- SubmitPriceDealSummary">
+      <created>1634538185634</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1634538185634</updated>
+    </task>
+    <task id="LOCAL-00040" summary="-- SubmitPriceDealSummary">
+      <created>1634548965263</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1634548965263</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -668,21 +665,6 @@
             <option name="EMULATED" value="true" />
           </properties>
           <option name="timeStamp" value="118" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageIdRepository.kt</url>
-          <line>47</line>
-          <option name="timeStamp" value="295" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageIdRepository.kt</url>
-          <line>39</line>
-          <option name="timeStamp" value="296" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageIdRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="297" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
@@ -801,22 +783,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>331</line>
+          <line>336</line>
           <option name="timeStamp" value="347" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>332</line>
+          <line>337</line>
           <option name="timeStamp" value="348" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>334</line>
+          <line>339</line>
           <option name="timeStamp" value="349" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>337</line>
+          <line>342</line>
           <option name="timeStamp" value="350" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -906,12 +888,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>259</line>
+          <line>264</line>
           <option name="timeStamp" value="381" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>260</line>
+          <line>265</line>
           <option name="timeStamp" value="382" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -921,27 +903,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>89</line>
+          <line>87</line>
           <option name="timeStamp" value="385" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>85</line>
+          <line>83</line>
           <option name="timeStamp" value="386" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>261</line>
+          <line>266</line>
           <option name="timeStamp" value="387" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>273</line>
+          <line>278</line>
           <option name="timeStamp" value="388" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>262</line>
+          <line>267</line>
           <option name="timeStamp" value="389" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -966,27 +948,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>270</line>
+          <line>275</line>
           <option name="timeStamp" value="395" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>271</line>
+          <line>276</line>
           <option name="timeStamp" value="396" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>257</line>
+          <line>262</line>
           <option name="timeStamp" value="397" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>244</line>
+          <line>242</line>
           <option name="timeStamp" value="399" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>246</line>
+          <line>244</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -1021,12 +1003,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>232</line>
+          <line>230</line>
           <option name="timeStamp" value="407" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>233</line>
+          <line>231</line>
           <option name="timeStamp" value="408" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -1081,107 +1063,107 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>248</line>
+          <line>246</line>
           <option name="timeStamp" value="419" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>250</line>
+          <line>248</line>
           <option name="timeStamp" value="420" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>253</line>
+          <line>251</line>
           <option name="timeStamp" value="421" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>262</line>
+          <line>260</line>
           <option name="timeStamp" value="422" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>263</line>
+          <line>261</line>
           <option name="timeStamp" value="423" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>265</line>
+          <line>263</line>
           <option name="timeStamp" value="424" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>102</line>
+          <line>101</line>
           <option name="timeStamp" value="425" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>103</line>
+          <line>102</line>
           <option name="timeStamp" value="426" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>104</line>
+          <line>103</line>
           <option name="timeStamp" value="427" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>117</line>
+          <line>116</line>
           <option name="timeStamp" value="428" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>106</line>
+          <line>105</line>
           <option name="timeStamp" value="429" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>107</line>
+          <line>106</line>
           <option name="timeStamp" value="430" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>108</line>
+          <line>107</line>
           <option name="timeStamp" value="431" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>231</line>
+          <line>239</line>
           <option name="timeStamp" value="432" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>234</line>
+          <line>242</line>
           <option name="timeStamp" value="433" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>282</line>
+          <line>290</line>
           <option name="timeStamp" value="434" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>295</line>
+          <line>303</line>
           <option name="timeStamp" value="435" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>292</line>
+          <line>300</line>
           <option name="timeStamp" value="436" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>293</line>
+          <line>301</line>
           <option name="timeStamp" value="437" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>82</line>
+          <line>80</line>
           <option name="timeStamp" value="438" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>83</line>
+          <line>81</line>
           <option name="timeStamp" value="439" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -1196,83 +1178,118 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>750</line>
+          <line>761</line>
           <option name="timeStamp" value="444" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>751</line>
+          <line>762</line>
           <option name="timeStamp" value="445" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>752</line>
+          <line>763</line>
           <option name="timeStamp" value="446" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>753</line>
+          <line>764</line>
           <option name="timeStamp" value="447" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>756</line>
+          <line>767</line>
           <option name="timeStamp" value="448" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt</url>
-          <line>772</line>
-          <option name="timeStamp" value="449" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt</url>
-          <line>770</line>
-          <option name="timeStamp" value="450" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt</url>
-          <line>771</line>
-          <option name="timeStamp" value="451" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="452" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
           <line>42</line>
+          <option name="timeStamp" value="452" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
+          <line>41</line>
           <option name="timeStamp" value="453" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>45</line>
+          <line>44</line>
           <option name="timeStamp" value="454" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>60</line>
+          <line>62</line>
           <option name="timeStamp" value="455" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>62</line>
+          <line>64</line>
           <option name="timeStamp" value="456" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>278</line>
+          <line>289</line>
           <option name="timeStamp" value="457" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt</url>
-          <line>188</line>
-          <option name="timeStamp" value="461" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
+          <line>45</line>
+          <option name="timeStamp" value="463" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt</url>
-          <line>187</line>
-          <option name="timeStamp" value="462" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
+          <line>46</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="465" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
+          <line>277</line>
+          <option name="timeStamp" value="466" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
+          <line>278</line>
+          <option name="timeStamp" value="467" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
+          <line>751</line>
+          <option name="timeStamp" value="468" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
+          <line>752</line>
+          <option name="timeStamp" value="469" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
+          <line>855</line>
+          <option name="timeStamp" value="470" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
+          <line>857</line>
+          <option name="timeStamp" value="471" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
+          <line>856</line>
+          <option name="timeStamp" value="472" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
+          <line>782</line>
+          <option name="timeStamp" value="473" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
+          <line>783</line>
+          <option name="timeStamp" value="474" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

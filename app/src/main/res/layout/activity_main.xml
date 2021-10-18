@@ -5,8 +5,9 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?pageBgColor"
+    android:background="@color/white"
     tools:openDrawer="right">
+    <!--    android:background="?pageBgColor"-->
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

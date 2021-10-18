@@ -10,13 +10,11 @@ import com.letyouknow.retrofit.repository.UserProfileRepository
 class UserProfileViewModel : ViewModel() {
     var liveData: MutableLiveData<UserProfileData>? = null
 
-    fun buyerCall(
-        context: Context,
-        request: HashMap<String, Any>
+    fun userProfileCall(
+        context: Context
     ): LiveData<UserProfileData>? {
         liveData = UserProfileRepository.userProfileApiCall(
-            context,
-            request
+            context
         )
         return liveData
     }
