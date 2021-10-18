@@ -111,7 +111,7 @@ interface ApiInterface {
     @POST("proceedwithdeal/submitpendingdeal")
     fun submitPendingDeal(@Body request: HashMap<String, Any>): Call<SubmitPendingUcdData>
 
-    @POST("submitmydeal/submitdeal")
+    @POST("submitmydeal/submitdeal/")
     fun submitdeal(@Body request: HashMap<String, Any>): Call<SubmitDealLCDData>
 
     @POST("auth/refresh")

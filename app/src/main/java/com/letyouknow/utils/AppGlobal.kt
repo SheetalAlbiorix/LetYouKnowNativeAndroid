@@ -260,29 +260,7 @@ class AppGlobal {
             dialog.show()
         }
 
-        /*fun callRefreshTokenApi(context: Activity){
-            if (Constant.isOnline(context)) {
-                Constant.showLoader(context)
-                val request = HashMap<String, String>()
-                request[ApiConstant.AuthToken] = edtEmailAddress.text.toString()
-                request[ApiConstant.RefreshToken] = edtPassword.text.toString()
 
-                loginViewModel.getUser(this, request)!!.observe(this, Observer { loginVo ->
-                    Constant.dismissLoader()
-                    if (loginVo.buyerId != 0) {
-                        pref?.setLogin(true)
-                        pref?.setUserData(Gson().toJson(loginVo))
-                        startActivity<MainActivity>()
-                        finish()
-                    } else {
-                        Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                )
-            } else {
-                Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-            }
-        }*/
 
         var arState = arrayListOf(
             "State",

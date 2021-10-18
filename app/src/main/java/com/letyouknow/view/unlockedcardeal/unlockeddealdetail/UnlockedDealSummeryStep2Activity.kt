@@ -77,6 +77,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var promoCodeViewModel: PromoCodeViewModel
     private lateinit var paymentMethodViewModel: PaymentMethodViewModel
     private lateinit var buyerViewModel: BuyerViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var submitDealUCDViewModel: SubmitDealUCDViewModel
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
@@ -92,6 +93,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
@@ -127,8 +129,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
             binding.ucdData = ucdData
             binding.pendingUcdData = pendingUCDData
-            callDollarAPI()
-
+            callRefreshTokenApi()
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -849,5 +850,26 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callDollarAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -51,6 +51,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var packagesOptional: VehicleOptionalViewModel
     private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
     private lateinit var findLCDDealGuestViewModel: FindLCDDealViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -127,6 +128,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
         packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
         packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         checkedPackageModel =
             ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
         checkedAccessoriesModel =
@@ -834,7 +836,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             }
             R.id.btnSearch -> {
                 // loadFragment(DealSummeryActivity(), getString(R.string.one_deal_near_you))
-                callSearchFindDealAPI()
+                callRefreshTokenApi()
+
 
             }
             R.id.tvPackages -> {
@@ -1129,5 +1132,25 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         dialog.window?.attributes = layoutParams
     }
 
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(requireActivity(), request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callSearchFindDealAPI()
+            }
+            )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

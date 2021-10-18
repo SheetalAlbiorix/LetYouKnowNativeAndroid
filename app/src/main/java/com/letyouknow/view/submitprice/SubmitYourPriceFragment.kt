@@ -1120,5 +1120,4 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         dialog.window?.attributes = layoutParams
     }
 
-
 }

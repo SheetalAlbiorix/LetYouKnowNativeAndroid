@@ -7,6 +7,6 @@ data class LoginData(
     val userName: String = "",
     val firstName: String = "",
     val lastName: String = "",
-    val authToken: String = "",
-    val refreshToken: String = ""
+    var authToken: String = "",
+    var refreshToken: String = ""
 ) : Serializable

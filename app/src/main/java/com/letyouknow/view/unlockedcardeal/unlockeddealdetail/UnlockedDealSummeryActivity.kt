@@ -2,7 +2,6 @@ package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
@@ -12,7 +11,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +23,7 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingUCDDealViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
@@ -65,6 +64,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
 
     private lateinit var dataUCDDeal: FindUcdDealData
     private var yearModelMakeData = YearModelMakeData()
+    private var tokenModel = RefreshTokenViewModel()
 
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
@@ -80,6 +80,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         submitPendingUCDDealViewModel =
             ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
 
@@ -122,7 +123,6 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
 
     private var isScrollable = false
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun scrollTouchListener() {
 //        tvInfo.movementMethod = ScrollingMovementMethod()
         nestedSc.setOnTouchListener { v, event ->
@@ -267,8 +267,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             R.id.btnProceedDeal -> {
 //                startActivity<DealSummeryStep2Activity>()
                 if (isValid()) {
-                    callSubmitPendingUCDDealAPI()
-
+                    callRefreshTokenApi()
                 }
                 //loadFragment(DealSummeryStep2Activity())
             }
@@ -425,5 +424,26 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callSubmitPendingUCDDealAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -131,6 +131,10 @@
             android:name=".view.submitprice.summary.SubmitPriceDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.submitprice.summary.FinalSubmitDealSummaryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

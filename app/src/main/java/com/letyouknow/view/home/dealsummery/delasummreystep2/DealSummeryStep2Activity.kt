@@ -93,6 +93,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealLCDViewModel = ViewModelProvider(this).get(SubmitDealLCDViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -118,7 +119,8 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
-            callDollarAPI()
+            callRefreshTokenApi()
+
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -745,6 +747,29 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    private lateinit var tokenModel: RefreshTokenViewModel
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callDollarAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
