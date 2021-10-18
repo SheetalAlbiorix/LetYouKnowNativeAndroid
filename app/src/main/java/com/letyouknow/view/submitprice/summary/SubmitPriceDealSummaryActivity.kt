@@ -23,10 +23,7 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivitySubmitPriceDealSummaryBinding
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
-import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
-import com.letyouknow.retrofit.viewmodel.SubmitPendingDealViewModel
-import com.letyouknow.retrofit.viewmodel.VehicleZipCodeViewModel
+import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
@@ -75,6 +72,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
 
     private lateinit var binding: ActivitySubmitPriceDealSummaryBinding
+    private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var adapterRadius: RadiusSpinnerBlackDropAdapter
@@ -91,6 +89,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
@@ -370,7 +369,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitPendingLCDDealAPI() {
+    private fun callSubmitPendingDealAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
@@ -427,8 +426,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isValid()) {
-                    callSubmitPendingLCDDealAPI()
+                    callRefreshTokenApi()
                 }
             }
             R.id.ivBackDeal -> {
@@ -581,5 +581,35 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callSubmitPendingDealAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorInitials.visibility = View.GONE
+        tvErrorPrice.visibility = View.GONE
+        tvErrorFinancingOption.visibility = View.GONE
+        tvErrorFullDisclouser.visibility = View.GONE
+        tvErrorRadius.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
     }
 }

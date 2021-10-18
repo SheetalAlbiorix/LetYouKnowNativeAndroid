@@ -2,7 +2,6 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.RefreshTokenData
 import com.letyouknow.retrofit.RetrofitClient
@@ -40,12 +39,13 @@ object RefreshTokenRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        Toast.makeText(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    /*  if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
+                          Toast.makeText(
+                              context,
+                              response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                              Toast.LENGTH_LONG
+                          ).show()*/
+                    AppGlobal.isAuthorizationFailed(context)
                 }
             }
         })

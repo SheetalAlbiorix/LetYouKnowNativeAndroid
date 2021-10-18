@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="orange">#fe6f00</color>
     <color name="red">#FE0026</color>
+    <color name="colorB11D1D">#B11D1D</color>
     <color name="colorbf4848">#bf4848</color>
     <color name="navyBlue">#3e5365</color>
     <color name="lightBlue">#0082cf</color>
@@ -47,4 +48,6 @@
     <color name="color88898A">#88898A</color>
     <color name="color3e5365">#3e5365</color>
     <color name="color666666">#666666</color>
+    <color name="colorffc69b">#ffc69b</color>
+    <color name="color733c19">#733c19</color>
 </resources>

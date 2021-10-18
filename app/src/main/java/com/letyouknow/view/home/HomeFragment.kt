@@ -94,6 +94,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private lateinit var animBlink: Animation
     private lateinit var animSlideRightToLeft: Animation
     private lateinit var animSlideLeftToRight: Animation
+    private lateinit var tokenModel: RefreshTokenViewModel
 
 
     override fun onCreateView(
@@ -142,6 +143,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
         findUCDDealGuestViewModel =
             ViewModelProvider(this).get(FindUCDDealViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
         setYear()
         setMake()
@@ -315,7 +317,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-                callSearchFindDealAPI()
+                callRefreshTokenApi()
             }
             R.id.tvPromo -> {
                 tvPromo.clearAnimation()
@@ -676,6 +678,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(requireActivity(), request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callSearchFindDealAPI()
+            }
+            )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

@@ -77,6 +77,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var promoCodeViewModel: PromoCodeViewModel
     private lateinit var paymentMethodViewModel: PaymentMethodViewModel
     private lateinit var buyerViewModel: BuyerViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var submitDealUCDViewModel: SubmitDealUCDViewModel
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
@@ -92,6 +93,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
@@ -127,7 +129,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
             binding.ucdData = ucdData
             binding.pendingUcdData = pendingUCDData
-            callDollarAPI()
+            callRefreshTokenApi()
+
+            val mNo = "(" + pendingUCDData.buyer?.phoneNumber
+            val mno1 = AppGlobal.insertString(mNo, ")", 3)
+            val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
+            edtPhoneNumber.setText(mno2)
 
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
@@ -156,7 +163,6 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         AppGlobal.strikeThrough(tvPrice)
 
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
-        edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
         /*for(i in 0 until pendingUCDData.buyer?.phoneNumber?.length!!){
             val data = edtPhoneNumber.text.toString().trim()
         }*/
@@ -353,6 +359,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == pendingUCDData.buyer?.state) {
+                spState.setSelection(i)
+            }
+        }
     }
 
     private fun onStateChange() {
@@ -587,6 +599,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
@@ -849,5 +862,38 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callDollarAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFirstName.visibility = View.GONE
+        tvErrorLastName.visibility = View.GONE
+        tvErrorAddress1.visibility = View.GONE
+        tvErrorAddress2.visibility = View.GONE
+        tvErrorCity.visibility = View.GONE
+        tvErrorState.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
+        tvErrorPhoneNo.visibility = View.GONE
+        tvErrorEmailAddress.visibility = View.GONE
     }
 }

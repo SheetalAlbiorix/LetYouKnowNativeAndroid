@@ -21,6 +21,7 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryActivity
 import com.pionymessenger.utils.Constant
@@ -46,6 +47,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityUnlockedCarDealBinding
 
+    private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var imageIdViewModel: ImageIdViewModel
     private lateinit var imageUrlViewModel: ImageUrlViewModel
     private var arImageUrl: ArrayList<String> = ArrayList()
@@ -61,7 +63,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
-
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(
                 ARG_RADIUS
             ) && intent.hasExtra(ARG_ZIPCODE)
@@ -81,7 +83,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
             zipCode = intent.getStringExtra(ARG_ZIPCODE)!!
             binding.searchRadius = searchRadius.trim()
             binding.zipCode = zipCode.trim()
-            callImageIdAPI()
+            callRefreshTokenApi()
         }
 //        backButton()
         adapterUnlockedCarDeal = UnlockedCarDealAdapter(R.layout.list_item_unlocked_car, this)
@@ -253,6 +255,27 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 }
                 )
 
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callImageIdAPI()
+            }
+            )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

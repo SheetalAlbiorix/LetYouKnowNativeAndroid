@@ -65,6 +65,8 @@ class ApiConstant {
         var exterior360 = "Exterior360"
         var interior360 = "Interior360"
         var interior360Pano = "Interior360Pano"
+        var AuthToken = "AuthToken"
+        var RefreshToken = "RefreshToken"
 
     }
 }

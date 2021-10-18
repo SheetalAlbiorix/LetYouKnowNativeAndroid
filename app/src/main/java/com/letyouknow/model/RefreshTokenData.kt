@@ -3,6 +3,6 @@ package com.letyouknow.model
 import java.io.Serializable
 
 data class RefreshTokenData(
-    val AuthToken: String? = "",
-    val RefreshToken: String? = ""
+    val auth_token: String? = "",
+    val refresh_token: String? = ""
 ) : Serializable

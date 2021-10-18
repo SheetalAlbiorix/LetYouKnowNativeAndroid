@@ -244,4 +244,7 @@
     <string name="buyer_info_detail"><![CDATA[%1s\n%2s\n%3s\n%4s, %5s %6s\n%7s\n%8s]]></string>
     <string name="findyourcar">Find Your Car</string>
     <string name="price_must_be_799_00"><![CDATA[Price must be >= $799.00]]></string>
+    <string name="we_did_not_find_a_match">%1s, we did not find a match for your requested price of $799.00. Your Card was not charged.\nWe don\'t stop working for you, so check out these options</string>
+    <string name="letyouknow">$ LETYOUKNOW</string>
+    <string name="this_person_must_be_present_when_picking_up_the_vehicle">This person must be present when picking up the vehicle.</string>
 </resources>

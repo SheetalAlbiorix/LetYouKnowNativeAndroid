@@ -93,18 +93,18 @@
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
 
-                  <!--  <TextView
-                        style="@style/regular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/_12sdp"
-                        android:paddingTop="@dimen/_3sdp"
-                        android:paddingEnd="@dimen/_8sdp"
-                        android:paddingBottom="@dimen/_3sdp"
-                        android:singleLine="true"
-                        android:text="Actual Model may vary"
-                        android:textColor="@color/color545d64"
-                        android:textSize="@dimen/_8sdp" />-->
+                    <!--  <TextView
+                          style="@style/regular"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:paddingStart="@dimen/_12sdp"
+                          android:paddingTop="@dimen/_3sdp"
+                          android:paddingEnd="@dimen/_8sdp"
+                          android:paddingBottom="@dimen/_3sdp"
+                          android:singleLine="true"
+                          android:text="Actual Model may vary"
+                          android:textColor="@color/color545d64"
+                          android:textSize="@dimen/_8sdp" />-->
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <FrameLayout
@@ -217,7 +217,7 @@
                 </FrameLayout>
 
                 <include
-                    layout="@layout/layout_submit_price_deal_summery"
+                    layout="@layout/layout_final_submit_price_deal_summery"
                     app:data="@{data}" />
 
                 <!-- <include

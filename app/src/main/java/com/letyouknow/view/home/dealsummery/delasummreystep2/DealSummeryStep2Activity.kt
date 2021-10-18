@@ -93,6 +93,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealLCDViewModel = ViewModelProvider(this).get(SubmitDealLCDViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -118,7 +119,11 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
-            callDollarAPI()
+            callRefreshTokenApi()
+            val mNo = "(" + dataPendingDeal.buyer?.phoneNumber
+            val mno1 = AppGlobal.insertString(mNo, ")", 3)
+            val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
+            edtPhoneNumber.setText(mno2)
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -191,6 +196,12 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == dataPendingDeal.buyer?.state) {
+                spState.setSelection(i)
+            }
+        }
     }
 
 
@@ -541,6 +552,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
@@ -745,6 +757,41 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    private lateinit var tokenModel: RefreshTokenViewModel
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callDollarAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFirstName.visibility = View.GONE
+        tvErrorLastName.visibility = View.GONE
+        tvErrorAddress1.visibility = View.GONE
+        tvErrorAddress2.visibility = View.GONE
+        tvErrorCity.visibility = View.GONE
+        tvErrorState.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
+        tvErrorPhoneNo.visibility = View.GONE
+        tvErrorEmailAddress.visibility = View.GONE
     }
 
 }

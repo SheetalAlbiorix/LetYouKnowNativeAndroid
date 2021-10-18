@@ -857,6 +857,16 @@
             android:textColor="@color/color3e5365"
             android:textSize="@dimen/_16sdp" />
 
+        <TextView
+            style="@style/medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/this_person_must_be_present_when_picking_up_the_vehicle"
+            android:textColor="@color/colorB11D1D"
+            android:textSize="@dimen/_13sdp" />
+
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -886,7 +896,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/first_name"
+                        android:hint="@string/first_name_required"
                         android:inputType="text"
                         android:text="@{pendingUCDData.buyer.firstName}"
                         app:layout_constraintStart_toStartOf="parent"
@@ -942,7 +952,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/last_name"
+                android:hint="@string/last_name_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.lastName}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -964,7 +974,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/address_line_1"
+                android:hint="@string/address_line_1_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.address1}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1008,7 +1018,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/city"
+                android:hint="@string/city_required"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.city}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1048,7 +1058,7 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
                 android:digits="1234567890"
-                android:hint="@string/zip_code"
+                android:hint="@string/zip_code_required"
                 android:inputType="number"
                 android:maxLength="6"
                 android:text="@{pendingUCDData.buyer.zipcode}" />
@@ -1070,9 +1080,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/phone_number"
-                android:inputType="phone"
-                android:text="@{pendingUCDData.buyer.phoneNumber}" />
+                android:hint="@string/phone_number_required"
+                android:inputType="phone" />
 
             <TextView
                 android:id="@+id/tvErrorPhoneNo"
@@ -1090,7 +1099,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/email_address"
+                android:hint="@string/email_address_required"
                 android:inputType="textEmailAddress"
                 android:text="@{pendingUCDData.buyer.email}"
                 app:layout_constraintStart_toStartOf="parent"

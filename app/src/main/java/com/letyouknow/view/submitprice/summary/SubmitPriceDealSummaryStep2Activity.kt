@@ -29,13 +29,13 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
+import com.letyouknow.utils.AppGlobal.Companion.insertString
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
-import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
@@ -71,6 +71,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     private lateinit var paymentMethodViewModel: PaymentMethodViewModel
     private lateinit var buyerViewModel: BuyerViewModel
     private lateinit var submitDealViewModel: SubmitDealViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
 
     private lateinit var arImage: ArrayList<String>
 
@@ -94,6 +95,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealViewModel = ViewModelProvider(this).get(SubmitDealViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -119,7 +121,11 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
-            callDollarAPI()
+            callRefreshTokenApi()
+            val mNo = "(" + dataPendingDeal.buyer?.phoneNumber
+            val mno1 = insertString(mNo, ")", 3)
+            val mno2 = insertString(mno1!!, "-", 7)
+            edtPhoneNumber.setText(mno2)
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -181,6 +187,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         })
     }
 
+
     private lateinit var adapterState: ArrayAdapter<String?>
     private fun setState() {
         adapterState = ArrayAdapter<String?>(
@@ -191,6 +198,12 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == dataPendingDeal.buyer?.state) {
+                spState.setSelection(i)
+            }
+        }
     }
 
 
@@ -230,7 +243,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     callSubmitDealAPI()
-
                 }
                 )
         } else {
@@ -278,18 +290,22 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    Toast.makeText(
-                        applicationContext,
-                        "Your Deal Successfully Booked",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    /* startActivity(
-                         intentFor<MainActivity>().clearTask().newTask()
-                     )*/
-                    data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
-                    data.successResult.transactionInfo.remainingBalance =
-                        (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
-                    startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
+                    if (!data.foundMatch)
+                        startActivity<FinalSubmitDealSummaryActivity>(
+                            ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                                yearModelMakeData
+                            )
+                        )
+                    else {
+                        data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
+                        data.successResult.transactionInfo.remainingBalance =
+                            (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
+                        startActivity<SubmitDealSummaryActivity>(
+                            Constant.ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
+                    }
                 }
                 )
         } else {
@@ -540,11 +556,11 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
                     callBuyerAPI()
-
                 }
             }
             R.id.tvAddMin -> {
@@ -774,4 +790,37 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
 
     }
 
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callDollarAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun setErrorVisible() {
+        tvErrorFirstName.visibility = View.GONE
+        tvErrorLastName.visibility = View.GONE
+        tvErrorAddress1.visibility = View.GONE
+        tvErrorAddress2.visibility = View.GONE
+        tvErrorCity.visibility = View.GONE
+        tvErrorState.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
+        tvErrorPhoneNo.visibility = View.GONE
+        tvErrorEmailAddress.visibility = View.GONE
+    }
 }

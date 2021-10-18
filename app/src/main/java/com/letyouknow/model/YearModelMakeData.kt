@@ -3,6 +3,7 @@ package com.letyouknow.model
 import java.io.Serializable
 
 data class YearModelMakeData(
+    var firstName: String? = "",
     var vehicleYearID: String? = "",
     var vehicleMakeID: String? = "",
     var vehicleModelID: String? = "",

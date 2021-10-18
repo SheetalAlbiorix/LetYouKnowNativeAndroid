@@ -2,7 +2,6 @@ package com.letyouknow.view.home.dealsummery
 
 import android.app.Activity
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
@@ -12,7 +11,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +22,7 @@ import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
@@ -55,6 +54,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
 
     private lateinit var imageIdViewModel: ImageIdViewModel
     private lateinit var imageUrlViewModel: ImageUrlViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
 
 
     private lateinit var binding: ActivityDealSummeryBinding
@@ -74,6 +74,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     private fun init() {
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         submitPendingLCDDealViewModel =
             ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
 
@@ -82,7 +83,8 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
                 intent.getStringExtra(ARG_LCD_DEAL_GUEST),
                 FindLCDDeaData::class.java
             )
-            callImageIdAPI()
+
+
             binding.lcdDealData = dataLCDDeal
 
         }
@@ -108,11 +110,11 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         backButton()
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
         scrollTouchListener()
+        callRefreshTokenApi()
     }
 
     private var isScrollable = false
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun scrollTouchListener() {
 //        tvInfo.movementMethod = ScrollingMovementMethod()
         nestedSc.setOnTouchListener { v, event ->
@@ -273,6 +275,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isValid()) {
                     callSubmitPendingLCDDealAPI()
                 }
@@ -404,5 +407,32 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                Constant.dismissLoader()
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callImageIdAPI()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFinancingOption.visibility = View.GONE
+        tvErrorInitials.visibility = View.GONE
+        tvErrorFullDisclouser.visibility = View.GONE
     }
 }
