@@ -265,11 +265,10 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
-//                startActivity<DealSummeryStep2Activity>()
+                setErrorVisible()
                 if (isValid()) {
                     callRefreshTokenApi()
                 }
-                //loadFragment(DealSummeryStep2Activity())
             }
             R.id.ivBackDeal -> {
                 onBackPressed()
@@ -445,5 +444,11 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorInitials.visibility = View.GONE
+        tvErrorFullDisclouser.visibility = View.GONE
+        tvErrorFinancingOption.visibility = View.GONE
     }
 }

@@ -264,7 +264,19 @@ class AppGlobal {
             dialog.show()
         }
 
+        fun insertString(
+            originalString: String,
+            stringToBeInserted: String,
+            index: Int
+        ): String? {
 
+            // Create a new string
+
+            // return the modified String
+            return (originalString.substring(0, index + 1)
+                    + stringToBeInserted
+                    + originalString.substring(index + 1))
+        }
 
         var arState = arrayListOf(
             "State",

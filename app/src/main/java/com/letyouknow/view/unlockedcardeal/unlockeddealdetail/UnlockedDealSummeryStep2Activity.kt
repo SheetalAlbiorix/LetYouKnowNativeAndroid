@@ -130,6 +130,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
             binding.ucdData = ucdData
             binding.pendingUcdData = pendingUCDData
             callRefreshTokenApi()
+
+            val mNo = "(" + pendingUCDData.buyer?.phoneNumber
+            val mno1 = AppGlobal.insertString(mNo, ")", 3)
+            val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
+            edtPhoneNumber.setText(mno2)
+
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -157,7 +163,6 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         AppGlobal.strikeThrough(tvPrice)
 
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
-        edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
         /*for(i in 0 until pendingUCDData.buyer?.phoneNumber?.length!!){
             val data = edtPhoneNumber.text.toString().trim()
         }*/
@@ -354,6 +359,12 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == pendingUCDData.buyer?.state) {
+                spState.setSelection(i)
+            }
+        }
     }
 
     private fun onStateChange() {
@@ -588,6 +599,7 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
@@ -871,5 +883,17 @@ class UnlockedDealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFirstName.visibility = View.GONE
+        tvErrorLastName.visibility = View.GONE
+        tvErrorAddress1.visibility = View.GONE
+        tvErrorAddress2.visibility = View.GONE
+        tvErrorCity.visibility = View.GONE
+        tvErrorState.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
+        tvErrorPhoneNo.visibility = View.GONE
+        tvErrorEmailAddress.visibility = View.GONE
     }
 }

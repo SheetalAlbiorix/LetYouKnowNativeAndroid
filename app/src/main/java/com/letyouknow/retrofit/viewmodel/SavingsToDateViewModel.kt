@@ -14,8 +14,7 @@ class SavingsToDateViewModel : ViewModel() {
         request: HashMap<String, Any>
     ): LiveData<Double>? {
         liveData = SavingsToDateRepository.savingstodateApiCall(
-            context,
-            request
+            context
         )
         return liveData
     }

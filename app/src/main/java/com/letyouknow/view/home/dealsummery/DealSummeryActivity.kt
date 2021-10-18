@@ -275,6 +275,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isValid()) {
                     callSubmitPendingLCDDealAPI()
                 }
@@ -427,5 +428,11 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFinancingOption.visibility = View.GONE
+        tvErrorInitials.visibility = View.GONE
+        tvErrorFullDisclouser.visibility = View.GONE
     }
 }

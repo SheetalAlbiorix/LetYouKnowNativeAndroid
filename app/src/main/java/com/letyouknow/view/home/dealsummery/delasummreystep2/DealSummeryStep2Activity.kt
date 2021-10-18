@@ -120,7 +120,10 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
             callRefreshTokenApi()
-
+            val mNo = "(" + dataPendingDeal.buyer?.phoneNumber
+            val mno1 = AppGlobal.insertString(mNo, ")", 3)
+            val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
+            edtPhoneNumber.setText(mno2)
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -193,6 +196,12 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == dataPendingDeal.buyer?.state) {
+                spState.setSelection(i)
+            }
+        }
     }
 
 
@@ -543,6 +552,7 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
                 } else if (isValid()) {
@@ -770,6 +780,18 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setErrorVisible() {
+        tvErrorFirstName.visibility = View.GONE
+        tvErrorLastName.visibility = View.GONE
+        tvErrorAddress1.visibility = View.GONE
+        tvErrorAddress2.visibility = View.GONE
+        tvErrorCity.visibility = View.GONE
+        tvErrorState.visibility = View.GONE
+        tvErrorZipCode.visibility = View.GONE
+        tvErrorPhoneNo.visibility = View.GONE
+        tvErrorEmailAddress.visibility = View.GONE
     }
 
 }

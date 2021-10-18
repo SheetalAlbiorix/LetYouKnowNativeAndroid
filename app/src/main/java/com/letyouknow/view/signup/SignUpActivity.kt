@@ -101,16 +101,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         googleInit()
         facebookInit()
         setState()
-
-        /*  for(i in 0 until mNo.length){
-              val str = mNo[i].toString()
-              edtPhoneNumber.setText(edtPhoneNumber.text.toString().trim() + str)
-              Log.e("mNo",edtPhoneNumber.text.toString().trim())
-          }*/
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
-        /*val mNo = "1234567890"
-        edtPhoneNumber.setText(mNo)
-        Selection.setSelection(edtPhoneNumber.text, edtPhoneNumber.text?.toString()?.trim()?.length!!)*/
     }
 
     private fun setState() {
@@ -173,27 +164,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        /* edtPhoneNumber.addTextChangedListener(object:TextWatcher{
-             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-             }
-
-             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-               val str = s.toString()
-                 if(str.length>0){
-                     edtPhoneNumber.setBackgroundResource(R.drawable.bg_edittext)
-                     tvErrorPhoneNo.visibility=View.GONE
-
-                 }else if(str.length==1){
-                     edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
-                 }
-             }
-
-             override fun afterTextChanged(s: Editable?) {
-
-             }
-
-         })*/
     }
 
     private fun initCardAdapter() {
