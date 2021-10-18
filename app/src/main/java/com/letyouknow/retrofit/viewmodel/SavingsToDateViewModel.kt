@@ -9,13 +9,12 @@ import com.letyouknow.retrofit.repository.SavingsToDateRepository
 class SavingsToDateViewModel : ViewModel() {
     var liveData: MutableLiveData<Double>? = null
 
-    fun minMSRPCall(
+    fun savingsToDateCall(
         context: Context,
         request: HashMap<String, Any>
     ): LiveData<Double>? {
         liveData = SavingsToDateRepository.savingstodateApiCall(
-            context,
-            request
+            context
         )
         return liveData
     }

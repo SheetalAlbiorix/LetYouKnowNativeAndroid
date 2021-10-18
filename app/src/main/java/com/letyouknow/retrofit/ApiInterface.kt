@@ -186,5 +186,4 @@ interface ApiInterface {
         @Path(value = "getUserID", encoded = true) planId: Int?,
     ): Call<NotificationOptionsData>
 
-
 }
