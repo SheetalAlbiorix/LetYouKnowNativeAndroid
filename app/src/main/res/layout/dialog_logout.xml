@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/_25sdp"
-                android:text="Do you want to logout the LetYouKnow App?"
+                android:text="@string/do_you_want_logout"
                 android:textColor="@color/textDarkGrey"
                 android:textSize="@dimen/_12sdp" />
 

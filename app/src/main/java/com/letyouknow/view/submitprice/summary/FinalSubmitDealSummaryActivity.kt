@@ -15,7 +15,7 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_final_submit_price_deal_summery.*
+import kotlinx.android.synthetic.main.layout_final_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor

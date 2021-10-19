@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_15sdp"
-                android:text="By Leaving this page, you will lose your Reserved Deal. "
+                android:text="@string/by_leaving_page"
                 android:textColor="@color/color666666"
                 android:textSize="@dimen/_16sdp" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/_25sdp"
-                android:text="Press LEAVE MY DEAL to continue or press CANCEL to remain on this page and keep your Reserved Deal Active."
+                android:text="@string/press_leave_my_deal"
                 android:textColor="@color/textDarkGrey"
                 android:textSize="@dimen/_12sdp" />
 

@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.gallery360view.gallery
+package com.letyouknow.view.home.dealsummary.gallery360view.gallery
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,16 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.InteriorViewModel
-import com.letyouknow.view.home.dealsummery.gallery360view.gallery.zoomimage.ZoomImageActivity
+import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
+import com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
 
-class InteriorFragment : BaseFragment(), View.OnClickListener {
+class ExteriorFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapterGallery: GalleryAdapter
-    lateinit var interiorViewModel: InteriorViewModel
-
+    lateinit var exteriorViewModel: ExteriorViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,20 +33,17 @@ class InteriorFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
-        interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-        getInteriorAPI();
-        /*   adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
-           rvGallery.adapter = adapterGallery
-           adapterGallery.addAll(arrayListOf("", "", "", "", "", "", "", "", "", "", "", "", "", ""))*/
+        exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
+        getExteriorAPI();
     }
 
-    private fun getInteriorAPI() {
+    private fun getExteriorAPI() {
 
         val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = "13655"
-        request[ApiConstant.ImageProduct] = ApiConstant.interior360
+        request[ApiConstant.ImageId] = "14170"
+        request[ApiConstant.ImageProduct] = "MultiAngle"
 
-        interiorViewModel.getInterior(this.requireContext(), request)!!
+        exteriorViewModel.getExterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->
                 Constant.dismissLoader()
 
@@ -61,7 +58,10 @@ class InteriorFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ivGallery -> {
-                startActivity<ZoomImageActivity>()
+                val pos = v.tag as Int
+                var data = adapterGallery.getItem(pos).toString()
+                startActivity<ZoomImageActivity>(ARG_IMAGE_URL to data)
+
             }
         }
     }

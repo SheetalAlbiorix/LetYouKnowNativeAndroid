@@ -102,7 +102,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
-                                android:text="Enter LastName"
+                                android:text="@string/enter_lastname"
                                 android:textColor="@color/red"
                                 android:textSize="@dimen/_11sdp"
                                 android:visibility="gone" />

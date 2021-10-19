@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.home.dealsummery.gallery360view.Gallery360TabActivity">
+        tools:context=".view.home.dealsummary.gallery360view.Gallery360TabActivity">
 
         <include
             layout="@layout/layout_toolbar_blue"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
-                    android:text="EXTERIOR"
+                    android:text="@string/exterior"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
-                    android:text="INTERIOR"
+                    android:text="@string/interior"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center"
-                    android:text="360 VIEW"
+                    android:text="@string/three_view"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 

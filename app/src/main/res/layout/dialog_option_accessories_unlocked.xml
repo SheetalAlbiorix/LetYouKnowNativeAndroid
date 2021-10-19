@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:alpha="0.87"
-                    android:text="Packages:"
+                    android:text="@string/packages_colon:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 

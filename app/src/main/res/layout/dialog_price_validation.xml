@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Are You Sure The Price is Correct?"
+                android:text="@string/are_you_sure_price"
                 android:textColor="@color/textDarkGrey"
                 android:textSize="@dimen/_12sdp" />
 

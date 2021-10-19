@@ -113,7 +113,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
-                            android:text="Enter LastName"
+                            android:text="@string/enter_lastname"
                             android:textColor="@color/red"
                             android:textSize="@dimen/_11sdp"
                             android:visibility="gone" />
@@ -166,7 +166,7 @@
                         android:layout_weight="1"
                         android:padding="@dimen/_8sdp"
                         android:singleLine="true"
-                        android:text="www.lyk.com/user1/referral"
+                        android:text="@string/refferral_link"
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
@@ -195,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:text="Share on social media"
+                    android:text="@string/share_social_media"
                     android:textColor="@color/color515151"
                     android:textSize="@dimen/_12sdp" />
 
@@ -323,7 +323,7 @@
                         android:button="@null"
                         android:drawableLeft="@drawable/bg_radio_check_uncheck"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:text="$100 LetYouKnow Credit"
+                        android:text="@string/dollar_lyk_credit"
                         android:textColor="@color/textDarkGrey" />
 
                     <RadioButton
@@ -333,7 +333,7 @@
                         android:button="@null"
                         android:drawableLeft="@drawable/bg_radio_check_uncheck"
                         android:drawablePadding="@dimen/_10sdp"
-                        android:text="$25 Check"
+                        android:text="@string/dollar_check"
                         android:textColor="@color/textDarkGrey" />
                 </RadioGroup>
 
@@ -346,7 +346,7 @@
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp" />
 

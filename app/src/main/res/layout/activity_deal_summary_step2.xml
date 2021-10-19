@@ -53,7 +53,7 @@
                     android:paddingEnd="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_3sdp"
                     android:singleLine="true"
-                    android:text="Actual Model may vary"
+                    android:text="@string/actual_model_may_vary"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_8sdp" />
 
@@ -173,7 +173,7 @@
 
 
                 <include
-                    layout="@layout/layout_deal_summery_step2"
+                    layout="@layout/layout_deal_summary_step2"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />

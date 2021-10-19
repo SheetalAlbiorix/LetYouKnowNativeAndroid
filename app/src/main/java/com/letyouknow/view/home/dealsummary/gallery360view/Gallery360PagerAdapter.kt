@@ -1,10 +1,10 @@
-package com.letyouknow.view.home.dealsummery.gallery360view
+package com.letyouknow.view.home.dealsummary.gallery360view
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.letyouknow.view.home.dealsummery.gallery360view.gallery.ExteriorFragment
-import com.letyouknow.view.home.dealsummery.gallery360view.view360.View360Fragment
+import com.letyouknow.view.home.dealsummary.gallery360view.gallery.ExteriorFragment
+import com.letyouknow.view.home.dealsummary.gallery360view.view360.View360Fragment
 
 class Gallery360PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 

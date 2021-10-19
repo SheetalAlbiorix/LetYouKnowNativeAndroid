@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.gallery360view.view360
+package com.letyouknow.view.home.dealsummary.gallery360view.view360
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable

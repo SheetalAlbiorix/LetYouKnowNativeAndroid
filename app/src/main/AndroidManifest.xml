@@ -25,13 +25,13 @@
             android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
             android:exported="true" />
         <activity
-            android:name=".view.home.dealsummery.gallery360view.view360.View360Activty"
+            android:name=".view.home.dealsummary.gallery360view.view360.View360Activty"
             android:exported="true" />
         <activity
-            android:name=".view.home.dealsummery.gallery360view.gallery.zoomimage.ZoomImageActivity"
+            android:name=".view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity"
             android:exported="true" />
         <activity
-            android:name=".view.home.dealsummery.gallery360view.Gallery360TabActivity"
+            android:name=".view.home.dealsummary.gallery360view.Gallery360TabActivity"
             android:exported="true" />
         <activity
             android:name=".view.account.editrefer.referstep2.ReferStep2Activity"
@@ -108,19 +108,19 @@
             android:name=".view.dashboard.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".view.home.dealsummery.DealSummeryActivity"
+            android:name=".view.home.dealsummary.DealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity"
+            android:name=".view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryActivity"
+            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryStep2Activity"
+            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -48,7 +48,7 @@
             style="@style/bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click On the button below and enter the required basic information."
+            android:text="@string/click_on_button"
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_20sdp"
-            android:text="Introduce your friends and family to wonderful services provided by LetYouKnow"
+            android:text="@string/introduce_your_friend"
             android:textColor="@color/textDarkGrey"
             android:textSize="@dimen/_10sdp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
