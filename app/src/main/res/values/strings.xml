@@ -267,7 +267,6 @@
     <string name="package_required">Package Required</string>
     <string name="zipcode_required">Zipcode Required</string>
     <string name="options_accessories_required">Option &amp; Accessories Required</string>
-    <string name="password_must_be"><![CDATA[Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1\u25CF lowercase letter \n1\u25CF number \n1\u25CF special character (@$!%*?#&^~)]]></string>
     <string name="view">View</string>
     <string name="myInfo">My Info</string>
     <string name="edit">Edit</string>
