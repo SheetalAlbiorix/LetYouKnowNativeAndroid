@@ -153,6 +153,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
         onStateChange()
         initPayment()
+        tvTimer.visibility = View.GONE
         tvAddMin.visibility = View.GONE
     }
 
@@ -485,11 +486,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 popupOption()
             }
             R.id.ivBack -> {
-                if (isTimeOver) {
-                    onBackPressed()
-                } else {
-                    popupLeaveDeal()
-                }
+                onBackPressed()
             }
             R.id.cardMain -> {
                 val pos = v.tag as Int
@@ -548,7 +545,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         }
                     }
                 )
-
             }
             R.id.ivBackDeal -> {
                 onBackPressed()
@@ -569,7 +565,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 //seconds = ((60 * ((2 + minutes) + (second / 60))).toDouble())
                 tvAddMin.visibility = View.GONE
                 cancelTimer()
-                startTimer()
+//                startTimer()
             }
         }
     }

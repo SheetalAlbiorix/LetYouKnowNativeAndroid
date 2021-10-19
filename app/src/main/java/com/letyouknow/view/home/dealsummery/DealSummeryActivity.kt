@@ -38,8 +38,6 @@ import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_deal_summery.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_deal_summery.*
-import kotlinx.android.synthetic.main.layout_deal_summery.ivForwardDeal
-import kotlinx.android.synthetic.main.layout_deal_summery_hot_market.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
@@ -103,8 +101,6 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
-        tvViewOptionsHot.setOnClickListener(this)
-        btnGoBack.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
         backButton()
@@ -300,12 +296,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             R.id.tvViewOptions -> {
                 popupOption()
             }
-            R.id.tvViewOptionsHot -> {
-                popupOption()
-            }
-            R.id.btnGoBack -> {
-                finish()
-            }
+
             R.id.ivBack -> {
                 onBackPressed()
             }
@@ -373,6 +364,12 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
             return false
         }
         if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+            tvErrorInitials.text = getString(R.string.initials_required)
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (edtInitials.text.toString().trim().length == 1) {
+            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }

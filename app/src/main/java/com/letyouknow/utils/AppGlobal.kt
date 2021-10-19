@@ -338,7 +338,12 @@ class AppGlobal {
             return userData!!.buyerId!!;
         }
 
-
+fun formatPhoneNo(phon: String?): String? {
+    val mNo = "(" + phon
+    val mno1 = AppGlobal.insertString(mNo, ")", 3)
+    val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
+    return mno2
+}
     }
 
 }

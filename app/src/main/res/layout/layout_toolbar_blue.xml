@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 android:text="@{toolbarTitle}"
-                android:textColor="@color/black"
+                android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_12sdp" />
 
             <!-- <View

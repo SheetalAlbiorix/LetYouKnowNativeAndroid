@@ -2,6 +2,7 @@ package com.letyouknow.view.account
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.TextUtils
 import android.view.*
 import android.widget.AdapterView
@@ -18,12 +19,14 @@ import com.letyouknow.model.UserProfileData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
 import com.letyouknow.view.account.editrefer.EditReferActivity
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.onTextChange
 import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
@@ -36,6 +39,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var userProfileViewModel: UserProfileViewModel
     private lateinit var editUserProfileViewModel: EditUserProfileViewModel
     private lateinit var changePasswordViewModel: ChangePasswordViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var binding: FragmentAccount1Binding
     private lateinit var userData: UserProfileData
     private var state = ""
@@ -67,13 +71,14 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
         editUserProfileViewModel = ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
         changePasswordViewModel = ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
         tvEditLogin.setOnClickListener(this)
         tvEditInfo.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(true)
+        callRefreshTokenApi()
 
-        callUserProfileAPI()
     }
 
 
@@ -108,13 +113,26 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.setCanceledOnTouchOutside(true)
         dialogEditLogin.setContentView(R.layout.dialog_change_password)
         dialogEditLogin.edtDialogUserName.setText(userData.userName)
+        onStateChangeLogin()
         dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
             if (isValidLogin()) {
                 callChangePasswordAPI()
             }
         }
+        dialogEditLogin.ivDialogClose.setOnClickListener {
+            dialogEditLogin.dismiss()
+        }
         setLayoutParam(dialogEditLogin)
         dialogEditLogin.show()
+    }
+
+    private fun onStateChangeLogin() {
+        dialogEditLogin.run {
+            onTextChange(requireActivity(), edtDialogUserName, tvDialogErrorUserName)
+            onTextChange(requireActivity(), edtDialogCurrentPassword, tvDialogErrorCurrentPassword)
+            onTextChange(requireActivity(), edtDialogNewPassword, tvDialogErrorNewPassword)
+            onTextChange(requireActivity(), edtDialogConfirmPassword, tvDialogErrorConfirmPassword)
+        }
     }
 
 
@@ -125,14 +143,33 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.setCancelable(true)
         dialogEditInfo.setCanceledOnTouchOutside(true)
         dialogEditInfo.setContentView(R.layout.dialog_edit_info)
+        onStateChange()
         setEditInfoData()
         dialogEditInfo.btnDialogSave.setOnClickListener {
             if (isValid()) {
                 callEditUserProfileAPI()
             }
         }
+        dialogEditInfo.ivDialogEditClose.setOnClickListener {
+            dialogEditInfo.dismiss()
+        }
         setLayoutParam(dialogEditInfo)
         dialogEditInfo.show()
+    }
+
+    private fun onStateChange() {
+        dialogEditInfo.run {
+            onTextChange(requireActivity(), edtFirstName, tvErrorFirstName)
+            onTextChange(requireActivity(), edtMiddleName, tvErrorLastName)
+            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
+            onTextChange(requireActivity(), edtConfirmEmail, tvErrorConfirmEmailAddress)
+            onTextChange(requireActivity(), edtUserName, tvErrorUserName)
+            onTextChange(requireActivity(), edtPhoneNumber, tvErrorPhoneNo)
+            onTextChange(requireActivity(), edtAddress1, tvErrorAddress1)
+            onTextChange(requireActivity(), edtAddress2, tvErrorAddress2)
+            onTextChange(requireActivity(), edtCity, tvErrorCity)
+            onTextChange(requireActivity(), edtZipCode, tvErrorZipCode)
+        }
     }
 
     private fun setEditInfoData() {
@@ -143,12 +180,13 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             edtEmail.setText(userData.email)
             edtConfirmEmail.setText(userData.email)
             edtUserName.setText(userData.userName)
-            edtPhoneNumber.setText(userData.phoneNumber)
             edtAddress1.setText(userData.address1)
             edtAddress2.setText(userData.address2)
             edtCity.setText(userData.city)
             edtZipCode.setText(userData.zipcode)
             setState()
+            edtPhoneNumber.setText(formatPhoneNo(userData.phoneNumber))
+            edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         }
     }
 
@@ -225,22 +263,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         }
     }
 
-    private fun callUserProfileAPI() {
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            userProfileViewModel.userProfileCall(requireActivity())!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    binding.userData = data
-                    userData = data
-                    callSavingsToDateAPI()
-                }
-                )
-
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun callEditUserProfileAPI() {
         if (Constant.isOnline(requireActivity())) {
@@ -376,23 +398,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
                     return false
                 }
-
-
-                /*    TextUtils.isEmpty(edtPassword.text.toString().trim()) -> {
-                        tvErrorPassword.text = getString(R.string.enter_password)
-                        Constant.setErrorBorder(edtPassword, tvErrorPassword)
-                        return false
-                    }
-                    !Constant.passwordValidator(edtPassword.text.toString().trim()) -> {
-                        tvErrorPassword.text = getString(R.string.enter_valid_password)
-                        Constant.setErrorBorder(edtPassword, tvErrorPassword)
-                        return false
-                    }
-                    TextUtils.isEmpty(edtConfirmPassword.text.toString().trim()) -> {
-                        tvErrorConfirmPassword.text = getString(R.string.enter_confirm_password)
-                        Constant.setErrorBorder(edtConfirmPassword, tvErrorConfirmPassword)
-                        return false
-                    }*/
                 else -> return true
             }
         }
@@ -443,6 +448,91 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 }
                 else -> return true
             }
+        }
+    }
+
+    private fun callRefreshTokenApi() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(requireActivity(), request)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    val userData = pref?.getUserData()
+                    userData?.authToken = data.auth_token!!
+                    userData?.refreshToken = data.refresh_token!!
+                    pref?.setUserData(Gson().toJson(userData))
+                    callUserProfileAPI()
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callUserProfileAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            userProfileViewModel.userProfileCall(requireActivity())!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    binding.userData = data
+                    userData = data
+                    tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
+                    callSavingsToDateAPI()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private var filter = InputFilter { source, start, end, dest, dstart, dend ->
+        dialogEditInfo.run {
+            var source = source
+            if (source.length > 0) {
+                if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                    if (source.toString().length > 1) {
+                        val number = source.toString()
+                        val digits1 = number.toCharArray()
+                        val digits2 = number.split("(?<=.)").toTypedArray()
+                        source = digits2[digits2.size - 1]
+                    }
+                    if (edtPhoneNumber.text.toString().length < 1) {
+                        return@InputFilter "($source"
+                    } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                            .length <= 3
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                            .length <= 5
+                    ) {
+                        val isContain = dest.toString().contains(")")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            ")$source"
+                        }
+                    } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                            .length <= 7
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 7) {
+                        val isContain = dest.toString().contains("-")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            "-$source"
+                        }
+                    }
+                }
+            } else {
+            }
+            source
         }
     }
 }

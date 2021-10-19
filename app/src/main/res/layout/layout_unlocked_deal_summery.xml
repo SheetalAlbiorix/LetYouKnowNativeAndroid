@@ -505,6 +505,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/initials"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:inputType="text"
                         android:maxLength="3"
                         android:paddingTop="@dimen/_10sdp"

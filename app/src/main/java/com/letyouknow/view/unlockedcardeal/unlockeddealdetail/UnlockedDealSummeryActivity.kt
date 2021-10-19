@@ -356,6 +356,12 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
             return false
         }
         if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+            tvErrorInitials.text = getString(R.string.initials_required)
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (edtInitials.text.toString().trim().length == 1) {
+            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }

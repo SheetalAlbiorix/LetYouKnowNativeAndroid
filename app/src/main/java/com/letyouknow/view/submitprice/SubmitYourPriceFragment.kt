@@ -2,6 +2,7 @@ package com.letyouknow.view.submitprice
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import android.view.animation.Animation
@@ -29,29 +30,13 @@ import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
 import kotlinx.android.synthetic.main.fragment_submit_your_price.*
-import kotlinx.android.synthetic.main.fragment_submit_your_price.btnSearch
-import kotlinx.android.synthetic.main.fragment_submit_your_price.ivClosePromo
-import kotlinx.android.synthetic.main.fragment_submit_your_price.llPromoOffer
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spExteriorColor
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spInteriorColor
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spMake
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spModel
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spTrim
-import kotlinx.android.synthetic.main.fragment_submit_your_price.spYear
-import kotlinx.android.synthetic.main.fragment_submit_your_price.tvOptionalAccessories
-import kotlinx.android.synthetic.main.fragment_submit_your_price.tvPackages
-import kotlinx.android.synthetic.main.fragment_submit_your_price.tvPromo
 import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
 
 
 class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    private var isValidSpinner = false
-    private var isValidZipCode = false
 
     private lateinit var vehicleYearModel: VehicleYearViewModel
     private lateinit var vehicleMakeModel: VehicleMakeViewModel
@@ -84,12 +69,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private var extColorId = ""
     private var intColorId = ""
 
-    private var yearStr = ""
-    private var makeStr = ""
-    private var modelStr = ""
-    private var trimStr = ""
-    private var extColorStr = ""
-    private var intColorStr = ""
+    private var yearStr = "YEAR"
+    private var makeStr = "MAKE"
+    private var modelStr = "MODEL"
+    private var trimStr = "TRIM"
+    private var extColorStr = "EXTERIOR COLOR"
+    private var intColorStr = "INTERIOR COLOR"
 
     private lateinit var animBlink: Animation
     private lateinit var animSlideRightToLeft: Animation
@@ -760,40 +745,42 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 llPromoOffer.visibility = View.GONE
             }
             R.id.btnSearch -> {
-                val arOptions: ArrayList<VehicleAccessoriesData> = ArrayList()
-                for (i in 0 until adapterOptions.itemCount) {
-                    if (adapterOptions.getItem(i).isSelect!! || adapterOptions.getItem(i).isOtherSelect!!) {
-                        arOptions.add(adapterOptions.getItem(i))
+                if (isValid()) {
+                    val arOptions: ArrayList<VehicleAccessoriesData> = ArrayList()
+                    for (i in 0 until adapterOptions.itemCount) {
+                        if (adapterOptions.getItem(i).isSelect!! || adapterOptions.getItem(i).isOtherSelect!!) {
+                            arOptions.add(adapterOptions.getItem(i))
+                        }
                     }
-                }
-                val arPackage: ArrayList<VehiclePackagesData> = ArrayList()
+                    val arPackage: ArrayList<VehiclePackagesData> = ArrayList()
 
-                for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
-                        arPackage.add(adapterPackages.getItem(i))
+                    for (i in 0 until adapterPackages.itemCount) {
+                        if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
+                            arPackage.add(adapterPackages.getItem(i))
+                        }
                     }
-                }
-                val data = YearModelMakeData()
-                data.vehicleYearID = yearId
-                data.vehicleMakeID = makeId
-                data.vehicleModelID = modelId
-                data.vehicleTrimID = trimId
-                data.vehicleExtColorID = extColorId
-                data.vehicleIntColorID = intColorId
-                data.vehicleYearStr = yearStr
-                data.vehicleMakeStr = makeStr
-                data.vehicleModelStr = modelStr
-                data.vehicleTrimStr = trimStr
-                data.vehicleExtColorStr = extColorStr
-                data.vehicleIntColorStr = extColorStr
-                data.arPackages = arPackage
-                data.arOptions = arOptions
+                    val data = YearModelMakeData()
+                    data.vehicleYearID = yearId
+                    data.vehicleMakeID = makeId
+                    data.vehicleModelID = modelId
+                    data.vehicleTrimID = trimId
+                    data.vehicleExtColorID = extColorId
+                    data.vehicleIntColorID = intColorId
+                    data.vehicleYearStr = yearStr
+                    data.vehicleMakeStr = makeStr
+                    data.vehicleModelStr = modelStr
+                    data.vehicleTrimStr = trimStr
+                    data.vehicleExtColorStr = extColorStr
+                    data.vehicleIntColorStr = extColorStr
+                    data.arPackages = arPackage
+                    data.arOptions = arOptions
 
-                startActivity<SubmitPriceDealSummaryActivity>(
-                    ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                        data
+                    startActivity<SubmitPriceDealSummaryActivity>(
+                        ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                            data
+                        )
                     )
-                )
+                }
 //                callMinMSRPAPI()
             }
             R.id.tvPackages -> {
@@ -820,9 +807,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 }
                 tvPackages.text = packagesStr
                 if (packagesStr.length > 0) {
+                    tvErrorPackages.visibility = View.GONE
                     setOptions(true)
                     callOptionalAccessoriesAPI()
                 } else {
+                    tvPackages.text = "PACKAGES"
                     setOptions(false)
                 }
 
@@ -891,6 +880,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                                 optionsStr + ", " + adapterOptions.getItem(i).accessory.toString()
                         }
                     }
+                }
+                if (!TextUtils.isEmpty(optionsStr)) {
+                    tvErrorOptionsAccessories.visibility = View.GONE
+                } else {
+                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
                 }
                 tvOptionalAccessories.text = optionsStr
                 dialogOptions.dismiss()
@@ -961,6 +955,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
                 if (data.year != "YEAR") {
+                    tvErrorYear.visibility = View.GONE
                     callVehicleMakeAPI()
                     setModel()
                     setTrim()
@@ -970,8 +965,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setOptions(false)
                 }
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
@@ -979,6 +972,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
+                    tvErrorMake.visibility = View.GONE
                     callVehicleModelAPI()
                     setTrim()
                     setExteriorColor()
@@ -986,8 +980,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spModel -> {
                 val data = adapterModel.getItem(position) as VehicleModelData
@@ -995,14 +987,14 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 modelStr = data.model!!
                 AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
+                    tvErrorModel.visibility = View.GONE
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
+
             }
             R.id.spTrim -> {
                 val data = adapterTrim.getItem(position) as VehicleTrimData
@@ -1010,13 +1002,13 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
+                    tvErrorTrim.visibility = View.GONE
                     callExteriorColorAPI()
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
+
             }
             R.id.spExteriorColor -> {
                 val data = adapterExterior.getItem(position) as ExteriorColorData
@@ -1025,12 +1017,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
+                    tvErrorExterior.visibility = View.GONE
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
+
             }
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
@@ -1038,12 +1030,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 intColorStr = data.interiorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
+                    tvErrorInterior.visibility = View.GONE
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = true
+
             }
         }
     }
@@ -1118,6 +1110,45 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun isValid(): Boolean {
+        when {
+            yearStr == "YEAR" -> {
+                tvErrorYear.visibility = View.VISIBLE
+                return false
+            }
+            makeStr == "MAKE" -> {
+                tvErrorMake.visibility = View.VISIBLE
+                return false
+            }
+            modelStr == "MODEL" -> {
+                tvErrorModel.visibility = View.VISIBLE
+                return false
+            }
+            trimStr == "TRIM" -> {
+                tvErrorTrim.visibility = View.VISIBLE
+                return false
+            }
+            extColorStr == "EXTERIOR COLOR" -> {
+                tvErrorExterior.visibility = View.VISIBLE
+                return false
+            }
+            intColorStr == "INTERIOR COLOR" -> {
+                tvErrorInterior.visibility = View.VISIBLE
+                return false
+            }
+            tvPackages.text.toString().trim() == "PACKAGES" -> {
+                tvErrorPackages.visibility = View.VISIBLE
+                return false
+            }
+            tvOptionalAccessories.text.toString().trim() == "OPTIONS & ACCESSORIES" -> {
+                tvErrorOptionsAccessories.visibility = View.VISIBLE
+                return false
+            }
+
+        }
+        return true
     }
 
 }

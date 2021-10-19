@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text=""
-                android:textColor="@color/black"
+                android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_10sdp"
                 android:visibility="invisible" />
 

@@ -238,9 +238,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                          ).show()*/
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
                         tvErrorZipCode.visibility = View.VISIBLE
-                        isValidZipCode = true
-                    } else {
                         isValidZipCode = false
+                    } else {
+                        isValidZipCode = true
                     }
                 }
                 )
@@ -259,7 +259,6 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private var isScrollable = false
 
     private fun scrollTouchListener() {
-//        tvInfo.movementMethod = ScrollingMovementMethod()
         nestedSc.setOnTouchListener { _, _ ->
             scrollInfo.parent.requestDisallowInterceptTouchEvent(false)
             false
@@ -528,6 +527,12 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             return false
         }
         if (TextUtils.isEmpty(edtInitials.text.toString().trim())) {
+            tvErrorInitials.text = getString(R.string.initials_required)
+            setErrorBorder(edtInitials, tvErrorInitials)
+            return false
+        }
+        if (edtInitials.text.toString().trim().length == 1) {
+            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }

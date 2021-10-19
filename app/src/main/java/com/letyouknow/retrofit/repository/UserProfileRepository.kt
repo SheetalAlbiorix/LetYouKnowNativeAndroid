@@ -36,6 +36,7 @@ object UserProfileRepository {
                     Constant.dismissLoader()
                     buyerData.value = data!!
                 } else if (response.code() == 401) {
+                    Constant.dismissLoader()
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()

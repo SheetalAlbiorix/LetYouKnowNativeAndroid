@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
         <variable
             name="type"
@@ -173,7 +174,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.firstName+' '+userData.middleName+' '+ userData.lastName}"
+                            android:text='@{userData.firstName ?? "-" +" "+userData.middleName?? ""+" "+ userData.lastName?? ""}'
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp"
                             tool:text="Name" />
@@ -200,7 +201,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.address1+'\n'+userData.address2+'\n'+userData.city+','+userData.state}"
+                            android:text='@{userData.address1??"-"+"\n"+userData.address2??""+"\n"+userData.city??"-"+","+userData.state??"-"}'
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp"
                             tool:text="Address" />
@@ -227,7 +228,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.zipcode}"
+                            android:text='@{userData.zipcode??"-"}'
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -249,11 +250,11 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:id="@+id/tvPhoneNo"
                             style="@style/regular"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.phoneNumber}"
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -279,7 +280,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.email}"
+                            android:text='@{userData.email??"-"}'
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -349,7 +350,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{userData.userName}"
+                            android:text='@{userData.userName??"-"}'
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>

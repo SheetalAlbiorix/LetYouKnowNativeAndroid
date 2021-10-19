@@ -30,7 +30,7 @@
                 android:textSize="@dimen/_17sdp" />
 
             <ImageView
-                android:id="@+id/ivDialogClose"
+                android:id="@+id/ivDialogEditClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"
@@ -64,6 +64,8 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/first_name_required"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:inputType="text" />
 
                     <TextView
@@ -84,6 +86,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/middle_name"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:inputType="text" />
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -92,6 +96,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:hint="@string/last_name_required"
                         android:inputType="text" />
 
@@ -110,7 +116,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:padding="@dimen/_12sdp"
                         android:background="@drawable/bg_edittext"
+                        android:textColor="@color/black"
                         android:hint="@string/email_address_required"
                         android:inputType="textEmailAddress" />
 
@@ -120,6 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:text="@string/enter_email_address_vali"
+                        android:padding="@dimen/_12sdp"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_11sdp"
                         android:visibility="gone" />
@@ -131,6 +140,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/confirm_email_required"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:inputType="textEmailAddress" />
 
                     <TextView
@@ -148,12 +159,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:padding="@dimen/_12sdp"
                         android:background="@drawable/bg_edittext"
                         android:enabled="false"
                         android:hint="@string/user_name_required"
                         android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/tvErrorUserName"
@@ -170,8 +181,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:padding="@dimen/_12sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/phone_number_required"
+                        android:textColor="@color/black"
                         android:inputType="phone" />
 
                     <TextView
@@ -181,6 +194,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:text="@string/enter_phonenumber"
                         android:textColor="@color/red"
+                        android:padding="@dimen/_12sdp"
                         android:textSize="@dimen/_11sdp"
                         android:visibility="gone" />
 
@@ -190,6 +204,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_1_required"
                         android:inputType="text" />
@@ -209,6 +225,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_2"
                         android:inputType="text" />
@@ -230,6 +248,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/city_required"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
                         android:inputType="text" />
 
                     <TextView
@@ -268,8 +288,10 @@
                         android:background="@drawable/bg_edittext"
                         android:digits="1234567890"
                         android:hint="@string/zip_code_required"
+                        android:maxLength="5"
+                        android:padding="@dimen/_12sdp"
                         android:inputType="number"
-                        android:maxLength="6" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/tvErrorZipCode"
