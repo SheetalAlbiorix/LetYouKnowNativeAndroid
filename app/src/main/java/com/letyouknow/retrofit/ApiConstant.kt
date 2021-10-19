@@ -68,6 +68,8 @@ class ApiConstant {
         var interior360Pano = "Interior360Pano"
         var AuthToken = "AuthToken"
         var RefreshToken = "RefreshToken"
+        var currentPassword = "currentPassword"
+        var newPassword = "newPassword"
 
     }
 }

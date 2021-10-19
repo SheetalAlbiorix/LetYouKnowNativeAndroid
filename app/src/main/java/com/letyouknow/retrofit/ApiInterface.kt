@@ -181,6 +181,9 @@ interface ApiInterface {
     @GET("userprofile/savingstodate")
     fun savingsToDate(): Call<Double>
 
+    @POST("userprofile/changepassword")
+    fun changePassword(@Body request: HashMap<String, String>): Call<String>
+
     @GET("userprofile/{getUserID}/notificationoptions")
     fun notificationOptions(
         @Path(value = "getUserID", encoded = true) planId: Int?,

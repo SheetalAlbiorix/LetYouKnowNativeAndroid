@@ -257,5 +257,5 @@
     <string name="letyouknow">$ LETYOUKNOW</string>
     <string name="my_account">My Account</string>
     <string name="this_person_must_be_present_when_picking_up_the_vehicle">This person must be present when picking up the vehicle.</string>
-    <string name="password_must_be"><![CDATA[Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1 lowercase letter \n1 number \n1 special character (@$!%*?#&^~)]]></string>
+    <string name="password_must_be"><![CDATA[Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1\u25CF lowercase letter \n1\u25CF number \n1\u25CF special character (@$!%*?#&^~)]]></string>
 </resources>

@@ -16,10 +16,7 @@ import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
 import com.letyouknow.model.UserProfileData
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.EditUserProfileViewModel
-import com.letyouknow.retrofit.viewmodel.NotificationOptionsViewModel
-import com.letyouknow.retrofit.viewmodel.SavingsToDateViewModel
-import com.letyouknow.retrofit.viewmodel.UserProfileViewModel
+import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
@@ -38,6 +35,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var notificationOptionsViewModel: NotificationOptionsViewModel
     private lateinit var userProfileViewModel: UserProfileViewModel
     private lateinit var editUserProfileViewModel: EditUserProfileViewModel
+    private lateinit var changePasswordViewModel: ChangePasswordViewModel
     private lateinit var binding: FragmentAccount1Binding
     private lateinit var userData: UserProfileData
     private var state = ""
@@ -68,6 +66,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             ViewModelProvider(this).get(NotificationOptionsViewModel::class.java)
         userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
         editUserProfileViewModel = ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
+        changePasswordViewModel = ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
 
         tvEditLogin.setOnClickListener(this)
         tvEditInfo.setOnClickListener(this)
@@ -108,9 +107,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.setCancelable(true)
         dialogEditLogin.setCanceledOnTouchOutside(true)
         dialogEditLogin.setContentView(R.layout.dialog_change_password)
+        dialogEditLogin.edtDialogUserName.setText(userData.userName)
         dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
             if (isValidLogin()) {
-                callEditUserProfileAPI()
+                callChangePasswordAPI()
             }
         }
         setLayoutParam(dialogEditLogin)
@@ -277,6 +277,30 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         }
     }
 
+    private fun callChangePasswordAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val map: HashMap<String, String> = HashMap()
+            map[ApiConstant.userName] = dialogEditLogin.edtDialogUserName.text.toString().trim()
+            map[ApiConstant.currentPassword] =
+                dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
+            map[ApiConstant.newPassword] =
+                dialogEditLogin.edtDialogNewPassword.text.toString().trim()
+
+            changePasswordViewModel.changePasswordCall(requireActivity(), map)!!
+                .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
+                    Toast.makeText(requireActivity(), data, Toast.LENGTH_SHORT).show()
+                    dialogEditLogin.dismiss()
+                }
+                )
+
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     override fun onItemSelected(v: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (v?.id) {
             R.id.spState -> {
@@ -421,8 +445,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             }
         }
     }
-
-
 }
 
 
