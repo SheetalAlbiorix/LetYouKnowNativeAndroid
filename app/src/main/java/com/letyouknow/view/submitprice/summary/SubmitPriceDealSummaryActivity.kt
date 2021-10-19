@@ -27,8 +27,8 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
-import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity
-import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.letyouknow.view.spinneradapter.RadiusSpinnerBlackDropAdapter
 import com.pionymessenger.utils.Constant
@@ -39,7 +39,7 @@ import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_price_validation.*
-import kotlinx.android.synthetic.main.layout_submit_price_deal_summery.*
+import kotlinx.android.synthetic.main.layout_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
@@ -443,7 +443,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.ivForwardDeal -> {
-                startActivity<DealSummeryStep2Activity>()
+                startActivity<DealSummaryStep2Activity>()
                 finish()
             }
             R.id.llGallery -> {

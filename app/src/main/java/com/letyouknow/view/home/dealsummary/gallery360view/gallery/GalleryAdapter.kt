@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.gallery360view.gallery
+package com.letyouknow.view.home.dealsummary.gallery360view.gallery
 
 import android.view.View
 import com.letyouknow.utils.AppGlobal

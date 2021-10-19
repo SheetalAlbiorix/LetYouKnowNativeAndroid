@@ -23,7 +23,7 @@ import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
-import com.letyouknow.view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummeryActivity
+import com.letyouknow.view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
@@ -127,7 +127,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 adapterUnlockedCarDeal.update(pos, data)
                 selectPos = pos
 
-                startActivity<UnlockedDealSummeryActivity>(
+                startActivity<UnlockedDealSummaryActivity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
                     ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                     ARG_IMAGE_ID to imageId

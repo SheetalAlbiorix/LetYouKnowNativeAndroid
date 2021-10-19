@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.gallery360view
+package com.letyouknow.view.home.dealsummary.gallery360view
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityGallery360TabBinding
-import com.letyouknow.view.home.dealsummery.gallery360view.gallery.ExteriorFragment
-import com.letyouknow.view.home.dealsummery.gallery360view.gallery.InteriorFragment
-import com.letyouknow.view.home.dealsummery.gallery360view.view360.View360Fragment
+import com.letyouknow.view.home.dealsummary.gallery360view.gallery.ExteriorFragment
+import com.letyouknow.view.home.dealsummary.gallery360view.gallery.InteriorFragment
+import com.letyouknow.view.home.dealsummary.gallery360view.view360.View360Fragment
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import kotlinx.android.synthetic.main.activity_gallery360_tab.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*

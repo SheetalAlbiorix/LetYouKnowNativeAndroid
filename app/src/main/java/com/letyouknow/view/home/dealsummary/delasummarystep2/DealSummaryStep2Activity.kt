@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.delasummreystep2
+package com.letyouknow.view.home.dealsummary.delasummarystep2
 
 import android.app.Activity
 import android.app.Dialog
@@ -23,7 +23,7 @@ import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityDealSummeryStep2Binding
+import com.letyouknow.databinding.ActivityDealSummaryStep2Binding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -43,19 +43,19 @@ import com.stripe.android.Stripe
 import com.stripe.android.model.Card
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import kotlinx.android.synthetic.main.activity_deal_summery_step2.*
+import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_deal_summery_step2.*
+import kotlinx.android.synthetic.main.layout_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
+class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    lateinit var binding: ActivityDealSummeryStep2Binding
+    lateinit var binding: ActivityDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
     private var selectPaymentType = 0
@@ -82,8 +82,8 @@ class DealSummeryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deal_summery_step2)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery_step2)
+        setContentView(R.layout.activity_deal_summary_step2)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summary_step2)
         init()
     }
 

@@ -12,7 +12,7 @@
 
         <variable
             name="ucdData"
-            type="com.letyouknow.model.FindUcdDealData" />
+            type="com.letyouknow.model.FindLCDDeaData" />
 
         <variable
             name="pendingUcdData"
@@ -31,6 +31,7 @@
             layout="@layout/layout_toolbar_timer"
             app:toolbarTitle="@{@string/deal_summary}" />
 
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,7 +42,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="?pageBgColor"
                 android:orientation="vertical">
 
                 <TextView
@@ -58,9 +58,9 @@
                     android:textSize="@dimen/_8sdp" />
 
                 <FrameLayout
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_250sdp"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
 
@@ -73,6 +73,8 @@
                         android:src="@drawable/ic_image_car">
 
                     </androidx.appcompat.widget.AppCompatImageView>
+
+
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -104,8 +106,8 @@
                                     android:id="@+id/ivBgGallery"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:alpha="0.4"
                                     android:scaleType="fitXY"
+                                    android:alpha="0.4"
                                     android:src="@drawable/ic_image_car"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
@@ -140,8 +142,8 @@
                                     android:id="@+id/ivBg360"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:alpha="0.4"
                                     android:scaleType="fitXY"
+                                    android:alpha="0.4"
                                     android:src="@drawable/ic_image_car"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
@@ -163,12 +165,15 @@
                                     android:textSize="@dimen/_12sdp" />
                             </FrameLayout>
 
+
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </FrameLayout>
                 </FrameLayout>
+
+
                 <include
-                    layout="@layout/layout_unlocked_deal_summery_step2"
+                    layout="@layout/layout_deal_summary_step2"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />

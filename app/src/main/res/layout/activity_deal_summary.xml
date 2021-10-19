@@ -218,12 +218,12 @@
                 </FrameLayout>
 
                 <include
-                    layout="@layout/layout_deal_summery"
+                    layout="@layout/layout_deal_summary"
                     android:visibility='@{lcdDealData.dealID.equals("0") ? View.GONE : View.VISIBLE}'
                     app:lcdDealData="@{lcdDealData}" />
 
                 <include
-                    layout="@layout/layout_deal_summery_hot_market"
+                    layout="@layout/layout_deal_summary_hot_market"
                     android:visibility='@{lcdDealData.dealID.equals("0") ? View.VISIBLE : View.GONE}'
                     app:lcdDealData="@{lcdDealData}" />
                 <!--                layout='@{lcdDealData.dealID == ("0") ? @layout/layout_deal_summery_hot_market : @layout/layout_deal_summery}'-->

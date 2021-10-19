@@ -217,7 +217,7 @@
                 </FrameLayout>
 
                 <include
-                    layout="@layout/layout_unlocked_deal_summery"
+                    layout="@layout/layout_unlocked_deal_summary"
                     app:lcdDealData="@{lcdDealData}" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

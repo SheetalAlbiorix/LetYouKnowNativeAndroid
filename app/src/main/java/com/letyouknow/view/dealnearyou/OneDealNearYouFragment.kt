@@ -24,7 +24,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.home.dealsummery.DealSummeryActivity
+import com.letyouknow.view.home.dealsummary.DealSummaryActivity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
@@ -798,7 +798,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     data.arAccessories = accessoriesStr
                     data.arAccessoriesId = arAccId
                     data.arPackageId = arPackageId
-                    startActivity<DealSummeryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
+                    startActivity<DealSummaryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
                 }
                 )
         } else {

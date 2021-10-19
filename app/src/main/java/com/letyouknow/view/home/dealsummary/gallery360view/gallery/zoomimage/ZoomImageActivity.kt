@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery.gallery360view.gallery.zoomimage
+package com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage
 
 import android.app.Activity
 import android.os.Bundle

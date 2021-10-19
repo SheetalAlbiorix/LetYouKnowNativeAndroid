@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityUnlockedDealSummeryBinding
+import com.letyouknow.databinding.ActivityUnlockedDealSummaryBinding
 import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
@@ -29,8 +29,8 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
-import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity
-import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
@@ -41,15 +41,15 @@ import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
-import kotlinx.android.synthetic.main.activity_unlocked_deal_summery.*
+import kotlinx.android.synthetic.main.activity_unlocked_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
-import kotlinx.android.synthetic.main.layout_unlocked_deal_summery.*
+import kotlinx.android.synthetic.main.layout_unlocked_deal_summary.*
 import org.jetbrains.anko.startActivity
 
 
-class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
+class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
     private var financingStr = "Financing Option"
@@ -60,7 +60,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var imageUrlViewModel: ImageUrlViewModel
 
 
-    private lateinit var binding: ActivityUnlockedDealSummeryBinding
+    private lateinit var binding: ActivityUnlockedDealSummaryBinding
 
     private lateinit var dataUCDDeal: FindUcdDealData
     private var yearModelMakeData = YearModelMakeData()
@@ -71,8 +71,8 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_unlocked_deal_summery)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_deal_summery)
+        setContentView(R.layout.activity_unlocked_deal_summary)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_deal_summary)
 //        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
@@ -248,7 +248,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
                     yearModelMakeData.loanType = financingStr
                     yearModelMakeData.initials = edtInitials.text.toString().trim()
 
-                    startActivity<UnlockedDealSummeryStep2Activity>(
+                    startActivity<UnlockedDealSummaryStep2Activity>(
                         ARG_UCD_DEAL to Gson().toJson(dataUCDDeal),
                         ARG_UCD_DEAL_PENDING to Gson().toJson(data),
                         ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -277,7 +277,7 @@ class UnlockedDealSummeryActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.ivForwardDeal -> {
-                startActivity<DealSummeryStep2Activity>()
+                startActivity<DealSummaryStep2Activity>()
                 finish()
             }
             R.id.llGallery -> {

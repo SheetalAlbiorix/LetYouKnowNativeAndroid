@@ -217,7 +217,7 @@
                 </FrameLayout>
 
                 <include
-                    layout="@layout/layout_submit_price_deal_summery"
+                    layout="@layout/layout_submit_price_deal_summary"
                     app:data="@{data}" />
 
                 <!-- <include

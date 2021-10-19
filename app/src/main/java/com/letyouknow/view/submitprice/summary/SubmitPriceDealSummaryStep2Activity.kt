@@ -43,7 +43,7 @@ import com.stripe.android.Stripe
 import com.stripe.android.model.Card
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import kotlinx.android.synthetic.main.activity_deal_summery_step2.*
+import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_submit_price_deal_summary_step2.*

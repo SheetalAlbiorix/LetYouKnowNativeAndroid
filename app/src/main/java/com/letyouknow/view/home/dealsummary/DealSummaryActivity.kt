@@ -1,4 +1,4 @@
-package com.letyouknow.view.home.dealsummery
+package com.letyouknow.view.home.dealsummary
 
 import android.app.Activity
 import android.app.Dialog
@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityDealSummeryBinding
+import com.letyouknow.databinding.ActivityDealSummaryBinding
 import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
@@ -27,25 +27,25 @@ import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
-import com.letyouknow.view.home.dealsummery.delasummreystep2.DealSummeryStep2Activity
-import com.letyouknow.view.home.dealsummery.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.setErrorBorder
-import kotlinx.android.synthetic.main.activity_deal_summery.*
+import kotlinx.android.synthetic.main.activity_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_deal_summery.*
-import kotlinx.android.synthetic.main.layout_deal_summery.ivForwardDeal
-import kotlinx.android.synthetic.main.layout_deal_summery_hot_market.*
+import kotlinx.android.synthetic.main.layout_deal_summary.*
+import kotlinx.android.synthetic.main.layout_deal_summary.ivForwardDeal
+import kotlinx.android.synthetic.main.layout_deal_summary_hot_market.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
 
 
-class DealSummeryActivity : BaseActivity(), View.OnClickListener,
+class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
     private var financingStr = "Financing Option"
@@ -57,7 +57,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var tokenModel: RefreshTokenViewModel
 
 
-    private lateinit var binding: ActivityDealSummeryBinding
+    private lateinit var binding: ActivityDealSummaryBinding
     private lateinit var dataLCDDeal: FindLCDDeaData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
@@ -65,8 +65,8 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deal_summery)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summery)
+        setContentView(R.layout.activity_deal_summary)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_deal_summary)
 //        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
@@ -258,7 +258,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     dataLCDDeal.loanType = financingStr
                     dataLCDDeal.initial = edtInitials.text.toString().trim()
-                    startActivity<DealSummeryStep2Activity>(
+                    startActivity<DealSummaryStep2Activity>(
                         Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
                         Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl)
@@ -288,7 +288,7 @@ class DealSummeryActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.ivForwardDeal -> {
-                startActivity<DealSummeryStep2Activity>()
+                startActivity<DealSummaryStep2Activity>()
                 finish()
             }
             R.id.llGallery -> {
