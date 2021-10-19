@@ -99,6 +99,7 @@
     <string name="search_radius_required">Search Radius Required</string>
     <string name="enter_password">Enter Password</string>
     <string name="enter_valid_email">Enter Valid Email</string>
+    <string name="enter_current_password">Enter Current Password</string>
     <string name="enter_valid_password">Enter Valid Password</string>
     <string name="password_length_minimum_6_characters">Password length minimum 6 characters</string>
     <string name="password_must_be_8_16_characters">Password must be 8-16 characters in length and contain at least:<br /> uppercase letter<br /> lowercase letter<br /> number<br />1 special character (@$!%*?#&amp;^~)</string>
@@ -111,6 +112,7 @@
     <string name="enter_zipcode">Enter ZipCode</string>
     <string name="enter_phonenumber">Enter PhoneNumber</string>
     <string name="enter_valid_phone_number">Enter valid PhoneNumber</string>
+    <string name="enter_new_password">Enter New Password</string>
     <string name="enter_confirm_password">Enter Confirm Password</string>
     <string name="did_n_t_match_email">Email and Confirm Email didn\'t match </string>
     <string name="did_n_t_match_password">Password and Confirm Password didn\'t match</string>

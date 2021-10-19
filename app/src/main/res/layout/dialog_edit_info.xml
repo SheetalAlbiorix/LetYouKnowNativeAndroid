@@ -64,10 +64,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/first_name_required"
-                        android:inputType="text"
-                        android:text="@{pendingUCDData.buyer.firstName}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <TextView
                         android:id="@+id/tvErrorFirstName"
@@ -87,10 +84,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/middle_name"
-                        android:inputType="text"
-                        android:text="@{pendingUCDData.buyer.middleName}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtLastName"
@@ -99,10 +93,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/last_name_required"
-                        android:inputType="text"
-                        android:text="@{pendingUCDData.buyer.lastName}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <TextView
                         android:id="@+id/tvErrorLastName"
@@ -121,10 +112,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/email_address_required"
-                        android:inputType="textEmailAddress"
-                        android:text="@{pendingUCDData.buyer.email}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="textEmailAddress" />
 
                     <TextView
                         android:id="@+id/tvErrorEmailAddress"
@@ -143,10 +131,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/confirm_email_required"
-                        android:inputType="textEmailAddress"
-                        android:text="@{pendingUCDData.buyer.email}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="textEmailAddress" />
 
                     <TextView
                         android:id="@+id/tvErrorConfirmEmailAddress"
@@ -167,7 +152,6 @@
                         android:enabled="false"
                         android:hint="@string/user_name_required"
                         android:inputType="text"
-                        android:text="@{pendingUCDData.buyer.address1}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -208,9 +192,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_1_required"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <TextView
                         android:id="@+id/tvErrorAddress1"
@@ -229,9 +211,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_2"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <TextView
                         android:id="@+id/tvErrorAddress2"
@@ -250,9 +230,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/city_required"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:inputType="text" />
 
                     <TextView
                         android:id="@+id/tvErrorCity"

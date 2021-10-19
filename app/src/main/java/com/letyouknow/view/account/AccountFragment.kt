@@ -27,6 +27,7 @@ import com.letyouknow.view.account.editnotification.EditNotificationActivity
 import com.letyouknow.view.account.editrefer.EditReferActivity
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant
+import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -94,8 +95,28 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             R.id.tvEditInfo -> {
                 popupEditInfo()
             }
+            R.id.tvEditLogin -> {
+                popupEditLogin()
+            }
         }
     }
+
+    private lateinit var dialogEditLogin: Dialog
+    private fun popupEditLogin() {
+        dialogEditLogin = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogEditLogin.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogEditLogin.setCancelable(true)
+        dialogEditLogin.setCanceledOnTouchOutside(true)
+        dialogEditLogin.setContentView(R.layout.dialog_change_password)
+        dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
+            if (isValidLogin()) {
+                callEditUserProfileAPI()
+            }
+        }
+        setLayoutParam(dialogEditLogin)
+        dialogEditLogin.show()
+    }
+
 
     private lateinit var dialogEditInfo: Dialog
     private fun popupEditInfo() {
@@ -162,7 +183,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 dialogEditInfo.spState.setSelection(i)
             }
         }
-
     }
 
     private fun setLayoutParam(dialog: Dialog) {
@@ -248,6 +268,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     userData?.refreshToken = data.refreshToken
                     pref?.setUserData(Gson().toJson(userData))
                     setClearEditInfoData()
+                    dialogEditInfo.dismiss()
                 }
                 )
 
@@ -348,6 +369,54 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                         Constant.setErrorBorder(edtConfirmPassword, tvErrorConfirmPassword)
                         return false
                     }*/
+                else -> return true
+            }
+        }
+    }
+
+    private fun isValidLogin(): Boolean {
+        dialogEditLogin.run {
+            when {
+                TextUtils.isEmpty(edtDialogUserName.text.toString().trim()) -> {
+                    Constant.setErrorBorder(edtDialogUserName, tvDialogErrorUserName)
+                    return false
+                }
+                TextUtils.isEmpty(edtDialogCurrentPassword.text.toString().trim()) -> {
+                    tvDialogErrorCurrentPassword.text = getString(R.string.enter_current_password)
+                    Constant.setErrorBorder(edtDialogCurrentPassword, tvDialogErrorCurrentPassword)
+                    return false
+                }
+                !Constant.passwordValidator(edtDialogCurrentPassword.text.toString().trim()) -> {
+                    tvDialogErrorCurrentPassword.text = getString(R.string.enter_valid_password)
+                    Constant.setErrorBorder(edtDialogCurrentPassword, tvDialogErrorCurrentPassword)
+                    return false
+                }
+                TextUtils.isEmpty(edtDialogNewPassword.text.toString().trim()) -> {
+                    tvDialogErrorNewPassword.text = getString(R.string.enter_new_password)
+                    Constant.setErrorBorder(edtDialogNewPassword, tvDialogErrorNewPassword)
+                    return false
+                }
+                !Constant.passwordValidator(edtDialogNewPassword.text.toString().trim()) -> {
+                    tvDialogErrorNewPassword.text = getString(R.string.enter_valid_password)
+                    Constant.setErrorBorder(edtDialogNewPassword, tvDialogErrorNewPassword)
+                    return false
+                }
+                TextUtils.isEmpty(edtDialogConfirmPassword.text.toString().trim()) -> {
+                    tvDialogErrorConfirmPassword.text = getString(R.string.enter_confirm_password)
+                    Constant.setErrorBorder(edtDialogConfirmPassword, tvDialogErrorConfirmPassword)
+                    return false
+                }
+                !Constant.passwordValidator(edtDialogConfirmPassword.text.toString().trim()) -> {
+                    tvDialogErrorConfirmPassword.text = getString(R.string.enter_valid_password)
+                    Constant.setErrorBorder(edtDialogConfirmPassword, tvDialogErrorConfirmPassword)
+                    return false
+                }
+                (edtDialogNewPassword.text.toString()
+                    .trim() != edtDialogConfirmPassword.text.toString().trim()) -> {
+                    tvDialogErrorConfirmPassword.text = getString(R.string.did_n_t_match_password)
+                    Constant.setErrorBorder(edtDialogConfirmPassword, tvDialogErrorConfirmPassword)
+                    return false
+                }
                 else -> return true
             }
         }

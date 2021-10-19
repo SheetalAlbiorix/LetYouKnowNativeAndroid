@@ -24,7 +24,7 @@ data class UserProfileData(
     val roles: List<String>,
     val state: String,
     val userName: String? = "",
-    val zipcode: String
+    val zipcode: String? = ""
 ) : Serializable
 
 data class NotificationTypes(
