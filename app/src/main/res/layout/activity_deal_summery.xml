@@ -65,7 +65,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Step 2 of 3"
+                        android:text="@string/step_2_of_3"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
 
@@ -89,7 +89,7 @@
                         android:paddingStart="@dimen/_12sdp"
                         android:paddingEnd="@dimen/_12sdp"
                         android:singleLine="true"
-                        android:text="Car Summary"
+                        android:text="@string/car_summary"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
 
@@ -102,7 +102,7 @@
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_3sdp"
                         android:singleLine="true"
-                        android:text="Actual Model may vary"
+                        android:text="@string/actual_model_may_vary"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_8sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>

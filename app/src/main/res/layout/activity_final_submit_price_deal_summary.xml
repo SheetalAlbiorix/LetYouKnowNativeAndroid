@@ -89,7 +89,7 @@
                         android:paddingStart="@dimen/_12sdp"
                         android:paddingEnd="@dimen/_12sdp"
                         android:singleLine="true"
-                        android:text="Car Summary"
+                        android:text="@string/car_summary"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
 

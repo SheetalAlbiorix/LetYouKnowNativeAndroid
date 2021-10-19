@@ -227,7 +227,7 @@
                     android:layout_height="@dimen/_28sdp"
                     android:background="@drawable/bg_circle_shape"
                     android:gravity="center"
-                    android:text="OR"
+                    android:text="@string/or"
                     android:textColor="@color/textLightGrey"
                     android:textSize="@dimen/_10sdp" />
 

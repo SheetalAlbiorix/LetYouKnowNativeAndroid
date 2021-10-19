@@ -53,7 +53,7 @@
                         style="@style/regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Savings* to Date:"
+                        android:text="@string/savings_to_date"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
 
@@ -87,7 +87,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="LetYouKnow Dollars:"
+                            android:text="@string/lyk_dollars_colon"
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_12sdp" />
 
@@ -95,7 +95,7 @@
                             style="@style/regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="View"
+                            android:text="@string/view"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -132,7 +132,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="My Info"
+                            android:text="@string/myInfo"
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_15sdp" />
 
@@ -141,7 +141,7 @@
                             style="@style/regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Edit"
+                            android:text="@string/edit"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -164,7 +164,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Name"
+                            android:text="@string/name"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -191,7 +191,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Address"
+                            android:text="@string/address"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -218,7 +218,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="ZIP Code"
+                            android:text="@string/zip_code"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -244,7 +244,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Phone"
+                            android:text="@string/phone"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -270,7 +270,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Mail"
+                            android:text="@string/mail"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -308,7 +308,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Login"
+                            android:text="@string/login"
                             android:textColor="@color/color666666"
                             android:textSize="@dimen/_15sdp" />
 
@@ -317,7 +317,7 @@
                             style="@style/regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Edit"
+                            android:text="@string/edit"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -340,7 +340,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="User Name"
+                            android:text="@string/userName"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -366,7 +366,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Password"
+                            android:text="@string/password"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
