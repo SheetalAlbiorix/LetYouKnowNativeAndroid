@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.SubmitDealLCDData
+import com.letyouknow.model.SubmitPriceErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -41,11 +43,26 @@ object SubmitDealUCDRepository {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    val dataError = Gson().fromJson(
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        SubmitPriceErrorData::class.java
+                    )
+                    var msgStr = ""
+                    var isFirst = true
+
+                    for (i in 0 until dataError?.messageList?.size!!) {
+                        if (isFirst) {
+                            isFirst = false
+                            msgStr = dataError?.messageList[i]!!
+                        } else {
+                            msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                        }
+
+                    }
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         Toast.makeText(
                             context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                            msgStr,
                             Toast.LENGTH_LONG
                         ).show()
                 }

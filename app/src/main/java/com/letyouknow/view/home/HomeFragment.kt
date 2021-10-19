@@ -587,7 +587,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
                 if (data.year != "YEAR") {
-                    tvErrorYear.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
                     setTrim()
@@ -603,7 +603,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 makeStr = data.make!!
                 setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
-                    tvErrorMake.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleModelAPI()
                     setTrim()
                     setExteriorColor()
@@ -617,7 +617,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 modelStr = data.model!!
                 setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
-                    tvErrorModel.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
@@ -630,7 +630,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 trimStr = data.trim!!
                 setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
-                    tvErrorTrim.visibility = View.GONE
+                    setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
                     setRadius()
@@ -643,7 +643,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 extColorStr = data.exteriorColor!!
                 setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
-                    tvErrorExterior.visibility = View.GONE
+                    setErrorVisibleGone()
                     callInteriorColorAPI()
                     setRadius()
                 }
@@ -654,7 +654,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 intColorStr = data.interiorColor!!
                 setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
-                    tvErrorInterior.visibility = View.GONE
+                    setErrorVisibleGone()
                     callRadiusAPI()
                 }
 
@@ -664,7 +664,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 radiusId = data
                 setSpinnerLayoutPos(position, spRadius, requireActivity())
                 if (data != "SEARCH RADIUS")
-                    tvErrorRadius.visibility = View.GONE
+                    setErrorVisibleGone()
             }
         }
     }
@@ -730,6 +730,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             }
         }
         return true
+    }
+
+    private fun setErrorVisibleGone() {
+        tvErrorYear.visibility = View.GONE
+        tvErrorMake.visibility = View.GONE
+        tvErrorModel.visibility = View.GONE
+        tvErrorTrim.visibility = View.GONE
+        tvErrorExterior.visibility = View.GONE
+        tvErrorInterior.visibility = View.GONE
+        tvErrorRadius.visibility = View.GONE
     }
 
 }
