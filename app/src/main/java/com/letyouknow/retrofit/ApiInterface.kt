@@ -195,4 +195,9 @@ interface ApiInterface {
         @Body request: HashMap<String, String>
     ): Call<EditUserProfileData>
 
+    @GET("history/pricebid")
+    fun priceBid(
+    ): Call<ArrayList<BidPriceData>>
+
+
 }

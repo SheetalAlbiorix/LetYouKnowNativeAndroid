@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
+            android:name=".view.account.viewDollar.ViewDollarActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
             android:exported="true" />
         <activity
@@ -104,9 +107,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".view.dashboard.MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.home.dealsummary.DealSummaryActivity"
             android:exported="true"

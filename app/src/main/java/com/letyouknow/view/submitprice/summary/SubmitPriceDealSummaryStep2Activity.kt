@@ -421,7 +421,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     }
 
     override fun onDestroy() {
-        cancelTimer()
+//        cancelTimer()
         super.onDestroy()
     }
 

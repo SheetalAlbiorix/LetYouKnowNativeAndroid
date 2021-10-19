@@ -284,6 +284,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         setPackages(false)
                         setOptions(false)
                     } else {
+                        tvErrorZipCode.visibility = View.GONE
                         callVehicleYearAPI()
                     }
                     isValidZipCode = data

@@ -350,6 +350,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                          ).show()*/
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
                         tvErrorZipCode.visibility = View.VISIBLE
+                    } else {
+                        tvErrorZipCode.visibility = View.GONE
                     }
                     isValidZipCode = data
                 }

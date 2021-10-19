@@ -102,6 +102,10 @@
         <item name="fontFamily">@font/roboto_black_italic</item>
     </style>
 
+    <style name="thinItalic">
+        <item name="fontFamily">@font/roboto_thin_italic</item>
+    </style>
+
     <style name="FullScreenDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

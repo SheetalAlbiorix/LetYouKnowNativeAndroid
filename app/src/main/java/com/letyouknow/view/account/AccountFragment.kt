@@ -24,6 +24,7 @@ import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
 import com.letyouknow.view.account.editrefer.EditReferActivity
+import com.letyouknow.view.account.viewDollar.ViewDollarActivity
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.onTextChange
@@ -75,6 +76,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
         tvEditLogin.setOnClickListener(this)
         tvEditInfo.setOnClickListener(this)
+        tvViewDollar.setOnClickListener(this)
         MainActivity.getInstance().setVisibleEditImg(false)
         MainActivity.getInstance().setVisibleLogoutImg(true)
         callRefreshTokenApi()
@@ -102,6 +104,9 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             R.id.tvEditLogin -> {
                 popupEditLogin()
             }
+            R.id.tvViewDollar -> {
+                startActivity<ViewDollarActivity>()
+            }
         }
     }
 
@@ -113,6 +118,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.setCanceledOnTouchOutside(true)
         dialogEditLogin.setContentView(R.layout.dialog_change_password)
         dialogEditLogin.edtDialogUserName.setText(userData.userName)
+        if (pref?.isRememberData()?.isChecked == true) {
+            dialogEditLogin.edtDialogCurrentPassword.setText(pref?.isRememberData()?.password)
+            dialogEditLogin.edtDialogCurrentPassword.isEnabled = false
+        }
         onStateChangeLogin()
         dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
             if (isValidLogin()) {
