@@ -29,7 +29,6 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
-import com.letyouknow.utils.AppGlobal.Companion.insertString
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.signup.CardListAdapter
@@ -122,10 +121,11 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
             callRefreshTokenApi()
-            val mNo = "(" + dataPendingDeal.buyer?.phoneNumber
-            val mno1 = insertString(mNo, ")", 3)
-            val mno2 = insertString(mno1!!, "-", 7)
-            edtPhoneNumber.setText(mno2)
+
+            if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
+                edtPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
+            else
+                edtPhoneNumber.setText(dataPendingDeal.buyer?.phoneNumber)
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)

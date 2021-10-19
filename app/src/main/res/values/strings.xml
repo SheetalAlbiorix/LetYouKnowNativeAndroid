@@ -151,7 +151,7 @@
     <string name="text_message">Text Message</string>
     <string name="push_notification">Push Notification</string>
     <string name="saving_to_date">Saving to Date</string>
-    <string name="saving_are_calculated_based_on_the_msrp_parameters">*saving are calculated based on the MSRP parameters</string>
+    <string name="saving_are_calculated_based_on_the_msrp_parameters">*Saving are calculated based on the MSRP parameters</string>
     <string name="unsuccessful_match">Unsuccessful Match</string>
     <string name="disclosure">Disclosure:</string>
     <string name="last_bid">Last Bid:</string>
@@ -266,7 +266,7 @@
     <string name="interior_color_required">Interior Color Required</string>
     <string name="package_required">Package Required</string>
     <string name="zipcode_required">Zipcode Required</string>
-    <string name="options_accessories_required">Option &amp; Accessories Required</string>
+    <string name="options_accessories_required">Options &amp; Accessories Required</string>
     <string name="view">View</string>
     <string name="myInfo">My Info</string>
     <string name="edit">Edit</string>

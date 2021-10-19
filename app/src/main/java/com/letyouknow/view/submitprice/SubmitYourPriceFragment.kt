@@ -883,10 +883,10 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 }
                 if (!TextUtils.isEmpty(optionsStr)) {
                     tvErrorOptionsAccessories.visibility = View.GONE
+                    tvOptionalAccessories.text = optionsStr
                 } else {
                     tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
                 }
-                tvOptionalAccessories.text = optionsStr
                 dialogOptions.dismiss()
             }
             R.id.tvResetOption -> {
@@ -955,7 +955,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
                 if (data.year != "YEAR") {
-                    tvErrorYear.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
                     setTrim()
@@ -972,7 +972,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
-                    tvErrorMake.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleModelAPI()
                     setTrim()
                     setExteriorColor()
@@ -987,7 +987,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 modelStr = data.model!!
                 AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
-                    tvErrorModel.visibility = View.GONE
+                    setErrorVisibleGone()
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
@@ -1002,7 +1002,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
-                    tvErrorTrim.visibility = View.GONE
+                    setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
                     setPackages(false)
@@ -1017,7 +1017,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
-                    tvErrorExterior.visibility = View.GONE
+                    setErrorVisibleGone()
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
@@ -1030,7 +1030,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 intColorStr = data.interiorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
-                    tvErrorInterior.visibility = View.GONE
+                    setErrorVisibleGone()
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
@@ -1149,6 +1149,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
         }
         return true
+    }
+
+    private fun setErrorVisibleGone() {
+        tvErrorYear.visibility = View.GONE
+        tvErrorMake.visibility = View.GONE
+        tvErrorModel.visibility = View.GONE
+        tvErrorTrim.visibility = View.GONE
+        tvErrorExterior.visibility = View.GONE
+        tvErrorInterior.visibility = View.GONE
+        tvErrorPackages.visibility = View.GONE
+        tvErrorOptionsAccessories.visibility = View.GONE
     }
 
 }

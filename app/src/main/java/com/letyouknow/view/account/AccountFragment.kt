@@ -185,7 +185,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             edtCity.setText(userData.city)
             edtZipCode.setText(userData.zipcode)
             setState()
-            edtPhoneNumber.setText(formatPhoneNo(userData.phoneNumber))
+            if (userData.phoneNumber?.contains("(") == false)
+                edtPhoneNumber.setText(formatPhoneNo(userData.phoneNumber))
+            else
+                edtPhoneNumber.setText(userData.phoneNumber)
+
             edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         }
     }
@@ -283,14 +287,28 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             editUserProfileViewModel.editUserCall(requireActivity(), map)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    val userData = pref?.getUserData()
-                    userData?.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
-                    userData?.lastName = dialogEditInfo.edtLastName.text.toString().trim()
-                    userData?.authToken = data.authToken
-                    userData?.refreshToken = data.refreshToken
-                    pref?.setUserData(Gson().toJson(userData))
-                    setClearEditInfoData()
+                    val user = pref?.getUserData()
+                    user?.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
+                    user?.lastName = dialogEditInfo.edtLastName.text.toString().trim()
+                    user?.authToken = data.authToken
+                    user?.refreshToken = data.refreshToken
+                    pref?.setUserData(Gson().toJson(user))
+
                     dialogEditInfo.dismiss()
+                    val user1 = userData
+                    user1.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
+                    user1.middleName = dialogEditInfo.edtMiddleName.text.toString().trim()
+                    user1.lastName = dialogEditInfo.edtLastName.text.toString().trim()
+                    user1.email = dialogEditInfo.edtEmail.text.toString().trim()
+                    user1.phoneNumber = dialogEditInfo.edtPhoneNumber.text.toString().trim()
+                    user1.address1 = dialogEditInfo.edtAddress1.text.toString().trim()
+                    user1.address2 = dialogEditInfo.edtAddress2.text.toString().trim()
+                    user1.city = dialogEditInfo.edtCity.text.toString().trim()
+                    user1.state = state
+                    user1.zipcode = dialogEditInfo.edtZipCode.text.toString().trim()
+                    setUserData(user1)
+
+                    setClearEditInfoData()
                 }
                 )
 
@@ -479,9 +497,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             userProfileViewModel.userProfileCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    binding.userData = data
-                    userData = data
-                    tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
+                    setUserData(data)
                     callSavingsToDateAPI()
                 }
                 )
@@ -489,6 +505,17 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setUserData(data: UserProfileData) {
+        binding.userData = data
+        userData = data
+        if (userData.phoneNumber?.contains("(") == false)
+            tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
+        else
+            tvPhoneNo.text = data.phoneNumber
+        tvFirstName.text = data.firstName + " " + data.middleName + " " + data.lastName
+        tvLastName.text = data.address1 + "\n" + data.address2 + "\n" + data.city + "," + data.state
     }
 
     private var filter = InputFilter { source, start, end, dest, dstart, dend ->

@@ -3,6 +3,7 @@ package com.letyouknow.view.dealnearyou
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -36,7 +37,6 @@ import java.lang.reflect.Type
 
 class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    private var isValidSpinner = false
     private var isValidZipCode = false
 
     private lateinit var vehicleYearModel: VehicleYearViewModel
@@ -65,17 +65,19 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private var productId = "2"
     private var yearId = ""
-    private var yearStr = ""
     private var makeId = ""
-    private var makeStr = ""
+
     private var modelId = ""
-    private var modelStr = ""
     private var trimId = ""
-    private var trimStr = ""
     private var extColorId = ""
     private var intColorId = ""
-    private var intColorStr = ""
-    private var extColorStr = ""
+
+    private var yearStr = "YEAR"
+    private var makeStr = "MAKE"
+    private var modelStr = "MODEL"
+    private var trimStr = "TRIM"
+    private var intColorStr = "INTERIOR COLOR"
+    private var extColorStr = "EXTERIOR COLOR"
 
     private lateinit var animBlink: Animation
     private lateinit var animSlideRightToLeft: Animation
@@ -165,6 +167,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (str.length == 5) {
                     callVehicleZipCodeAPI(str)
                 } else if (str.length < 5) {
+                    isValidZipCode = false
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
@@ -284,9 +287,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         callVehicleYearAPI()
                     }
                     isValidZipCode = data
-                    if (isValidZipCode && isValidSpinner) {
-                        btnSearch.isEnabled = true
-                    }
                 }
                 )
         } else {
@@ -836,9 +836,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             }
             R.id.btnSearch -> {
                 // loadFragment(DealSummeryActivity(), getString(R.string.one_deal_near_you))
-                callRefreshTokenApi()
-
-
+                if (isValid())
+                    callRefreshTokenApi()
             }
             R.id.tvPackages -> {
                 arSelectPackage = ArrayList()
@@ -852,7 +851,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 var packagesStr = ""
                 var isFirst = true
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect == true) {
+                    if (adapterPackages.getItem(i).isSelect == true || adapterPackages.getItem(i).isOtherSelect == true) {
                         if (isFirst) {
                             packagesStr = adapterPackages.getItem(i).packageName.toString()
                             isFirst = false
@@ -864,9 +863,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 }
                 tvPackages.text = packagesStr
                 if (packagesStr.length > 0) {
+                    tvErrorPackages.visibility = View.GONE
                     setOptions(true)
                     callOptionalAccessoriesAPI()
                 } else {
+                    tvPackages.text = "PACKAGES"
                     setOptions(false)
                 }
 
@@ -896,6 +897,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         adapterPackages.update(i, dataPackage)
                     }
                 } else {
+                    for (i in 1 until adapterPackages.itemCount) {
+                        val dataPackage = adapterPackages.getItem(i)
+                        dataPackage.isOtherSelect = false
+                        dataPackage.isGray = false
+                        adapterPackages.update(i, dataPackage)
+                    }
                     val data0 = adapterPackages.getItem(0)
                     data0.isSelect = false
                     adapterPackages.update(0, data0)
@@ -905,13 +912,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
 
                 Log.e("clickupdate", selectPackageStr)
-
             }
             R.id.tvResetPackage -> {
                 for (i in 0 until adapterPackages.itemCount) {
                     val data = adapterPackages.getItem(i)
                     data.isSelect = false
                     data.isGray = false
+                    data.isOtherSelect = false
                     adapterPackages.update(i, data)
                 }
             }
@@ -919,7 +926,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 var optionsStr = ""
                 var isFirst = true
                 for (i in 0 until adapterOptions.itemCount) {
-                    if (adapterOptions.getItem(i).isSelect == true) {
+                    if (adapterOptions.getItem(i).isSelect == true || adapterOptions.getItem(i).isOtherSelect == true) {
                         if (isFirst) {
                             optionsStr = adapterOptions.getItem(i).accessory.toString()
                             isFirst = false
@@ -929,7 +936,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         }
                     }
                 }
-                tvOptionalAccessories.text = optionsStr
+                if (!TextUtils.isEmpty(optionsStr)) {
+                    tvErrorOptionsAccessories.visibility = View.GONE
+                    tvOptionalAccessories.text = optionsStr
+                } else {
+                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
+                }
+
                 dialogOptions.dismiss()
             }
             R.id.tvResetOption -> {
@@ -937,6 +950,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     val data = adapterOptions.getItem(i)
                     data.isSelect = false
                     data.isGray = false
+                    data.isOtherSelect = false
                     adapterOptions.update(i, data)
                 }
             }
@@ -968,10 +982,17 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     for (i in 1 until adapterOptions.itemCount) {
                         val dataOptions = adapterOptions.getItem(i)
                         dataOptions.isSelect = false
+                        dataOptions.isOtherSelect = false
                         dataOptions.isGray = false
                         adapterOptions.update(i, dataOptions)
                     }
                 } else {
+                    for (i in 1 until adapterOptions.itemCount) {
+                        val dataOptions = adapterOptions.getItem(i)
+                        dataOptions.isOtherSelect = false
+                        dataOptions.isGray = false
+                        adapterOptions.update(i, dataOptions)
+                    }
                     val data0 = adapterOptions.getItem(0)
                     data0.isSelect = false
                     adapterOptions.update(0, data0)
@@ -990,6 +1011,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
                 if (data.year != "YEAR") {
+                    setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
                     setTrim()
@@ -999,8 +1021,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setOptions(false)
                 }
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
@@ -1008,6 +1028,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
+                    setErrorVisibleGone()
                     callVehicleModelAPI()
                     setTrim()
                     setExteriorColor()
@@ -1015,8 +1036,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spModel -> {
                 val data = adapterModel.getItem(position) as VehicleModelData
@@ -1024,14 +1043,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 modelStr = data.model!!
                 AppGlobal.setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
+                    setErrorVisibleGone()
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spTrim -> {
                 val data = adapterTrim.getItem(position) as VehicleTrimData
@@ -1039,13 +1057,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
+                    setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spExteriorColor -> {
                 val data = adapterExterior.getItem(position) as ExteriorColorData
@@ -1054,12 +1071,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
+                    setErrorVisibleGone()
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = false
             }
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
@@ -1069,12 +1085,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
+                    setErrorVisibleGone()
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
                 }
-                isValidSpinner = false
-                btnSearch.isEnabled = true
             }
         }
     }
@@ -1153,4 +1168,64 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private fun isValid(): Boolean {
+        when {
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                tvErrorZipCode.text = getString(R.string.enter_zipcode)
+                tvErrorZipCode.visibility = View.VISIBLE
+                return false
+            }
+            !isValidZipCode -> {
+                tvErrorZipCode.text = getString(R.string.invalid_zip_code)
+                tvErrorZipCode.visibility = View.VISIBLE
+                return false
+            }
+            yearStr == "YEAR" -> {
+                tvErrorYear.visibility = View.VISIBLE
+                return false
+            }
+            makeStr == "MAKE" -> {
+                tvErrorMake.visibility = View.VISIBLE
+                return false
+            }
+            modelStr == "MODEL" -> {
+                tvErrorModel.visibility = View.VISIBLE
+                return false
+            }
+            trimStr == "TRIM" -> {
+                tvErrorTrim.visibility = View.VISIBLE
+                return false
+            }
+            extColorStr == "EXTERIOR COLOR" -> {
+                tvErrorExterior.visibility = View.VISIBLE
+                return false
+            }
+
+            intColorStr == "INTERIOR COLOR" -> {
+                tvErrorInterior.visibility = View.VISIBLE
+                return false
+            }
+
+            tvPackages.text.toString().trim() == "PACKAGES" -> {
+                tvErrorPackages.visibility = View.VISIBLE
+                return false
+            }
+            tvOptionalAccessories.text.toString().trim() == "OPTIONS & ACCESSORIES" -> {
+                tvErrorOptionsAccessories.visibility = View.VISIBLE
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun setErrorVisibleGone() {
+        tvErrorYear.visibility = View.GONE
+        tvErrorModel.visibility = View.GONE
+        tvErrorMake.visibility = View.GONE
+        tvErrorTrim.visibility = View.GONE
+        tvErrorInterior.visibility = View.GONE
+        tvErrorExterior.visibility = View.GONE
+        tvErrorPackages.visibility = View.GONE
+        tvErrorOptionsAccessories.visibility = View.GONE
+    }
 }
