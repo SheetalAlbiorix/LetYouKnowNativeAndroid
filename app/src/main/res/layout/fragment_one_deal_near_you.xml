@@ -167,6 +167,15 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
+                            <TextView
+                                android:id="@+id/tvErrorYear"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/year_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spMake"
@@ -178,6 +187,16 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
+                            <TextView
+                                android:id="@+id/tvErrorMake"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/make_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spModel"
                                 android:padding="0dp"
@@ -187,6 +206,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
+
+                            <TextView
+                                android:id="@+id/tvErrorModel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/model_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spTrim"
@@ -198,6 +227,16 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
+                            <TextView
+                                android:id="@+id/tvErrorTrim"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/trim_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spExteriorColor"
                                 android:padding="0dp"
@@ -207,6 +246,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_24sdp"
                                 android:background="@drawable/bg_spinner_dark" />
+
+                            <TextView
+                                android:id="@+id/tvErrorExterior"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/exterior_color_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spInteriorColor"
@@ -218,14 +267,15 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark" />
 
-                            <!-- <androidx.appcompat.widget.AppCompatSpinner
-                                 android:id="@+id/spPackages"
-                                 android:spinnerMode="dropdown"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:layout_marginTop="@dimen/_24sdp"
-                                 android:background="@drawable/bg_spinner_dark" />
- -->
+                            <TextView
+                                android:id="@+id/tvErrorInterior"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/interior_color_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
 
                             <TextView
                                 android:id="@+id/tvPackages"
@@ -241,6 +291,16 @@
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
+                                android:id="@+id/tvErrorPackages"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/package_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+
+                            <TextView
                                 android:singleLine="true"
                                 android:id="@+id/tvOptionalAccessories"
                                 style="@style/medium"
@@ -249,10 +309,19 @@
                                 android:layout_marginTop="@dimen/_12sdp"
                                 android:background="@drawable/bg_spinner_dark"
                                 android:padding="@dimen/_12sdp"
-                                android:text="OPTIONAL &amp; ACCESSORIES"
+                                android:text="OPTIONS &amp; ACCESSORIES"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_12sdp" />
 
+                            <TextView
+                                android:id="@+id/tvErrorOptionsAccessories"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="@string/options_accessories_required"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -266,7 +335,6 @@
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"
                     android:text="@string/search"
-                    android:enabled="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>

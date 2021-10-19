@@ -65,7 +65,8 @@
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/first_name_required"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:inputType="text" />
 
                     <TextView
@@ -87,7 +88,8 @@
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/middle_name"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:inputType="text" />
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -97,7 +99,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:hint="@string/last_name_required"
                         android:inputType="text" />
 
@@ -117,8 +120,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:background="@drawable/bg_edittext"
-                        android:textColor="@color/black"
                         android:hint="@string/email_address_required"
                         android:inputType="textEmailAddress" />
 
@@ -141,7 +145,8 @@
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/confirm_email_required"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:inputType="textEmailAddress" />
 
                     <TextView
@@ -164,7 +169,8 @@
                         android:enabled="false"
                         android:hint="@string/user_name_required"
                         android:inputType="text"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64" />
 
                     <TextView
                         android:id="@+id/tvErrorUserName"
@@ -184,7 +190,8 @@
                         android:padding="@dimen/_12sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/phone_number_required"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:inputType="phone" />
 
                     <TextView
@@ -205,7 +212,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_1_required"
                         android:inputType="text" />
@@ -226,7 +234,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/address_line_2"
                         android:inputType="text" />
@@ -248,8 +257,9 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/city_required"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
                         android:padding="@dimen/_12sdp"
-                        android:textColor="@color/black"
                         android:inputType="text" />
 
                     <TextView
@@ -289,9 +299,10 @@
                         android:digits="1234567890"
                         android:hint="@string/zip_code_required"
                         android:maxLength="5"
-                        android:padding="@dimen/_12sdp"
                         android:inputType="number"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/color545d64"
+                        android:padding="@dimen/_12sdp"
+                        android:textColorHint="@color/color545d64" />
 
                     <TextView
                         android:id="@+id/tvErrorZipCode"

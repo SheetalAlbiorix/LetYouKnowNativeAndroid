@@ -104,6 +104,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
         ivBack.setOnClickListener(this)
+        btnGoBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
         backButton()
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
@@ -297,6 +298,9 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.tvViewOptions -> {
                 popupOption()
+            }
+            R.id.btnGoBack -> {
+                finish()
             }
 
             R.id.ivBack -> {

@@ -134,7 +134,10 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             val mNo = "(" + pendingUCDData.buyer?.phoneNumber
             val mno1 = AppGlobal.insertString(mNo, ")", 3)
             val mno2 = AppGlobal.insertString(mno1!!, "-", 7)
-            edtPhoneNumber.setText(mno2)
+            if (pendingUCDData.buyer?.phoneNumber?.contains("(") == false)
+                edtPhoneNumber.setText(AppGlobal.formatPhoneNo(pendingUCDData.buyer?.phoneNumber))
+            else
+                edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
 
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
