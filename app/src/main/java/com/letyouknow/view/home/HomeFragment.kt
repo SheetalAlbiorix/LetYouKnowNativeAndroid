@@ -249,7 +249,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
     private fun setRadius() {
         val arData = ArrayList<String>()
-        arData.add(0, "RADIUS")
+        arData.add(0, "SEARCH RADIUS")
         adapterRadius = RadiusSpinnerAdapter(requireActivity(), arData)
         spRadius.adapter = adapterRadius
         setSpinnerLayoutPos(0, spRadius, requireActivity())

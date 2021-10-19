@@ -80,6 +80,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var submitPendingDealViewModel: SubmitPendingDealViewModel
 
 
+    private var isValidZipCode = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_price_deal_summary)
@@ -140,6 +141,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 if (str.length == 5) {
                     callVehicleZipCodeAPI(str)
                 } else if (str.length < 5) {
+                    isValidZipCode = false
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
                 }
@@ -236,6 +238,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                          ).show()*/
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
                         tvErrorZipCode.visibility = View.VISIBLE
+                        isValidZipCode = true
+                    } else {
+                        isValidZipCode = false
                     }
                 }
                 )
@@ -498,6 +503,11 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         if (TextUtils.isEmpty(edtZipCode.text.toString().trim())) {
+            setErrorBorder(edtZipCode, tvErrorZipCode)
+            return false
+        }
+        if (!isValidZipCode) {
+            tvErrorZipCode.text = getString(R.string.invalid_zip_code)
             setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
         }

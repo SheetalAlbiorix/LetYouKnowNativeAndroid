@@ -146,13 +146,14 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         ivBack.setOnClickListener(this)
 
         setOnChange()
-        startTimer()
+//        startTimer()
         setState()
 
         edtPhoneNumber.filters =
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
         onStateChange()
         initPayment()
+        tvAddMin.visibility = View.GONE
     }
 
     private lateinit var stripe: Stripe
