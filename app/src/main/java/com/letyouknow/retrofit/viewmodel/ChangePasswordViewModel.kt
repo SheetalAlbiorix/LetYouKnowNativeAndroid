@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.retrofit.repository.ChangePasswordRepository
 
 class ChangePasswordViewModel : ViewModel() {
@@ -11,7 +12,7 @@ class ChangePasswordViewModel : ViewModel() {
 
     fun changePasswordCall(
         context: Context,
-        request: HashMap<String, String>
+        request: ChangePasswordRequestData
     ): LiveData<String>? {
         liveData = ChangePasswordRepository.changePasswordApiCall(
             context,

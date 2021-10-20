@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
+import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.model.UserProfileData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -120,7 +121,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.edtDialogUserName.setText(userData.userName)
         if (pref?.isRememberData()?.isChecked == true) {
             dialogEditLogin.edtDialogCurrentPassword.setText(pref?.isRememberData()?.password)
-            dialogEditLogin.edtDialogCurrentPassword.isEnabled = false
+//            dialogEditLogin.edtDialogCurrentPassword.isEnabled = false
         }
         onStateChangeLogin()
         dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
@@ -329,14 +330,19 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callChangePasswordAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            val map: HashMap<String, String> = HashMap()
-            map[ApiConstant.userName] = dialogEditLogin.edtDialogUserName.text.toString().trim()
-            map[ApiConstant.currentPassword] =
+            /* val map: HashMap<String, String> = HashMap()
+             map[ApiConstant.userName] = pref?.getUserData()?.userName!!
+             map[ApiConstant.currentPassword] =
+                 dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
+             map[ApiConstant.newPassword] =
+                 dialogEditLogin.edtDialogNewPassword.text.toString().trim()*/
+            val reqData = ChangePasswordRequestData()
+            reqData.userName = pref?.getUserData()?.userName!!
+            reqData.newPassword = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
+            reqData.currentPassword =
                 dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
-            map[ApiConstant.newPassword] =
-                dialogEditLogin.edtDialogNewPassword.text.toString().trim()
 
-            changePasswordViewModel.changePasswordCall(requireActivity(), map)!!
+            changePasswordViewModel.changePasswordCall(requireActivity(), reqData)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Toast.makeText(requireActivity(), data, Toast.LENGTH_SHORT).show()

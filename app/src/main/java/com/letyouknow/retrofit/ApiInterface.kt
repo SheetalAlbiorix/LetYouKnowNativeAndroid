@@ -182,7 +182,7 @@ interface ApiInterface {
     fun savingsToDate(): Call<Double>
 
     @POST("userprofile/changepassword")
-    fun changePassword(@Body request: HashMap<String, String>): Call<String>
+    fun changePassword(@Body request: ChangePasswordRequestData): Call<String>
 
     @GET("userprofile/{getUserID}/notificationoptions")
     fun notificationOptions(

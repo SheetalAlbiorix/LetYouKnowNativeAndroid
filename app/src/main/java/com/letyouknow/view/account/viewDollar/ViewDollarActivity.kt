@@ -3,15 +3,19 @@ package com.letyouknow.view.account.viewDollar
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
+import com.letyouknow.databinding.ActivityViewDollarBinding
 import kotlinx.android.synthetic.main.activity_view_dollar.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 
 class ViewDollarActivity : BaseActivity(), View.OnClickListener {
+    private lateinit var binding: ActivityViewDollarBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_dollar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_view_dollar)
         init()
     }
 

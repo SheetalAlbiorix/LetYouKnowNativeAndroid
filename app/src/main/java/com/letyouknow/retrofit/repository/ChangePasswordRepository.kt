@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -15,7 +16,7 @@ object ChangePasswordRepository {
 
     fun changePasswordApiCall(
         context: Context,
-        request: HashMap<String, String>
+        request: ChangePasswordRequestData
     ): MutableLiveData<String> {
         val editUserProfileData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.changePassword(request)
@@ -33,13 +34,12 @@ object ChangePasswordRepository {
                 Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
+                Constant.dismissLoader()
                 if (response.code() == 200 || response.code() == 201) {
-                    Constant.dismissLoader()
                     editUserProfileData.value = data!!
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
-                    Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         Toast.makeText(
