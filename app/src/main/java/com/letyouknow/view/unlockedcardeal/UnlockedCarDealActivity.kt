@@ -35,7 +35,10 @@ import kotlinx.android.synthetic.main.dialog_option_accessories_unlocked.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
-import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
     private var arUnlocked: ArrayList<FindUcdDealData> = ArrayList()
@@ -185,9 +188,7 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 if (accessories.isEmpty())
                     tvDialogOptions.visibility = View.GONE
                 tvDialogOptions.text = accessories
-                tvPrice.text = "Price: $" + if (price != null) DecimalFormat("##.##").format(
-                    price?.toDouble()
-                ) else "$0.0"
+                tvPrice.text = "Price: " + NumberFormat.getCurrencyInstance(Locale.US).format(price)
 
                 if (AppGlobal.isNotEmpty(miles)) {
                     tvDialogDisclosure.text =

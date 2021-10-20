@@ -136,7 +136,7 @@
 
                 <TextView
                     android:id="@+id/tvViewOptions"
-                    style="@style/bold"
+                    style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -144,8 +144,8 @@
                     android:backgroundTint="@color/colorcfeafa"
                     android:padding="@dimen/_8sdp"
                     android:text="@string/view_options_accessories"
-                    android:textColor="@color/color4f6375"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_11sdp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -437,7 +437,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/regular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -446,7 +446,7 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
-                        style="@style/bold"
+                        style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -482,7 +482,7 @@
                             style="@style/medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/balance_excludes_taxes_registration"
+                            android:text="@string/balance_excludes_taxes_registration_italic"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_11sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -516,15 +516,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/payment_info"
-                android:textColor="@color/black"
+                android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_15sdp" />
 
             <TextView
-                style="@style/medium"
+                style="@style/regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/for_non_refundable(799.00)}"
-                android:textColor="@color/coloracadad"
+                android:textColor="@color/color545d64"
                 android:textSize="@dimen/_10sdp"
                 tool:text="799.00" />
 
@@ -903,7 +903,7 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:text="@string/this_person_must_be_present_when_picking_up_the_vehicle"
             android:textColor="@color/colorB11D1D"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

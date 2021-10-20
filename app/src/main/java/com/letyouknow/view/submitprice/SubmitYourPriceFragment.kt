@@ -69,7 +69,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private var extColorId = ""
     private var intColorId = ""
 
-    private var yearStr = "YEAR"
+    private var yearStr = "YEAR - NEW CARS"
     private var makeStr = "MAKE"
     private var modelStr = "MODEL"
     private var trimStr = "TRIM"
@@ -158,11 +158,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun setYear() {
         val arData = ArrayList<VehicleYearData>()
         val yearData = VehicleYearData()
-        yearData.year = "YEAR"
+        yearData.year = "YEAR - NEW CARS"
         arData.add(0, yearData)
         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
         spYear.adapter = adapterYear
         AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
+
     }
 
     private fun setMake() {
@@ -253,7 +254,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     Log.e("Year Data", Gson().toJson(data))
                     if (data != null || data?.size!! > 0) {
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         data.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), data)
                         spYear.adapter = adapterYear
@@ -261,7 +262,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     } else {
                         val arData = ArrayList<VehicleYearData>()
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         arData.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                         spYear.adapter = adapterYear
@@ -592,6 +593,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                                 if (adapterPackages.getItem(j).vehiclePackageID == data.autoCheckList[i]) {
                                     val dataCheck = adapterPackages.getItem(j)
                                     dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
                                     adapterPackages.update(j, dataCheck)
                                 }
                             }
@@ -837,6 +839,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     for (i in 1 until adapterPackages.itemCount) {
                         val dataPackage = adapterPackages.getItem(i)
                         dataPackage.isSelect = false
+                        dataPackage.isOtherSelect = false
                         dataPackage.isGray = false
                         adapterPackages.update(i, dataPackage)
                     }
@@ -954,7 +957,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
-                if (data.year != "YEAR") {
+                AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
+                if (data.year != "YEAR - NEW CARS") {
                     setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
@@ -964,7 +968,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setPackages(false)
                     setOptions(false)
                 }
-                AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
             }
             R.id.spMake -> {
                 val data = adapterMake.getItem(position) as VehicleMakeData
@@ -1114,7 +1117,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         when {
-            yearStr == "YEAR" -> {
+            yearStr == "YEAR - NEW CARS" -> {
                 tvErrorYear.visibility = View.VISIBLE
                 return false
             }

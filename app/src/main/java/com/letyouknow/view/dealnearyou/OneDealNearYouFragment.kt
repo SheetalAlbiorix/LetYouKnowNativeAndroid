@@ -72,7 +72,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private var extColorId = ""
     private var intColorId = ""
 
-    private var yearStr = "YEAR"
+    private var yearStr = "YEAR - NEW CARS"
     private var makeStr = "MAKE"
     private var modelStr = "MODEL"
     private var trimStr = "TRIM"
@@ -183,7 +183,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun setYear() {
         val arData = ArrayList<VehicleYearData>()
         val yearData = VehicleYearData()
-        yearData.year = "YEAR"
+        yearData.year = "YEAR - NEW CARS"
         arData.add(0, yearData)
         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
         spYear.adapter = adapterYear
@@ -308,7 +308,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     Log.e("Year Data", Gson().toJson(data))
                     if (data != null || data?.size!! > 0) {
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         data.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), data)
                         spYear.adapter = adapterYear
@@ -316,7 +316,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     } else {
                         val arData = ArrayList<VehicleYearData>()
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         arData.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                         spYear.adapter = adapterYear
@@ -647,6 +647,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 if (adapterPackages.getItem(j).vehiclePackageID == data.autoCheckList[i]) {
                                     val dataCheck = adapterPackages.getItem(j)
                                     dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
                                     adapterPackages.update(j, dataCheck)
                                 }
                             }
@@ -708,6 +709,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 if (adapterOptions.getItem(j).dealerAccessoryID == data.autoCheckList[i]) {
                                     val dataCheck = adapterOptions.getItem(j)
                                     dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
                                     adapterOptions.update(j, dataCheck)
                                 }
                             }
@@ -895,6 +897,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         val dataPackage = adapterPackages.getItem(i)
                         dataPackage.isSelect = false
                         dataPackage.isGray = false
+                        dataPackage.isOtherSelect = false
                         adapterPackages.update(i, dataPackage)
                     }
                 } else {
@@ -1011,7 +1014,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
-                if (data.year != "YEAR") {
+                if (data.year != "YEAR - NEW CARS") {
                     setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
@@ -1181,7 +1184,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 tvErrorZipCode.visibility = View.VISIBLE
                 return false
             }
-            yearStr == "YEAR" -> {
+            yearStr == "YEAR - NEW CARS" -> {
                 tvErrorYear.visibility = View.VISIBLE
                 return false
             }

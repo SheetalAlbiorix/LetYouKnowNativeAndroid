@@ -47,7 +47,7 @@ import org.jetbrains.anko.startActivity
 class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var arRadius = arrayListOf(
-        "SEARCH RADIUS",
+        "Search Radius",
         "25 mi",
         "50 mi",
         "75 mi",
@@ -63,7 +63,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     )
     private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
     private var financingStr = "Financing Option"
-    private var radiusId = "SEARCH RADIUS"
+    private var radiusId = "Search Radius"
 
     private var arImageUrl: ArrayList<String> = ArrayList()
 
@@ -81,6 +81,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
 
     private var isValidZipCode = false
+    private var price = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_price_deal_summary)
@@ -130,6 +131,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         callRadiusAPI()
     }
 
+
     private fun onChangeZipCodePrice() {
         edtZipCode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -161,7 +163,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 val str = s.toString()
 
                 if (str.isNotEmpty()) {
-                    val price = edtPrice.text.toString().trim().toDouble()
+                    price = edtPrice.text.toString().trim().toDouble()
                     popupPrice(price)
                 }
 
@@ -172,6 +174,44 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             }
 
         })
+        edtInitials.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!isScrollable) {
+                    tvErrorFullDisclouser.visibility = View.VISIBLE
+                    tvErrorInitials.visibility = View.VISIBLE
+                    edtInitials.isEnabled = false
+                    if (!TextUtils.isEmpty(edtInitials.text.toString().trim()))
+                        edtInitials.setText("")
+                } else {
+                    val str = s.toString()
+                    when {
+                        str.isEmpty() -> {
+                            tvErrorInitials.text = getString(R.string.initials_required)
+                            setErrorBorder(edtInitials, tvErrorInitials)
+                        }
+                        str.length == 1 -> {
+                            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
+                            setErrorBorder(edtInitials, tvErrorInitials)
+                        }
+                        else -> {
+                            edtInitials.setBackgroundResource(R.drawable.bg_edittext)
+                            tvErrorInitials.visibility = View.GONE
+                        }
+                    }
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+
     }
 
     private fun popupPrice(price: Double) {
@@ -481,7 +521,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 val data = adapterRadius.getItem(position) as String
                 radiusId = data
                 AppGlobal.setWhiteSpinnerLayoutPos(position, spRadius, this)
-                if (data != "SEARCH RADIUS") {
+                if (data != "Search Radius") {
                     tvErrorRadius.visibility = View.GONE
                 }
 
@@ -510,7 +550,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
         }
-        if (radiusId == "SEARCH RADIUS") {
+        if (radiusId == "Search Radius") {
             tvErrorRadius.visibility = View.VISIBLE
             return false
         }
@@ -621,7 +661,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private fun setErrorVisible() {
         tvErrorInitials.visibility = View.GONE
-        tvErrorPrice.visibility = View.GONE
+//        tvErrorPrice.visibility = View.GONE
         tvErrorFinancingOption.visibility = View.GONE
         tvErrorFullDisclouser.visibility = View.GONE
         tvErrorRadius.visibility = View.GONE

@@ -3,8 +3,10 @@ package com.letyouknow.view.home.dealsummary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -110,6 +112,48 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
         scrollTouchListener()
         callRefreshTokenApi()
+        onChangeInitials()
+    }
+
+    private fun onChangeInitials() {
+        edtInitials.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!isScrollable) {
+                    tvErrorFullDisclouser.visibility = View.VISIBLE
+                    tvErrorInitials.visibility = View.VISIBLE
+                    edtInitials.isEnabled = false
+                    if (!TextUtils.isEmpty(edtInitials.text.toString().trim()))
+                        edtInitials.setText("")
+                } else {
+                    val str = s.toString()
+                    when {
+                        str.isEmpty() -> {
+                            tvErrorInitials.text = getString(R.string.initials_required)
+                            setErrorBorder(edtInitials, tvErrorInitials)
+                        }
+                        str.length == 1 -> {
+                            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
+                            setErrorBorder(edtInitials, tvErrorInitials)
+                        }
+                        else -> {
+                            edtInitials.setBackgroundResource(R.drawable.bg_edittext)
+                            tvErrorInitials.visibility = View.GONE
+                        }
+                    }
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+
     }
 
     private var isScrollable = false

@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private var modelId = ""
     private var trimId = ""
 
-    private var yearStr = "YEAR"
+    private var yearStr = "YEAR - NEW CARS"
     private var makeStr = "MAKE"
     private var modelStr = "MODEL"
     private var trimStr = "TRIM"
@@ -188,7 +188,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private fun setYear() {
         val arData = ArrayList<VehicleYearData>()
         val yearData = VehicleYearData()
-        yearData.year = "YEAR"
+        yearData.year = "YEAR - NEW CARS"
         arData.add(0, yearData)
         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
         spYear.adapter = adapterYear
@@ -371,7 +371,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     Log.e("Year Data", Gson().toJson(data))
                     if (data != null || data?.size!! > 0) {
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         data.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), data)
                         spYear.adapter = adapterYear
@@ -379,7 +379,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     } else {
                         val arData = ArrayList<VehicleYearData>()
                         val yearData = VehicleYearData()
-                        yearData.year = "YEAR"
+                        yearData.year = "YEAR - NEW CARS"
                         arData.add(0, yearData)
                         adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                         spYear.adapter = adapterYear
@@ -588,7 +588,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
-                if (data.year != "YEAR") {
+                if (data.year != "YEAR - NEW CARS") {
                     setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
@@ -698,7 +698,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
     private fun isValid(): Boolean {
         when {
-            yearStr == "YEAR" -> {
+            yearStr == "YEAR - NEW CARS" -> {
                 tvErrorYear.visibility = View.VISIBLE
                 return false
             }

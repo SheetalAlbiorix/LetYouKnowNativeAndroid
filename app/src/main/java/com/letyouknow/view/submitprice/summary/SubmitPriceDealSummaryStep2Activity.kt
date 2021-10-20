@@ -46,7 +46,7 @@ import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_submit_price_deal_summary_step2.*
-import kotlinx.android.synthetic.main.layout_toolbar_timer.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
@@ -140,7 +140,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         btnSave.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
         btnProceedDeal.setOnClickListener(this)
-        tvAddMin.setOnClickListener(this)
         tvApplyPromo.setOnClickListener(this)
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
@@ -153,8 +152,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
         onStateChange()
         initPayment()
-        tvTimer.visibility = View.GONE
-        tvAddMin.visibility = View.GONE
+
     }
 
     private lateinit var stripe: Stripe
@@ -388,32 +386,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
 
     }
 
-    private fun startTimer() {
-        cTimer = object : CountDownTimer(((seconds * 1000)).toLong(), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                seconds -= 1
-                tvTimer.text = (String.format("%02d", seconds / 60)
-                        + ":" + String.format("%02d", seconds % 60))
-                if (seconds == 60 && isFirst60) {
-                    tvAddMin.visibility = View.VISIBLE
-                    isFirst60 = false
-                }
-                if (seconds == 0) {
-                    tvAddMin.visibility = View.GONE
-                    tvTimer.visibility = View.GONE
-                    llExpired.visibility = View.VISIBLE
-                    isTimeOver = true
-                    tvSubmitStartOver.text = getString(R.string.start_over)
-                    cancelTimer()
-                    return
-                }
-            }
 
-            override fun onFinish() {
-
-            }
-        }.start()
-    }
 
     private fun cancelTimer() {
         if (cTimer != null)
@@ -560,13 +533,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                     callBuyerAPI()
                 }
             }
-            R.id.tvAddMin -> {
-                seconds += 120;
-                //seconds = ((60 * ((2 + minutes) + (second / 60))).toDouble())
-                tvAddMin.visibility = View.GONE
-                cancelTimer()
-//                startTimer()
-            }
+
         }
     }
 

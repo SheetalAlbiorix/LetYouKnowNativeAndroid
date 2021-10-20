@@ -24,10 +24,17 @@ class PackagesAdapter(layout: Int, val clickListener: View.OnClickListener) :
                     ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked_grey)
                 } else {
                     llPackages.setBackgroundColor(resources.getColor(R.color.white))
-                    if (isSelect!!)
-                        ivSelect.setImageResource(R.drawable.ic_checked_icon)
-                    else
-                        ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked)
+                    if (isOtherSelect!!) {
+                        ivSelect.setImageResource(R.drawable.ic_checked_icon_gray)
+                        llPackages.isEnabled = false
+                    } else {
+                        llPackages.isEnabled = true
+                        if (isSelect!!)
+                            ivSelect.setImageResource(R.drawable.ic_checked_icon)
+                        else
+                            ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked)
+                    }
+
                 }
 
 

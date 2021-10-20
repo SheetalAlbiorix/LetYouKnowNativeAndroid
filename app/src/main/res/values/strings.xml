@@ -90,7 +90,7 @@
     <string name="we_want_you_to_be_completely_satisfied_with_your_car_buying_experience_please_read_the_important_information_here">We want you to be completely satisfied with your car buying experience. Please read the important information here.</string>
     <!--    <string name="i_have_read_accept">I have read, accept, and agree to abide by LetYouKnow\'s Terms and Conditions and Privacy Policy.</string>-->
     <string name="i_have_read_accept">I have read, accept, and agree to abide by %1$s\'s Terms and Conditions and Privacy Policy.</string>
-    <string name="i_certify_that">I certify that I have read, understand and agree to above statements and %1s\'s fullTerms and Conditions  and  Privacy Policy.</string>
+    <string name="i_certify_that">I certify that I have read, understand and agree to above statements and %1s\'s full Terms and Conditions  and  Privacy Policy.</string>
     <string name="initial_here_to_accept">Initial Here to Accept</string>
     <string name="enter_user_id">Enter UserID</string>
     <string name="enter_user_name">Enter UserName</string>
@@ -127,12 +127,14 @@
     <string name="price_summary_colon">Price Summary:</string>
     <string name="balance_preview">Balance Preview:</string>
     <string name="your_lightingcardeals_price">Your LightingCarDeals Price:</string>
-    <string name="for_non_refundable">For nonrefundable service &amp; reservation fee of $%1s$ if your deal is accepted</string>
-    <string name="service_and_reserve_fee">Nonrefundable Service &amp; Reservation Fee:\n(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</string>
+    <string name="for_non_refundable">For nonrefundable service &amp; reservation fee of $%1s if your deal is accepted</string>
+    <string name="service_and_reserve_fee">Nonrefundable Service &amp; Reservation Fee:\n<i>(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</i></string>
     <string name="amount_you_ll_be_charged">(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</string>
+    <string name="amount_you_ll_be_charged_italic"><i>(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</i></string>
     <string name="service_and_reserve_fee_title">Nonrefundable Service &amp; Reservation Fee :</string>
     <string name="remaining_balance_due_at_dealer">Remaining Balance Due at Dealer:</string>
     <string name="balance_excludes_taxes_registration">(balance excludes taxes, registration, titling &amp; licensing fees)</string>
+    <string name="balance_excludes_taxes_registration_italic"><i>(balance excludes taxes, registration, titling &amp; licensing fees)</i></string>
     <string name="balance_exclude_taxes">(Balance excludes taxes, registration, titling &amp; licencing fees)</string>
     <string name="have_a_promo_code"><u>Have a promo code?</u></string>
     <string name="buyer_information">Buyer Information</string>
@@ -212,7 +214,7 @@
     <string name="unlockedcardeals">UnlockedCarDeals:</string>
     <string name="search_summary">Search Summary</string>
     <string name="price_colon">Price : %1s$$</string>
-    <string name="miles_approximate_odometer_reading">%1s$ miles (approximate odometer reading)</string>
+    <string name="miles_approximate_odometer_reading">%1s miles (approximate odometer reading)</string>
     <string name="proceed_to_review_page">PROCEED TO REVIEW PAGE</string>
     <string name="price_data">$%1$.2f</string>
     <string name="enter_lastname">Enter LastName</string>

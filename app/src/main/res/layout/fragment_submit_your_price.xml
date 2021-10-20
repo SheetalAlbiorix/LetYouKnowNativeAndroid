@@ -296,17 +296,34 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
 
-                <androidx.appcompat.widget.AppCompatTextView
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/btnSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/bg_button"
-                    android:gravity="center_horizontal"
+                    android:background="@drawable/bg_button3"
+                    android:gravity="center"
                     android:padding="@dimen/_12sdp"
-                    android:text="@string/search"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_12sdp" />
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:src="@drawable/ic_search" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/search"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 

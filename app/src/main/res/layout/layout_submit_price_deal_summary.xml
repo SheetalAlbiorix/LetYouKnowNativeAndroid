@@ -112,7 +112,7 @@
                 android:padding="@dimen/_8sdp"
                 android:text="@string/view_options_accessories"
                 android:textColor="@color/color4f6375"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_11sdp" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -264,11 +264,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_spinner_light_white"
-                                android:paddingTop="0dp"
-                                android:paddingBottom="0dp"
+                                android:padding="0dp"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown" />
-
                             <TextView
                                 android:id="@+id/tvErrorFinancingOption"
                                 android:layout_width="match_parent"
@@ -295,8 +293,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/we_want_you_to_be"
                 android:textColor="@color/color545d64"
-                android:textColorHighlight="@android:color/transparent"
-                android:textColorLink="@color/colorPrimary"
                 android:textSize="@dimen/_11sdp" />
 
             <ScrollView
@@ -308,16 +304,17 @@
                 android:padding="@dimen/_15sdp">
 
                 <TextView
+                    style="@style/regular"
                     android:id="@+id/tvInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color545d64"
                     android:textSize="@dimen/_12sdp" />
             </ScrollView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtTerms"
-                style="@style/medium"
+                style="@style/regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -410,7 +407,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="PROCEED WITH YOUR DEAL"
+                    android:text="PROCEED To REVIEW PAGE"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

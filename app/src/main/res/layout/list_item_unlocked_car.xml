@@ -112,7 +112,7 @@
 
             <TextView
                 android:id="@+id/tvViewOptions"
-                style="@style/bold"
+                style="@style/medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -120,8 +120,8 @@
                 android:backgroundTint="@color/colorcfeafa"
                 android:padding="@dimen/_8sdp"
                 android:text="@string/view_options_accessories"
-                android:textColor="@color/color4f6375"
-                android:textSize="@dimen/_12sdp" />
+                android:textColor="@color/color3e5365"
+                android:textSize="@dimen/_11sdp" />
 
             <View
                 android:layout_width="match_parent"
@@ -158,7 +158,7 @@
 
             <TextView
                 android:id="@+id/tvSelectDeal"
-                style="@style/medium"
+                style="@style/bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"

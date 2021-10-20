@@ -129,7 +129,7 @@
 
             <TextView
                 android:id="@+id/tvViewOptions"
-                style="@style/bold"
+                style="@style/medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -137,8 +137,8 @@
                 android:backgroundTint="@color/colorcfeafa"
                 android:padding="@dimen/_8sdp"
                 android:text="@string/view_options_accessories"
-                android:textColor="@color/color4f6375"
-                android:textSize="@dimen/_12sdp" />
+                android:textColor="@color/color3e5365"
+                android:textSize="@dimen/_11sdp" />
 
             <View
                 android:layout_width="match_parent"
@@ -348,7 +348,7 @@
 
 
                     <TextView
-                        style="@style/bold"
+                        style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -447,16 +447,17 @@
                 android:padding="@dimen/_15sdp">
 
                 <TextView
-                    android:textColor="@color/black"
+                    style="@style/regular"
+                    android:textColor="@color/color545d64"
                     android:id="@+id/tvInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
             </ScrollView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtTerms"
-                style="@style/medium"
+                style="@style/regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -488,7 +489,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/initial_here_to_accept"
-                    android:textColor="?blackHeaderText"
+                    android:textColor="@color/color545d64"
                     android:textColorHighlight="@android:color/transparent"
                     android:textColorLink="@color/orange"
                     android:textSize="@dimen/_11sdp" />
