@@ -2,8 +2,8 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.SubmitPendingUcdData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -42,11 +42,29 @@ object SubmitPendingUCDDealRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    Toast.makeText(
-                        context,
+                    Constant.dismissLoader()
+                    val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                        SubmitPendingUcdData::class.java
+                    )
+                    var msgStr = ""
+                    var isFirst = true
+
+                    for (i in 0 until dataError?.messageList?.size!!) {
+                        if (isFirst) {
+                            isFirst = false
+                            msgStr = dataError.messageList[i]
+                        } else {
+                            msgStr = msgStr + ",\n" + dataError.messageList[i]
+                        }
+
+                    }
+                    if (msgStr != null)
+                        AppGlobal.alertError(
+                            context,
+                            msgStr
+                        )
+
                 }
             }
         })

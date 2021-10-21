@@ -2,7 +2,6 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.SubmitDealLCDData
@@ -59,12 +58,11 @@ object SubmitDealUCDRepository {
                         }
 
                     }
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        Toast.makeText(
+                    if (msgStr != null)
+                        AppGlobal.alertError(
                             context,
-                            msgStr,
-                            Toast.LENGTH_LONG
-                        ).show()
+                            msgStr
+                        )
                 }
             }
         })

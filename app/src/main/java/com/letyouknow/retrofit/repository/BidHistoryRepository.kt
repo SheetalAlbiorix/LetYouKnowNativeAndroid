@@ -2,11 +2,11 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.BidPriceData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,11 +41,12 @@ object BidHistoryRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    Toast.makeText(
-                        context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    /* Toast.makeText(
+                         context,
+                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                         Toast.LENGTH_LONG
+                     ).show()*/
+                    alertError(context, response.errorBody()?.source()?.buffer?.snapshot()?.utf8())
                 }
             }
         })

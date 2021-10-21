@@ -61,8 +61,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         "1000 mi",
         "ALL"
     )
-    private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
-    private var financingStr = "Financing Option"
+    private var arLoan = arrayListOf("Financing Option*", "Loan", "Cash")
+    private var financingStr = "Financing Option*"
     private var radiusId = "Search Radius"
 
     private var arImageUrl: ArrayList<String> = ArrayList()
@@ -352,12 +352,10 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
-                Toast.makeText(this, "Terms of Service Clicked", Toast.LENGTH_SHORT)
-                    .show()
+                AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
             }),
             Pair("Privacy Policy", View.OnClickListener {
-                Toast.makeText(this, "Privacy Policy Clicked", Toast.LENGTH_SHORT)
-                    .show()
+                AppGlobal.dialogWebView(this, Constant.PRIVACY_POLICY_LINK)
             })
         )
     }
@@ -512,7 +510,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             R.id.spLoan -> {
                 val data = adapterLoan.getItem(position) as String
                 financingStr = data
-                if (financingStr != "Financing Option") {
+                if (financingStr != "Financing Option*") {
                     tvErrorFinancingOption.visibility = View.GONE
                 }
                 setWhiteSpinnerLayoutPos(position, spLoan, this)
@@ -558,7 +556,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             setErrorBorder(edtPrice, tvErrorPrice)
             return false
         }
-        if (financingStr == "Financing Option") {
+        if (financingStr == "Financing Option*") {
             tvErrorFinancingOption.visibility = View.VISIBLE
             return false
         }

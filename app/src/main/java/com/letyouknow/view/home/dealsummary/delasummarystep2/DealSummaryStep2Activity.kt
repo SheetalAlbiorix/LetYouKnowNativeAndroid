@@ -212,6 +212,9 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
+                    if (data == "0.00") {
+                        llDollar.visibility = View.GONE
+                    }
                     tvDollar.text = "$$data"
                 }
                 )
@@ -573,7 +576,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun setClearData() {
         edtCardNumber.setText("")
-        edtCardHolder.setText("")
+//        edtCardHolder.setText("")
         edtExpiresDate.setText("")
         edtCVV.setText("")
 //        llCardViewDetail.visibility = View.GONE

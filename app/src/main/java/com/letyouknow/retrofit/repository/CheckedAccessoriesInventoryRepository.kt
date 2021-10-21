@@ -2,10 +2,10 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.CheckedPackageData
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,11 +39,10 @@ object CheckedAccessoriesInventoryRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    Toast.makeText(
+                    AppGlobal.alertError(
                         context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    )
                 }
             }
         })

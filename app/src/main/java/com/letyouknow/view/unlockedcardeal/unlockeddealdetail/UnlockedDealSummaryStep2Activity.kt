@@ -185,6 +185,9 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             lykDollarViewModel.getDollar(this, pendingUCDData.dealID)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
+                    if (data == "0.00") {
+                        llDollar.visibility = View.GONE
+                    }
                     tvDollar.text = "$$data"
                 }
                 )

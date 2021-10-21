@@ -2,10 +2,10 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.model.SignupData
 import com.pionymessenger.model.SignupDataError
 import com.pionymessenger.utils.Constant
@@ -53,11 +53,11 @@ object SignUpRepository {
                     }
                     errorMSG = email + "\n" + userName
 
-                    Toast.makeText(
-                        context,
-                        errorMSG,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (errorMSG != null)
+                        AppGlobal.alertError(
+                            context,
+                            errorMSG
+                        )
                 }
             }
         })

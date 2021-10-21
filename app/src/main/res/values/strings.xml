@@ -299,4 +299,6 @@
     <string name="click_on_button">Click On the button below and enter the required basic information.</string>
     <string name="introduce_your_friend">Introduce your friends and family to wonderful services provided by LetYouKnow</string>
     <string name="let_you_know_dollar_history">LetYouKnow Dollar History</string>
+    <string name="card_exp_date_error">enter valid date</string>
+    <string name="card_expired">Card is Expired</string>
 </resources>

@@ -26,6 +26,7 @@ import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
@@ -49,8 +50,8 @@ import org.jetbrains.anko.startActivity
 
 class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
-    private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
-    private var financingStr = "Financing Option"
+    private var arLoan = arrayListOf("Financing Option*", "Loan", "Cash")
+    private var financingStr = "Financing Option*"
 
     private var arImageUrl: ArrayList<String> = ArrayList()
 
@@ -213,12 +214,12 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
 
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
-                Toast.makeText(this, "Terms of Service Clicked", Toast.LENGTH_SHORT)
-                    .show()
+                AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
             }),
             Pair("Privacy Policy", View.OnClickListener {
-                Toast.makeText(this, "Privacy Policy Clicked", Toast.LENGTH_SHORT)
-                    .show()
+                /*Toast.makeText(this, "Privacy Policy Clicked", Toast.LENGTH_SHORT)
+                    .show()*/
+                AppGlobal.dialogWebView(this, Constant.PRIVACY_POLICY_LINK)
             })
         )
     }
@@ -359,7 +360,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             R.id.spLoan -> {
                 val data = adapterLoan.getItem(position) as String
                 financingStr = data
-                if (financingStr != "Financing Option") {
+                if (financingStr != "Financing Option*") {
                     tvErrorFinancingOption.visibility = View.GONE
                 }
                 setWhiteSpinnerLayoutPos(position, spLoan, this)
@@ -378,7 +379,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
-        if (financingStr == "Financing Option" && !isScrollable && TextUtils.isEmpty(
+        if (financingStr == "Financing Option*" && !isScrollable && TextUtils.isEmpty(
                 edtInitials.text.toString().trim()
             )
         ) {
@@ -387,12 +388,12 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }
-        if (financingStr == "Financing Option" && !isScrollable) {
+        if (financingStr == "Financing Option*" && !isScrollable) {
             tvErrorFinancingOption.visibility = View.VISIBLE
             tvErrorFullDisclouser.visibility = View.VISIBLE
             return false
         }
-        if (financingStr == "Financing Option" && TextUtils.isEmpty(
+        if (financingStr == "Financing Option*" && TextUtils.isEmpty(
                 edtInitials.text.toString().trim()
             )
         ) {
@@ -405,7 +406,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             setErrorBorder(edtInitials, tvErrorInitials)
             return false
         }
-        if (financingStr == "Financing Option") {
+        if (financingStr == "Financing Option*") {
             tvErrorFinancingOption.visibility = View.VISIBLE
             return false
         }

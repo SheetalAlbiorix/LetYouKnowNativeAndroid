@@ -21,6 +21,9 @@
         android:theme="@style/Theme.LetYouKnow"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
+        <!--  <activity
+              android:name=".view.CardValidationActivity"
+              android:exported="true" />-->
         <activity
             android:name=".view.account.viewDollar.ViewDollarActivity"
             android:exported="true" />
@@ -95,7 +98,7 @@
             tools:ignore="LockedOrientationActivity" /> <!--  -->
         <!-- android:name=".view.splash.SplashActivity" -->
         <activity
-            android:name=".view.splash.SplashActivity"
+            android:name=".view.CardValidationActivity"
             android:exported="true"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -106,6 +109,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity
+            android:name=".view.splash.SplashActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
         <activity
             android:name=".view.dashboard.MainActivity"
             android:exported="true"

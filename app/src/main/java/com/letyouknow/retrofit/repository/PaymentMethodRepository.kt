@@ -2,7 +2,6 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.LetYouKnowApp
 import com.letyouknow.model.CardStripeData
@@ -68,11 +67,11 @@ fun paymentMethodApiCall(
                         "Error Payment",
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8()!!
                     )
-                    Toast.makeText(
-                        context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
+                        AppGlobal.alertError(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
                 }
             }
         })

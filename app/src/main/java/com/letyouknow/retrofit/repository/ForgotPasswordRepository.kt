@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.login.LoginActivity
 import com.pionymessenger.utils.Constant
 import org.jetbrains.anko.clearTask
@@ -53,11 +54,10 @@ object ForgotPasswordRepository {
                 } else {
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    Toast.makeText(
+                    AppGlobal.alertError(
                         context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        Toast.LENGTH_LONG
-                    ).show()
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    )
                 }
             }
         })
