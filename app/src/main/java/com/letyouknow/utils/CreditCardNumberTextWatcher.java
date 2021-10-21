@@ -2,22 +2,23 @@ package com.letyouknow.utils;
 
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class CreditCardNumberTextWatcher implements TextWatcher {
 
     public static final char SEPARATOR = ' ';
     private static final String LOG_TAG = "AndroidExample";
     private EditText editText;
+    Boolean isValidCard = false;
 
     private int after;
     private String beforeString;
-
-    public CreditCardNumberTextWatcher(EditText editText) {
-        this.editText = editText;
-    }
+    private TextView errorText;
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,15 +141,28 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
     }
 
 
+    public CreditCardNumberTextWatcher(EditText editText, TextView errorText) {
+        this.editText = editText;
+        this.errorText = errorText;
+    }
+
     private CreditCardType showDetectedCreditCardImage(String creditCardNumber) {
         CreditCardType type = CreditCardType.detect(creditCardNumber);
-
         if (type != null) {
+            isValidCard = true;
             Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), type.getImageResourceName());
             this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            this.errorText.setVisibility(View.GONE);
         } else {
+            isValidCard = false;
             Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), "ic_camera");
             this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            this.errorText.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(this.editText.getText().toString().trim())) {
+                this.errorText.setText("Card Number is Required");
+            } else {
+                this.errorText.setText("Card Number is InValid");
+            }
         }
         return type;
     }

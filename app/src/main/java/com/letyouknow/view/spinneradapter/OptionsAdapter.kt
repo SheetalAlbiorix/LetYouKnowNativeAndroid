@@ -19,7 +19,7 @@ class OptionsAdapter(layout: Int, val clickListener: View.OnClickListener) :
                 llOptions.isEnabled = !isGray!!
                 if (isGray!!) {
                     llOptions.setBackgroundColor(resources.getColor(R.color.textLightGrey))
-                    ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked_grey)
+                    ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked_border_gray)
                 } else {
                     llOptions.setBackgroundColor(resources.getColor(R.color.white))
                     if (isOtherSelect!!) {
@@ -30,7 +30,7 @@ class OptionsAdapter(layout: Int, val clickListener: View.OnClickListener) :
                         if (isSelect!!)
                             ivSelectOptions.setImageResource(R.drawable.ic_checked_icon)
                         else
-                            ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked)
+                            ivSelectOptions.setImageResource(R.drawable.ic_checkbox_unchecked_border_gray)
                     }
 
 

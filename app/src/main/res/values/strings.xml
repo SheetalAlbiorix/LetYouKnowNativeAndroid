@@ -301,4 +301,12 @@
     <string name="let_you_know_dollar_history">LetYouKnow Dollar History</string>
     <string name="card_exp_date_error">enter valid date</string>
     <string name="card_expired">Card is Expired</string>
+    <string name="bt_expiration_required">Date is Required</string>
+    <string name="bt_expiration_invalid">Date is Invalid</string>
+    <string name="enter_valid_card_number">Card Number is InValid </string>
+    <string name="enter_card_data">Enter Card Data</string>
+    <string name="enter_card_number">Card Number is Required</string>
+    <string name="cvv_required">CVV is Required</string>
+    <string name="cvv_must_be_valid_digits">CVV must be valid 3 Digits</string>
+    <string name="zipcode_must_be_valid_digits">Zipcode must be valid 5 Digits</string>
 </resources>

@@ -21,7 +21,7 @@ class PackagesAdapter(layout: Int, val clickListener: View.OnClickListener) :
 
                 if (isGray!!) {
                     llPackages.setBackgroundColor(resources.getColor(R.color.textLightGrey))
-                    ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked_grey)
+                    ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked_border_gray)
                 } else {
                     llPackages.setBackgroundColor(resources.getColor(R.color.white))
                     if (isOtherSelect!!) {
@@ -32,14 +32,11 @@ class PackagesAdapter(layout: Int, val clickListener: View.OnClickListener) :
                         if (isSelect!!)
                             ivSelect.setImageResource(R.drawable.ic_checked_icon)
                         else
-                            ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked)
+                            ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked_border_gray)
                     }
-
                 }
 
-
                 chkPackages.text = packageName
-
                 llPackages.tag = position
                 llPackages.setOnClickListener(clickListener)
             }

@@ -13,15 +13,24 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtCardNumber"
+            android:drawableLeft="@drawable/ic_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/bg_edittext"
             android:digits="1234567890"
-            android:drawableRight="@drawable/ic_camera"
             android:hint="@string/card_holder"
             android:inputType="number" />
 
+        <TextView
+            android:id="@+id/tvErrorCardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/enter_valid_card_number"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_11sdp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,27 +38,61 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtExpiresDate"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_8sdp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_edittext"
-                android:digits="1234567890"
-                android:hint="@string/expire_date"
-                android:inputType="number"
-                android:maxLength="5" />
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtCVV"
-                android:layout_width="match_parent"
+                <com.stripe.android.view.ExpiryDateEditText
+                    android:id="@+id/edtExpiresDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext"
+                    android:digits="1234567890"
+                    android:hint="@string/expire_date"
+                    android:inputType="number"
+                    android:maxLength="5" />
+
+                <TextView
+                    android:id="@+id/tvErrorCardDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/enter_email_address_vali"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_edittext"
-                android:hint="@string/cvv"
-                android:inputType="number"
-                android:maxLength="3" />
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCVV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext"
+                    android:digits="1234567890"
+                    android:hint="@string/cvv"
+                    android:inputType="number"
+                    android:maxLength="3" />
+
+                <TextView
+                    android:id="@+id/tvErrorCardCVV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/enter_email_address_vali"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -59,8 +102,19 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/bg_edittext"
             android:hint="@string/zip_code"
-            android:inputType="text"
+            android:digits="1234567890"
+            android:inputType="number"
             android:maxLength="5" />
+
+        <TextView
+            android:id="@+id/tvErrorCardZip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/enter_email_address_vali"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_11sdp"
+            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

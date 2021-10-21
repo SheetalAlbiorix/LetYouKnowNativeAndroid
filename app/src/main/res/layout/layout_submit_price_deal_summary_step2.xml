@@ -236,6 +236,7 @@
                             android:background="@drawable/bg_button3"
                             android:backgroundTint="@color/color88898A"
                             android:gravity="center"
+                            android:enabled="false"
                             android:paddingStart="@dimen/_12sdp"
                             android:paddingEnd="@dimen/_12sdp"
                             android:text="@string/apply_promo"
@@ -618,74 +619,75 @@
                     android:background="@color/dividerColor" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/bg_button3"
-                android:backgroundTint="@color/offWhite"
-                android:orientation="vertical"
-                android:padding="@dimen/_8sdp"
-                android:visibility="gone">
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/_8sdp"
+                 android:background="@drawable/bg_button3"
+                 android:backgroundTint="@color/offWhite"
+                 android:orientation="vertical"
+                 android:padding="@dimen/_8sdp"
+                 android:visibility="gone">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edtCardNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edittext"
-                    android:digits="1234567890"
-                    android:drawableLeft="@drawable/ic_camera"
-                    android:hint="@string/card_number"
-                    android:inputType="number" />
+                 <androidx.appcompat.widget.AppCompatEditText
+                     android:id="@+id/edtCardNumber"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/bg_edittext"
+                     android:digits="1234567890"
+                     android:drawableLeft="@drawable/ic_camera"
+                     android:hint="@string/card_number"
+                     android:inputType="number" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edtCardHolder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/bg_edittext"
-                    android:hint="@string/card_holder"
-                    android:inputType="text"
-                    android:visibility="gone" />
+                 <androidx.appcompat.widget.AppCompatEditText
+                     android:id="@+id/edtCardHolder"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_8sdp"
+                     android:background="@drawable/bg_edittext"
+                     android:hint="@string/card_holder"
+                     android:inputType="text"
+                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="horizontal">
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_8sdp"
+                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtExpiresDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:digits="1234567890"
-                        android:hint="@string/expire_date"
-                        android:inputType="number"
-                        android:maxLength="5" />
+                     <androidx.appcompat.widget.AppCompatEditText
+                         android:id="@+id/edtExpiresDate"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginRight="@dimen/_4sdp"
+                         android:layout_weight="1"
+                         android:background="@drawable/bg_edittext"
+                         android:digits="1234567890"
+                         android:hint="@string/expire_date"
+                         android:inputType="number"
+                         android:maxLength="5" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtCVV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:hint="@string/cvv"
-                        android:inputType="number"
-                        android:maxLength="3" />
-                </LinearLayout>
+                     <androidx.appcompat.widget.AppCompatEditText
+                         android:id="@+id/edtCVV"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="@dimen/_4sdp"
+                         android:layout_weight="1"
+                         android:background="@drawable/bg_edittext"
+                         android:hint="@string/cvv"
+                         android:inputType="number"
+                         android:maxLength="3" />
+                 </LinearLayout>
 
 
-            </LinearLayout>
+             </LinearLayout>-->
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_12sdp"
             android:background="@drawable/bg_button3"
             android:backgroundTint="@color/offWhite"
@@ -694,10 +696,124 @@
 
             <com.stripe.android.view.CardInputWidget
                 android:id="@+id/cardInputWidget"
+                android:visibility="gone"
                 style="@style/Stripe.CardInputWidget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical" />
+
+            <LinearLayout
+                android:id="@+id/llCardViewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_edittext"
+                    android:digits="1234567890"
+                    android:drawableLeft="@drawable/ic_camera"
+                    android:hint="@string/card_holder"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/tvErrorCardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="@string/enter_valid_card_number"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.stripe.android.view.ExpiryDateEditText
+                            android:id="@+id/edtExpiresDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_edittext"
+                            android:digits="1234567890"
+                            android:hint="@string/expire_date"
+                            android:inputType="number"
+                            android:maxLength="5" />
+
+                        <TextView
+                            android:id="@+id/tvErrorCardDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:text="@string/bt_expiration_invalid"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtCVV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_edittext"
+                            android:digits="1234567890"
+                            android:hint="@string/cvv"
+                            android:inputType="number"
+                            android:maxLength="3" />
+
+                        <TextView
+                            android:id="@+id/tvErrorCardCVV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:text="@string/cvv_required"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCardZipCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/bg_edittext"
+                    android:digits="1234567890"
+                    android:hint="@string/zip_code"
+                    android:inputType="number"
+                    android:maxLength="5" />
+
+                <TextView
+                    android:id="@+id/tvErrorCardZip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="@string/zipcode_required"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <TextView
                 style="@style/regular"
@@ -711,6 +827,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnSave"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_12sdp"

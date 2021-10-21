@@ -38,7 +38,6 @@ import com.letyouknow.model.CardListData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.SignUpViewModel
 import com.letyouknow.utils.AppGlobal
-import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -78,9 +77,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
+       /* val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
-
+*/
         signupViewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
 
         llDebitCreditCard.setOnClickListener(this)

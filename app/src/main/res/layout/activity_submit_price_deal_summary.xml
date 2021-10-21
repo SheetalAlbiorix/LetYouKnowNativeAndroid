@@ -93,7 +93,7 @@
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_18sdp" />
 
-                  <!--  <TextView
+                    <TextView
                         style="@style/regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,8 +103,8 @@
                         android:paddingBottom="@dimen/_3sdp"
                         android:singleLine="true"
                         android:text="Actual Model may vary"
-                        android:textColor="@color/color545d64"
-                        android:textSize="@dimen/_8sdp" />-->
+                        android:textColor="@color/color808080"
+                        android:textSize="@dimen/_8sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <FrameLayout

@@ -44,7 +44,6 @@ import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
-import com.stripe.android.model.Card
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summary_step2.*
@@ -140,7 +139,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 edtPhoneNumber.setText(pendingUCDData.buyer?.phoneNumber)
 
         }
-        val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
+        val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber, tvErrorCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
 
         initCardAdapter()
@@ -170,6 +169,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             val data = edtPhoneNumber.text.toString().trim()
         }*/
         initPayment()
+        setOnChangeCard()
     }
 
     private lateinit var stripe: Stripe
@@ -271,14 +271,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             submitDealUCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    Toast.makeText(
-                        applicationContext,
-                        "Your Deal Successfully Booked",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    /*  startActivity(
-                          intentFor<MainActivity>().clearTask().newTask()
-                      )*/
+
                     data.successResult.transactionInfo.vehiclePrice = ucdData.price!!
                     data.successResult.transactionInfo.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
@@ -291,7 +284,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private lateinit var cardStripeData: CardStripeData
-    private fun callPaymentMethodAPI(card: Card) {
+    private fun callPaymentMethodAPI() {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -299,11 +292,11 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             paymentMethodViewModel.callPayment(
                 this,
                 "card",
-                card.number,
-                card.cvc,
-                card.expMonth.toString(),
-                card.expYear.toString(),
-                card.addressZip.toString(),
+                edtCardNumber.text.toString().trim(),
+                edtCVV.text.toString().trim(),
+                edtExpiresDate.text.toString().trim().substring(0, 2),
+                edtExpiresDate.text.toString().trim().substring(3, 5),
+                edtCardZipCode.text.toString().trim(),
                 "ab09ffc0-f83e-4ecc-b198-eb375bfbbc57b41768",
                 "c25c4e63-970f-4c89-b9e1-9c983c4a99224e8f02",
                 "a7908fc4-1b17-44f4-801c-0d404cee2f1ad7ad95",
@@ -417,8 +410,14 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 if (seconds == 60 && isFirst60) {
                     tvAddMin.visibility = View.VISIBLE
                     isFirst60 = false
+                } else if (seconds < 60) {
+                    tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
+                    tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
+                } else {
+                    tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
+                    tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                 }
-                if (seconds == 0) {
+                if (seconds == 0 || seconds == 1) {
 //                    tvDealGuaranteed.text = "Reserved Deal has expired"
                     tvAddMin.visibility = View.GONE
                     tvTimer.visibility = View.GONE
@@ -589,7 +588,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     callback = object : ApiResultCallback<Source> {
                         override fun onSuccess(source: Source) {
                             Log.e("Success", Gson().toJson(source))
-                            callPaymentMethodAPI(card)
+//                            callPaymentMethodAPI(card)
                         }
 
                         override fun onError(error: Exception) {
@@ -608,9 +607,10 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 setErrorVisible()
                 if (isTimeOver) {
                     onBackPressed()
-                } else if (isValid()) {
-                    callBuyerAPI()
-
+                } else if (isValidCard()) {
+                    if (isValid()) {
+                        callBuyerAPI()
+                    }
                 }
 //
             }
@@ -653,7 +653,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun setClearData() {
         edtCardNumber.setText("")
-        edtCardHolder.setText("")
+//        edtCardHolder.setText("")
         edtExpiresDate.setText("")
         edtCVV.setText("")
 //        llCardViewDetail.visibility = View.GONE
@@ -901,5 +901,135 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvErrorZipCode.visibility = View.GONE
         tvErrorPhoneNo.visibility = View.GONE
         tvErrorEmailAddress.visibility = View.GONE
+    }
+
+
+    private fun setOnChangeCard() {
+        edtExpiresDate.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                p0: CharSequence?,
+                start: Int,
+                removed: Int,
+                added: Int
+            ) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                val inputLength = edtExpiresDate.text.toString().length
+                if (inputLength == 5 && edtExpiresDate.isDateValid) {
+                    tvErrorCardDate.visibility = View.GONE
+                    edtCVV.requestFocus()
+                } else {
+                    tvErrorCardDate.visibility = View.VISIBLE
+                    tvErrorCardDate.text = getString(R.string.bt_expiration_invalid)
+                }
+            }
+        })
+        edtCVV.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                p0: CharSequence?,
+                start: Int,
+                removed: Int,
+                added: Int
+            ) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                val inputLength = edtCVV.text.toString().length
+                if (inputLength < 3) {
+                    tvErrorCardCVV.visibility = View.VISIBLE
+                    tvErrorCardCVV.text = getString(R.string.cvv_must_be_valid_digits)
+                } else if (inputLength == 3) {
+                    tvErrorCardCVV.visibility = View.GONE
+                    edtCardZipCode.requestFocus()
+                }
+            }
+        })
+        edtCardZipCode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                p0: CharSequence?,
+                start: Int,
+                removed: Int,
+                added: Int
+            ) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                val inputLength = edtCardZipCode.text.toString().length
+                if (isValidCard()) {
+                    when {
+                        inputLength == 5 -> {
+                            tvErrorCardZip.visibility = View.GONE
+                            if (isValidCard()) {
+                                callPaymentMethodAPI()
+                            }
+                        }
+                        inputLength < 5 -> {
+                            tvErrorCardZip.visibility = View.VISIBLE
+                            tvErrorCardZip.text = getString(R.string.zipcode_must_be_valid_digits)
+                        }
+                        else -> {
+                            tvErrorCardZip.visibility = View.GONE
+                        }
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(edtCardZipCode.text.toString().trim()))
+                        edtCardZipCode.setText("")
+                }
+            }
+        })
+    }
+
+    private fun isValidCard(): Boolean {
+        when {
+            TextUtils.isEmpty(edtCardNumber.text.toString().trim()) -> {
+                tvErrorCardNumber.visibility = View.VISIBLE
+                tvErrorCardNumber.text = getString(R.string.enter_card_number)
+                edtCardNumber.requestFocus()
+                return false
+            }
+            (tvErrorCardNumber.visibility == View.VISIBLE) -> {
+                edtCardNumber.requestFocus()
+                return false
+            }
+            TextUtils.isEmpty(edtExpiresDate.text.toString().trim()) -> {
+                tvErrorCardDate.visibility = View.VISIBLE
+                tvErrorCardDate.text = getString(R.string.bt_expiration_required)
+                edtExpiresDate.requestFocus()
+                return false
+            }
+            tvErrorCardDate.visibility == View.VISIBLE -> {
+                edtExpiresDate.requestFocus()
+                return false
+            }
+            TextUtils.isEmpty(edtCVV.text.toString().trim()) -> {
+                tvErrorCardCVV.visibility = View.VISIBLE
+                tvErrorCardCVV.text = getString(R.string.cvv_required)
+                edtCVV.requestFocus()
+                return false
+            }
+            tvErrorCardCVV.visibility == View.VISIBLE -> {
+                edtCVV.requestFocus()
+                return false
+            }
+            TextUtils.isEmpty(edtCardZipCode.text.toString().trim()) -> {
+                tvErrorCardZip.visibility = View.VISIBLE
+                tvErrorCardZip.text = getString(R.string.zip_code_required)
+                edtCardZipCode.requestFocus()
+                return false
+            }
+
+        }
+        return true
     }
 }
