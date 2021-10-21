@@ -61,8 +61,8 @@ object GZipRetrofitClient {
         Retrofit.Builder()
             .baseUrl(MainServer)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
     }
 
     val apiInterface: ApiInterface by lazy {

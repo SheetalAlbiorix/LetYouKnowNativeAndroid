@@ -7,6 +7,7 @@ import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,22 +21,21 @@ object ChangePasswordRepository {
         val editUserProfileData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.changePassword(request)
 
-        call.enqueue(object : Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
-                call: Call<String>,
-                response: Response<String>,
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                Log.e("DEBUG : ", response.body().toString())
 
-                val data = response.body()
                 Constant.dismissLoader()
                 if (response.code() == 200 || response.code() == 201) {
-                    editUserProfileData.value = data!!
+                    editUserProfileData.value = response.body()!!.string()
                 } else if (response.code() == 401) {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {

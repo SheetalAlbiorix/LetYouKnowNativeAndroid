@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
@@ -341,6 +343,14 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             reqData.newPassword = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
             reqData.currentPassword =
                 dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
+
+            Log.e("req-->", reqData.userName.toString())
+            Log.e("req-->", reqData.newPassword.toString())
+            Log.e("req-->", reqData.currentPassword.toString())
+            Log.e("req-->",
+                LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
+                    ?.getUserData()?.authToken.toString()
+            )
 
             changePasswordViewModel.changePasswordCall(requireActivity(), reqData)!!
                 .observe(requireActivity(), Observer { data ->

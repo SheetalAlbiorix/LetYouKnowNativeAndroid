@@ -21,95 +21,13 @@
         android:theme="@style/Theme.LetYouKnow"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
+        <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="false" />
         <!--  <activity
               android:name=".view.CardValidationActivity"
               android:exported="true" />-->
         <activity
-            android:name=".view.account.viewDollar.ViewDollarActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.home.dealsummary.gallery360view.view360.View360Activty"
-            android:exported="true" />
-        <activity
-            android:name=".view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.home.dealsummary.gallery360view.Gallery360TabActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.account.editrefer.referstep2.ReferStep2Activity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.unlockedcardeal.UnlockedCarDealActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.account.editrefer.EditReferActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.account.editnotification.EditNotificationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.account.editinfo.EditInformationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.savedsearches.SavedSearchesActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.transaction_history.TransactionHistoryActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.account.editlogin.EditLoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.privacypolicy.PrivacyPolicyTermsCondActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.login.LoginActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.resetpassword.ResetPasswordActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.forgotpassword.ForgotPasswordActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.bidhistory.BidHistoryActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.signup.SignUpActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" /> <!--  -->
-        <!-- android:name=".view.splash.SplashActivity" -->
-        <activity
-            android:name=".view.CardValidationActivity"
-            android:exported="true"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!--<activity
             android:name=".view.splash.SplashActivity"
             android:exported="true"
             android:noHistory="true"
@@ -120,35 +38,143 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
+
+        <activity
+            android:name=".view.account.viewDollar.ViewDollarActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.home.dealsummary.gallery360view.view360.View360Activty"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.home.dealsummary.gallery360view.Gallery360TabActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.account.editrefer.referstep2.ReferStep2Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.unlockedcardeal.UnlockedCarDealActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.account.editrefer.EditReferActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.account.editnotification.EditNotificationActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.account.editinfo.EditInformationActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.savedsearches.SavedSearchesActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.transaction_history.TransactionHistoryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.account.editlogin.EditLoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.privacypolicy.PrivacyPolicyTermsCondActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.login.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.resetpassword.ResetPasswordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.forgotpassword.ForgotPasswordActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.bidhistory.BidHistoryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.signup.SignUpActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" /> <!--  -->
+        <!-- android:name=".view.splash.SplashActivity" -->
+
+        <activity
+            android:name=".view.CardValidationActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"></activity>
+
+
         <activity
             android:name=".view.dashboard.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.home.dealsummary.DealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.submitprice.summary.SubmitPriceDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.submitprice.summary.SubmitPriceDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.submitprice.summary.FinalSubmitDealSummaryActivity"
             android:exported="true"
