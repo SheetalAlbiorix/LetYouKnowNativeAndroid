@@ -167,6 +167,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setMake() {
+        spMake.isEnabled = false
         val arData = ArrayList<VehicleMakeData>()
         val makeData = VehicleMakeData()
         makeData.make = "MAKE"
@@ -177,6 +178,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setModel() {
+        spModel.isEnabled = false
         val arData = ArrayList<VehicleModelData>()
         val modelData = VehicleModelData()
         modelData.model = "MODEL"
@@ -188,6 +190,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setTrim() {
+        spTrim.isEnabled = false
         val arData = ArrayList<VehicleTrimData>()
         val trimData = VehicleTrimData()
         trimData.trim = "TRIM"
@@ -198,6 +201,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setExteriorColor() {
+        spExteriorColor.isEnabled = false
         val arData = ArrayList<ExteriorColorData>()
         val trimData = ExteriorColorData()
         trimData.exteriorColor = "EXTERIOR COLOR"
@@ -208,6 +212,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setInteriorColor() {
+        spInteriorColor.isEnabled = false
         val arData = ArrayList<InteriorColorData>()
         val interiorData = InteriorColorData()
         interiorData.interiorColor = "INTERIOR COLOR"
@@ -278,6 +283,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callVehicleMakeAPI() {
+        spMake.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleMakeModel.getMake(
@@ -313,6 +319,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callVehicleModelAPI() {
+        spModel.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleModelModel.getModel(
@@ -349,6 +356,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callVehicleTrimAPI() {
+        spTrim.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleTrimModel.getTrim(
@@ -386,6 +394,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callExteriorColorAPI() {
+        spExteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             exteriorColorModel.getExteriorColor(
@@ -432,6 +441,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callInteriorColorAPI() {
+        spInteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             interiorColorModel.getInteriorColor(

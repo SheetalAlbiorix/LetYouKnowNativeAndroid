@@ -1,6 +1,7 @@
 package com.letyouknow
 
 import android.app.Application
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.logispeed.data.prefs.AppPreferencesHelper
 import com.stripe.android.PaymentConfiguration
 
@@ -19,6 +20,8 @@ class LetYouKnowApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        FirebaseCrashlytics.getInstance().log("Crash")
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
 //        FacebookSdk.sdkInitialize(this)
 //        AppEventsLogger.activateApp(this);
         mInstance = this

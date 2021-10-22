@@ -150,7 +150,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         setTrim()
         setExteriorColor()
         setInteriorColor()
-        setRadius()
+        callRadiusAPI()
         btnProceedDeal.setOnClickListener(this)
         tvPromo.setOnClickListener(this)
         ivClosePromo.setOnClickListener(this)
@@ -197,6 +197,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setMake() {
+        spMake.isEnabled = false
         val arData = ArrayList<VehicleMakeData>()
         val makeData = VehicleMakeData()
         makeData.make = "MAKE"
@@ -207,6 +208,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setModel() {
+        spModel.isEnabled = false
         val arData = ArrayList<VehicleModelData>()
         val modelData = VehicleModelData()
         modelData.model = "MODEL"
@@ -218,6 +220,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setTrim() {
+        spTrim.isEnabled = false
         val arData = ArrayList<VehicleTrimData>()
         val trimData = VehicleTrimData()
         trimData.trim = "TRIM"
@@ -228,6 +231,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setExteriorColor() {
+        spExteriorColor.isEnabled = false
         val arData = ArrayList<ExteriorColorData>()
         val trimData = ExteriorColorData()
         trimData.exteriorColor = "EXTERIOR COLOR"
@@ -238,6 +242,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setInteriorColor() {
+        spInteriorColor.isEnabled = false
         val arData = ArrayList<InteriorColorData>()
         val interiorData = InteriorColorData()
         interiorData.interiorColor = "INTERIOR COLOR"
@@ -247,14 +252,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
     }
 
-    private fun setRadius() {
-        val arData = ArrayList<String>()
-        arData.add(0, "SEARCH RADIUS")
-        adapterRadius = RadiusSpinnerAdapter(requireActivity(), arData)
-        spRadius.adapter = adapterRadius
-        setSpinnerLayoutPos(0, spRadius, requireActivity())
-    }
-
+    /* private fun setRadius() {
+         val arData = ArrayList<String>()
+         arData.add(0, "SEARCH RADIUS")
+         adapterRadius = RadiusSpinnerAdapter(requireActivity(), arData)
+         spRadius.adapter = adapterRadius
+         setSpinnerLayoutPos(0, spRadius, requireActivity())
+     }
+ */
     private fun callSearchFindDealAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
@@ -395,6 +400,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun callVehicleMakeAPI() {
+        spMake.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
@@ -425,6 +431,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun callVehicleModelAPI() {
+        spModel.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
@@ -455,6 +462,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun callVehicleTrimAPI() {
+        spTrim.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId, "")!!
@@ -485,6 +493,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun callExteriorColorAPI() {
+        spExteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             exteriorColorModel.getExteriorColor(
@@ -530,6 +539,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun callInteriorColorAPI() {
+        spInteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             interiorColorModel.getInteriorColor(
@@ -595,7 +605,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
-                    setRadius()
+//                    setRadius()
                 }
                 setSpinnerLayoutPos(position, spYear, requireActivity())
             }
@@ -610,7 +620,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
-                    setRadius()
+//                    setRadius()
                 }
             }
             R.id.spModel -> {
@@ -623,7 +633,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
-                    setRadius()
+//                    setRadius()
                 }
             }
             R.id.spTrim -> {
@@ -635,7 +645,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                     setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
-                    setRadius()
+//                    setRadius()
                 }
             }
             R.id.spExteriorColor -> {
@@ -647,7 +657,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     setErrorVisibleGone()
                     callInteriorColorAPI()
-                    setRadius()
+//                    setRadius()
                 }
             }
             R.id.spInteriorColor -> {

@@ -15,7 +15,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
-            app:toolbarTitle="@{@string/bid_history}" />
+            app:toolbarTitle="@{@string/price_bid_history}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBidHistory"
@@ -23,6 +23,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_12sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/list_item_bid_history" />
+            tools:listitem="@layout/list_item_bid_history1" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

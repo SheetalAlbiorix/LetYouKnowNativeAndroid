@@ -159,6 +159,7 @@
     <string name="last_bid">Last Bid:</string>
     <string name="submitted">Submitted</string>
     <string name="bid_history">Bid History</string>
+    <string name="price_bid_history">Price Bid History</string>
     <string name="transaction_history">Transaction History</string>
     <string name="saved_searches">Saved Searches</string>
     <string name="savings_to_date">Savings* to Date:</string>
@@ -248,6 +249,7 @@
     <string name="number">(844)873-8300</string>
     <string name="savings_are_calculated">*savings are calculated based on MSRP parameters</string>
     <string name="this_person_must">**This person must be present when picking up the vehicle</string>
+    <string name="submitted_date_colon">Submitted Date:</string>
     <string name="submitted_colon">Submitted:</string>
     <string name="hot_market">Hot Market!</string>
     <string name="go_back_and_try_again">GO BACK AND TRY AGAIN</string>
@@ -309,4 +311,9 @@
     <string name="cvv_required">CVV is Required</string>
     <string name="cvv_must_be_valid_digits">CVV must be valid 3 Digits</string>
     <string name="zipcode_must_be_valid_digits">Zipcode must be valid 5 Digits</string>
+    <string name="vehicle">Vehicle:</string>
+    <string name="see_details">SEE DETAILS</string>
+    <string name="un_successful_match">Unsuccessful Match</string>
+    <string name="successful_match">Successful Match</string>
+    <string name="type">Type:</string>
 </resources>

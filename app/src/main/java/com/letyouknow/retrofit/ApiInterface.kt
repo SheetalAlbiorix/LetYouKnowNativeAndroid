@@ -200,5 +200,9 @@ interface ApiInterface {
     fun priceBid(
     ): Call<ArrayList<BidPriceData>>
 
+    @GET("history/transactions")
+    fun transactionsHistory(
+    ): Call<ArrayList<TransactionHistoryData>>
+
 
 }
