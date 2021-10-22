@@ -2,6 +2,7 @@ package com.letyouknow.retrofit
 
 import com.letyouknow.model.*
 import com.pionymessenger.model.SignupData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -182,7 +183,7 @@ interface ApiInterface {
     fun savingsToDate(): Call<Double>
 
     @POST("userprofile/changepassword")
-    fun changePassword(@Body request: ChangePasswordRequestData): Call<String>
+    fun changePassword(@Body request: ChangePasswordRequestData): Call<ResponseBody>
 
     @GET("userprofile/{getUserID}/notificationoptions")
     fun notificationOptions(
