@@ -10,10 +10,10 @@ import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 
 object LoginRepository {
-
     fun getLoginApiCall(
         context: Context,
         request: HashMap<String, String>
@@ -23,6 +23,13 @@ object LoginRepository {
 
         call.enqueue(object : Callback<LoginData> {
             override fun onFailure(call: Call<LoginData>, t: Throwable) {
+                if (t is SocketTimeoutException) {
+                    Constant.dismissLoader()
+                    AppGlobal.alertError(
+                        context,
+                        "Socket Time out. Please try again."
+                    )
+                }
                 Log.v("DEBUG : ", t.message.toString())
             }
 
@@ -31,7 +38,6 @@ object LoginRepository {
                 response: Response<LoginData>,
             ) {
                 Log.v("DEBUG : ", response.body().toString())
-
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     loginVo.value = data!!

@@ -8,6 +8,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 object RetrofitClient {
@@ -30,32 +31,23 @@ private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api
         /*val okhttpClient = OkHttpClient.Builder()
         okhttpClient.addInterceptor(logging)*/
 
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader(
-                        "Authorization",
-                        "Bearer ${
-                            if (LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
-                                    ?.isPayment() == false
-                            )
-                                LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
-                                    ?.getUserData()?.authToken
-                            else paymentToken
-                        }"
-                    )
-                    .build()
-                return chain.proceed(newRequest)
-            }
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader(
+                    "Authorization",
+                    "Bearer ${
+                        if (LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
+                                ?.isPayment() == false
+                        )
+                            LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
+                                ?.getUserData()?.authToken
+                        else paymentToken
+                    }"
+                )
+                .build()
+            chain.proceed(newRequest)
+        }).connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build()
 
-            /* @Throws(IOException::class)
-             fun intercept(chain: Interceptor.Chain): Response? {
-                 val newRequest: Request = chain.request().newBuilder()
-                     .addHeader("Authorization", "Bearer $token")
-                     .build()
-                 return chain.proceed(newRequest)
-             }*/
-        }).build()
         Log.e(
             "Header",
             LetYouKnowApp.getInstance()?.getAppPreferencesHelper()?.getUserData()?.authToken!!

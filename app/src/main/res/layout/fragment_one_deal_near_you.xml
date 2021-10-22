@@ -15,7 +15,6 @@
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -160,6 +159,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spYear"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
@@ -180,6 +180,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spMake"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
@@ -200,6 +201,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spModel"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
@@ -220,6 +222,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spTrim"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
@@ -240,6 +243,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spExteriorColor"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"
@@ -260,6 +264,7 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spInteriorColor"
                                 android:padding="0dp"
+                                android:dropDownWidth="match_parent"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown"
                                 android:layout_width="match_parent"

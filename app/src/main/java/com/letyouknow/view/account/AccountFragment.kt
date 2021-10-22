@@ -32,7 +32,9 @@ import com.pionymessenger.utils.Constant.Companion.onTextChange
 import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
+import okhttp3.*
 import org.jetbrains.anko.support.v4.startActivity
+
 
 class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
 
@@ -121,7 +123,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.edtDialogUserName.setText(userData.userName)
         if (pref?.isRememberData()?.isChecked == true) {
             dialogEditLogin.edtDialogCurrentPassword.setText(pref?.isRememberData()?.password)
-//            dialogEditLogin.edtDialogCurrentPassword.isEnabled = false
         }
         onStateChangeLogin()
         dialogEditLogin.btnDialogSaveLogin.setOnClickListener {
@@ -577,6 +578,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             source
         }
     }
+
 }
 
 
