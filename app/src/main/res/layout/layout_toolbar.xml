@@ -27,12 +27,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:src="@drawable/logo_redraw" />
+
             <TextView
                 style="@style/medium"
                 android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:text="@{toolbarTitle}"
                 android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_12sdp" />

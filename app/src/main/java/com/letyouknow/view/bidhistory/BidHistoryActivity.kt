@@ -18,10 +18,13 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityBidHistoryBinding
 import com.letyouknow.model.BidPriceData
 import com.letyouknow.retrofit.viewmodel.BidHistoryViewModel
+import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
+import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.util.*
 
@@ -68,6 +71,13 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 val pos = v.tag as Int
                 val data = adapterBidHistory.getItem(pos)
                 popupBidHistory(data)
+            }
+            R.id.llBidDetail -> {
+                val pos = v.tag as Int
+                val data = adapterBidHistory.getItem(pos)
+                if (!TextUtils.isEmpty(data.transactionCode)) {
+                    startActivity<TransactionCodeDetailActivity>(ARG_TRANSACTION_CODE to data.transactionCode)
+                }
             }
         }
     }
@@ -138,7 +148,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 tvDialogZipCode.text = zipCode
                 tvDialogRadius.text = if (searchRadius == "6000") "All" else searchRadius
                 tvDialogPrice.text = NumberFormat.getCurrencyInstance(Locale.US).format(price)
-
+                tvDialogSubmittedDate.text = timeStampFormatted
             }
         }
         setLayoutParam(dialog)

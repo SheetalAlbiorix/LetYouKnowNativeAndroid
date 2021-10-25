@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import com.letyouknow.retrofit.repository.SavingsToDateRepository
 
 class SavingsToDateViewModel : ViewModel() {
-    var liveData: MutableLiveData<Double>? = null
+    var liveData: MutableLiveData<Float>? = null
 
     fun savingsToDateCall(
         context: Context,
-    ): LiveData<Double>? {
+    ): LiveData<Float>? {
         liveData = SavingsToDateRepository.savingstodateApiCall(
             context
         )

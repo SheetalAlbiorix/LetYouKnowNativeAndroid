@@ -127,6 +127,7 @@
     <string name="price_summary_colon">Price Summary:</string>
     <string name="balance_preview">Balance Preview:</string>
     <string name="your_lightingcardeals_price">Your LightingCarDeals Price:</string>
+    <string name="for_non_refundable_italic"><i>For nonrefundable service &amp; reservation fee of $799.00</i></string>
     <string name="for_non_refundable">For nonrefundable service &amp; reservation fee of $%1s if your deal is accepted</string>
     <string name="service_and_reserve_fee">Nonrefundable Service &amp; Reservation Fee:\n<i>(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</i></string>
     <string name="amount_you_ll_be_charged">(amount you\'ll be charged if your deal is accepted - you will not be charged if your deal is not accepted)</string>
@@ -139,6 +140,7 @@
     <string name="have_a_promo_code"><u>Have a promo code?</u></string>
     <string name="buyer_information">Buyer Information</string>
     <string name="buyer_info">Buyer Info</string>
+    <string name="buyer_info_req">Buyer Info**</string>
     <string name="lighting_car_deals">Lighting Car Deals</string>
     <string name="search_deals_title">Search Deals</string>
     <string name="gift_card_or_discount_code">Gift card or discount code</string>
@@ -153,7 +155,7 @@
     <string name="text_message">Text Message</string>
     <string name="push_notification">Push Notification</string>
     <string name="saving_to_date">Saving to Date</string>
-    <string name="saving_are_calculated_based_on_the_msrp_parameters">*Saving are calculated based on the MSRP parameters</string>
+    <string name="saving_are_calculated_based_on_the_msrp_parameters"><i>*Saving are calculated based on the MSRP parameters</i></string>
     <string name="unsuccessful_match">Unsuccessful Match</string>
     <string name="disclosure">Disclosure:</string>
     <string name="last_bid">Last Bid:</string>
@@ -165,6 +167,7 @@
     <string name="savings_to_date">Savings* to Date:</string>
     <string name="your_search_results">Your Search Results:</string>
     <string name="notifications">Notifications</string>
+    <string name="notification">Notification</string>
     <string name="search_deals">Search Deals</string>
     <string name="car_options">CAR OPTIONS</string>
     <string name="colors">COLORS</string>
@@ -222,6 +225,7 @@
     <string name="enter_valid_date_mm_yy">Enter Valid Date MM YY</string>
     <string name="okay">OKAY</string>
     <string name="letyouknow_dollars">LetYouKnow Dollars</string>
+    <string name="letyouknow_dollars_colon">LetYouKnow Dollars:</string>
     <string name="leave_my_deal">Leave My Deal</string>
     <string name="actual_model_may_vary">Actual Model may vary</string>
     <string name="enter_promo_code_is_not_valid">Enter Promo Code is not valid</string>
@@ -249,12 +253,15 @@
     <string name="number">(844)873-8300</string>
     <string name="savings_are_calculated">*savings are calculated based on MSRP parameters</string>
     <string name="this_person_must">**This person must be present when picking up the vehicle</string>
+    <string name="this_person_must_italic"><i>**This person must be present when picking up the vehicle</i></string>
     <string name="submitted_date_colon">Submitted Date:</string>
     <string name="submitted_colon">Submitted:</string>
     <string name="hot_market">Hot Market!</string>
     <string name="go_back_and_try_again">GO BACK AND TRY AGAIN</string>
     <string name="account_last_4digit">%1s   *****%2s</string>
     <string name="buyer_info_detail"><![CDATA[%1s\n%2s\n%3s\n%4s, %5s %6s\n%7s\n%8s]]></string>
+    <string name="buyer_info_detail1"><![CDATA[%1s\n%2s\n%3s, %4s %5s \n%6s\n%7s]]></string>
+    <string name="dealer_info_detail"><![CDATA[%1s\n%2s, %3s %4s\n%5s\n%6s]]></string>
     <string name="findyourcar">Find Your Car</string>
     <string name="price_must_be_799_00"><![CDATA[Price must be >= $799.00]]></string>
     <string name="we_did_not_find_a_match">%1s, we did not find a match for your requested price of $799.00. Your Card was not charged.\nWe don\'t stop working for you, so check out these options</string>
@@ -316,4 +323,8 @@
     <string name="un_successful_match">Unsuccessful Match</string>
     <string name="successful_match">Successful Match</string>
     <string name="type">Type:</string>
+    <string name="last_4_digits">*****%1s</string>
+    <string name="transaction_details">Transaction Details</string>
+    <string name="you_have_10_days_from_the_timestamp">You have 10 days from the timestamp below to complete your vehicle transaction.</string>
+    <string name="your_letyouknow_price">Your LetYouKnow Price:</string>
 </resources>

@@ -14,12 +14,12 @@ object SavingsToDateRepository {
 
     fun savingstodateApiCall(
         context: Context,
-    ): MutableLiveData<Double> {
-        val savingstodateData = MutableLiveData<Double>()
+    ): MutableLiveData<Float> {
+        val savingstodateData = MutableLiveData<Float>()
         val call = RetrofitClient.apiInterface.savingsToDate()
 
-        call.enqueue(object : Callback<Double> {
-            override fun onResponse(call: Call<Double>, response: Response<Double>) {
+        call.enqueue(object : Callback<Float> {
+            override fun onResponse(call: Call<Float>, response: Response<Float>) {
                 Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
@@ -37,7 +37,7 @@ object SavingsToDateRepository {
                 }
             }
 
-            override fun onFailure(call: Call<Double>, t: Throwable) {
+            override fun onFailure(call: Call<Float>, t: Throwable) {
                 Log.v("DEBUG : ", t.message.toString())
             }
         })

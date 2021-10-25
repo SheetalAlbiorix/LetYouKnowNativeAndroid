@@ -181,6 +181,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setYear() {
+        spYear.isEnabled = false
         val arData = ArrayList<VehicleYearData>()
         val yearData = VehicleYearData()
         yearData.year = "YEAR - NEW CARS"
@@ -301,6 +302,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun callVehicleYearAPI() {
+        spYear.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleYearModel.getYear(

@@ -36,6 +36,9 @@ import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
 import okhttp3.*
 import org.jetbrains.anko.support.v4.startActivity
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -79,6 +82,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         changePasswordViewModel = ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
+        tvViewNotification.setOnClickListener(this)
         tvEditLogin.setOnClickListener(this)
         tvEditInfo.setOnClickListener(this)
         tvViewDollar.setOnClickListener(this)
@@ -111,6 +115,9 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             }
             R.id.tvViewDollar -> {
                 startActivity<ViewDollarActivity>()
+            }
+            R.id.tvViewNotification -> {
+                startActivity<EditNotificationActivity>()
             }
         }
     }
@@ -252,11 +259,9 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callSavingsToDateAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
             savingsToDateViewModel.savingsToDateCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    tvSavingsDate.text = "$$data"
+                    tvSavingsDate.text = NumberFormat.getCurrencyInstance(Locale.US).format(data)
                     callNotificationOptionsAPI()
                 }
                 )
@@ -268,7 +273,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callNotificationOptionsAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
             notificationOptionsViewModel.notificationCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -504,7 +508,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
             tokenModel.refresh(requireActivity(), request)!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
                     val userData = pref?.getUserData()
                     userData?.authToken = data.auth_token!!
                     userData?.refreshToken = data.refresh_token!!
@@ -519,10 +522,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callUserProfileAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
             userProfileViewModel.userProfileCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
                     setUserData(data)
                     callSavingsToDateAPI()
                 }

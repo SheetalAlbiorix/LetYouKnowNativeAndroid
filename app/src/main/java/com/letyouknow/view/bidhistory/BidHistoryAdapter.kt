@@ -20,6 +20,8 @@ class BidHistoryAdapter(layout: Int, val clickListener: View.OnClickListener) :
         view.run {
             tvSeeMore.tag = position
             tvSeeMore.setOnClickListener(clickListener)
+            llBidDetail.tag = position
+            llBidDetail.setOnClickListener(clickListener)
             data.run {
                 tvSuccessUnSuccess.text =
                     if (TextUtils.isEmpty(transactionCode)) resources.getString(R.string.un_successful_match) else resources.getString(

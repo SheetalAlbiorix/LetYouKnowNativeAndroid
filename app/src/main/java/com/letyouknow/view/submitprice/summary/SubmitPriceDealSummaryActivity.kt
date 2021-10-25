@@ -428,7 +428,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
             request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
             request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
             request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
@@ -441,7 +441,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.timeZoneOffset] = "-330"
             request[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
             request[ApiConstant.vehiclePackageIDs] = arJsonPackage
-
+            Log.e("Request pendingDeal", Gson().toJson(request))
             submitPendingDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()

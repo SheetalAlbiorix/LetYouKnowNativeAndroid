@@ -156,8 +156,6 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvViewOptions.setOnClickListener(this)
         tvApplyPromo.setOnClickListener(this)
         ivBack.setOnClickListener(this)
-
-        setOnChange()
         startTimer()
 //        backButton()
         onStateChange()
@@ -455,53 +453,6 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //        cancelTimer()
     }
 
-    private fun setOnChange() {
-        edtExpiresDate.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                var working = edtExpiresDate.text.toString()
-                var isValid = true
-                if (working.length == 2 && before == 0) {
-                    if (Integer.parseInt(working) < 1 || Integer.parseInt(working) > 12) {
-                        isValid = false
-                    } else {
-                        working += "/"
-                        edtExpiresDate.setText(working)
-                        edtExpiresDate.setSelection(working.length)
-                    }
-                } else if (working.length == 5 && before == 0) {
-                    val enteredYear = working.substring(3)
-                    val currentYear = Calendar.getInstance()
-                        .get(Calendar.YEAR) % 100//getting last 2 digits of current year i.e. 2018 % 100 = 18
-                    if (Integer.parseInt(enteredYear) < currentYear) {
-                        isValid = false
-                    }
-                } else if (working.length != 5) {
-                    isValid = false
-                }
-
-                if (!isValid) {
-                    edtExpiresDate.error = getString(R.string.enter_valid_date_mm_yy)
-                } else {
-                    edtExpiresDate.error = null
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val inputLength = edtExpiresDate.text.toString().length
-                /* if (inputLength == 2) {
-                     edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
-                     edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
-                 }*/
-
-                /*if (inputLength == 5) {
-                    edtCVV.requestFocus()
-                }*/
-            }
-        })
-    }
 
     private fun initCardAdapter() {
         adapterCardList = CardListAdapter(R.layout.list_item_card, this)

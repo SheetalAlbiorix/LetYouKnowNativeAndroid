@@ -180,7 +180,7 @@ interface ApiInterface {
     fun getUserProfile(): Call<UserProfileData>
 
     @GET("userprofile/savingstodate")
-    fun savingsToDate(): Call<Double>
+    fun savingsToDate(): Call<Float>
 
     @POST("userprofile/changepassword")
     fun changePassword(@Body request: ChangePasswordRequestData): Call<ResponseBody>
@@ -204,5 +204,9 @@ interface ApiInterface {
     fun transactionsHistory(
     ): Call<ArrayList<TransactionHistoryData>>
 
-
+    //    https://lykbuyerwebapidemo.azurewebsites.net/api/history/transaction?code=VJ16014029
+    @GET("history/transaction")
+    fun transactionCode(
+        @Query("code") code: String?
+    ): Call<TransactionCodeData>
 }

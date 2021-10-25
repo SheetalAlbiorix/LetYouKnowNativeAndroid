@@ -96,6 +96,10 @@ class TransactionHistoryAdapter(layout: Int, val clickListener: View.OnClickList
                 tvDate.text = timeStampFormatted
                 tvPrice.text = NumberFormat.getCurrencyInstance(Locale.US).format(price)
             }
+            tvSeeMore.tag = position
+            tvSeeMore.setOnClickListener(clickListener)
+            llTransaction.tag = position
+            llTransaction.setOnClickListener(clickListener)
 
         }
     }

@@ -715,6 +715,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/bg_edittext"
                     android:digits="1234567890"
+                    android:maxLength="19"
                     android:drawableLeft="@drawable/ic_camera"
                     android:hint="@string/card_number"
                     android:inputType="number" />

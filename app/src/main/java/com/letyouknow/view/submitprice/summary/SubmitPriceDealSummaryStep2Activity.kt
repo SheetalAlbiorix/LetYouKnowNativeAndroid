@@ -143,7 +143,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
-        setOnChange()
 //        startTimer()
         setState()
 
@@ -408,27 +407,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     override fun onStop() {
         super.onStop()
 //        cancelTimer()
-    }
-
-    private fun setOnChange() {
-        edtExpiresDate.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val inputLength = edtExpiresDate.text.toString().length
-                if (inputLength == 2) {
-                    edtExpiresDate.setText(edtExpiresDate.text.toString().trim() + "/")
-                    edtExpiresDate.setSelection(edtExpiresDate.text.toString().length)
-                }
-                if (inputLength == 5) {
-                    edtCVV.requestFocus()
-                }
-            }
-        })
     }
 
     private fun initCardAdapter() {

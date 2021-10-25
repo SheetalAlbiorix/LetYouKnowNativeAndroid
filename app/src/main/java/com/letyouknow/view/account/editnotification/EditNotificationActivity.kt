@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 class EditNotificationActivity : BaseActivity(), View.OnClickListener {
     private val arNotification: ArrayList<NotificationsData> = ArrayList()
     private lateinit var binding: ActivityEditNotificationBinding
-    private lateinit var adapterEditNotification: EditNotificationAdapter
+    private lateinit var adapterEditNotification: EditNotification1Adapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_notification)
@@ -40,17 +40,17 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun setNotificationData() {
-        arNotification.add(NotificationsData("Promos and Deals", R.color.orange, false))
+        arNotification.add(NotificationsData("Email", R.color.orange, false))
         arNotification.add(
             NotificationsData(
-                "Deals Reservation and \nConfirmations",
+                "SMS",
                 R.color.color36c050,
                 false
             )
         )
-        arNotification.add(NotificationsData("Reservation Reminders", R.color.colorPrimary, false))
+        arNotification.add(NotificationsData("Push Notification", R.color.colorPrimary, false))
         adapterEditNotification =
-            EditNotificationAdapter(R.layout.list_item_edit_notification, this)
+            EditNotification1Adapter(R.layout.list_item_edit_notification1, this)
         rvEditNotification.adapter = adapterEditNotification
         adapterEditNotification.addAll(arNotification)
 

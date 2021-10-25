@@ -55,6 +55,7 @@ class Constant {
         var ARG_YEAR_MAKE_MODEL = "ARG_YEAR_MAKE_MODEL"
         var ARG_IMAGE_URL = "ARG_IMAGE_URL"
         var ARG_SUBMIT_DEAL = "ARG_SUBMIT_DEAL"
+        var ARG_TRANSACTION_CODE = "ARG_TRANSACTION_CODE"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
