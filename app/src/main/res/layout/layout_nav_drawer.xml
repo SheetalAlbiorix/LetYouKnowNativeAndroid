@@ -76,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Violet Norman"
-                            android:textColor="@color/black"
+                            android:textColor="@color/color545d64"
                             android:textSize="@dimen/_14sdp" />
 
                         <TextView
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:text="violet_norman@gmail.com"
-                            android:textColor="@color/textLightGrey"
+                            android:textColor="@color/color545d64"
                             android:textSize="@dimen/_11sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>

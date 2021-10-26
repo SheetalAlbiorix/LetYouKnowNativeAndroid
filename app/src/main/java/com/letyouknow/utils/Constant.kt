@@ -26,6 +26,7 @@ class Constant {
         var noInternet = "No internet connection"
 
         //        var TERMS_CONDITIONS_LINK = "https://github.com/flutter/flutter/issues/70284"
+        var HELP = "https://demo.letyouknow.com/helpandcontact"
         var FAQ = "https://demo.letyouknow.com/helpandcontact"
         var HOW_IT_WORKS = "https://demo.letyouknow.com/howitworksvid"
         var TERMS_CONDITIONS_LINK = "https://demo.letyouknow.com/termsandconditions"
@@ -45,6 +46,7 @@ class Constant {
 
         //Arguments
         var ARG_LINK = "ARG_LINK"
+        var ARG_WEB_URL = "ARG_WEB_URL"
         var ARG_TITLE = "ARG_TITLE"
         var ARG_POLICY = "ARG_POLICY"
         var ARG_TYPE_VIEW = "ARG_TYPE_VIEW"
@@ -109,7 +111,7 @@ class Constant {
             progress = KProgressHUD.create(context)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait")
-                .setCancellable(true)
+                .setCancellable(false)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)
 

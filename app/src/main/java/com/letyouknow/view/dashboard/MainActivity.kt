@@ -18,10 +18,13 @@ import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.home.HomeFragment
+import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.submitprice.SubmitYourPriceFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_TITLE
+import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -227,10 +230,18 @@ class MainActivity : BaseActivity(),
                         startActivity<TransactionHistoryActivity>()
                     }
                     2 -> {
-                        AppGlobal.dialogWebView(this, Constant.HOW_IT_WORKS)
+                        startActivity<HowItWorkHelpWebViewActivity>(
+                            ARG_TITLE to data.title,
+                            ARG_WEB_URL to Constant.HOW_IT_WORKS
+                        )
+//                        AppGlobal.dialogWebView(this, Constant.HOW_IT_WORKS)
                     }
                     3 -> {
-                        AppGlobal.dialogWebView(this, Constant.FAQ)
+                        startActivity<HowItWorkHelpWebViewActivity>(
+                            ARG_TITLE to data.title,
+                            ARG_WEB_URL to Constant.HELP
+                        )
+//                        AppGlobal.dialogWebView(this, Constant.FAQ)
                     }
 
                     4 -> {

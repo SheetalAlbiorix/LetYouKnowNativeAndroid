@@ -22,7 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
+            android:name=".view.howitworkhelp.HowItWorkHelpWebViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.transaction_history.TransactionCodeDetailActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
 
         <meta-data
@@ -52,18 +57,23 @@
 
         <activity
             android:name=".view.account.viewDollar.ViewDollarActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".view.home.dealsummary.gallery360view.view360.View360Activty"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".view.home.dealsummary.gallery360view.Gallery360TabActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".view.account.editrefer.referstep2.ReferStep2Activity"

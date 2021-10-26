@@ -27,7 +27,7 @@ class DrawerListAdapter(layout: Int, val clickListener: View.OnClickListener) :
                         ColorStateList.valueOf(resources.getColor(R.color.orange))
                     ivDrawer.setImageResource(iconSelect!!)
                 } else {
-                    tvDrawer.setTextColor(context.resources.getColor(R.color.black100))
+                    tvDrawer.setTextColor(context.resources.getColor(R.color.color545d64))
                     llDrawer.backgroundTintList =
                         ColorStateList.valueOf(resources.getColor(R.color.white))
                     ivDrawer.setImageResource(icon!!)

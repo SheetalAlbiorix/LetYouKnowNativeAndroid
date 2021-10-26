@@ -117,47 +117,51 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun init() {
-        animBlink = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_blink
-        )
-        animSlideRightToLeft = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_slide_in_right
-        )
-        animSlideLeftToRight = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_slide_in_left
-        )
-        tvPromo.startAnimation(animBlink)
+        try {
+            animBlink = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_blink
+            )
+            animSlideRightToLeft = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_slide_in_right
+            )
+            animSlideLeftToRight = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_slide_in_left
+            )
+            tvPromo.startAnimation(animBlink)
 
-        binding.upDownData = upDownData
+            binding.upDownData = upDownData
 
-        vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
-        vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
-        vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
-        vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
-        exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
-        interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
-        zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
-        findUCDDealGuestViewModel =
-            ViewModelProvider(this).get(FindUCDDealViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
+            vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
+            vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
+            vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
+            exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
+            interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
+            zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+            findUCDDealGuestViewModel =
+                ViewModelProvider(this).get(FindUCDDealViewModel::class.java)
+            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
-        setYear()
-        setMake()
-        setModel()
-        setTrim()
-        setExteriorColor()
-        setInteriorColor()
-        callRadiusAPI()
-        btnProceedDeal.setOnClickListener(this)
-        tvPromo.setOnClickListener(this)
-        ivClosePromo.setOnClickListener(this)
-        MainActivity.getInstance().setVisibleEditImg(false)
-        MainActivity.getInstance().setVisibleLogoutImg(false)
-        callVehicleYearAPI()
-        onChangeZipCode()
+            setYear()
+            setMake()
+            setModel()
+            setTrim()
+            setExteriorColor()
+            setInteriorColor()
+            callRadiusAPI()
+            btnProceedDeal.setOnClickListener(this)
+            tvPromo.setOnClickListener(this)
+            ivClosePromo.setOnClickListener(this)
+            MainActivity.getInstance().setVisibleEditImg(false)
+            MainActivity.getInstance().setVisibleLogoutImg(false)
+            callVehicleYearAPI()
+            onChangeZipCode()
+        } catch (e: Exception) {
+
+        }
     }
 
 
@@ -346,19 +350,22 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("ZipCode Data", Gson().toJson(data))
-                    if (!data) {
-                        /* Toast.makeText(
-                             requireActivity(),
-                             getString(R.string.invalid_zip_code),
-                             Toast.LENGTH_SHORT
-                         ).show()*/
-                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
-                        tvErrorZipCode.visibility = View.VISIBLE
-                    } else {
-                        tvErrorZipCode.visibility = View.GONE
+                    try {
+                        Log.e("ZipCode Data", Gson().toJson(data))
+                        if (!data) {
+                            /* Toast.makeText(
+                                 requireActivity(),
+                                 getString(R.string.invalid_zip_code),
+                                 Toast.LENGTH_SHORT
+                             ).show()*/
+                            edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
+                            tvErrorZipCode.visibility = View.VISIBLE
+                        } else {
+                            tvErrorZipCode.visibility = View.GONE
+                        }
+                        isValidZipCode = data
+                    } catch (e: Exception) {
                     }
-                    isValidZipCode = data
                 }
                 )
         } else {
@@ -374,24 +381,27 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Year Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val yearData = VehicleYearData()
-                        yearData.year = "YEAR - NEW CARS"
-                        data.add(0, yearData)
-                        adapterYear = YearSpinnerAdapter(requireActivity(), data)
-                        spYear.adapter = adapterYear
-                        spYear.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleYearData>()
-                        val yearData = VehicleYearData()
-                        yearData.year = "YEAR - NEW CARS"
-                        arData.add(0, yearData)
-                        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-                        spYear.adapter = adapterYear
-                        spYear.onItemSelectedListener = this
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val yearData = VehicleYearData()
+                            yearData.year = "YEAR - NEW CARS"
+                            data.add(0, yearData)
+                            adapterYear = YearSpinnerAdapter(requireActivity(), data)
+                            spYear.adapter = adapterYear
+                            spYear.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleYearData>()
+                            val yearData = VehicleYearData()
+                            yearData.year = "YEAR - NEW CARS"
+                            arData.add(0, yearData)
+                            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+                            spYear.adapter = adapterYear
+                            spYear.onItemSelectedListener = this
+
+                        }
+                    } catch (e: Exception) {
 
                     }
-
                 }
                 )
         } else {
@@ -406,22 +416,26 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val makeData = VehicleMakeData()
-                        makeData.make = "MAKE"
-                        data.add(0, makeData)
-                        adapterMake = MakeSpinnerAdapter(requireActivity(), data)
-                        spMake.adapter = adapterMake
-                        spMake.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleMakeData>()
-                        val makeData = VehicleMakeData()
-                        makeData.make = "MAKE"
-                        arData.add(0, makeData)
-                        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
-                        spMake.adapter = adapterMake
-                        spMake.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val makeData = VehicleMakeData()
+                            makeData.make = "MAKE"
+                            data.add(0, makeData)
+                            adapterMake = MakeSpinnerAdapter(requireActivity(), data)
+                            spMake.adapter = adapterMake
+                            spMake.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleMakeData>()
+                            val makeData = VehicleMakeData()
+                            makeData.make = "MAKE"
+                            arData.add(0, makeData)
+                            adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+                            spMake.adapter = adapterMake
+                            spMake.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
+
                     }
                 }
                 )
@@ -437,22 +451,26 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val modelData = VehicleModelData()
-                        modelData.model = "MODEL"
-                        data.add(0, modelData)
-                        adapterModel = ModelSpinnerAdapter(requireActivity(), data)
-                        spModel.adapter = adapterModel
-                        spModel.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleModelData>()
-                        val modelData = VehicleModelData()
-                        modelData.model = "MODEL"
-                        arData.add(0, modelData)
-                        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
-                        spModel.adapter = adapterModel
-                        spModel.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val modelData = VehicleModelData()
+                            modelData.model = "MODEL"
+                            data.add(0, modelData)
+                            adapterModel = ModelSpinnerAdapter(requireActivity(), data)
+                            spModel.adapter = adapterModel
+                            spModel.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleModelData>()
+                            val modelData = VehicleModelData()
+                            modelData.model = "MODEL"
+                            arData.add(0, modelData)
+                            adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+                            spModel.adapter = adapterModel
+                            spModel.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
+
                     }
                 }
                 )
@@ -506,30 +524,34 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val exteriorColorData = ExteriorColorData()
-                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                        data.add(0, exteriorColorData)
-                        val exteriorColorData1 = ExteriorColorData()
-                        exteriorColorData1.vehicleExteriorColorID = "0"
-                        exteriorColorData1.exteriorColor = "ANY"
-                        data.add(1, exteriorColorData1)
-                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
-                        spExteriorColor.adapter = adapterExterior
-                        spExteriorColor.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<ExteriorColorData>()
-                        val exteriorColorData = ExteriorColorData()
-                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                        arData.add(0, exteriorColorData)
-                        val exteriorColorData1 = ExteriorColorData()
-                        exteriorColorData1.vehicleExteriorColorID = "0"
-                        exteriorColorData1.exteriorColor = "ANY"
-                        arData.add(1, exteriorColorData1)
-                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
-                        spExteriorColor.adapter = adapterExterior
-                        spExteriorColor.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val exteriorColorData = ExteriorColorData()
+                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                            data.add(0, exteriorColorData)
+                            val exteriorColorData1 = ExteriorColorData()
+                            exteriorColorData1.vehicleExteriorColorID = "0"
+                            exteriorColorData1.exteriorColor = "ANY"
+                            data.add(1, exteriorColorData1)
+                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
+                            spExteriorColor.adapter = adapterExterior
+                            spExteriorColor.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<ExteriorColorData>()
+                            val exteriorColorData = ExteriorColorData()
+                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                            arData.add(0, exteriorColorData)
+                            val exteriorColorData1 = ExteriorColorData()
+                            exteriorColorData1.vehicleExteriorColorID = "0"
+                            exteriorColorData1.exteriorColor = "ANY"
+                            arData.add(1, exteriorColorData1)
+                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+                            spExteriorColor.adapter = adapterExterior
+                            spExteriorColor.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
+
                     }
                 }
                 )
@@ -553,30 +575,34 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val interiorColorData = InteriorColorData()
-                        interiorColorData.interiorColor = "INTERIOR COLOR"
-                        data.add(0, interiorColorData)
-                        val interiorColorData1 = InteriorColorData()
-                        interiorColorData1.vehicleInteriorColorID = "0"
-                        interiorColorData1.interiorColor = "ANY"
-                        data.add(1, interiorColorData1)
-                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
-                        spInteriorColor.adapter = adapterInterior
-                        spInteriorColor.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<InteriorColorData>()
-                        val interiorColorData = InteriorColorData()
-                        interiorColorData.interiorColor = "INTERIOR COLOR"
-                        arData.add(0, interiorColorData)
-                        val interiorColorData1 = InteriorColorData()
-                        interiorColorData1.vehicleInteriorColorID = "0"
-                        interiorColorData1.interiorColor = "ANY"
-                        arData.add(1, interiorColorData1)
-                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
-                        spInteriorColor.adapter = adapterInterior
-                        spInteriorColor.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val interiorColorData = InteriorColorData()
+                            interiorColorData.interiorColor = "INTERIOR COLOR"
+                            data.add(0, interiorColorData)
+                            val interiorColorData1 = InteriorColorData()
+                            interiorColorData1.vehicleInteriorColorID = "0"
+                            interiorColorData1.interiorColor = "ANY"
+                            data.add(1, interiorColorData1)
+                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
+                            spInteriorColor.adapter = adapterInterior
+                            spInteriorColor.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<InteriorColorData>()
+                            val interiorColorData = InteriorColorData()
+                            interiorColorData.interiorColor = "INTERIOR COLOR"
+                            arData.add(0, interiorColorData)
+                            val interiorColorData1 = InteriorColorData()
+                            interiorColorData1.vehicleInteriorColorID = "0"
+                            interiorColorData1.interiorColor = "ANY"
+                            arData.add(1, interiorColorData1)
+                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+                            spInteriorColor.adapter = adapterInterior
+                            spInteriorColor.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
+
                     }
                 }
                 )

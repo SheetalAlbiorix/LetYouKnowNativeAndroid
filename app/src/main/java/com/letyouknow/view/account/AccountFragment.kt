@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
-import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
@@ -80,22 +78,27 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     }
 
     private fun init() {
-        savingsToDateViewModel = ViewModelProvider(this).get(SavingsToDateViewModel::class.java)
-        notificationOptionsViewModel =
-            ViewModelProvider(this).get(NotificationOptionsViewModel::class.java)
-        userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
-        editUserProfileViewModel = ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
-        changePasswordViewModel = ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+        try {
+            savingsToDateViewModel = ViewModelProvider(this).get(SavingsToDateViewModel::class.java)
+            notificationOptionsViewModel =
+                ViewModelProvider(this).get(NotificationOptionsViewModel::class.java)
+            userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
+            editUserProfileViewModel =
+                ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
+            changePasswordViewModel =
+                ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
+            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
-        tvViewNotification.setOnClickListener(this)
-        tvEditLogin.setOnClickListener(this)
-        tvEditInfo.setOnClickListener(this)
-        tvViewDollar.setOnClickListener(this)
-        MainActivity.getInstance().setVisibleEditImg(false)
-        MainActivity.getInstance().setVisibleLogoutImg(true)
-        callRefreshTokenApi()
+            tvViewNotification.setOnClickListener(this)
+            tvEditLogin.setOnClickListener(this)
+            tvEditInfo.setOnClickListener(this)
+            tvViewDollar.setOnClickListener(this)
+            MainActivity.getInstance().setVisibleEditImg(false)
+            MainActivity.getInstance().setVisibleLogoutImg(true)
+            callRefreshTokenApi()
+        } catch (e: Exception) {
 
+        }
     }
 
 
@@ -269,15 +272,26 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
 
     private fun callSavingsToDateAPI() {
-        if (Constant.isOnline(requireActivity())) {
-            savingsToDateViewModel.savingsToDateCall(requireActivity())!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    tvSavingsDate.text = NumberFormat.getCurrencyInstance(Locale.US).format(data)
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        try {
+            if (Constant.isOnline(requireActivity())) {
+                savingsToDateViewModel.savingsToDateCall(requireActivity())!!
+                    .observe(requireActivity(), Observer { data ->
+
+                        try {
+                            tvSavingsDate.text =
+                                NumberFormat.getCurrencyInstance(Locale.US).format(data)
+
+                            Constant.dismissLoader()
+                        } catch (e: Exception) {
+
+                        }
+                    }
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
@@ -342,7 +356,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     user1.state = state
                     user1.zipcode = dialogEditInfo.edtZipCode.text.toString().trim()
                     setUserData(user1)
-
                     setClearEditInfoData()
                 }
                 )
@@ -360,14 +373,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             reqData.newPassword = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
             reqData.currentPassword =
                 dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
-
-            Log.e("req-->", reqData.userName.toString())
-            Log.e("req-->", reqData.newPassword.toString())
-            Log.e("req-->", reqData.currentPassword.toString())
-            Log.e("req-->",
-                LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
-                    ?.getUserData()?.authToken.toString()
-            )
 
             changePasswordViewModel.changePasswordCall(requireActivity(), reqData)!!
                 .observe(requireActivity(), Observer { data ->
@@ -515,49 +520,64 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     }
 
     private fun callRefreshTokenApi() {
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            val request = java.util.HashMap<String, Any>()
-            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
-            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+        try {
+            if (Constant.isOnline(requireActivity())) {
+                Constant.showLoader(requireActivity())
+                val request = java.util.HashMap<String, Any>()
+                request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+                request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
 
-            tokenModel.refresh(requireActivity(), request)!!
-                .observe(requireActivity(), Observer { data ->
-                    val userData = pref?.getUserData()
-                    userData?.authToken = data.auth_token!!
-                    userData?.refreshToken = data.refresh_token!!
-                    pref?.setUserData(Gson().toJson(userData))
-                    callUserProfileAPI()
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                tokenModel.refresh(requireActivity(), request)!!
+                    .observe(requireActivity(), Observer { data ->
+                        val userData = pref?.getUserData()
+                        userData?.authToken = data.auth_token!!
+                        userData?.refreshToken = data.refresh_token!!
+                        pref?.setUserData(Gson().toJson(userData))
+                        callUserProfileAPI()
+
+                    }
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callUserProfileAPI() {
-        if (Constant.isOnline(requireActivity())) {
-            userProfileViewModel.userProfileCall(requireActivity())!!
-                .observe(requireActivity(), Observer { data ->
-                    setUserData(data)
-                    callSavingsToDateAPI()
-                }
-                )
+        try {
+            if (Constant.isOnline(requireActivity())) {
+                userProfileViewModel.userProfileCall(requireActivity())!!
+                    .observe(requireActivity(), Observer { data ->
 
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                        setUserData(data)
+                        callSavingsToDateAPI()
+                    }
+                    )
+
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun setUserData(data: UserProfileData) {
-        binding.userData = data
-        userData = data
-        if (userData.phoneNumber?.contains("(") == false)
-            tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
-        else
-            tvPhoneNo.text = data.phoneNumber
-        tvFirstName.text = data.firstName + " " + data.middleName + " " + data.lastName
-        tvLastName.text = data.address1 + "\n" + data.address2 + "\n" + data.city + "," + data.state
+        try {
+            binding.userData = data
+            userData = data
+            if (userData.phoneNumber?.contains("(") == false)
+                tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
+            else
+                tvPhoneNo.text = data.phoneNumber
+            tvFirstName.text = data.firstName + " " + data.middleName + " " + data.lastName
+            tvLastName.text =
+                data.address1 + "\n" + data.address2 + "\n" + data.city + "," + data.state
+        } catch (e: Exception) {
+
+        }
     }
 
     private var filter = InputFilter { source, start, end, dest, dstart, dend ->
@@ -571,7 +591,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                         val digits2 = number.split("(?<=.)").toTypedArray()
                         source = digits2[digits2.size - 1]
                     }
-                    if (edtPhoneNumber.text.toString().length < 1) {
+                    if (edtPhoneNumber.text.toString().isEmpty()) {
                         return@InputFilter "($source"
                     } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
                             .length <= 3

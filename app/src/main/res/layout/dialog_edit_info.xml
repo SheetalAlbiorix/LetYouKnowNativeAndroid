@@ -279,11 +279,11 @@
 
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/spState"
+                        style="?android:attr/spinnerDropDownItemStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@drawable/bg_spinner"
-                        android:backgroundTint="@color/offWhite" />
+                        android:background="@drawable/bg_spinner" />
 
                     <TextView
                         android:id="@+id/tvErrorState"

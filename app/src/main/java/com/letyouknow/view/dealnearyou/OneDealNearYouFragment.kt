@@ -107,54 +107,58 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun init() {
-        animBlink = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_blink
-        )
-        animSlideRightToLeft = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_slide_in_right
-        )
-        animSlideLeftToRight = AnimationUtils.loadAnimation(
-            requireActivity(),
-            R.anim.anim_slide_in_left
-        )
-        tvPromo.startAnimation(animBlink)
-        binding.upDownData = upDownData
-        vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
-        vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
-        vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
-        vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
-        exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
-        interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
-        zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
-        packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
-        packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        checkedPackageModel =
-            ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
-        checkedAccessoriesModel =
-            ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
-        findLCDDealGuestViewModel =
-            ViewModelProvider(this).get(FindLCDDealViewModel::class.java)
+        try {
+            animBlink = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_blink
+            )
+            animSlideRightToLeft = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_slide_in_right
+            )
+            animSlideLeftToRight = AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.anim_slide_in_left
+            )
+            tvPromo.startAnimation(animBlink)
+            binding.upDownData = upDownData
+            vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
+            vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
+            vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
+            vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
+            exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
+            interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
+            zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+            packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
+            packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            checkedPackageModel =
+                ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
+            checkedAccessoriesModel =
+                ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
+            findLCDDealGuestViewModel =
+                ViewModelProvider(this).get(FindLCDDealViewModel::class.java)
 
-        setYear()
-        setMake()
-        setModel()
-        setTrim()
-        setExteriorColor()
-        setInteriorColor()
-        setPackages(false)
-        setOptions(false)
+            setYear()
+            setMake()
+            setModel()
+            setTrim()
+            setExteriorColor()
+            setInteriorColor()
+            setPackages(false)
+            setOptions(false)
 
-        btnSearch.setOnClickListener(this)
-        MainActivity.getInstance().setVisibleEditImg(false)
-        MainActivity.getInstance().setVisibleLogoutImg(false)
-        tvPromo.setOnClickListener(this)
-        ivClosePromo.setOnClickListener(this)
+            btnSearch.setOnClickListener(this)
+            MainActivity.getInstance().setVisibleEditImg(false)
+            MainActivity.getInstance().setVisibleLogoutImg(false)
+            tvPromo.setOnClickListener(this)
+            ivClosePromo.setOnClickListener(this)
 
 
-        onChangeZipCode()
+            onChangeZipCode()
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun onChangeZipCode() {
@@ -278,22 +282,25 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("ZipCode Data", Gson().toJson(data))
-                    if (!data) {
-                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
-                        tvErrorZipCode.visibility = View.VISIBLE
-                        setYear()
-                        setMake()
-                        setModel()
-                        setTrim()
-                        setExteriorColor()
-                        setInteriorColor()
-                        setPackages(false)
-                        setOptions(false)
-                    } else {
-                        tvErrorZipCode.visibility = View.GONE
-                        callVehicleYearAPI()
+                    try {
+                        if (!data) {
+                            edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
+                            tvErrorZipCode.visibility = View.VISIBLE
+                            setYear()
+                            setMake()
+                            setModel()
+                            setTrim()
+                            setExteriorColor()
+                            setInteriorColor()
+                            setPackages(false)
+                            setOptions(false)
+                        } else {
+                            tvErrorZipCode.visibility = View.GONE
+                            callVehicleYearAPI()
+                        }
+                        isValidZipCode = data
+                    } catch (e: Exception) {
                     }
-                    isValidZipCode = data
                 }
                 )
         } else {
@@ -312,25 +319,27 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Year Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val yearData = VehicleYearData()
-                        yearData.year = "YEAR - NEW CARS"
-                        data.add(0, yearData)
-                        adapterYear = YearSpinnerAdapter(requireActivity(), data)
-                        spYear.adapter = adapterYear
-                        spYear.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleYearData>()
-                        val yearData = VehicleYearData()
-                        yearData.year = "YEAR - NEW CARS"
-                        arData.add(0, yearData)
-                        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-                        spYear.adapter = adapterYear
-                        spYear.onItemSelectedListener = this
+                    try {
+                        Log.e("Year Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val yearData = VehicleYearData()
+                            yearData.year = "YEAR - NEW CARS"
+                            data.add(0, yearData)
+                            adapterYear = YearSpinnerAdapter(requireActivity(), data)
+                            spYear.adapter = adapterYear
+                            spYear.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleYearData>()
+                            val yearData = VehicleYearData()
+                            yearData.year = "YEAR - NEW CARS"
+                            arData.add(0, yearData)
+                            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+                            spYear.adapter = adapterYear
+                            spYear.onItemSelectedListener = this
 
+                        }
+                    } catch (e: Exception) {
                     }
-
                 }
                 )
         } else {
@@ -350,22 +359,25 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val makeData = VehicleMakeData()
-                        makeData.make = "MAKE"
-                        data.add(0, makeData)
-                        adapterMake = MakeSpinnerAdapter(requireActivity(), data)
-                        spMake.adapter = adapterMake
-                        spMake.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleMakeData>()
-                        val makeData = VehicleMakeData()
-                        makeData.make = "MAKE"
-                        arData.add(0, makeData)
-                        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
-                        spMake.adapter = adapterMake
-                        spMake.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val makeData = VehicleMakeData()
+                            makeData.make = "MAKE"
+                            data.add(0, makeData)
+                            adapterMake = MakeSpinnerAdapter(requireActivity(), data)
+                            spMake.adapter = adapterMake
+                            spMake.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleMakeData>()
+                            val makeData = VehicleMakeData()
+                            makeData.make = "MAKE"
+                            arData.add(0, makeData)
+                            adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+                            spMake.adapter = adapterMake
+                            spMake.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -388,21 +400,24 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val modelData = VehicleModelData()
-                        modelData.model = "MODEL"
-                        data.add(0, modelData)
-                        adapterModel = ModelSpinnerAdapter(requireActivity(), data)
-                        spModel.adapter = adapterModel
-                        spModel.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleModelData>()
-                        val modelData = VehicleModelData()
-                        modelData.model = "MODEL"
-                        arData.add(0, modelData)
-                        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
-                        spModel.adapter = adapterModel
-                        spModel.onItemSelectedListener = this
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val modelData = VehicleModelData()
+                            modelData.model = "MODEL"
+                            data.add(0, modelData)
+                            adapterModel = ModelSpinnerAdapter(requireActivity(), data)
+                            spModel.adapter = adapterModel
+                            spModel.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleModelData>()
+                            val modelData = VehicleModelData()
+                            modelData.model = "MODEL"
+                            arData.add(0, modelData)
+                            adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+                            spModel.adapter = adapterModel
+                            spModel.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -426,21 +441,24 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val trimData = VehicleTrimData()
-                        trimData.trim = "TRIM"
-                        data.add(0, trimData)
-                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
-                        spTrim.adapter = adapterTrim
-                        spTrim.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleTrimData>()
-                        val trimData = VehicleTrimData()
-                        trimData.trim = "TRIM"
-                        arData.add(0, trimData)
-                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
-                        spTrim.adapter = adapterTrim
-                        spTrim.onItemSelectedListener = this
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val trimData = VehicleTrimData()
+                            trimData.trim = "TRIM"
+                            data.add(0, trimData)
+                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
+                            spTrim.adapter = adapterTrim
+                            spTrim.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleTrimData>()
+                            val trimData = VehicleTrimData()
+                            trimData.trim = "TRIM"
+                            arData.add(0, trimData)
+                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+                            spTrim.adapter = adapterTrim
+                            spTrim.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -464,30 +482,33 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val exteriorColorData = ExteriorColorData()
-                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                        data.add(0, exteriorColorData)
-                        val exteriorColorData1 = ExteriorColorData()
-                        exteriorColorData1.vehicleExteriorColorID = "0"
-                        exteriorColorData1.exteriorColor = "ANY"
-                        data.add(1, exteriorColorData1)
-                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
-                        spExteriorColor.adapter = adapterExterior
-                        spExteriorColor.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<ExteriorColorData>()
-                        val exteriorColorData = ExteriorColorData()
-                        exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                        arData.add(0, exteriorColorData)
-                        val exteriorColorData1 = ExteriorColorData()
-                        exteriorColorData1.vehicleExteriorColorID = "0"
-                        exteriorColorData1.exteriorColor = "ANY"
-                        arData.add(1, exteriorColorData1)
-                        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
-                        spExteriorColor.adapter = adapterExterior
-                        spExteriorColor.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val exteriorColorData = ExteriorColorData()
+                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                            data.add(0, exteriorColorData)
+                            val exteriorColorData1 = ExteriorColorData()
+                            exteriorColorData1.vehicleExteriorColorID = "0"
+                            exteriorColorData1.exteriorColor = "ANY"
+                            data.add(1, exteriorColorData1)
+                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
+                            spExteriorColor.adapter = adapterExterior
+                            spExteriorColor.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<ExteriorColorData>()
+                            val exteriorColorData = ExteriorColorData()
+                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                            arData.add(0, exteriorColorData)
+                            val exteriorColorData1 = ExteriorColorData()
+                            exteriorColorData1.vehicleExteriorColorID = "0"
+                            exteriorColorData1.exteriorColor = "ANY"
+                            arData.add(1, exteriorColorData1)
+                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+                            spExteriorColor.adapter = adapterExterior
+                            spExteriorColor.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -512,30 +533,33 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val interiorColorData = InteriorColorData()
-                        interiorColorData.interiorColor = "INTERIOR COLOR"
-                        data.add(0, interiorColorData)
-                        val interiorColorData1 = InteriorColorData()
-                        interiorColorData1.vehicleInteriorColorID = "0"
-                        interiorColorData1.interiorColor = "ANY"
-                        data.add(1, interiorColorData1)
-                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
-                        spInteriorColor.adapter = adapterInterior
-                        spInteriorColor.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<InteriorColorData>()
-                        val interiorColorData = InteriorColorData()
-                        interiorColorData.interiorColor = "INTERIOR COLOR"
-                        arData.add(0, interiorColorData)
-                        val interiorColorData1 = InteriorColorData()
-                        interiorColorData1.vehicleInteriorColorID = "0"
-                        interiorColorData1.interiorColor = "ANY"
-                        arData.add(1, interiorColorData1)
-                        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
-                        spInteriorColor.adapter = adapterInterior
-                        spInteriorColor.onItemSelectedListener = this
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val interiorColorData = InteriorColorData()
+                            interiorColorData.interiorColor = "INTERIOR COLOR"
+                            data.add(0, interiorColorData)
+                            val interiorColorData1 = InteriorColorData()
+                            interiorColorData1.vehicleInteriorColorID = "0"
+                            interiorColorData1.interiorColor = "ANY"
+                            data.add(1, interiorColorData1)
+                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
+                            spInteriorColor.adapter = adapterInterior
+                            spInteriorColor.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<InteriorColorData>()
+                            val interiorColorData = InteriorColorData()
+                            interiorColorData.interiorColor = "INTERIOR COLOR"
+                            arData.add(0, interiorColorData)
+                            val interiorColorData1 = InteriorColorData()
+                            interiorColorData1.vehicleInteriorColorID = "0"
+                            interiorColorData1.interiorColor = "ANY"
+                            arData.add(1, interiorColorData1)
+                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+                            spInteriorColor.adapter = adapterInterior
+                            spInteriorColor.onItemSelectedListener = this
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -560,20 +584,23 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val packagesData = VehiclePackagesData()
-                        packagesData.vehiclePackageID = "0"
-                        packagesData.packageName = "ANY"
-                        data.add(0, packagesData)
-                        popupPackages(data)
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val packagesData = VehiclePackagesData()
+                            packagesData.vehiclePackageID = "0"
+                            packagesData.packageName = "ANY"
+                            data.add(0, packagesData)
+                            popupPackages(data)
 
-                    } else {
-                        val arData = ArrayList<VehiclePackagesData>()
-                        val packagesData = VehiclePackagesData()
-                        packagesData.vehiclePackageID = "0"
-                        packagesData.packageName = "ANY"
-                        arData.add(0, packagesData)
-                        popupPackages(arData)
+                        } else {
+                            val arData = ArrayList<VehiclePackagesData>()
+                            val packagesData = VehiclePackagesData()
+                            packagesData.vehiclePackageID = "0"
+                            packagesData.packageName = "ANY"
+                            arData.add(0, packagesData)
+                            popupPackages(arData)
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
@@ -608,20 +635,23 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val accessoriesData = VehicleAccessoriesData()
-                        accessoriesData.dealerAccessoryID = "0"
-                        accessoriesData.accessory = "ANY"
-                        data.add(0, accessoriesData)
-                        popupOptions(data)
-                    } else {
-                        val arData = ArrayList<VehicleAccessoriesData>()
-                        val accessoriesData = VehicleAccessoriesData()
-                        accessoriesData.dealerAccessoryID = "0"
-                        accessoriesData.accessory = "ANY"
-                        arData.add(0, accessoriesData)
-                        popupOptions(arData)
+                    try {
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val accessoriesData = VehicleAccessoriesData()
+                            accessoriesData.dealerAccessoryID = "0"
+                            accessoriesData.accessory = "ANY"
+                            data.add(0, accessoriesData)
+                            popupOptions(data)
+                        } else {
+                            val arData = ArrayList<VehicleAccessoriesData>()
+                            val accessoriesData = VehicleAccessoriesData()
+                            accessoriesData.dealerAccessoryID = "0"
+                            accessoriesData.accessory = "ANY"
+                            arData.add(0, accessoriesData)
+                            popupOptions(arData)
+                        }
+                    } catch (e: Exception) {
                     }
                 }
                 )
