@@ -187,8 +187,14 @@ interface ApiInterface {
 
     @GET("userprofile/{getUserID}/notificationoptions")
     fun notificationOptions(
-        @Path(value = "getUserID", encoded = true) planId: Int?,
+        @Path(value = "getUserID", encoded = true) planId: Int?
     ): Call<NotificationOptionsData>
+
+    @PUT("userprofile/{getUserID}/NotificationOptions")
+    fun notificationOptionsUpdate(
+        @Path(value = "getUserID", encoded = true) planId: Int?,
+        @Body request: HashMap<String, Any>
+    ): Call<Boolean>
 
     @PUT("userprofile/{getUserID}")
     fun editUserProfile(

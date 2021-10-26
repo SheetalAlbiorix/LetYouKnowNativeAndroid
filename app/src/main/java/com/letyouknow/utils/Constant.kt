@@ -26,6 +26,8 @@ class Constant {
         var noInternet = "No internet connection"
 
         //        var TERMS_CONDITIONS_LINK = "https://github.com/flutter/flutter/issues/70284"
+        var FAQ = "https://demo.letyouknow.com/helpandcontact"
+        var HOW_IT_WORKS = "https://demo.letyouknow.com/howitworksvid"
         var TERMS_CONDITIONS_LINK = "https://demo.letyouknow.com/termsandconditions"
 
         //        var TERMS_CONDITIONS_LINK = "https://www.demo.letyouknow.com/termsandconditions"
@@ -56,6 +58,7 @@ class Constant {
         var ARG_IMAGE_URL = "ARG_IMAGE_URL"
         var ARG_SUBMIT_DEAL = "ARG_SUBMIT_DEAL"
         var ARG_TRANSACTION_CODE = "ARG_TRANSACTION_CODE"
+        var ARG_NOTIFICATIONS = "ARG_NOTIFICATIONS"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2

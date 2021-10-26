@@ -2,7 +2,6 @@ package com.letyouknow.view.forgotpassword
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -13,6 +12,7 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityForgotPasswordBinding
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ForgotPasswordViewModel
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
@@ -76,15 +76,18 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
             forgotPasswordViewModel.getForgotPassword(this, request)!!
                 .observe(this, Observer { forgotVo ->
                     Constant.dismissLoader()
-                    Toast.makeText(
+                    /*   Toast.makeText(
+                           this,
+                           "You will Receive an email with resetting instruction shortly.\nFor security reasons, this link will only remain\nactive for the next hour",
+                           Toast.LENGTH_SHORT
+                       ).show()*/
+                    AppGlobal.alertError(
                         this,
-                        "You will Receive an email with resetting instruction shortly.\nFor security reasons, this link will only remain\nactive for the next hour",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    Handler().postDelayed({
-                        finish()
-                    }, 5000)
+                        "You will Receive an email with resetting instruction shortly.\nFor security reasons, this link will only remain\nactive for the next hour"
+                    )
+                    /* Handler().postDelayed({
+                         finish()
+                     }, 5000)*/
                 }
 
                 )

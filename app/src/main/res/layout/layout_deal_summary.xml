@@ -477,6 +477,7 @@
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/initials"
                         android:imeOptions="actionDone"
+                        android:singleLine="true"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:inputType="text"
                         android:maxLength="3"

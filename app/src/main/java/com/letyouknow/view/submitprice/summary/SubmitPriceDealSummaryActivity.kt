@@ -43,6 +43,11 @@ import kotlinx.android.synthetic.main.layout_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -163,13 +168,33 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 val str = s.toString()
 
                 if (str.isNotEmpty()) {
-                    price = edtPrice.text.toString().trim().toDouble()
+                    price = edtPrice.text.toString().replace(",", "").trim().toDouble()
                     popupPrice(price)
                 }
 
             }
 
             override fun afterTextChanged(s: Editable?) {
+                edtPrice.removeTextChangedListener(this)
+                try {
+                    var originalString = s.toString()
+                    val longval: Long
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replace(",".toRegex(), "")
+                    }
+                    longval = originalString.toLong()
+                    val formatter: DecimalFormat =
+                        NumberFormat.getInstance(Locale.US) as DecimalFormat
+                    formatter.applyPattern("#,###,###,###")
+                    val formattedString: String = formatter.format(longval)
+
+                    //setting text after format to EditText
+                    edtPrice.setText(formattedString)
+                    edtPrice.setSelection(edtPrice.text.toString().trim().length)
+                } catch (nfe: NumberFormatException) {
+                    nfe.printStackTrace()
+                }
+                edtPrice.addTextChangedListener(this)
 
             }
 
@@ -432,7 +457,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
             request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-            request[ApiConstant.price] = edtPrice.text.toString().trim()
+            request[ApiConstant.price] = edtPrice.text.toString().replace(",", "").trim()
             request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
             request[ApiConstant.searchRadius] =
                 if (radiusId == "ALL") "6000" else radiusId.replace(" mi", "")
@@ -446,7 +471,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     yearModelMakeData.zipCode = edtZipCode.text.toString().trim()
-                    yearModelMakeData.price = edtPrice.text.toString().trim().toFloat()
+                    yearModelMakeData.price =
+                        edtPrice.text.toString().replace(",", "").trim().toFloat()
                     yearModelMakeData.loanType = financingStr
                     yearModelMakeData.initials = edtInitials.text.toString().trim()
                     yearModelMakeData.radius = radiusId

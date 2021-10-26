@@ -367,6 +367,7 @@
                         android:inputType="text"
                         android:maxLength="3"
                         android:imeOptions="actionDone"
+                        android:singleLine="true"
                         android:paddingTop="@dimen/_10sdp"
                         android:paddingBottom="@dimen/_10sdp" />
 

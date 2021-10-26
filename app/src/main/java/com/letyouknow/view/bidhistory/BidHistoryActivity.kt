@@ -23,7 +23,7 @@ import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
-import kotlinx.android.synthetic.main.layout_toolbar.toolbar
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.util.*
@@ -41,10 +41,11 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         bidHistoryViewModel = ViewModelProvider(this).get(BidHistoryViewModel::class.java)
-        backButton()
+//        backButton()
         adapterBidHistory = BidHistoryAdapter(R.layout.list_item_bid_history1, this)
         rvBidHistory.adapter = adapterBidHistory
         callBidHistoryAPI()
+        ivBack.setOnClickListener(this)
     }
 
     private fun backButton() {
@@ -67,6 +68,9 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.ivBack -> {
+                onBackPressed()
+            }
             R.id.tvSeeMore -> {
                 val pos = v.tag as Int
                 val data = adapterBidHistory.getItem(pos)

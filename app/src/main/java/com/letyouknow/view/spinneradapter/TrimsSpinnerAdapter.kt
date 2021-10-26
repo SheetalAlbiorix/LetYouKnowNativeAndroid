@@ -19,7 +19,7 @@ class TrimsSpinnerAdapter(val context: Context, var arList: ArrayList<VehicleTri
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        view.tvTitle.text = arList[position].trim
+        view.tvTitle.text = arList[position].trim?.toUpperCase()
         return view
     }
 

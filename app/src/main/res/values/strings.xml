@@ -193,7 +193,7 @@
     <string name="features">FEATURES</string>
     <string name="one_deal_near_you">One Deal Near You</string>
     <string name="submit_your_price">Submit Your Price</string>
-    <string name="initials">INITIALS</string>
+    <string name="initials">Initials</string>
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
     <string name="year">YEAR</string>
@@ -303,7 +303,7 @@
     <string name="do_you_want_logout">Do you want to logout the LetYouKnow App?</string>
     <string name="packages_colon">Packages:</string>
     <string name="password_must_be_new">Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1 lowercase letter\n1 number\n1 special character (@$!%*?#&amp;^~)</string>
-    <string name="are_you_sure_price">Are You Sure The Price is Correct?</string>
+    <string name="are_you_sure_price">Are you sure the price is correct?</string>
     <string name="view_options_accessories">VIEW OPTIONS &amp; ACCESSORIES</string>
     <string name="click_on_button">Click On the button below and enter the required basic information.</string>
     <string name="introduce_your_friend">Introduce your friends and family to wonderful services provided by LetYouKnow</string>

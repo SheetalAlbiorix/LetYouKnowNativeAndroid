@@ -70,6 +70,9 @@ class ApiConstant {
         var RefreshToken = "RefreshToken"
         var currentPassword = "currentPassword"
         var newPassword = "newPassword"
+        var SMS = "SMS"
+        var Email_NOTI = "Email"
+        var PushNotification = "PushNotification"
 
     }
 }

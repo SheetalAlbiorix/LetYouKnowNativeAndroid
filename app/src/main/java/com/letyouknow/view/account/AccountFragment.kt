@@ -18,6 +18,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
 import com.letyouknow.model.ChangePasswordRequestData
+import com.letyouknow.model.NotificationOptionsData
 import com.letyouknow.model.UserProfileData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -29,12 +30,17 @@ import com.letyouknow.view.account.editnotification.EditNotificationActivity
 import com.letyouknow.view.account.editrefer.EditReferActivity
 import com.letyouknow.view.account.viewDollar.ViewDollarActivity
 import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.login.LoginActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_NOTIFICATIONS
 import com.pionymessenger.utils.Constant.Companion.onTextChange
 import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
 import okhttp3.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.newTask
+import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.startActivity
 import java.text.NumberFormat
 import java.util.*
@@ -102,7 +108,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 startActivity<EditLoginActivity>()
             }
             R.id.ivEditNotification -> {
-                startActivity<EditNotificationActivity>()
+                startActivity<EditNotificationActivity>(
+                    ARG_NOTIFICATIONS to Gson().toJson(
+                        dataNotification
+                    )
+                )
             }
             R.id.ivRefer -> {
                 startActivity<EditReferActivity>()
@@ -117,7 +127,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 startActivity<ViewDollarActivity>()
             }
             R.id.tvViewNotification -> {
-                startActivity<EditNotificationActivity>()
+                callNotificationOptionsAPI()
+
             }
         }
     }
@@ -261,8 +272,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         if (Constant.isOnline(requireActivity())) {
             savingsToDateViewModel.savingsToDateCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
+                    Constant.dismissLoader()
                     tvSavingsDate.text = NumberFormat.getCurrencyInstance(Locale.US).format(data)
-                    callNotificationOptionsAPI()
                 }
                 )
         } else {
@@ -271,12 +282,19 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     }
 
 
+    private lateinit var dataNotification: NotificationOptionsData
     private fun callNotificationOptionsAPI() {
         if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
             notificationOptionsViewModel.notificationCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-
+                    dataNotification = data
+                    startActivity<EditNotificationActivity>(
+                        ARG_NOTIFICATIONS to Gson().toJson(
+                            dataNotification
+                        )
+                    )
                 }
                 )
         } else {
@@ -337,12 +355,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callChangePasswordAPI() {
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-            /* val map: HashMap<String, String> = HashMap()
-             map[ApiConstant.userName] = pref?.getUserData()?.userName!!
-             map[ApiConstant.currentPassword] =
-                 dialogEditLogin.edtDialogCurrentPassword.text.toString().trim()
-             map[ApiConstant.newPassword] =
-                 dialogEditLogin.edtDialogNewPassword.text.toString().trim()*/
             val reqData = ChangePasswordRequestData()
             reqData.userName = pref?.getUserData()?.userName!!
             reqData.newPassword = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
@@ -362,6 +374,9 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.dismissLoader()
                     Toast.makeText(requireActivity(), data, Toast.LENGTH_SHORT).show()
                     dialogEditLogin.dismiss()
+                    startActivity(
+                        intentFor<LoginActivity>().clearTask().newTask()
+                    )
                 }
                 )
 
@@ -404,25 +419,25 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
                 }
-                TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
-                    tvErrorConfirmEmailAddress.text = getString(R.string.enter_email_address_vali)
-                    Constant.setErrorBorder(edtConfirmEmail, tvErrorConfirmEmailAddress)
-                    return false
-                }
-                !Constant.emailValidator(edtConfirmEmail.text.toString().trim()) -> {
-                    tvErrorConfirmEmailAddress.text = getString(R.string.enter_valid_email)
-                    Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
-                    return false
-                }
-                (edtEmail.text.toString().trim() != edtConfirmEmail.text.toString().trim()) -> {
-                    tvErrorConfirmEmailAddress.text = getString(R.string.did_n_t_match_email)
-                    Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
-                    return false
-                }
-                TextUtils.isEmpty(edtUserName.text.toString().trim()) -> {
-                    Constant.setErrorBorder(edtUserName, tvErrorUserName)
-                    return false
-                }
+                /* TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
+                     tvErrorConfirmEmailAddress.text = getString(R.string.enter_email_address_vali)
+                     Constant.setErrorBorder(edtConfirmEmail, tvErrorConfirmEmailAddress)
+                     return false
+                 }
+                 !Constant.emailValidator(edtConfirmEmail.text.toString().trim()) -> {
+                     tvErrorConfirmEmailAddress.text = getString(R.string.enter_valid_email)
+                     Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
+                     return false
+                 }
+                 (edtEmail.text.toString().trim() != edtConfirmEmail.text.toString().trim()) -> {
+                     tvErrorConfirmEmailAddress.text = getString(R.string.did_n_t_match_email)
+                     Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
+                     return false
+                 }
+                 TextUtils.isEmpty(edtUserName.text.toString().trim()) -> {
+                     Constant.setErrorBorder(edtUserName, tvErrorUserName)
+                     return false
+                 }*/
                 TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
                     tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)

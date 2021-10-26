@@ -28,7 +28,10 @@ import com.letyouknow.view.login.LoginActivity
 import kotlinx.android.synthetic.main.dialog_authorization.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
+import org.jetbrains.anko.singleLine
 
 class AppGlobal {
     companion object {
@@ -155,7 +158,7 @@ class AppGlobal {
             val tvView = llView.getChildAt(0) as TextView
             tvView.setTextColor(context.resources.getColor(R.color.white))
             tvView.setTextAppearance(context, R.style.bold)
-            tvView.allCaps = true
+//            tvView.allCaps = true
             tvView.singleLine = true
         }
 

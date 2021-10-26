@@ -76,6 +76,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         tvSignUp.setOnClickListener(this)
         txtForgotPassword.setOnClickListener(this)
+        txtForgotUserId.setOnClickListener(this)
         btnSignIn.setOnClickListener(this)
         ivFingerPrint.setOnClickListener(this)
         ivPasswordInfo.setOnClickListener(this)
@@ -209,6 +210,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity<SignUpActivity>()
             }
             R.id.txtForgotPassword -> {
+                startActivity<ForgotPasswordActivity>()
+            }
+            R.id.txtForgotUserId -> {
                 startActivity<ForgotPasswordActivity>()
             }
             R.id.btnSignIn -> {

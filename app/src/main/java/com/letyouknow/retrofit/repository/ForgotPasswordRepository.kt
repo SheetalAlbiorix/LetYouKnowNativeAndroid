@@ -1,17 +1,11 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.os.Handler
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.letyouknow.view.login.LoginActivity
 import com.pionymessenger.utils.Constant
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,16 +34,20 @@ object ForgotPasswordRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    Toast.makeText(
+                    /* Toast.makeText(
+                         context,
+                         "You will Receive an email with resetting instruction shortly. For security reasons, this link will only remain active for the next hour",
+                         Toast.LENGTH_SHORT
+                     ).show()*/
+                    AppGlobal.alertError(
                         context,
-                        "You will Receive an email with resetting instruction shortly. For security reasons, this link will only remain active for the next hour",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Handler().postDelayed({
-                        context.startActivity(
-                            context.intentFor<LoginActivity>().clearTask().newTask()
-                        )
-                    }, 3000)
+                        "You will Receive an email with resetting instruction shortly. For security reasons, this link will only remain active for the next hour"
+                    )
+                    /* Handler().postDelayed({
+                         context.startActivity(
+                             context.intentFor<LoginActivity>().clearTask().newTask()
+                         )
+                     }, 3000)*/
 //                    forgotPasswordVo.value = ""
                 } else {
                     Constant.dismissLoader()

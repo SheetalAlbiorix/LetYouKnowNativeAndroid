@@ -21,7 +21,7 @@ import com.letyouknow.retrofit.viewmodel.TransactionHistoryViewModel
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_transaction_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
-import kotlinx.android.synthetic.main.layout_toolbar.toolbar
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.util.*
@@ -43,7 +43,8 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         transactionHistoryViewModel =
             ViewModelProvider(this).get(TransactionHistoryViewModel::class.java)
-        backButton()
+//        backButton()
+        ivBack.setOnClickListener(this)
         adapterTransactionHistory =
             TransactionHistoryAdapter(R.layout.list_item_transaction_history1, this)
         rvTransactionHistory.adapter = adapterTransactionHistory
@@ -72,6 +73,9 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
     private var selectPos = -1
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.ivBack -> {
+                onBackPressed()
+            }
             R.id.cardTransaction -> {
                 /* val pos = v.tag as Int
                  if (selectPos != -1) {

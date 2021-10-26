@@ -13,8 +13,7 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/toolbar"
-            layout="@layout/layout_toolbar"
+            layout="@layout/layout_toolbar_blue"
             app:toolbarTitle="@{@string/price_bid_history}" />
 
         <androidx.recyclerview.widget.RecyclerView

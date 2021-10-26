@@ -19,7 +19,7 @@ class ModelSpinnerAdapter(val context: Context, var arList: ArrayList<VehicleMod
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        view.tvTitle.text = arList[position].model
+        view.tvTitle.text = arList[position].model?.toUpperCase()
         return view
     }
 

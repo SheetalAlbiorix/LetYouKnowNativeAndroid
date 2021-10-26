@@ -19,7 +19,7 @@ class ExteriorSpinnerAdapter(val context: Context, var arList: ArrayList<Exterio
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
         val view = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        view.tvTitle.text = arList[position].exteriorColor
+        view.tvTitle.text = arList[position].exteriorColor?.toUpperCase()
 
         return view
     }

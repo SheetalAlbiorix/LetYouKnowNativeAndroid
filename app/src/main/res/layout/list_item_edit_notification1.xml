@@ -19,14 +19,14 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            style="@style/bold"
+            style="@style/medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text="@string/notification"
             android:textColor="@color/color666666"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_13sdp" />
 
         <ImageView
             android:id="@+id/ivOnOff"

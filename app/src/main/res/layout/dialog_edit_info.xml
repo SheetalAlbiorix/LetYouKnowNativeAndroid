@@ -147,11 +147,13 @@
                         android:hint="@string/confirm_email_required"
                         android:enabled="false"
                         android:padding="@dimen/_12sdp"
+                        android:visibility="gone"
                         android:textColor="@color/color545d64"
                         android:textColorHint="@color/color545d64"
                         android:inputType="textEmailAddress" />
 
                     <TextView
+
                         android:id="@+id/tvErrorConfirmEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -167,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:padding="@dimen/_12sdp"
+                        android:visibility="gone"
                         android:background="@drawable/bg_edittext"
                         android:enabled="false"
                         android:hint="@string/user_name_required"

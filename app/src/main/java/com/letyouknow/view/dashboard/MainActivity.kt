@@ -227,7 +227,10 @@ class MainActivity : BaseActivity(),
                         startActivity<TransactionHistoryActivity>()
                     }
                     2 -> {
-                        // startActivity<SavedSearchesActivity>()
+                        AppGlobal.dialogWebView(this, Constant.HOW_IT_WORKS)
+                    }
+                    3 -> {
+                        AppGlobal.dialogWebView(this, Constant.FAQ)
                     }
 
                     4 -> {
