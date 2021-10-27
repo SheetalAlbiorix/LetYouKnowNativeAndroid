@@ -1089,12 +1089,23 @@
                 android:textSize="@dimen/_11sdp"
                 android:visibility="gone" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spState"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/bg_spinner" />
+                android:background="@drawable/bg_button"
+                android:backgroundTint="@color/offWhite1"
+                android:padding="@dimen/_1sdp">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_spinner_light_offwhite"
+                    android:padding="0dp"
+                    android:popupBackground="@drawable/bg_button3_white"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvErrorState"

@@ -14,7 +14,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +32,7 @@ import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.signup.CardListAdapter
+import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -186,14 +186,13 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    private lateinit var adapterState: ArrayAdapter<String?>
+    private lateinit var adapterState: StateSpinnerAdapter
     private fun setState() {
-        adapterState = ArrayAdapter<String?>(
+        adapterState = StateSpinnerAdapter(
             applicationContext,
-            android.R.layout.simple_spinner_item,
-            arState as List<String?>
+            arState
         )
-        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
         spState.onItemSelectedListener = this
 

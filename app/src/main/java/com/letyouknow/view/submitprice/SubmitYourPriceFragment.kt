@@ -341,7 +341,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("MODEL Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val modelData = VehicleModelData()
@@ -382,7 +382,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("TRIM Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val trimData = VehicleTrimData()
@@ -424,7 +424,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("EXTERIOR COLOR Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val exteriorColorData = ExteriorColorData()
@@ -475,7 +475,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("INTERIOR Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val interiorColorData = InteriorColorData()
@@ -525,7 +525,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("Packages Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val packagesData = VehiclePackagesData()
@@ -577,7 +577,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    Log.e("Options Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val accessoriesData = VehicleAccessoriesData()
@@ -1203,4 +1203,14 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         tvErrorOptionsAccessories.visibility = View.GONE
     }
 
+
+    /* override fun onPause() {
+         Constant.dismissLoader()
+         super.onPause()
+     }*/
+    /* override fun onDestroy() {
+         if (Constant.progress.isShowing)
+             Constant.dismissLoader()
+         super.onDestroy()
+     }*/
 }

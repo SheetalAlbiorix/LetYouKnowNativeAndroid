@@ -183,7 +183,7 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:text="@{data.successResult.transactionInfo.transactionId}"
+                            android:text="@{data.successResult.transactionInfo.transactionCode}"
                             tool:text="JO31747183"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />

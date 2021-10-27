@@ -1274,4 +1274,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         tvErrorPackages.visibility = View.GONE
         tvErrorOptionsAccessories.visibility = View.GONE
     }
+
+    /*override fun onPause() {
+        Constant.dismissLoader()
+        super.onPause()
+    }*/
+    /*   override fun onDestroy() {
+           if (Constant.progress.isShowing)
+               Constant.dismissLoader()
+           super.onDestroy()
+       }*/
 }

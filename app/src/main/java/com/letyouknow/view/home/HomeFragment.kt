@@ -780,4 +780,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         tvErrorRadius.visibility = View.GONE
     }
 
+    /* override fun onPause() {
+         Constant.dismissLoader()
+         super.onPause()
+     }*/
+    /*   override fun onDestroy() {
+           if (Constant.progress.isShowing)
+               Constant.dismissLoader()
+           super.onDestroy()
+       }*/
+
 }

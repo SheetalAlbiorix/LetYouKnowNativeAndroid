@@ -6,7 +6,6 @@ import android.text.InputFilter
 import android.text.TextUtils
 import android.view.*
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -29,6 +28,7 @@ import com.letyouknow.view.account.editrefer.EditReferActivity
 import com.letyouknow.view.account.viewDollar.ViewDollarActivity
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.login.LoginActivity
+import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_NOTIFICATIONS
 import com.pionymessenger.utils.Constant.Companion.onTextChange
@@ -162,7 +162,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun onStateChangeLogin() {
         dialogEditLogin.run {
-            onTextChange(requireActivity(), edtDialogUserName, tvDialogErrorUserName)
+//            onTextChange(requireActivity(), edtDialogUserName, tvDialogErrorUserName)
             onTextChange(requireActivity(), edtDialogCurrentPassword, tvDialogErrorCurrentPassword)
             onTextChange(requireActivity(), edtDialogNewPassword, tvDialogErrorNewPassword)
             onTextChange(requireActivity(), edtDialogConfirmPassword, tvDialogErrorConfirmPassword)
@@ -195,7 +195,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.run {
             onTextChange(requireActivity(), edtFirstName, tvErrorFirstName)
             onTextChange(requireActivity(), edtMiddleName, tvErrorLastName)
-            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
+//            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtConfirmEmail, tvErrorConfirmEmailAddress)
             onTextChange(requireActivity(), edtUserName, tvErrorUserName)
             onTextChange(requireActivity(), edtPhoneNumber, tvErrorPhoneNo)
@@ -244,14 +244,13 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         }
     }
 
-    private lateinit var adapterState: ArrayAdapter<String?>
+    private lateinit var adapterState: StateSpinnerAdapter
     private fun setState() {
-        adapterState = ArrayAdapter<String?>(
+        adapterState = StateSpinnerAdapter(
             requireActivity(),
-            android.R.layout.simple_spinner_item,
-            AppGlobal.arState as List<String?>
+            AppGlobal.arState
         )
-        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         dialogEditInfo.spState.adapter = adapterState
         dialogEditInfo.spState.onItemSelectedListener = this
         for (i in 0 until AppGlobal.arState.size) {
@@ -414,7 +413,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtLastName, tvErrorLastName)
                     return false
                 }
-                TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
+                /*TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
                     tvErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
@@ -424,7 +423,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
                 }
-                /* TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
+                 TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
                      tvErrorConfirmEmailAddress.text = getString(R.string.enter_email_address_vali)
                      Constant.setErrorBorder(edtConfirmEmail, tvErrorConfirmEmailAddress)
                      return false
@@ -474,10 +473,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun isValidLogin(): Boolean {
         dialogEditLogin.run {
             when {
-                TextUtils.isEmpty(edtDialogUserName.text.toString().trim()) -> {
-                    Constant.setErrorBorder(edtDialogUserName, tvDialogErrorUserName)
-                    return false
-                }
+                /*  TextUtils.isEmpty(edtDialogUserName.text.toString().trim()) -> {
+                      Constant.setErrorBorder(edtDialogUserName, tvDialogErrorUserName)
+                      return false
+                  }*/
                 TextUtils.isEmpty(edtDialogCurrentPassword.text.toString().trim()) -> {
                     tvDialogErrorCurrentPassword.text = getString(R.string.enter_current_password)
                     Constant.setErrorBorder(edtDialogCurrentPassword, tvDialogErrorCurrentPassword)
@@ -624,6 +623,17 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             source
         }
     }
+
+
+    /* override fun onPause() {
+         Constant.dismissLoader()
+         super.onPause()
+     }*/
+    /*  override fun onDestroy() {
+          if (Constant.progress.isShowing)
+              Constant.dismissLoader()
+          super.onDestroy()
+      }*/
 
 }
 
