@@ -2,16 +2,18 @@ package com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityZoomImageBinding
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.activity_zoom_image.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.layout_toolbar.toolbar
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 
-class ZoomImageActivity : BaseActivity() {
+class ZoomImageActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityZoomImageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +23,14 @@ class ZoomImageActivity : BaseActivity() {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_zoom_image)
-        if (intent.hasExtra(Constant.ARG_IMAGE_URL)) {
+        if (intent.hasExtra(ARG_IMAGE_URL)) {
 //            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
-            var data = intent.getStringExtra(Constant.ARG_IMAGE_URL)
+            var data = intent.getStringExtra(ARG_IMAGE_URL)
             AppGlobal.loadImageUrl(this.applicationContext, imViewedImage, data.toString())
+            imViewedImage.setZoom(10.0f)
         }
-        backButton()
+        ivBack.setOnClickListener(this)
+//        backButton()
     }
 
     private fun backButton() {
@@ -40,7 +44,7 @@ class ZoomImageActivity : BaseActivity() {
         }
     }
 
-    override fun getViewActivity(): Activity? {
+    override fun getViewActivity(): Activity {
         return this
     }
 
@@ -50,5 +54,13 @@ class ZoomImageActivity : BaseActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.ivBack -> {
+                onBackPressed()
+            }
+        }
     }
 }

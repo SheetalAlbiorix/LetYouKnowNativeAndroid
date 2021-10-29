@@ -12,6 +12,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -19,6 +20,17 @@ import org.jetbrains.anko.support.v4.startActivity
 class ExteriorFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapterGallery: GalleryAdapter
     lateinit var exteriorViewModel: ExteriorViewModel
+
+    companion object {
+        fun newInstance(id: String?): ExteriorFragment {
+            val fragment = ExteriorFragment()
+            val bundle = Bundle()
+            bundle.putString(ARG_IMAGE_ID, id)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,35 +45,34 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
-        exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
-        getExteriorAPI();
+        if (arguments?.containsKey(ARG_IMAGE_ID) == true) {
+            val imageId = arguments?.getString(ARG_IMAGE_ID)
+            exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
+            getExteriorAPI(imageId)
+        }
     }
 
-    private fun getExteriorAPI() {
-
+    private fun getExteriorAPI(imageId: String?) {
         val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = "14170"
-        request[ApiConstant.ImageProduct] = "MultiAngle"
+        request[ApiConstant.ImageId] = imageId!!
+        request[ApiConstant.ImageProduct] = "Splash"
 
         exteriorViewModel.getExterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->
                 Constant.dismissLoader()
-
                 adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
                 rvGallery.adapter = adapterGallery
                 adapterGallery.addAll(loginVo)
             }
             )
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ivGallery -> {
                 val pos = v.tag as Int
-                var data = adapterGallery.getItem(pos).toString()
+                val data = adapterGallery.getItem(pos)
                 startActivity<ZoomImageActivity>(ARG_IMAGE_URL to data)
-
             }
         }
     }

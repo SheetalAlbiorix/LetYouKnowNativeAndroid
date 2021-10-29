@@ -12,12 +12,23 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
 
 class InteriorFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapterGallery: GalleryAdapter
     lateinit var interiorViewModel: InteriorViewModel
+
+    companion object {
+        fun newInstance(id: String?): InteriorFragment {
+            val fragment = InteriorFragment()
+            val bundle = Bundle()
+            bundle.putString(Constant.ARG_IMAGE_ID, id)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,18 +44,21 @@ class InteriorFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
-        interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-        getInteriorAPI();
+        if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
+            val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
+            interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
+            getInteriorAPI(imageId)
+        }
         /*   adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
            rvGallery.adapter = adapterGallery
            adapterGallery.addAll(arrayListOf("", "", "", "", "", "", "", "", "", "", "", "", "", ""))*/
     }
 
-    private fun getInteriorAPI() {
+    private fun getInteriorAPI(imageId: String?) {
 
         val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = "13655"
-        request[ApiConstant.ImageProduct] = ApiConstant.interior360
+        request[ApiConstant.ImageId] = imageId!!
+        request[ApiConstant.ImageProduct] = ApiConstant.stillSet
 
         interiorViewModel.getInterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->
@@ -61,7 +75,9 @@ class InteriorFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ivGallery -> {
-                startActivity<ZoomImageActivity>()
+                val pos = v.tag as Int
+                val data = adapterGallery.getItem(pos)
+                startActivity<ZoomImageActivity>(ARG_IMAGE_URL to data)
             }
         }
     }

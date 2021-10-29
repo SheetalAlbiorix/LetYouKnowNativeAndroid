@@ -13,6 +13,7 @@ import com.letyouknow.databinding.ActivityGallery360TabBinding
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.ExteriorFragment
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.InteriorFragment
 import com.letyouknow.view.home.dealsummary.gallery360view.view360.View360Fragment
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import kotlinx.android.synthetic.main.activity_gallery360_tab.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     private lateinit var gallery360ViewPagerAdapter: Gallery360PagerAdapter
     private lateinit var binding: ActivityGallery360TabBinding
-
+    private var imageId = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery360_tab)
@@ -29,7 +30,6 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-
         ivEdit.visibility = View.INVISIBLE
         rvView.setOnClickListener(this)
         ll360View.setOnClickListener(this)
@@ -38,9 +38,10 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         ivBack.setOnClickListener(this)
         gallery360ViewPagerAdapter = Gallery360PagerAdapter(supportFragmentManager)
         pager.adapter = gallery360ViewPagerAdapter
-        if (intent.hasExtra(ARG_TYPE_VIEW)) {
+        if (intent.hasExtra(ARG_TYPE_VIEW) && intent.hasExtra(ARG_IMAGE_ID)) {
 //            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
             setTab(intent.getIntExtra(ARG_TYPE_VIEW, 0))
+            imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
         } else {
             setTab(0)
         }
@@ -102,7 +103,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
                     view360View,
                     tv360View
                 )
-                loadFragment(ExteriorFragment())
+                loadFragment(ExteriorFragment.newInstance(imageId))
             }
             1 -> {
                 setTabVisible(
@@ -113,7 +114,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
                     viewExterior,
                     tvExterior
                 )
-                loadFragment(InteriorFragment())
+                loadFragment(InteriorFragment.newInstance(imageId))
             }
             2 -> {
                 setTabVisible(
@@ -124,7 +125,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
                     viewInterior,
                     tvInterior
                 )
-                loadFragment(View360Fragment())
+                loadFragment(View360Fragment.newInstance(imageId))
             }
         }
     }

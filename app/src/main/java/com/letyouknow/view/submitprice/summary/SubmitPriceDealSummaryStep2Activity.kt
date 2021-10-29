@@ -30,6 +30,7 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
@@ -41,7 +42,7 @@ import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
+import kotlinx.android.synthetic.main.activity_submit_price_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_submit_price_deal_summary_step2.*
@@ -77,6 +78,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
 
     private var isFirst60 = true
     private var state = "NC"
+    private var imageId = "0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +100,11 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
             )
+            && intent.hasExtra(
+                Constant.ARG_IMAGE_ID
+            )
         ) {
+            imageId = intent.getStringExtra(Constant.ARG_IMAGE_ID)!!
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
@@ -142,6 +148,8 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
         tvApplyPromo.setOnClickListener(this)
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
+        ll360.setOnClickListener(this)
+        llGallery.setOnClickListener(this)
 
 //        startTimer()
         setState()
@@ -513,6 +521,18 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         callBuyerAPI()
                     }
                 }
+            }
+            R.id.llGallery -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 0,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
+            }
+            R.id.ll360 -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 2,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
 
         }

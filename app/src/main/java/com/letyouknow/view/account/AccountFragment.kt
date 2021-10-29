@@ -21,6 +21,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
+import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
@@ -46,7 +47,6 @@ import kotlin.collections.HashMap
 
 
 class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
-
     private lateinit var savingsToDateViewModel: SavingsToDateViewModel
     private lateinit var notificationOptionsViewModel: NotificationOptionsViewModel
     private lateinit var userProfileViewModel: UserProfileViewModel
@@ -571,9 +571,20 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
             else
                 tvPhoneNo.text = data.phoneNumber
-            tvFirstName.text = data.firstName + " " + data.middleName + " " + data.lastName
-            tvLastName.text =
-                data.address1 + "\n" + data.address2 + "\n" + data.city + "," + data.state
+            tvFirstName.text = if (isEmpty(data.firstName)) "-" else {
+                data.firstName + " "
+            } + if (isEmpty(data.middleName)) "" else {
+                data.middleName + " "
+            } + if (isEmpty(data.lastName)) "" else data.lastName
+            tvAddress.text =
+                if (isEmpty(data.address1)) "" else data.address1 + if (isEmpty(data.address2)) "" else {
+                    "\n" + data.address2
+                } + if (isEmpty(data.city)) "" else {
+                    "\n" + data.city + ","
+                } + if (isEmpty(data.state)) "" else data.state
+            if (isEmpty(tvAddress.text.toString())) {
+                tvAddress.text = "-"
+            }
         } catch (e: Exception) {
 
         }

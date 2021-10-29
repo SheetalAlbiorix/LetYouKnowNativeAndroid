@@ -31,10 +31,12 @@ import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
@@ -78,6 +80,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private var isFirst60 = true
     private var state = "NC"
+    private var imageId = "0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,8 +100,11 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
+            ) && intent.hasExtra(
+                ARG_IMAGE_ID
             )
         ) {
+            imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             dataLCDDeal = Gson().fromJson(
                 intent.getStringExtra(ARG_LCD_DEAL_GUEST),
                 FindLCDDeaData::class.java
@@ -294,6 +300,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult.transactionInfo.vehiclePrice = dataLCDDeal.price!!
                     data.successResult.transactionInfo.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
+                    Log.e("data Deal", Gson().toJson(data))
                     startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )
@@ -545,6 +552,18 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 tvAddMin.visibility = View.GONE
                 cancelTimer()
                 startTimer()
+            }
+            R.id.llGallery -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 0,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
+            }
+            R.id.ll360 -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 2,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
         }
     }

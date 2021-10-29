@@ -65,6 +65,7 @@ class ApiConstant {
         var card_brand = "card_brand"
         var exterior360 = "Exterior360"
         var interior360 = "Interior360"
+        var stillSet = "StillSet"
         var interior360Pano = "Interior360Pano"
         var AuthToken = "AuthToken"
         var RefreshToken = "RefreshToken"

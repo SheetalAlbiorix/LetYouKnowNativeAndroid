@@ -34,6 +34,7 @@ import com.letyouknow.view.home.dealsummary.delasummarystep2.DealSummaryStep2Act
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -64,7 +65,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var dataLCDDeal: FindLCDDeaData
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
-
+    private var imageId = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -238,7 +239,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             imageIdViewModel.imageIdCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-
+                    imageId = data
                     callImageUrlAPI(data)
                 }
                 )
@@ -305,7 +306,8 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                     startActivity<DealSummaryStep2Activity>(
                         Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
-                        Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl)
+                        Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl),
+                        Constant.ARG_IMAGE_ID to imageId
                     )
                 }
                 )
@@ -336,10 +338,10 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                 finish()
             }
             R.id.llGallery -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0)
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0, ARG_IMAGE_ID to imageId)
             }
             R.id.ll360 -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2)
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2, ARG_IMAGE_ID to imageId)
             }
             R.id.tvViewOptions -> {
                 popupOption()

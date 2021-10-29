@@ -87,6 +87,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private var isValidZipCode = false
     private var price = 0.0
+    private var imageId = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_price_deal_summary)
@@ -399,7 +400,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             imageIdViewModel.imageIdCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-
+                    imageId = data
                     callImageUrlAPI(data)
                 }
                 )
@@ -480,7 +481,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                     startActivity<SubmitPriceDealSummaryStep2Activity>(
                         Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
-                        Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl)
+                        Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl),
+                        Constant.ARG_IMAGE_ID to imageId
                     )
                 }
                 )
@@ -510,10 +512,16 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 finish()
             }
             R.id.llGallery -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0)
+                startActivity<Gallery360TabActivity>(
+                    ARG_TYPE_VIEW to 0,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
             R.id.ll360 -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2)
+                startActivity<Gallery360TabActivity>(
+                    ARG_TYPE_VIEW to 2,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
             R.id.tvViewOptions -> {
                 popupOption()

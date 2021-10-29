@@ -71,6 +71,7 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
 
+    private var imageId = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unlocked_deal_summary)
@@ -95,7 +96,7 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 intent.getStringExtra(Constant.ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
-            val imageId = intent.getStringExtra(ARG_IMAGE_ID)
+            imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             if (imageId?.length != 0)
                 callImageUrlAPI(imageId!!)
             binding.lcdDealData = dataUCDDeal
@@ -294,7 +295,8 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
                         ARG_UCD_DEAL to Gson().toJson(dataUCDDeal),
                         ARG_UCD_DEAL_PENDING to Gson().toJson(data),
                         ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                        ARG_IMAGE_URL to Gson().toJson(arImageUrl)
+                        ARG_IMAGE_URL to Gson().toJson(arImageUrl),
+                        ARG_IMAGE_ID to imageId
                     )
                 }
                 )
@@ -323,10 +325,10 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 finish()
             }
             R.id.llGallery -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0)
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 0, ARG_IMAGE_ID to imageId)
             }
             R.id.ll360 -> {
-                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2)
+                startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2, ARG_IMAGE_ID to imageId)
             }
             R.id.tvViewOptions -> {
                 popupOption()

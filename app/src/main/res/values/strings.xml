@@ -14,6 +14,7 @@
 
     <string name="user_id">User Id</string>
     <string name="password">Password</string>
+    <string name="password_colon">Password:</string>
     <string name="current_password">Current Password</string>
     <string name="current_password_required">Current Password*</string>
     <string name="sign_in">SIGN IN</string>
@@ -155,7 +156,7 @@
     <string name="text_message">Text Message</string>
     <string name="push_notification">Push Notification</string>
     <string name="saving_to_date">Saving to Date</string>
-    <string name="saving_are_calculated_based_on_the_msrp_parameters"><i>*Saving are calculated based on the MSRP parameters</i></string>
+    <string name="saving_are_calculated_based_on_the_msrp_parameters"><i>*Saving are calculated based on MSRP parameters</i></string>
     <string name="unsuccessful_match">Unsuccessful Match</string>
     <string name="disclosure">Disclosure:</string>
     <string name="last_bid">Last Bid:</string>
@@ -286,6 +287,7 @@
     <string name="phone">Phone</string>
     <string name="mail">Mail</string>
     <string name="userName">User Name</string>
+    <string name="userName_colon">User Name:</string>
     <string name="exterior">EXTERIOR</string>
     <string name="interior">INTERIOR</string>
     <string name="three_view">360 VIEW</string>

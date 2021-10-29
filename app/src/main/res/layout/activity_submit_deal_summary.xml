@@ -15,6 +15,10 @@
             name="data"
             type="com.letyouknow.model.SubmitDealLCDData" />
 
+        <variable
+            name="userName"
+            type="String" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -458,7 +462,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/buyer_info_detail(data.successResult.transactionInfo.buyerName,data.successResult.transactionInfo.buyerAddress1,data.successResult.transactionInfo.buyerAddress2,data.successResult.transactionInfo.buyerCity,data.successResult.transactionInfo.buyerState,data.successResult.transactionInfo.buyerZipcode,data.successResult.transactionInfo.buyerPhone,data.successResult.transactionInfo.buyerEmail)}"
+                    android:text="@{@string/buyer_info_detail(userName,data.successResult.transactionInfo.buyerAddress1,data.successResult.transactionInfo.buyerAddress2,data.successResult.transactionInfo.buyerCity,data.successResult.transactionInfo.buyerState,data.successResult.transactionInfo.buyerZipcode,data.successResult.transactionInfo.buyerPhone,data.successResult.transactionInfo.buyerEmail)}"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 
@@ -482,7 +486,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chapman Chevrolet\n1511 3rd Avenue Suite 601\nSeattle, WA 98101\n aaron@letyouknow.com\n(888)888-9999 "
+                    android:text="Chapman Chevrolet\n1511 3rd Avenue Suite 601\nSeattle, WA 98101\naaron@letyouknow.com\n(888)888-9999 "
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 

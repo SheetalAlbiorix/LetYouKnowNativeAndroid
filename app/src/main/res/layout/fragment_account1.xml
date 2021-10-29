@@ -198,7 +198,7 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:id="@+id/tvLastName"
+                            android:id="@+id/tvAddress"
                             style="@style/regular"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -342,7 +342,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="@string/userName"
+                            android:text="@string/userName_colon"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -368,7 +368,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="@string/password"
+                            android:text="@string/password_colon"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 
@@ -427,10 +427,9 @@
                     style="@style/regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/saving_are_calculated_based_on_the_msrp_parameters"
-                    android:textColor="@color/textGray" />
+                    android:textColor="@color/color838383" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>

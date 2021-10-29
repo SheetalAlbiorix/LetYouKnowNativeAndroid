@@ -34,6 +34,7 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 intent.getStringExtra(ARG_SUBMIT_DEAL),
                 SubmitDealLCDData::class.java
             )
+            binding.userName = pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName
             binding.data = submitDealData
         }
         btnFindYourCar.setOnClickListener(this)

@@ -20,6 +20,17 @@ import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_360_view.*
 
 class View360Fragment : BaseFragment() {
+
+    companion object {
+        fun newInstance(id: String?): View360Fragment {
+            val fragment = View360Fragment()
+            val bundle = Bundle()
+            bundle.putString(Constant.ARG_IMAGE_ID, id)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     lateinit var interiorViewModel: InteriorViewModel
 
     val option = VrPanoramaView.Options().also {
@@ -42,8 +53,11 @@ class View360Fragment : BaseFragment() {
     }
 
     private fun init() {
-        interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-        getInteriorAPI();
+        if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
+            val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
+            interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
+            getInteriorAPI(imageId)
+        }
     }
 
     private fun View360(list: ArrayList<String>) {
@@ -61,7 +75,7 @@ class View360Fragment : BaseFragment() {
         web_view.isScrollbarFadingEnabled = true
     }
 
-    private fun interiorView(url: String) {
+    private fun interiorView(url: String, imageId: String?) {
         Glide.with(this).asBitmap().load(url).into(object : CustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {}
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
@@ -70,27 +84,26 @@ class View360Fragment : BaseFragment() {
 
             }
         })
-        getInteriorViewAPI();
+        getView360API(imageId)
     }
 
-    private fun getInteriorAPI() {
+    private fun getInteriorAPI(imageId: String?) {
         val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = "14904"
+        request[ApiConstant.ImageId] = imageId!!
         request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano
 
         interiorViewModel.getInterior(this.requireContext(), request)!!
             .observe(this.requireActivity(), Observer { loginVo ->
                 Constant.dismissLoader()
-                interiorView(loginVo[0])
+                interiorView(loginVo[0], imageId)
             }
             )
 
     }
 
-    private fun getInteriorViewAPI() {
-
+    private fun getView360API(imageId: String?) {
         val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = "13655"
+        request[ApiConstant.ImageId] = imageId!!
         request[ApiConstant.ImageProduct] = ApiConstant.exterior360
 
         interiorViewModel.getInterior(this.requireContext(), request)!!

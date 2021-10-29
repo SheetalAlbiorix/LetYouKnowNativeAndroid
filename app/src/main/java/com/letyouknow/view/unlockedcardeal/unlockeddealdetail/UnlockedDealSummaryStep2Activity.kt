@@ -33,10 +33,12 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
@@ -81,6 +83,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var ucdData: FindUcdDealData
     private lateinit var arImage: ArrayList<String>
     private var isTimeOver = false
+    private var imageId = "0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,8 +106,11 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
                 ARG_IMAGE_URL
+            ) && intent.hasExtra(
+                ARG_IMAGE_ID
             )
         ) {
+            imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             arImage = Gson().fromJson(
                 intent.getStringExtra(ARG_IMAGE_URL),
                 object : TypeToken<ArrayList<String>?>() {}.type
@@ -156,6 +162,8 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvViewOptions.setOnClickListener(this)
         tvApplyPromo.setOnClickListener(this)
         ivBack.setOnClickListener(this)
+        ll360.setOnClickListener(this)
+        llGallery.setOnClickListener(this)
         startTimer()
 //        backButton()
         onStateChange()
@@ -570,6 +578,18 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 tvAddMin.visibility = View.GONE
                 cancelTimer()
                 startTimer()
+            }
+            R.id.llGallery -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 0,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
+            }
+            R.id.ll360 -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 2,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
         }
     }

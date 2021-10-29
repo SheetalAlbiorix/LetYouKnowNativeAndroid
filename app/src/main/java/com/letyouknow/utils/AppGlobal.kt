@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -64,6 +65,11 @@ class AppGlobal {
                 false
             }
         }
+
+        fun isEmpty(str: String?): Boolean {
+            return TextUtils.isEmpty(str) || str == "null" || str == ""
+        }
+
 
         private fun isWifiEnabled(context: Context): Boolean {
             val cm = context.getSystemService(
@@ -242,6 +248,15 @@ class AppGlobal {
                 .placeholder(R.drawable.ic_image_car) // any placeholder to load at start
                 .error(R.drawable.ic_image_car)  // any image in case of error
                 .centerCrop()
+                .into(imageView)
+        }
+
+        fun loadImageUrlFitCenter(context: Context, imageView: ImageView, url: String) {
+            Glide.with(context)
+                .load(url) // image url
+                .placeholder(R.drawable.ic_image_car) // any placeholder to load at start
+                .error(R.drawable.ic_image_car)  // any image in case of error
+                .fitCenter()
                 .into(imageView)
         }
 
