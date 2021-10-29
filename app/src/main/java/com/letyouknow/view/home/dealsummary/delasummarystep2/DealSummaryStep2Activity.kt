@@ -383,7 +383,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun startTimer() {
-        cTimer = object : CountDownTimer(((seconds * 1000)).toLong(), 1000) {
+        cTimer = object : CountDownTimer((seconds * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 seconds -= 1
                 tvTimer.text = (String.format("%02d", seconds / 60)
@@ -410,8 +410,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
 
             override fun onFinish() {
-
             }
+
         }.start()
     }
 

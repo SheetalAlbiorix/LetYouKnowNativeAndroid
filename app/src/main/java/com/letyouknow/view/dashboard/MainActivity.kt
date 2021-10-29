@@ -35,8 +35,11 @@ class MainActivity : BaseActivity(),
     View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var adapterDrawer: DrawerListAdapter
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
-
-
+    private lateinit var accountFragment: AccountFragment
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var oneDealNearYouFragment: OneDealNearYouFragment
+    private lateinit var submitYourPriceFragment: SubmitYourPriceFragment
+    var prevMenuItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -83,6 +86,7 @@ class MainActivity : BaseActivity(),
         setDrawerData()
         setNavDrawerData()
         bottomNavigation.setOnNavigationItemSelectedListener(this)
+
     }
 
     private fun setDrawerData() {
@@ -326,4 +330,20 @@ class MainActivity : BaseActivity(),
         dialog.window?.attributes = layoutParams
     }
 
+    /*  private fun setupViewPager(viewPager: ViewPager) {
+
+
+
+          getString(R.string.account)
+          val adapter = MainViewPagerAdapter(supportFragmentManager)
+          accountFragment = AccountFragment()
+          homeFragment = HomeFragment()
+          submitYourPriceFragment = SubmitYourPriceFragment()
+          oneDealNearYouFragment = OneDealNearYouFragment()
+          adapter.addFragment(submitYourPriceFragment,getString(R.string.submit_your_price))
+          adapter.addFragment(oneDealNearYouFragment,getString(R.string.one_deal_near_you))
+          adapter.addFragment(homeFragment)
+          adapter.addFragment(accountFragment)
+          viewPager.adapter = adapter
+      }*/
 }

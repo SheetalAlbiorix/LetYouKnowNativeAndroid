@@ -11,7 +11,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -851,13 +850,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-    private fun loadFragment(fragment: Fragment, title: String) {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.flContainer, fragment)
-//        transaction?.addToBackStack(null)
-        transaction?.commit()
-        MainActivity.getInstance().setTitle(title)
-    }
+
 
     private var arSelectPackage: ArrayList<VehiclePackagesData> = ArrayList()
     private var selectPackageStr = ""
@@ -1279,9 +1272,9 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         Constant.dismissLoader()
         super.onPause()
     }*/
-    /*   override fun onDestroy() {
-           if (Constant.progress.isShowing)
-               Constant.dismissLoader()
-           super.onDestroy()
-       }*/
+    override fun onDestroy() {
+        if (Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 }

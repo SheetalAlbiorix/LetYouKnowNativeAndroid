@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.model.CardListData
 import com.letyouknow.model.LoginData
+import com.letyouknow.model.PrefSubmitPriceData
 import com.letyouknow.model.RememberMeData
 import java.lang.reflect.Type
 
@@ -17,6 +18,8 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_REMEMBER_DATA = "KEY_REMEMBER_DATA"
         val KEY_CARD_LIST = "KEY_CARD_LIST"
         val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
+        val KEY_SUBMIT_PRICE_TIME = "KEY_SUBMIT_PRICE_TIME"
+        val KEY_SUBMIT_PRICE = "KEY_SUBMIT_PRICE"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -86,6 +89,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     }
 
+
     fun setRememberData(user: String) {
         prefs.putString(KEY_REMEMBER_DATA, user).apply()
     }
@@ -108,6 +112,37 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
             )
         }
 
+    }
+
+    fun setSubmitPriceData(user: String) {
+        prefs.putString(KEY_SUBMIT_PRICE, user).apply()
+    }
+
+    fun getSubmitPriceData(): PrefSubmitPriceData {
+        return if (sharedpreferences.getString(
+                KEY_SUBMIT_PRICE,
+                ""
+            ) == "" || sharedpreferences.getString(
+                KEY_SUBMIT_PRICE,
+                ""
+            ) == null
+        )
+            PrefSubmitPriceData()
+        else {
+            val gson = Gson()
+            return gson.fromJson(
+                sharedpreferences.getString(KEY_SUBMIT_PRICE, ""),
+                PrefSubmitPriceData::class.java
+            )
+        }
+    }
+
+    fun setSubmitPriceTime(time: String) {
+        prefs.putString(KEY_SUBMIT_PRICE_TIME, time).apply()
+    }
+
+    fun getSubmitPriceTime(): String {
+        return sharedpreferences.getString(KEY_SUBMIT_PRICE_TIME, "")!!
     }
 
 }

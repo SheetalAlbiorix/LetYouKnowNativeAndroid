@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -314,13 +313,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         }
     }
 
-    private fun loadFragment(fragment: Fragment, title: String) {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.flContainer, fragment)
-//        transaction?.addToBackStack(null)
-        transaction?.commit()
-        MainActivity.getInstance().setTitle(title)
-    }
 
 
     override fun onClick(v: View?) {
@@ -784,10 +776,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
          Constant.dismissLoader()
          super.onPause()
      }*/
-    /*   override fun onDestroy() {
-           if (Constant.progress.isShowing)
-               Constant.dismissLoader()
-           super.onDestroy()
-       }*/
+    override fun onDestroy() {
+        if (Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 
 }

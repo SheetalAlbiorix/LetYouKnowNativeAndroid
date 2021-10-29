@@ -33,6 +33,9 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.singleLine
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AppGlobal {
     companion object {
@@ -91,6 +94,18 @@ class AppGlobal {
                     true
 
             }
+        }
+
+        fun stringToDate(aDate: String?): Date? {
+            val format = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+            try {
+                val date = format.parse(aDate)
+                println(date)
+                return date
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            return null
         }
 
         fun showProgressDialog(context: Context?, message: String?) {

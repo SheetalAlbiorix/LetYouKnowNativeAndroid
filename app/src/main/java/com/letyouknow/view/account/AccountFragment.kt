@@ -521,7 +521,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callRefreshTokenApi() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+//                Constant.showLoader(requireActivity())
                 val request = java.util.HashMap<String, Any>()
                 request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
                 request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -640,11 +640,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
          Constant.dismissLoader()
          super.onPause()
      }*/
-    /*  override fun onDestroy() {
-          if (Constant.progress.isShowing)
-              Constant.dismissLoader()
-          super.onDestroy()
-      }*/
+    override fun onDestroy() {
+        if (Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 
 }
 

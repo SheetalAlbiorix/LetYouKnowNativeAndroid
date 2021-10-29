@@ -298,6 +298,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
+                    pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                     if (!data.foundMatch)
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(

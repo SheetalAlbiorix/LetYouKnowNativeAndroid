@@ -27,7 +27,7 @@ class ZoomImageActivity : BaseActivity(), View.OnClickListener {
 //            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
             var data = intent.getStringExtra(ARG_IMAGE_URL)
             AppGlobal.loadImageUrl(this.applicationContext, imViewedImage, data.toString())
-            imViewedImage.setZoom(10.0f)
+//            imViewedImage.setZoom(10.0f)
         }
         ivBack.setOnClickListener(this)
 //        backButton()
