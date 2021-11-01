@@ -2,7 +2,7 @@ package com.letyouknow.view.submitprice
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.CountDownTimer
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
@@ -91,7 +91,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private var upDownData = UpDownData()
 
     private lateinit var prefSubmitPriceData: PrefSubmitPriceData
-
+    private lateinit var handler: Handler
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -115,20 +115,35 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        var seconds = 300
+        startHandler()
+    }
 
+    private fun startHandler() {
         if (!isEmpty(pref?.getSubmitPriceTime())) {
             Log.e("DAte Time", stringToDate(pref?.getSubmitPriceTime())?.toString()!!)
-            var cTimer = object : CountDownTimer((seconds * 1000).toLong(), 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    val date = Calendar.getInstance().time
-                    val lastDate = stringToDate(pref?.getSubmitPriceTime())
-                    seconds -= 1
-                }
+            handler = Handler()
+            handler.postDelayed(runnable, 1000)
+        }
 
-                override fun onFinish() {
+    }
 
-                }
+    private var runnable = object : Runnable {
+        override fun run() {
+            val date = Calendar.getInstance().time
+            val lastDate = stringToDate(pref?.getSubmitPriceTime())
+
+            val diff: Long = date.time - (lastDate?.time ?: 0)
+            print(diff)
+
+            val seconds = diff / 1000
+            val minutes = seconds / 60
+            if (minutes >= 5) {
+                handler.removeCallbacks(this)
+                pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                pref?.setSubmitPriceTime("")
+                setTimerPrefData()
+            } else {
+                handler.postDelayed(this, 1000)
             }
         }
 
@@ -136,8 +151,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     private fun init() {
         try {
-
-
             animBlink = AnimationUtils.loadAnimation(
                 requireActivity(),
                 R.anim.anim_blink
@@ -272,7 +285,10 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     }
 
+    var isCallingYear = false
+
     private fun callVehicleYearAPI() {
+        isCallingYear = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleYearModel.getYear(
@@ -282,6 +298,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
+                    isCallingYear = false
                     try {
                         Log.e("Year Data", Gson().toJson(data))
                         if (data != null || data?.size!! > 0) {
@@ -1127,6 +1144,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         val date = df.format(Calendar.getInstance().time)
         pref?.setSubmitPriceTime(date)
         Log.e("Submit Date", date)
+        startHandler()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -1395,7 +1413,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         trimId = prefSubmitPriceData.trimId!!
         extColorId = prefSubmitPriceData.extColorId!!
         intColorId = prefSubmitPriceData.intColorId!!
-        callVehicleYearAPI()
+        yearStr = prefSubmitPriceData.yearStr!!
+        makeStr = prefSubmitPriceData.makeStr!!
+        modelStr = prefSubmitPriceData.modelStr!!
+        trimStr = prefSubmitPriceData.trimStr!!
+        extColorStr = prefSubmitPriceData.extColorStr!!
+        intColorStr = prefSubmitPriceData.intColorStr!!
+
+        if (!isCallingYear)
+            callVehicleYearAPI()
     }
+
+
 
 }

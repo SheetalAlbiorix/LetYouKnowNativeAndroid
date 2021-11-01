@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.letyouknow.model.CardListData
-import com.letyouknow.model.LoginData
-import com.letyouknow.model.PrefSubmitPriceData
-import com.letyouknow.model.RememberMeData
+import com.letyouknow.model.*
 import java.lang.reflect.Type
 
 class AppPreferencesHelper(context: Context, prefFileName: String) {
@@ -20,6 +17,10 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
         val KEY_SUBMIT_PRICE_TIME = "KEY_SUBMIT_PRICE_TIME"
         val KEY_SUBMIT_PRICE = "KEY_SUBMIT_PRICE"
+        val KEY_ONE_DEAL_NEAR_TIME = "KEY_ONE_DEAL_NEAR_TIME"
+        val KEY_ONE_DEAL_NEAR = "KEY_ONE_DEAL_NEAR"
+        val KEY_SEARCH_DEAL = "KEY_SEARCH_DEAL"
+        val KEY_SEARCH_DEAL_TIME = "KEY_SEARCH_DEAL_TIME"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -143,6 +144,68 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     fun getSubmitPriceTime(): String {
         return sharedpreferences.getString(KEY_SUBMIT_PRICE_TIME, "")!!
+    }
+
+    fun setOneDealNearYouData(user: String) {
+        prefs.putString(KEY_ONE_DEAL_NEAR, user).apply()
+    }
+
+    fun getOneDealNearYouData(): PrefOneDealNearYouData {
+        return if (sharedpreferences.getString(
+                KEY_ONE_DEAL_NEAR,
+                ""
+            ) == "" || sharedpreferences.getString(
+                KEY_ONE_DEAL_NEAR,
+                ""
+            ) == null
+        )
+            PrefOneDealNearYouData()
+        else {
+            val gson = Gson()
+            return gson.fromJson(
+                sharedpreferences.getString(KEY_ONE_DEAL_NEAR, ""),
+                PrefOneDealNearYouData::class.java
+            )
+        }
+    }
+
+    fun setOneDealNearYou(time: String) {
+        prefs.putString(KEY_ONE_DEAL_NEAR_TIME, time).apply()
+    }
+
+    fun getOneDealNearYou(): String {
+        return sharedpreferences.getString(KEY_ONE_DEAL_NEAR_TIME, "")!!
+    }
+
+    fun setSearchDealData(user: String) {
+        prefs.putString(KEY_SEARCH_DEAL, user).apply()
+    }
+
+    fun getSearchDealData(): PrefSearchDealData {
+        return if (sharedpreferences.getString(
+                KEY_SEARCH_DEAL,
+                ""
+            ) == "" || sharedpreferences.getString(
+                KEY_SEARCH_DEAL,
+                ""
+            ) == null
+        )
+            PrefSearchDealData()
+        else {
+            val gson = Gson()
+            return gson.fromJson(
+                sharedpreferences.getString(KEY_SEARCH_DEAL, ""),
+                PrefSearchDealData::class.java
+            )
+        }
+    }
+
+    fun setSearchDealTime(time: String) {
+        prefs.putString(KEY_SEARCH_DEAL_TIME, time).apply()
+    }
+
+    fun getSearchDealTime(): String {
+        return sharedpreferences.getString(KEY_SEARCH_DEAL_TIME, "")!!
     }
 
 }

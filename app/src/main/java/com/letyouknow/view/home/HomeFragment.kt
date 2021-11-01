@@ -1,6 +1,7 @@
 package com.letyouknow.view.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -21,6 +22,7 @@ import com.letyouknow.databinding.FragmentHomeBinding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
@@ -31,6 +33,10 @@ import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.pionymessenger.utils.Constant.Companion.ARG_ZIPCODE
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.startActivity
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -365,13 +371,15 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         }
     }
 
-
+    var isCallingYear = false
     private fun callVehicleYearAPI() {
+        isCallingYear = true
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
             vehicleYearModel.getYear(requireActivity(), productId, "")!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
+                    isCallingYear = false
                     Log.e("Year Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
@@ -389,7 +397,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                             adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                             spYear.adapter = adapterYear
                             spYear.onItemSelectedListener = this
-
                         }
                     } catch (e: Exception) {
 
@@ -782,4 +789,94 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         super.onDestroy()
     }
 
+    private lateinit var prefSearchDealData: PrefSearchDealData
+    private lateinit var handler: Handler
+    override fun onResume() {
+        super.onResume()
+        startHandler()
+    }
+
+    private fun setPrefData() {
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+        setCurrentTime()
+    }
+
+    private fun setCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSearchDealTime(date)
+        Log.e("Submit Date", date)
+        startHandler()
+    }
+
+    private fun startHandler() {
+        if (!AppGlobal.isEmpty(pref?.getSearchDealTime())) {
+            Log.e("DAte Time", AppGlobal.stringToDate(pref?.getSearchDealTime())?.toString()!!)
+            handler = Handler()
+            handler.postDelayed(runnable, 1000)
+        }
+
+    }
+
+    private var runnable = object : Runnable {
+        override fun run() {
+            val date = Calendar.getInstance().time
+            val lastDate = AppGlobal.stringToDate(pref?.getSearchDealTime())
+
+            val diff: Long = date.time - (lastDate?.time ?: 0)
+            print(diff)
+
+            val seconds = diff / 1000
+            val minutes = seconds / 60
+            if (minutes >= 5) {
+                handler.removeCallbacks(this)
+                pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+                pref?.setSearchDealTime("")
+                setTimerPrefData()
+            } else {
+                handler.postDelayed(this, 1000)
+            }
+        }
+
+    }
+
+    private fun setTimerPrefData() {
+        prefSearchDealData = pref?.getSearchDealData()!!
+        setYear()
+        setMake()
+        setModel()
+        setTrim()
+        setExteriorColor()
+        setInteriorColor()
+
+        yearId = prefSearchDealData.yearId!!
+        makeId = prefSearchDealData.makeId!!
+        modelId = prefSearchDealData.modelId!!
+        trimId = prefSearchDealData.trimId!!
+        extColorId = prefSearchDealData.extColorId!!
+        intColorId = prefSearchDealData.intColorId!!
+        yearStr = prefSearchDealData.yearStr!!
+        makeStr = prefSearchDealData.makeStr!!
+        modelStr = prefSearchDealData.modelStr!!
+        trimStr = prefSearchDealData.trimStr!!
+        extColorStr = prefSearchDealData.extColorStr!!
+        intColorStr = prefSearchDealData.intColorStr!!
+
+        if (!isCallingYear)
+            callVehicleYearAPI()
+
+        if (prefSearchDealData.zipCode?.length!! >= 1) {
+            val str = prefSearchDealData.zipCode.toString()
+            if (str.length == 5) {
+                callVehicleZipCodeAPI(str)
+            } else if (str.length < 5) {
+                isValidZipCode = false
+                prefSearchDealData.isZipCode = isValidZipCode!!
+                tvErrorZipCode.visibility = View.GONE
+                edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
+            }
+            prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
+            setPrefData()
+        }
+    }
 }
