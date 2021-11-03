@@ -30,6 +30,9 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     fun setLogin(isLogin: Boolean) {
         prefs.putBoolean(KEY_IS_LOGIN, isLogin).apply()
+        /* val remData =isRememberData()
+         prefs.clear().commit()
+         setRememberData(Gson().toJson(remData))*/
     }
 
     fun isLogin(): Boolean {

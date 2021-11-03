@@ -301,6 +301,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult.transactionInfo.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
+                    pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
+                    pref?.setOneDealNearYou("")
                     startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )

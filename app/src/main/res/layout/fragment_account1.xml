@@ -272,7 +272,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.7"
-                            android:text="@string/mail"
+                            android:text="@string/email"
                             android:textColor="@color/colorACACAC"
                             android:textSize="@dimen/_12sdp" />
 

@@ -137,7 +137,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
             val seconds = diff / 1000
             val minutes = seconds / 60
-            if (minutes >= 5) {
+            if (minutes >= 30) {
                 handler.removeCallbacks(this)
                 pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                 pref?.setSubmitPriceTime("")
@@ -195,152 +195,187 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
 
     private fun setYear() {
-        val arData = ArrayList<VehicleYearData>()
-        val yearData = VehicleYearData()
-        yearData.year = "YEAR - NEW CARS"
-        arData.add(0, yearData)
-        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-        spYear.adapter = adapterYear
-        AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
+        try {
+            val arData = ArrayList<VehicleYearData>()
+            val yearData = VehicleYearData()
+            yearData.year = "YEAR - NEW CARS"
+            arData.add(0, yearData)
+            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+            spYear.adapter = adapterYear
+            AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
+        } catch (e: Exception) {
 
+        }
     }
 
     private fun setMake() {
-        spMake.isEnabled = false
-        val arData = ArrayList<VehicleMakeData>()
-        val makeData = VehicleMakeData()
-        makeData.make = "MAKE"
-        arData.add(0, makeData)
-        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
-        spMake.adapter = adapterMake
-        AppGlobal.setSpinnerLayoutPos(0, spMake, requireActivity())
+        try {
+            spMake.isEnabled = false
+            val arData = ArrayList<VehicleMakeData>()
+            val makeData = VehicleMakeData()
+            makeData.make = "MAKE"
+            arData.add(0, makeData)
+            adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+            spMake.adapter = adapterMake
+            AppGlobal.setSpinnerLayoutPos(0, spMake, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setModel() {
-        spModel.isEnabled = false
-        val arData = ArrayList<VehicleModelData>()
-        val modelData = VehicleModelData()
-        modelData.model = "MODEL"
-        arData.add(0, modelData)
-        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
-        spModel.adapter = adapterModel
-        AppGlobal.setSpinnerLayoutPos(0, spModel, requireActivity())
+        try {
+            spModel.isEnabled = false
+            val arData = ArrayList<VehicleModelData>()
+            val modelData = VehicleModelData()
+            modelData.model = "MODEL"
+            arData.add(0, modelData)
+            adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+            spModel.adapter = adapterModel
+            AppGlobal.setSpinnerLayoutPos(0, spModel, requireActivity())
+        } catch (e: Exception) {
 
+        }
     }
 
     private fun setTrim() {
-        spTrim.isEnabled = false
-        val arData = ArrayList<VehicleTrimData>()
-        val trimData = VehicleTrimData()
-        trimData.trim = "TRIM"
-        arData.add(0, trimData)
-        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
-        spTrim.adapter = adapterTrim
-        AppGlobal.setSpinnerLayoutPos(0, spTrim, requireActivity())
+        try {
+            spTrim.isEnabled = false
+            val arData = ArrayList<VehicleTrimData>()
+            val trimData = VehicleTrimData()
+            trimData.trim = "TRIM"
+            arData.add(0, trimData)
+            adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+            spTrim.adapter = adapterTrim
+            AppGlobal.setSpinnerLayoutPos(0, spTrim, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setExteriorColor() {
-        spExteriorColor.isEnabled = false
-        val arData = ArrayList<ExteriorColorData>()
-        val trimData = ExteriorColorData()
-        trimData.exteriorColor = "EXTERIOR COLOR"
-        arData.add(0, trimData)
-        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
-        spExteriorColor.adapter = adapterExterior
-        AppGlobal.setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
+        try {
+            spExteriorColor.isEnabled = false
+            val arData = ArrayList<ExteriorColorData>()
+            val trimData = ExteriorColorData()
+            trimData.exteriorColor = "EXTERIOR COLOR"
+            arData.add(0, trimData)
+            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+            spExteriorColor.adapter = adapterExterior
+            AppGlobal.setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setInteriorColor() {
-        spInteriorColor.isEnabled = false
-        val arData = ArrayList<InteriorColorData>()
-        val interiorData = InteriorColorData()
-        interiorData.interiorColor = "INTERIOR COLOR"
-        arData.add(0, interiorData)
-        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
-        spInteriorColor.adapter = adapterInterior
-        AppGlobal.setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
+        try {
+            spInteriorColor.isEnabled = false
+            val arData = ArrayList<InteriorColorData>()
+            val interiorData = InteriorColorData()
+            interiorData.interiorColor = "INTERIOR COLOR"
+            arData.add(0, interiorData)
+            adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+            spInteriorColor.adapter = adapterInterior
+            AppGlobal.setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setPackages(isEnable: Boolean) {
-        tvPackages.text = "PACKAGES"
-        if (isEnable) {
-            tvPackages.isEnabled = true
-            tvPackages.setOnClickListener(this)
-        } else {
-            tvPackages.isEnabled = false
-            tvPackages.setOnClickListener(null)
+        try {
+            tvPackages.text = "PACKAGES"
+            if (isEnable) {
+                tvPackages.isEnabled = true
+                tvPackages.setOnClickListener(this)
+            } else {
+                tvPackages.isEnabled = false
+                tvPackages.setOnClickListener(null)
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun setOptions(isEnable: Boolean) {
+        try {
+            tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
+            if (isEnable) {
+                tvOptionalAccessories.isEnabled = true
+                tvOptionalAccessories.setOnClickListener(this)
+            } else {
+                tvOptionalAccessories.isEnabled = false
+                tvOptionalAccessories.setOnClickListener(null)
+            }
+        } catch (e: Exception) {
 
-        tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
-        if (isEnable) {
-            tvOptionalAccessories.isEnabled = true
-            tvOptionalAccessories.setOnClickListener(this)
-        } else {
-            tvOptionalAccessories.isEnabled = false
-            tvOptionalAccessories.setOnClickListener(null)
         }
-
     }
 
     var isCallingYear = false
 
     private fun callVehicleYearAPI() {
-        isCallingYear = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            vehicleYearModel.getYear(
-                requireActivity(),
-                productId,
-                ""
-            )!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    isCallingYear = false
-                    try {
-                        Log.e("Year Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val yearData = VehicleYearData()
-                            yearData.year = "YEAR - NEW CARS"
-                            data.add(0, yearData)
-                            adapterYear = YearSpinnerAdapter(requireActivity(), data)
-                            spYear.adapter = adapterYear
+        try {
+            isCallingYear = true
+            if (Constant.isOnline(requireActivity())) {
+
+                Constant.showLoader(requireActivity())
+                vehicleYearModel.getYear(
+                    requireActivity(),
+                    productId,
+                    ""
+                )!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSubmitPriceData.makeId!!))
+                            Constant.dismissLoader()
+                        isCallingYear = false
+                        try {
+                            Log.e("Year Data", Gson().toJson(data))
+                            if (data != null || data?.size!! > 0) {
+                                val yearData = VehicleYearData()
+                                yearData.year = "YEAR - NEW CARS"
+                                data.add(0, yearData)
+                                adapterYear = YearSpinnerAdapter(requireActivity(), data)
+                                spYear.adapter = adapterYear
 
 
-                            for (i in 0 until data.size) {
-                                if (!isEmpty(yearId) && yearId == data[i].vehicleYearID) {
-                                    spYear.setSelection(i, true)
-                                    AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
-                                    callVehicleMakeAPI()
+                                for (i in 0 until data.size) {
+                                    if (!isEmpty(prefSubmitPriceData.yearId) && prefSubmitPriceData.yearId == data[i].vehicleYearID) {
+                                        spYear.setSelection(i, true)
+                                        AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
+                                        callVehicleMakeAPI()
+                                    }
                                 }
+                                spYear.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<VehicleYearData>()
+                                val yearData = VehicleYearData()
+                                yearData.year = "YEAR - NEW CARS"
+                                arData.add(0, yearData)
+                                adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+                                spYear.adapter = adapterYear
+                                spYear.onItemSelectedListener = this
+
                             }
-                            spYear.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<VehicleYearData>()
-                            val yearData = VehicleYearData()
-                            yearData.year = "YEAR - NEW CARS"
-                            arData.add(0, yearData)
-                            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-                            spYear.adapter = adapterYear
-                            spYear.onItemSelectedListener = this
-
+                        } catch (e: Exception) {
                         }
-                    } catch (e: Exception) {
-                    }
 
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    }
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callVehicleMakeAPI() {
         spMake.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.makeId!!))
+                Constant.showLoader(requireActivity())
             vehicleMakeModel.getMake(
                 requireActivity(),
                 productId,
@@ -348,7 +383,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
+                    if (isEmpty(prefSubmitPriceData.modelId!!))
+                        Constant.dismissLoader()
                     Log.e("Make Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
@@ -359,7 +395,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                             spMake.adapter = adapterMake
 
                             for (i in 0 until data.size) {
-                                if (!isEmpty(makeId) && makeId == data[i].vehicleMakeID) {
+                                if (!isEmpty(prefSubmitPriceData.makeId) && prefSubmitPriceData.makeId == data[i].vehicleMakeID) {
                                     spMake.setSelection(i, true)
                                     callVehicleModelAPI()
                                     AppGlobal.setSpinnerLayoutPos(i, spMake, requireActivity())
@@ -387,7 +423,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleModelAPI() {
         spModel.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.modelId!!))
+                Constant.showLoader(requireActivity())
             vehicleModelModel.getModel(
                 requireActivity(),
                 productId,
@@ -396,7 +433,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
+                    if (isEmpty(prefSubmitPriceData.trimId!!))
+                        Constant.dismissLoader()
                     Log.e("MODEL Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
@@ -406,7 +444,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                             adapterModel = ModelSpinnerAdapter(requireActivity(), data)
                             spModel.adapter = adapterModel
                             for (i in 0 until data.size) {
-                                if (!isEmpty(modelId) && modelId == data[i].vehicleModelID) {
+                                if (!isEmpty(prefSubmitPriceData.modelId) && prefSubmitPriceData.modelId == data[i].vehicleModelID) {
                                     spModel.setSelection(i, true)
                                     callVehicleTrimAPI()
                                     AppGlobal.setSpinnerLayoutPos(i, spModel, requireActivity())
@@ -434,7 +472,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleTrimAPI() {
         spTrim.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.trimId!!))
+                Constant.showLoader(requireActivity())
             vehicleTrimModel.getTrim(
                 requireActivity(),
                 productId,
@@ -444,7 +483,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
+                    if (isEmpty(prefSubmitPriceData.extColorId!!))
+                        Constant.dismissLoader()
                     Log.e("TRIM Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
@@ -454,7 +494,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                             adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
                             spTrim.adapter = adapterTrim
                             for (i in 0 until data.size) {
-                                if (!isEmpty(trimId) && trimId == data[i].vehicleTrimID) {
+                                if (!isEmpty(prefSubmitPriceData.trimId) && prefSubmitPriceData.trimId == data[i].vehicleTrimID) {
                                     spTrim.setSelection(i, true)
                                     callExteriorColorAPI()
                                     AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
@@ -482,7 +522,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callExteriorColorAPI() {
         spExteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.extColorId!!))
+                Constant.showLoader(requireActivity())
             exteriorColorModel.getExteriorColor(
                 requireActivity(),
                 productId,
@@ -493,7 +534,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
+                    if (isEmpty(prefSubmitPriceData.intColorId!!))
+                        Constant.dismissLoader()
                     Log.e("EXTERIOR COLOR Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
@@ -507,7 +549,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                             adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
                             spExteriorColor.adapter = adapterExterior
                             for (i in 0 until data.size) {
-                                if (!isEmpty(extColorId) && extColorId == data[i].vehicleExteriorColorID) {
+                                if (!isEmpty(prefSubmitPriceData.extColorId) && prefSubmitPriceData.extColorId == data[i].vehicleExteriorColorID) {
                                     spExteriorColor.setSelection(i, true)
                                     callInteriorColorAPI()
                                     AppGlobal.setSpinnerLayoutPos(
@@ -543,7 +585,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     private fun callInteriorColorAPI() {
         spInteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.intColorId!!))
+                Constant.showLoader(requireActivity())
             interiorColorModel.getInteriorColor(
                 requireActivity(),
                 productId,
@@ -569,7 +612,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                             adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
                             spInteriorColor.adapter = adapterInterior
                             for (i in 0 until data.size) {
-                                if (!isEmpty(intColorId) && intColorId == data[i].vehicleInteriorColorID) {
+                                if (!isEmpty(prefSubmitPriceData.intColorId) && prefSubmitPriceData.intColorId == data[i].vehicleInteriorColorID) {
                                     spInteriorColor.setSelection(i, true)
                                     AppGlobal.setSpinnerLayoutPos(
                                         i,
@@ -608,35 +651,45 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                                             setOptions(false)
                                         }
 
-                                    }
-                                    if (!prefSubmitPriceData.optionsData.isNullOrEmpty()) {
-                                        popupOptions(prefSubmitPriceData.optionsData!!)
-                                        setOptions(true)
-                                        var optionsStr = ""
-                                        var isFirst = true
-                                        for (i in 0 until adapterOptions.itemCount) {
-                                            if (adapterOptions.getItem(i).isSelect == true || adapterOptions.getItem(
-                                                    i
-                                                ).isOtherSelect == true
-                                            ) {
-                                                if (isFirst) {
-                                                    optionsStr =
-                                                        adapterOptions.getItem(i).accessory.toString()
-                                                    isFirst = false
-                                                } else {
-                                                    optionsStr =
-                                                        optionsStr + ", " + adapterOptions.getItem(i).accessory.toString()
+                                        if (!prefSubmitPriceData.optionsData.isNullOrEmpty()) {
+                                            popupOptions(prefSubmitPriceData.optionsData!!)
+                                            setOptions(true)
+                                            var optionsStr = ""
+                                            var isFirst = true
+                                            for (i in 0 until adapterOptions.itemCount) {
+                                                if (adapterOptions.getItem(i).isSelect == true || adapterOptions.getItem(
+                                                        i
+                                                    ).isOtherSelect == true
+                                                ) {
+                                                    if (isFirst) {
+                                                        optionsStr =
+                                                            adapterOptions.getItem(i).accessory.toString()
+                                                        isFirst = false
+                                                    } else {
+                                                        optionsStr =
+                                                            optionsStr + ", " + adapterOptions.getItem(
+                                                                i
+                                                            ).accessory.toString()
+                                                    }
                                                 }
                                             }
-                                        }
-                                        if (!TextUtils.isEmpty(optionsStr)) {
-                                            tvErrorOptionsAccessories.visibility = View.GONE
-                                            tvOptionalAccessories.text = optionsStr
+                                            if (!TextUtils.isEmpty(optionsStr)) {
+                                                tvErrorOptionsAccessories.visibility = View.GONE
+                                                tvOptionalAccessories.text = optionsStr
+                                            } else {
+                                                tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
+                                            }
+
                                         } else {
-                                            tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
+                                            callOptionalAccessoriesAPI()
+                                            setOptions(true)
                                         }
 
+                                    } else {
+                                        callVehiclePackagesAPI()
+                                        setPackages(true)
                                     }
+
                                 }
                             }
                             spInteriorColor.onItemSelectedListener = this
@@ -956,7 +1009,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     data.vehicleModelStr = modelStr
                     data.vehicleTrimStr = trimStr
                     data.vehicleExtColorStr = extColorStr
-                    data.vehicleIntColorStr = extColorStr
+                    data.vehicleIntColorStr = intColorStr
                     data.arPackages = arPackage
                     data.arOptions = arOptions
 
@@ -1000,6 +1053,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                     setOptions(false)
                 }
                 prefSubmitPriceData.packagesData = adapterPackages.getAll()
+                Constant.dismissLoader()
+                prefSubmitPriceData.optionsData = ArrayList()
                 pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                 setCurrentTime()
                 dialogPackage.dismiss()
@@ -1158,6 +1213,19 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.year != "YEAR - NEW CARS") {
                     prefSubmitPriceData.yearId = data.vehicleYearID!!
                     prefSubmitPriceData.yearStr = data.year!!
+                    prefSubmitPriceData.makeId = ""
+                    prefSubmitPriceData.modelId = ""
+                    prefSubmitPriceData.trimId = ""
+                    prefSubmitPriceData.extColorId = ""
+                    prefSubmitPriceData.intColorId = ""
+                    prefSubmitPriceData.makeStr = ""
+                    prefSubmitPriceData.modelStr = ""
+                    prefSubmitPriceData.trimStr = ""
+                    prefSubmitPriceData.extColorStr = ""
+                    prefSubmitPriceData.intColorStr = ""
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()
@@ -1178,6 +1246,17 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.make != "MAKE") {
                     prefSubmitPriceData.makeId = data.vehicleMakeID!!
                     prefSubmitPriceData.makeStr = data.make!!
+                    prefSubmitPriceData.modelId = ""
+                    prefSubmitPriceData.trimId = ""
+                    prefSubmitPriceData.extColorId = ""
+                    prefSubmitPriceData.intColorId = ""
+                    prefSubmitPriceData.modelStr = ""
+                    prefSubmitPriceData.trimStr = ""
+                    prefSubmitPriceData.extColorStr = ""
+                    prefSubmitPriceData.intColorStr = ""
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()
@@ -1197,6 +1276,15 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.model != "MODEL") {
                     prefSubmitPriceData.modelId = data.vehicleModelID!!
                     prefSubmitPriceData.modelStr = data.model!!
+                    prefSubmitPriceData.trimId = ""
+                    prefSubmitPriceData.extColorId = ""
+                    prefSubmitPriceData.intColorId = ""
+                    prefSubmitPriceData.trimStr = ""
+                    prefSubmitPriceData.extColorStr = ""
+                    prefSubmitPriceData.intColorStr = ""
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()
@@ -1216,6 +1304,13 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.trim != "TRIM") {
                     prefSubmitPriceData.trimId = data.vehicleTrimID!!
                     prefSubmitPriceData.trimStr = data.trim!!
+                    prefSubmitPriceData.extColorId = ""
+                    prefSubmitPriceData.intColorId = ""
+                    prefSubmitPriceData.extColorStr = ""
+                    prefSubmitPriceData.intColorStr = ""
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()
@@ -1235,6 +1330,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     prefSubmitPriceData.extColorId = data.vehicleExteriorColorID!!
                     prefSubmitPriceData.extColorStr = data.exteriorColor!!
+                    prefSubmitPriceData.intColorId = ""
+                    prefSubmitPriceData.intColorStr = ""
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()
@@ -1252,6 +1352,9 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 if (data.interiorColor != "INTERIOR COLOR") {
                     prefSubmitPriceData.intColorId = data.vehicleInteriorColorID!!
                     prefSubmitPriceData.intColorStr = data.interiorColor!!
+                    prefSubmitPriceData.packagesData = ArrayList()
+                    prefSubmitPriceData.optionsData = ArrayList()
+                    Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                     setCurrentTime()
                     setErrorVisibleGone()

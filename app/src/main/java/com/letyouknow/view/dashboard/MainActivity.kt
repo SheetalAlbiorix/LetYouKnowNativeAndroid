@@ -192,6 +192,7 @@ class MainActivity : BaseActivity(),
            /* if (fragment is DealSummeryActivity || fragment is DealSummeryStep2Fragment) {
                 loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             } else {*/
+            pref?.setLogin(true)
                 super.onBackPressed()
 //            }
         } else {
@@ -201,7 +202,6 @@ class MainActivity : BaseActivity(),
                 adapterDrawer.update(selectDrawerPos, data)
             }
             selectDrawerPos = -1
-//            loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
             item.isChecked = true
         }

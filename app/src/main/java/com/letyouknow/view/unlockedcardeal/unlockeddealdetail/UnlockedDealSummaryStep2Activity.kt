@@ -281,6 +281,8 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult.transactionInfo.vehiclePrice = ucdData.price!!
                     data.successResult.transactionInfo.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
+                    pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+                    pref?.setSearchDealTime("")
                     startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
                 }
                 )

@@ -65,6 +65,9 @@ class Constant {
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
         var TYPE_BANK_ACCOUNT = 3
+        var TYPE_SUBMIT_PRICE = 0
+        var TYPE_ONE_DEAL_NEAR_YOU = 1
+        var TYPE_SEARCH_DEAL = 2
 
         lateinit var progress: KProgressHUD
 

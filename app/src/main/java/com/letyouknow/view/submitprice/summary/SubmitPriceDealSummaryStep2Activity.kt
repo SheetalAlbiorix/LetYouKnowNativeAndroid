@@ -299,6 +299,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                    pref?.setSubmitPriceTime("")
                     if (!data.foundMatch)
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(

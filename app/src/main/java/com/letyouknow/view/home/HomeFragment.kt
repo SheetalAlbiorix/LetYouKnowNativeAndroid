@@ -23,6 +23,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
@@ -150,20 +151,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 ViewModelProvider(this).get(FindUCDDealViewModel::class.java)
             tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
 
-            setYear()
-            setMake()
-            setModel()
-            setTrim()
-            setExteriorColor()
-            setInteriorColor()
-            callRadiusAPI()
+
             btnProceedDeal.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
             ivClosePromo.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
-            callVehicleYearAPI()
-            onChangeZipCode()
+
+            setTimerPrefData()
         } catch (e: Exception) {
 
         }
@@ -171,94 +166,127 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
 
     private fun onChangeZipCode() {
-        edtZipCode.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        try {
+            edtZipCode.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val str = s.toString()
-                if (str.length == 5) {
-                    callVehicleZipCodeAPI(str)
-                } else if (str.length < 5) {
-                    isValidZipCode = false
-                    tvErrorZipCode.visibility = View.GONE
-                    edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
-            }
 
-            override fun afterTextChanged(s: Editable?) {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s.toString()
+                    if (str.length == 5) {
+                        callVehicleZipCodeAPI(str)
+                    } else if (str.length < 5) {
+                        isValidZipCode = false
+                        prefSearchDealData.isZipCode = isValidZipCode!!
+                        tvErrorZipCode.visibility = View.GONE
+                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
+                    }
+                    prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
+                }
 
-            }
+                override fun afterTextChanged(s: Editable?) {
 
-        })
+                }
+
+            })
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setYear() {
-        val arData = ArrayList<VehicleYearData>()
-        val yearData = VehicleYearData()
-        yearData.year = "YEAR - NEW CARS"
-        arData.add(0, yearData)
-        adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-        spYear.adapter = adapterYear
-        setSpinnerLayoutPos(0, spYear, requireActivity())
+        try {
+            val arData = ArrayList<VehicleYearData>()
+            val yearData = VehicleYearData()
+            yearData.year = "YEAR - NEW CARS"
+            arData.add(0, yearData)
+            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+            spYear.adapter = adapterYear
+            setSpinnerLayoutPos(0, spYear, requireActivity())
+        } catch (e: Exception) {
 
+        }
     }
 
     private fun setMake() {
-        spMake.isEnabled = false
-        val arData = ArrayList<VehicleMakeData>()
-        val makeData = VehicleMakeData()
-        makeData.make = "MAKE"
-        arData.add(0, makeData)
-        adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
-        spMake.adapter = adapterMake
-        setSpinnerLayoutPos(0, spMake, requireActivity())
+        try {
+            spMake.isEnabled = false
+            val arData = ArrayList<VehicleMakeData>()
+            val makeData = VehicleMakeData()
+            makeData.make = "MAKE"
+            arData.add(0, makeData)
+            adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+            spMake.adapter = adapterMake
+            setSpinnerLayoutPos(0, spMake, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setModel() {
-        spModel.isEnabled = false
-        val arData = ArrayList<VehicleModelData>()
-        val modelData = VehicleModelData()
-        modelData.model = "MODEL"
-        arData.add(0, modelData)
-        adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
-        spModel.adapter = adapterModel
-        setSpinnerLayoutPos(0, spModel, requireActivity())
+        try {
+            spModel.isEnabled = false
+            val arData = ArrayList<VehicleModelData>()
+            val modelData = VehicleModelData()
+            modelData.model = "MODEL"
+            arData.add(0, modelData)
+            adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+            spModel.adapter = adapterModel
+            setSpinnerLayoutPos(0, spModel, requireActivity())
+        } catch (e: Exception) {
 
+        }
     }
 
     private fun setTrim() {
-        spTrim.isEnabled = false
-        val arData = ArrayList<VehicleTrimData>()
-        val trimData = VehicleTrimData()
-        trimData.trim = "TRIM"
-        arData.add(0, trimData)
-        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
-        spTrim.adapter = adapterTrim
-        setSpinnerLayoutPos(0, spTrim, requireActivity())
+        try {
+            spTrim.isEnabled = false
+            val arData = ArrayList<VehicleTrimData>()
+            val trimData = VehicleTrimData()
+            trimData.trim = "TRIM"
+            arData.add(0, trimData)
+            adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+            spTrim.adapter = adapterTrim
+            setSpinnerLayoutPos(0, spTrim, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setExteriorColor() {
-        spExteriorColor.isEnabled = false
-        val arData = ArrayList<ExteriorColorData>()
-        val trimData = ExteriorColorData()
-        trimData.exteriorColor = "EXTERIOR COLOR"
-        arData.add(0, trimData)
-        adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
-        spExteriorColor.adapter = adapterExterior
-        setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
+        try {
+            spExteriorColor.isEnabled = false
+            val arData = ArrayList<ExteriorColorData>()
+            val trimData = ExteriorColorData()
+            trimData.exteriorColor = "EXTERIOR COLOR"
+            arData.add(0, trimData)
+            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+            spExteriorColor.adapter = adapterExterior
+            setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun setInteriorColor() {
-        spInteriorColor.isEnabled = false
-        val arData = ArrayList<InteriorColorData>()
-        val interiorData = InteriorColorData()
-        interiorData.interiorColor = "INTERIOR COLOR"
-        arData.add(0, interiorData)
-        adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
-        spInteriorColor.adapter = adapterInterior
-        setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
+        try {
+            spInteriorColor.isEnabled = false
+            val arData = ArrayList<InteriorColorData>()
+            val interiorData = InteriorColorData()
+            interiorData.interiorColor = "INTERIOR COLOR"
+            arData.add(0, interiorData)
+            adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+            spInteriorColor.adapter = adapterInterior
+            setSpinnerLayoutPos(0, spInteriorColor, requireActivity())
+        } catch (e: Exception) {
+
+        }
     }
 
     /* private fun setRadius() {
@@ -270,6 +298,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
      }
  */
     private fun callSearchFindDealAPI() {
+
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
 
@@ -344,7 +373,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
     private fun callVehicleZipCodeAPI(zipCode: String?) {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!isCallingYear)
+                Constant.showLoader(requireActivity())
             zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -362,6 +392,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                             tvErrorZipCode.visibility = View.GONE
                         }
                         isValidZipCode = data
+                        prefSearchDealData.isZipCode = isValidZipCode!!
+                        setPrefData()
                     } catch (e: Exception) {
                     }
                 }
@@ -373,247 +405,352 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
     var isCallingYear = false
     private fun callVehicleYearAPI() {
-        isCallingYear = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            vehicleYearModel.getYear(requireActivity(), productId, "")!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    isCallingYear = false
-                    Log.e("Year Data", Gson().toJson(data))
-                    try {
-                        if (data != null || data?.size!! > 0) {
-                            val yearData = VehicleYearData()
-                            yearData.year = "YEAR - NEW CARS"
-                            data.add(0, yearData)
-                            adapterYear = YearSpinnerAdapter(requireActivity(), data)
-                            spYear.adapter = adapterYear
-                            spYear.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<VehicleYearData>()
-                            val yearData = VehicleYearData()
-                            yearData.year = "YEAR - NEW CARS"
-                            arData.add(0, yearData)
-                            adapterYear = YearSpinnerAdapter(requireActivity(), arData)
-                            spYear.adapter = adapterYear
-                            spYear.onItemSelectedListener = this
-                        }
-                    } catch (e: Exception) {
+        try {
+            isCallingYear = true
+            if (Constant.isOnline(requireActivity())) {
+                Constant.showLoader(requireActivity())
+                vehicleYearModel.getYear(requireActivity(), productId, "")!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.makeId))
+                            Constant.dismissLoader()
+                        isCallingYear = false
+                        Log.e("Year Data", Gson().toJson(data))
+                        try {
+                            if (data != null || data?.size!! > 0) {
+                                val yearData = VehicleYearData()
+                                yearData.year = "YEAR - NEW CARS"
+                                data.add(0, yearData)
+                                adapterYear = YearSpinnerAdapter(requireActivity(), data)
+                                spYear.adapter = adapterYear
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.yearId) && prefSearchDealData.yearId == data[i].vehicleYearID) {
+                                        spYear.setSelection(i, true)
+                                        AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
+                                        callVehicleMakeAPI()
+                                    }
+                                }
+                                spYear.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<VehicleYearData>()
+                                val yearData = VehicleYearData()
+                                yearData.year = "YEAR - NEW CARS"
+                                arData.add(0, yearData)
+                                adapterYear = YearSpinnerAdapter(requireActivity(), arData)
+                                spYear.adapter = adapterYear
+                                spYear.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
 
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callVehicleMakeAPI() {
-        spMake.isEnabled = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    try {
-                        Log.e("Make Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val makeData = VehicleMakeData()
-                            makeData.make = "MAKE"
-                            data.add(0, makeData)
-                            adapterMake = MakeSpinnerAdapter(requireActivity(), data)
-                            spMake.adapter = adapterMake
-                            spMake.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<VehicleMakeData>()
-                            val makeData = VehicleMakeData()
-                            makeData.make = "MAKE"
-                            arData.add(0, makeData)
-                            adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
-                            spMake.adapter = adapterMake
-                            spMake.onItemSelectedListener = this
-                        }
-                    } catch (e: Exception) {
+        try {
+            spMake.isEnabled = true
+            if (Constant.isOnline(requireActivity())) {
+                if (isEmpty(prefSearchDealData.makeId))
+                    Constant.showLoader(requireActivity())
+                vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.modelId))
+                            Constant.dismissLoader()
+                        try {
+                            Log.e("Make Data", Gson().toJson(data))
+                            if (data != null || data?.size!! > 0) {
+                                val makeData = VehicleMakeData()
+                                makeData.make = "MAKE"
+                                data.add(0, makeData)
+                                adapterMake = MakeSpinnerAdapter(requireActivity(), data)
+                                spMake.adapter = adapterMake
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.makeId) && prefSearchDealData.makeId == data[i].vehicleMakeID) {
+                                        spMake.setSelection(i, true)
+                                        callVehicleModelAPI()
+                                        AppGlobal.setSpinnerLayoutPos(i, spMake, requireActivity())
+                                    }
+                                }
+                                spMake.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<VehicleMakeData>()
+                                val makeData = VehicleMakeData()
+                                makeData.make = "MAKE"
+                                arData.add(0, makeData)
+                                adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
+                                spMake.adapter = adapterMake
+                                spMake.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
 
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callVehicleModelAPI() {
-        spModel.isEnabled = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    try {
-                        Log.e("Make Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val modelData = VehicleModelData()
-                            modelData.model = "MODEL"
-                            data.add(0, modelData)
-                            adapterModel = ModelSpinnerAdapter(requireActivity(), data)
-                            spModel.adapter = adapterModel
-                            spModel.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<VehicleModelData>()
-                            val modelData = VehicleModelData()
-                            modelData.model = "MODEL"
-                            arData.add(0, modelData)
-                            adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
-                            spModel.adapter = adapterModel
-                            spModel.onItemSelectedListener = this
-                        }
-                    } catch (e: Exception) {
+        try {
+            spModel.isEnabled = true
+            if (Constant.isOnline(requireActivity())) {
+                if (isEmpty(prefSearchDealData.modelId))
+                    Constant.showLoader(requireActivity())
+                vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.trimId))
+                            Constant.dismissLoader()
+                        try {
+                            Log.e("Make Data", Gson().toJson(data))
+                            if (data != null || data?.size!! > 0) {
+                                val modelData = VehicleModelData()
+                                modelData.model = "MODEL"
+                                data.add(0, modelData)
+                                adapterModel = ModelSpinnerAdapter(requireActivity(), data)
+                                spModel.adapter = adapterModel
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.modelId) && prefSearchDealData.modelId == data[i].vehicleModelID) {
+                                        spModel.setSelection(i, true)
+                                        callVehicleTrimAPI()
+                                        AppGlobal.setSpinnerLayoutPos(i, spModel, requireActivity())
+                                    }
+                                }
+                                spModel.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<VehicleModelData>()
+                                val modelData = VehicleModelData()
+                                modelData.model = "MODEL"
+                                arData.add(0, modelData)
+                                adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
+                                spModel.adapter = adapterModel
+                                spModel.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
 
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callVehicleTrimAPI() {
-        spTrim.isEnabled = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            vehicleTrimModel.getTrim(requireActivity(), productId, yearId, makeId, modelId, "")!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
-                    if (data != null || data?.size!! > 0) {
-                        val trimData = VehicleTrimData()
-                        trimData.trim = "TRIM"
-                        data.add(0, trimData)
-                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
-                        spTrim.adapter = adapterTrim
-                        spTrim.onItemSelectedListener = this
-                    } else {
-                        val arData = ArrayList<VehicleTrimData>()
-                        val trimData = VehicleTrimData()
-                        trimData.trim = "TRIM"
-                        arData.add(0, trimData)
-                        adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
-                        spTrim.adapter = adapterTrim
-                        spTrim.onItemSelectedListener = this
+        try {
+            spTrim.isEnabled = true
+            if (Constant.isOnline(requireActivity())) {
+                if (isEmpty(prefSearchDealData.trimId))
+                    Constant.showLoader(requireActivity())
+                vehicleTrimModel.getTrim(
+                    requireActivity(),
+                    productId,
+                    yearId,
+                    makeId,
+                    modelId,
+                    ""
+                )!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.extColorId))
+                            Constant.dismissLoader()
+                        Log.e("Make Data", Gson().toJson(data))
+                        if (data != null || data?.size!! > 0) {
+                            val trimData = VehicleTrimData()
+                            trimData.trim = "TRIM"
+                            data.add(0, trimData)
+                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
+                            spTrim.adapter = adapterTrim
+                            for (i in 0 until data.size) {
+                                if (!AppGlobal.isEmpty(prefSearchDealData.trimId) && prefSearchDealData.trimId == data[i].vehicleTrimID) {
+                                    spTrim.setSelection(i, true)
+                                    callExteriorColorAPI()
+                                    AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
+                                }
+                            }
+                            spTrim.onItemSelectedListener = this
+                        } else {
+                            val arData = ArrayList<VehicleTrimData>()
+                            val trimData = VehicleTrimData()
+                            trimData.trim = "TRIM"
+                            arData.add(0, trimData)
+                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+                            spTrim.adapter = adapterTrim
+                            spTrim.onItemSelectedListener = this
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callExteriorColorAPI() {
-        spExteriorColor.isEnabled = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            exteriorColorModel.getExteriorColor(
-                requireActivity(),
-                productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId, ""
-            )!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    try {
-                        Log.e("Make Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val exteriorColorData = ExteriorColorData()
-                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                            data.add(0, exteriorColorData)
-                            val exteriorColorData1 = ExteriorColorData()
-                            exteriorColorData1.vehicleExteriorColorID = "0"
-                            exteriorColorData1.exteriorColor = "ANY"
-                            data.add(1, exteriorColorData1)
-                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
-                            spExteriorColor.adapter = adapterExterior
-                            spExteriorColor.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<ExteriorColorData>()
-                            val exteriorColorData = ExteriorColorData()
-                            exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                            arData.add(0, exteriorColorData)
-                            val exteriorColorData1 = ExteriorColorData()
-                            exteriorColorData1.vehicleExteriorColorID = "0"
-                            exteriorColorData1.exteriorColor = "ANY"
-                            arData.add(1, exteriorColorData1)
-                            adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
-                            spExteriorColor.adapter = adapterExterior
-                            spExteriorColor.onItemSelectedListener = this
-                        }
-                    } catch (e: Exception) {
+        try {
+            spExteriorColor.isEnabled = true
+            if (Constant.isOnline(requireActivity())) {
+                if (isEmpty(prefSearchDealData.extColorId))
+                    Constant.showLoader(requireActivity())
+                exteriorColorModel.getExteriorColor(
+                    requireActivity(),
+                    productId,
+                    yearId,
+                    makeId,
+                    modelId,
+                    trimId, ""
+                )!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.intColorId))
+                            Constant.dismissLoader()
+                        try {
+                            Log.e("Make Data", Gson().toJson(data))
+                            if (data != null || data?.size!! > 0) {
+                                val exteriorColorData = ExteriorColorData()
+                                exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                                data.add(0, exteriorColorData)
+                                val exteriorColorData1 = ExteriorColorData()
+                                exteriorColorData1.vehicleExteriorColorID = "0"
+                                exteriorColorData1.exteriorColor = "ANY"
+                                data.add(1, exteriorColorData1)
+                                adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
+                                spExteriorColor.adapter = adapterExterior
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.extColorId) && prefSearchDealData.extColorId == data[i].vehicleExteriorColorID) {
+                                        spExteriorColor.setSelection(i, true)
+                                        callInteriorColorAPI()
+                                        AppGlobal.setSpinnerLayoutPos(
+                                            i,
+                                            spExteriorColor,
+                                            requireActivity()
+                                        )
+                                    }
+                                }
+                                spExteriorColor.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<ExteriorColorData>()
+                                val exteriorColorData = ExteriorColorData()
+                                exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                                arData.add(0, exteriorColorData)
+                                val exteriorColorData1 = ExteriorColorData()
+                                exteriorColorData1.vehicleExteriorColorID = "0"
+                                exteriorColorData1.exteriorColor = "ANY"
+                                arData.add(1, exteriorColorData1)
+                                adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
+                                spExteriorColor.adapter = adapterExterior
+                                spExteriorColor.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
 
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callInteriorColorAPI() {
-        spInteriorColor.isEnabled = true
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            interiorColorModel.getInteriorColor(
-                requireActivity(),
-                productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId,
-                extColorId, ""
-            )!!
-                .observe(requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
-                    try {
-                        Log.e("Make Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val interiorColorData = InteriorColorData()
-                            interiorColorData.interiorColor = "INTERIOR COLOR"
-                            data.add(0, interiorColorData)
-                            val interiorColorData1 = InteriorColorData()
-                            interiorColorData1.vehicleInteriorColorID = "0"
-                            interiorColorData1.interiorColor = "ANY"
-                            data.add(1, interiorColorData1)
-                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
-                            spInteriorColor.adapter = adapterInterior
-                            spInteriorColor.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<InteriorColorData>()
-                            val interiorColorData = InteriorColorData()
-                            interiorColorData.interiorColor = "INTERIOR COLOR"
-                            arData.add(0, interiorColorData)
-                            val interiorColorData1 = InteriorColorData()
-                            interiorColorData1.vehicleInteriorColorID = "0"
-                            interiorColorData1.interiorColor = "ANY"
-                            arData.add(1, interiorColorData1)
-                            adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
-                            spInteriorColor.adapter = adapterInterior
-                            spInteriorColor.onItemSelectedListener = this
-                        }
-                    } catch (e: Exception) {
+        try {
+            spInteriorColor.isEnabled = true
+            if (Constant.isOnline(requireActivity())) {
+                if (isEmpty(prefSearchDealData.intColorId))
+                    Constant.showLoader(requireActivity())
+                interiorColorModel.getInteriorColor(
+                    requireActivity(),
+                    productId,
+                    yearId,
+                    makeId,
+                    modelId,
+                    trimId,
+                    extColorId, ""
+                )!!
+                    .observe(requireActivity(), Observer { data ->
+                        Constant.dismissLoader()
+                        try {
+                            Log.e("Make Data", Gson().toJson(data))
+                            if (data != null || data?.size!! > 0) {
+                                val interiorColorData = InteriorColorData()
+                                interiorColorData.interiorColor = "INTERIOR COLOR"
+                                data.add(0, interiorColorData)
+                                val interiorColorData1 = InteriorColorData()
+                                interiorColorData1.vehicleInteriorColorID = "0"
+                                interiorColorData1.interiorColor = "ANY"
+                                data.add(1, interiorColorData1)
+                                adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
+                                spInteriorColor.adapter = adapterInterior
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.intColorId) && prefSearchDealData.intColorId == data[i].vehicleInteriorColorID) {
+                                        spInteriorColor.setSelection(i, true)
+                                        callRadiusAPI()
+                                        setSpinnerLayoutPos(
+                                            i,
+                                            spInteriorColor,
+                                            requireActivity()
+                                        )
+                                    }
+                                }
+                                spInteriorColor.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<InteriorColorData>()
+                                val interiorColorData = InteriorColorData()
+                                interiorColorData.interiorColor = "INTERIOR COLOR"
+                                arData.add(0, interiorColorData)
+                                val interiorColorData1 = InteriorColorData()
+                                interiorColorData1.vehicleInteriorColorID = "0"
+                                interiorColorData1.interiorColor = "ANY"
+                                arData.add(1, interiorColorData1)
+                                adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
+                                spInteriorColor.adapter = adapterInterior
+                                spInteriorColor.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
 
+                        }
                     }
-                }
-                )
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
         }
     }
 
     private fun callRadiusAPI() {
-        adapterRadius = RadiusSpinnerAdapter(requireActivity(), arRadius)
-        spRadius.adapter = adapterRadius
-        spRadius.onItemSelectedListener = this
+        try {
+            adapterRadius = RadiusSpinnerAdapter(requireActivity(), arRadius)
+            spRadius.adapter = adapterRadius
+            for (i in 0 until arRadius.size) {
+                if (!AppGlobal.isEmpty(radiusId) && radiusId == arRadius[i]) {
+                    spRadius.setSelection(i, true)
+                    setSpinnerLayoutPos(
+                        i,
+                        spRadius,
+                        requireActivity()
+                    )
+                }
+            }
+            spRadius.onItemSelectedListener = this
+        } catch (e: Exception) {
+
+        }
 //        setSpinnerLayoutPos(0, spRadius, requireActivity())
     }
 
@@ -624,6 +761,20 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 yearId = data.vehicleYearID!!
                 yearStr = data.year!!
                 if (data.year != "YEAR - NEW CARS") {
+                    prefSearchDealData.yearId = data.vehicleYearID
+                    prefSearchDealData.yearStr = data.year
+                    prefSearchDealData.makeId = ""
+                    prefSearchDealData.modelId = ""
+                    prefSearchDealData.trimId = ""
+                    prefSearchDealData.extColorId = ""
+                    prefSearchDealData.intColorId = ""
+                    prefSearchDealData.makeStr = ""
+                    prefSearchDealData.modelStr = ""
+                    prefSearchDealData.trimStr = ""
+                    prefSearchDealData.extColorStr = ""
+                    prefSearchDealData.intColorStr = ""
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
@@ -640,6 +791,18 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 makeStr = data.make!!
                 setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
+                    prefSearchDealData.makeId = data.vehicleMakeID
+                    prefSearchDealData.makeStr = data.make
+                    prefSearchDealData.modelId = ""
+                    prefSearchDealData.trimId = ""
+                    prefSearchDealData.extColorId = ""
+                    prefSearchDealData.intColorId = ""
+                    prefSearchDealData.modelStr = ""
+                    prefSearchDealData.trimStr = ""
+                    prefSearchDealData.extColorStr = ""
+                    prefSearchDealData.intColorStr = ""
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callVehicleModelAPI()
                     setTrim()
@@ -654,6 +817,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 modelStr = data.model!!
                 setSpinnerLayoutPos(position, spModel, requireActivity())
                 if (data.model != "MODEL") {
+                    prefSearchDealData.modelId = data.vehicleModelID
+                    prefSearchDealData.modelStr = data.model
+                    prefSearchDealData.trimId = ""
+                    prefSearchDealData.extColorId = ""
+                    prefSearchDealData.intColorId = ""
+                    prefSearchDealData.trimStr = ""
+                    prefSearchDealData.extColorStr = ""
+                    prefSearchDealData.intColorStr = ""
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callVehicleTrimAPI()
                     setExteriorColor()
@@ -667,6 +840,14 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 trimStr = data.trim!!
                 setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
+                    prefSearchDealData.trimId = data.vehicleTrimID
+                    prefSearchDealData.trimStr = data.trim
+                    prefSearchDealData.extColorId = ""
+                    prefSearchDealData.intColorId = ""
+                    prefSearchDealData.extColorStr = ""
+                    prefSearchDealData.intColorStr = ""
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
@@ -680,6 +861,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 extColorStr = data.exteriorColor!!
                 setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
+                    prefSearchDealData.extColorId = data.vehicleExteriorColorID
+                    prefSearchDealData.extColorStr = data.exteriorColor
+                    prefSearchDealData.intColorId = ""
+                    prefSearchDealData.intColorStr = ""
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callInteriorColorAPI()
 //                    setRadius()
@@ -691,6 +878,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 intColorStr = data.interiorColor!!
                 setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
+                    prefSearchDealData.intColorId = data.vehicleInteriorColorID
+                    prefSearchDealData.intColorStr = data.interiorColor
+                    Constant.dismissLoader()
+                    setPrefData()
                     setErrorVisibleGone()
                     callRadiusAPI()
                 }
@@ -700,8 +891,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 val data = adapterRadius.getItem(position) as String
                 radiusId = data
                 setSpinnerLayoutPos(position, spRadius, requireActivity())
-                if (data != "SEARCH RADIUS")
+                if (data != "SEARCH RADIUS") {
+                    prefSearchDealData.searchRadius = data
+                    setPrefData()
                     setErrorVisibleGone()
+                }
             }
         }
     }
@@ -828,7 +1022,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
 
             val seconds = diff / 1000
             val minutes = seconds / 60
-            if (minutes >= 5) {
+            if (minutes >= 30) {
                 handler.removeCallbacks(this)
                 pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
                 pref?.setSearchDealTime("")
@@ -841,42 +1035,49 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     private fun setTimerPrefData() {
-        prefSearchDealData = pref?.getSearchDealData()!!
-        setYear()
-        setMake()
-        setModel()
-        setTrim()
-        setExteriorColor()
-        setInteriorColor()
+        try {
+            prefSearchDealData = pref?.getSearchDealData()!!
+            setYear()
+            setMake()
+            setModel()
+            setTrim()
+            setExteriorColor()
+            setInteriorColor()
+            callRadiusAPI()
+            onChangeZipCode()
 
-        yearId = prefSearchDealData.yearId!!
-        makeId = prefSearchDealData.makeId!!
-        modelId = prefSearchDealData.modelId!!
-        trimId = prefSearchDealData.trimId!!
-        extColorId = prefSearchDealData.extColorId!!
-        intColorId = prefSearchDealData.intColorId!!
-        yearStr = prefSearchDealData.yearStr!!
-        makeStr = prefSearchDealData.makeStr!!
-        modelStr = prefSearchDealData.modelStr!!
-        trimStr = prefSearchDealData.trimStr!!
-        extColorStr = prefSearchDealData.extColorStr!!
-        intColorStr = prefSearchDealData.intColorStr!!
+            yearId = prefSearchDealData.yearId!!
+            makeId = prefSearchDealData.makeId!!
+            modelId = prefSearchDealData.modelId!!
+            trimId = prefSearchDealData.trimId!!
+            extColorId = prefSearchDealData.extColorId!!
+            intColorId = prefSearchDealData.intColorId!!
+            radiusId = prefSearchDealData.searchRadius!!
+            yearStr = prefSearchDealData.yearStr!!
+            makeStr = prefSearchDealData.makeStr!!
+            modelStr = prefSearchDealData.modelStr!!
+            trimStr = prefSearchDealData.trimStr!!
+            extColorStr = prefSearchDealData.extColorStr!!
+            intColorStr = prefSearchDealData.intColorStr!!
 
-        if (!isCallingYear)
-            callVehicleYearAPI()
-
-        if (prefSearchDealData.zipCode?.length!! >= 1) {
-            val str = prefSearchDealData.zipCode.toString()
-            if (str.length == 5) {
-                callVehicleZipCodeAPI(str)
-            } else if (str.length < 5) {
-                isValidZipCode = false
-                prefSearchDealData.isZipCode = isValidZipCode!!
-                tvErrorZipCode.visibility = View.GONE
-                edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
+            if (!isCallingYear)
+                callVehicleYearAPI()
+            edtZipCode.setText(prefSearchDealData.zipCode)
+            if (prefSearchDealData.zipCode?.length!! >= 1) {
+                val str = prefSearchDealData.zipCode.toString()
+                if (str.length == 5) {
+                    callVehicleZipCodeAPI(str)
+                } else if (str.length < 5) {
+                    isValidZipCode = false
+                    prefSearchDealData.isZipCode = isValidZipCode!!
+                    tvErrorZipCode.visibility = View.GONE
+                    edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
+                }
+                prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
+                setPrefData()
             }
-            prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
-            setPrefData()
+        } catch (e: Exception) {
+
         }
     }
 }
