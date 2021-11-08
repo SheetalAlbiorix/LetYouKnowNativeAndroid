@@ -8,7 +8,7 @@ data class SubmitDealLCDData(
     val isBadRequest: Boolean,
     val isDisplayedPriceValid: Boolean,
     val matchedDealerInfo: MatchedDealerInfo,
-    val messageList: Any,
+    val messageList: ArrayList<String>? = ArrayList(),
     val negativeResult: Any,
     val paymentResponse: PaymentResponse,
     val successResult: SuccessResult

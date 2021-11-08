@@ -132,7 +132,7 @@
                 android:background="@drawable/bg_button3"
                 android:backgroundTint="@color/colorffc69b"
                 android:padding="@dimen/_8sdp"
-                android:text="@{@string/we_did_not_find_a_match(data.firstName)}"
+                android:text="@{@string/we_did_not_find_a_match(data.firstName,NumberFormat.getCurrencyInstance(Locale.US).format(data.price))}"
                 android:textColor="@color/color733c19"
                 android:textSize="@dimen/_12sdp" />
 

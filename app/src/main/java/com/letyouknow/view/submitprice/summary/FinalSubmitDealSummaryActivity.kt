@@ -13,18 +13,24 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
+import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import kotlinx.android.synthetic.main.activity_final_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_final_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
+import org.jetbrains.anko.startActivity
 
 class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var binding: ActivityFinalSubmitPriceDealSummaryBinding
+    private var imageId = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_final_submit_price_deal_summary)
@@ -34,14 +40,17 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
-        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL)) {
+        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID)) {
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
+            imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
             binding.data = yearModelMakeData
         }
+        llGallery.setOnClickListener(this)
+        ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
         btnModify.setOnClickListener(this)
         btnWait.setOnClickListener(this)
@@ -70,6 +79,18 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.tvViewOptions -> {
                 popupOption()
+            }
+            R.id.llGallery -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 0,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
+            }
+            R.id.ll360 -> {
+                startActivity<Gallery360TabActivity>(
+                    Constant.ARG_TYPE_VIEW to 2,
+                    Constant.ARG_IMAGE_ID to imageId
+                )
             }
         }
     }

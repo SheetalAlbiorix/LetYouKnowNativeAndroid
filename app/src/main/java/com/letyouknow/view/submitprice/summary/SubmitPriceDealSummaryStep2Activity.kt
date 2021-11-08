@@ -35,6 +35,7 @@ import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
@@ -304,7 +305,8 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
                                 yearModelMakeData
-                            )
+                            ),
+                            ARG_IMAGE_ID to imageId
                         )
                     else {
                         data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!

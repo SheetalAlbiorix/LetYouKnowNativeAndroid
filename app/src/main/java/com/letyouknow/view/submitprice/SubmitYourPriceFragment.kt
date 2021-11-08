@@ -182,7 +182,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 ViewModelProvider(this).get(MinMSRPViewModel::class.java)
             setTimerPrefData()
 
-
             btnSearch.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
