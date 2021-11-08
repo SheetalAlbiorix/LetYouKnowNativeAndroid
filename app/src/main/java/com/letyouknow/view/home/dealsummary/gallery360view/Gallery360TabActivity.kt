@@ -7,12 +7,18 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityGallery360TabBinding
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
+import com.letyouknow.retrofit.viewmodel.InteriorViewModel
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.ExteriorFragment
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.InteriorFragment
 import com.letyouknow.view.home.dealsummary.gallery360view.view360.View360Fragment
+import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import kotlinx.android.synthetic.main.activity_gallery360_tab.*
@@ -22,6 +28,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     private lateinit var gallery360ViewPagerAdapter: Gallery360PagerAdapter
     private lateinit var binding: ActivityGallery360TabBinding
     private var imageId = "0"
+    lateinit var interiorViewModel: InteriorViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery360_tab)
@@ -30,6 +37,8 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
+        interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
         ivEdit.visibility = View.INVISIBLE
         rvView.setOnClickListener(this)
         ll360View.setOnClickListener(this)
@@ -38,10 +47,12 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         ivBack.setOnClickListener(this)
         gallery360ViewPagerAdapter = Gallery360PagerAdapter(supportFragmentManager)
         pager.adapter = gallery360ViewPagerAdapter
+
         if (intent.hasExtra(ARG_TYPE_VIEW) && intent.hasExtra(ARG_IMAGE_ID)) {
 //            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
-            setTab(intent.getIntExtra(ARG_TYPE_VIEW, 0))
             imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
+            getExteriorAPI(imageId)
+            setTab(intent.getIntExtra(ARG_TYPE_VIEW, 0))
         } else {
             setTab(0)
         }
@@ -152,4 +163,40 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
         // transaction.addToBackStack(null)
         transaction.commit()
     }
+
+    lateinit var exteriorViewModel: ExteriorViewModel
+    val arImages: ArrayList<String> = ArrayList()
+
+    private fun getExteriorAPI(imageId: String?) {
+        val request = HashMap<String, Any>()
+        request[ApiConstant.ImageId] = imageId!!
+        request[ApiConstant.ImageProduct] = "Splash"
+
+        exteriorViewModel.getExterior(this, request)!!
+            .observe(this, Observer { data ->
+                Constant.dismissLoader()
+                arImages.addAll(data)
+                getInteriorAPI(imageId)
+            }
+            )
+    }
+
+    private fun getInteriorAPI(imageId: String?) {
+
+        val request = HashMap<String, Any>()
+        request[ApiConstant.ImageId] = imageId!!
+        request[ApiConstant.ImageProduct] = ApiConstant.stillSet
+
+        interiorViewModel.getInterior(this, request)!!
+            .observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (arImages.size > 0)
+                    arImages.addAll(arImages.size - 1, data)
+                else
+                    arImages.addAll(data)
+            }
+            )
+
+    }
+
 }

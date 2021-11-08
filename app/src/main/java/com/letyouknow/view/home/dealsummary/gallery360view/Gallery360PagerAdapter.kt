@@ -9,7 +9,7 @@ import com.letyouknow.view.home.dealsummary.gallery360view.view360.View360Fragme
 class Gallery360PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     override fun getCount(): Int = 2
-    private var arTitle = arrayListOf("GALLERY", "360 VIEW")
+    private var arTitle = arrayListOf("IMAGES", "360 VIEW")
 
     override fun getPageTitle(position: Int): CharSequence {
         return arTitle[position]
@@ -20,6 +20,9 @@ class Gallery360PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm
             0 -> {
                 ExteriorFragment()
             }
+            /* 1 -> {
+                 ExteriorFragment()
+             }*/
             else -> {
                 View360Fragment()
             }

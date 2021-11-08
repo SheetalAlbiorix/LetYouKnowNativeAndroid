@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.security.keystore.KeyProperties
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Log
@@ -51,9 +52,13 @@ import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.startActivity
+import java.security.Key
+import java.security.KeyStore
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.concurrent.Executor
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
 
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -157,7 +162,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     result: BiometricPrompt.AuthenticationResult
                 ) {
                     super.onAuthenticationSucceeded(result)
-
+                    Log.e("Result", Gson().toJson(result.cryptoObject))
+                    Log.e("Result", result.authenticationType.toString())
                     Toast.makeText(
                         applicationContext,
                         "Authentication succeeded!", Toast.LENGTH_SHORT
@@ -238,6 +244,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.ivFingerPrint -> {
+                /*  val secretKey = getKey()
+                  val initializationVector = getInitializationVector()
+                  if (secretKey != null && initializationVector != null) {
+                      val cipher = getDecryptCipher(secretKey, initializationVector)
+                  }*/
                 biometricPrompt.authenticate(promptInfo)
             }
             R.id.ivPasswordInfo -> {
@@ -257,11 +268,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.username] = edtEmailAddress.text.toString()
             request[ApiConstant.password] = edtPassword.text.toString()
 
-            loginViewModel.getUser(this, request)!!.observe(this, Observer { loginVo ->
+            loginViewModel.getUser(this, request)!!.observe(this, Observer { data ->
                 Constant.dismissLoader()
-                if (loginVo.buyerId != 0) {
+                if (data.buyerId != 0) {
                     pref?.setLogin(true)
-                    pref?.setUserData(Gson().toJson(loginVo))
+                    pref?.setUserData(Gson().toJson(data))
                     startActivity<MainActivity>()
                     finish()
                 } else {
@@ -448,6 +459,22 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         LoginManager.getInstance().logOut()
         auth.signOut()
     }
+
+    private val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
+    private val BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC
+    private val PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7
+
+    private fun getDecryptCipher(key: Key, iv: ByteArray): Cipher =
+        Cipher.getInstance(keyTransformation())
+            .apply { init(Cipher.DECRYPT_MODE, key, IvParameterSpec(iv)) }
+
+    private fun keyTransformation() =
+        listOf(ALGORITHM, BLOCK_MODE, PADDING).joinToString(separator = "/")
+
+    private val KEY_NAME = "MY_KEY"
+    private val KEYSTORE = "AndroidKeyStore"
+    private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) }
+    private fun getKey(): Key? = keyStore.getKey(KEY_NAME, null)
 }
 
 

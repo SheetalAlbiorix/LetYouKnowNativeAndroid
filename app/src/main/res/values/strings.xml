@@ -288,6 +288,7 @@
     <string name="mail">Mail</string>
     <string name="userName">User Name</string>
     <string name="userName_colon">User Name:</string>
+    <string name="images">IMAGES</string>
     <string name="exterior">EXTERIOR</string>
     <string name="interior">INTERIOR</string>
     <string name="three_view">360 VIEW</string>

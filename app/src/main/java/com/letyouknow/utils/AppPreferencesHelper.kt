@@ -30,8 +30,12 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     fun setLogin(isLogin: Boolean) {
         prefs.putBoolean(KEY_IS_LOGIN, isLogin).apply()
-         val remData = isRememberData()
-         prefs.clear().commit()
+    }
+
+    fun setLogOutData() {
+        setLogin(false)
+        val remData = isRememberData()
+        prefs.clear().apply()
         setRememberData(Gson().toJson(remData))
     }
 
@@ -210,5 +214,4 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
     fun getSearchDealTime(): String {
         return sharedpreferences.getString(KEY_SEARCH_DEAL_TIME, "")!!
     }
-
 }

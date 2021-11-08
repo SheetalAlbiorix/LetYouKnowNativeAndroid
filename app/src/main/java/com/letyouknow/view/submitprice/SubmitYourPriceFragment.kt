@@ -1489,11 +1489,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         tvErrorOptionsAccessories.visibility = View.GONE
     }
 
-
-    /* override fun onPause() {
-         Constant.dismissLoader()
-         super.onPause()
-     }*/
     override fun onDestroy() {
         if (Constant.progress.isShowing)
             Constant.dismissLoader()

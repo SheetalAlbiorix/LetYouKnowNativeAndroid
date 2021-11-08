@@ -33,17 +33,13 @@ import org.jetbrains.anko.*
 
 class MainActivity : BaseActivity(),
     View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+
     private lateinit var adapterDrawer: DrawerListAdapter
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
-    private lateinit var accountFragment: AccountFragment
-    private lateinit var homeFragment: HomeFragment
-    private lateinit var oneDealNearYouFragment: OneDealNearYouFragment
-    private lateinit var submitYourPriceFragment: SubmitYourPriceFragment
-    var prevMenuItem: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         init()
     }
 
@@ -192,7 +188,6 @@ class MainActivity : BaseActivity(),
            /* if (fragment is DealSummeryActivity || fragment is DealSummeryStep2Fragment) {
                 loadFragment(HomeFragment(), getString(R.string.search_deals_title))
             } else {*/
-            pref?.setLogin(true)
                 super.onBackPressed()
 //            }
         } else {
@@ -309,7 +304,7 @@ class MainActivity : BaseActivity(),
 
         dialog.run {
             tvLogOut.setOnClickListener {
-                pref?.setLogin(false)
+                pref?.setLogOutData()
                 startActivity(intentFor<LoginActivity>().clearTask().newTask())
                 dialog.dismiss()
             }

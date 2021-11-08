@@ -88,31 +88,34 @@ class View360Fragment : BaseFragment() {
     }
 
     private fun getInteriorAPI(imageId: String?) {
-        val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = imageId!!
-        request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano
+        if (Constant.isOnline(requireContext())) {
+            Constant.showLoader(requireActivity())
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ImageId] = imageId!!
+            request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano
 
-        interiorViewModel.getInterior(this.requireContext(), request)!!
-            .observe(this.requireActivity(), Observer { loginVo ->
-                Constant.dismissLoader()
-                interiorView(loginVo[0], imageId)
-            }
-            )
+            interiorViewModel.getInterior(this.requireContext(), request)!!
+                .observe(this.requireActivity(), Observer { loginVo ->
+                    interiorView(loginVo[0], imageId)
+                }
+                )
+        }
 
     }
 
     private fun getView360API(imageId: String?) {
-        val request = HashMap<String, Any>()
-        request[ApiConstant.ImageId] = imageId!!
-        request[ApiConstant.ImageProduct] = ApiConstant.exterior360
+        if (Constant.isOnline(requireContext())) {
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ImageId] = imageId!!
+            request[ApiConstant.ImageProduct] = ApiConstant.exterior360
 
-        interiorViewModel.getInterior(this.requireContext(), request)!!
-            .observe(this.requireActivity(), Observer { loginVo ->
-                Constant.dismissLoader()
-                print("data display " + loginVo.size.toString())
-                View360(loginVo)
-            }
-            )
-
+            interiorViewModel.getInterior(this.requireContext(), request)!!
+                .observe(this.requireActivity(), Observer { loginVo ->
+                    Constant.dismissLoader()
+                    print("data display " + loginVo.size.toString())
+                    View360(loginVo)
+                }
+                )
+        }
     }
 }

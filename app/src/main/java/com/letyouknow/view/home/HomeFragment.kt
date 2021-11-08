@@ -157,7 +157,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
             ivClosePromo.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
-
             setTimerPrefData()
         } catch (e: Exception) {
 
@@ -973,10 +972,6 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         tvErrorRadius.visibility = View.GONE
     }
 
-    /* override fun onPause() {
-         Constant.dismissLoader()
-         super.onPause()
-     }*/
     override fun onDestroy() {
         if (Constant.progress.isShowing)
             Constant.dismissLoader()
