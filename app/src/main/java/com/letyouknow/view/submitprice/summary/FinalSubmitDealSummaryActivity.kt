@@ -114,7 +114,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             yearModelMakeData.run {
                 tvDialogTitle.text =
                     vehicleYearStr + " " + vehicleMakeStr + " " + vehicleModelStr + " " + vehicleTrimStr
-                tvDialogExteriorColor.text = vehicleIntColorStr
+                tvDialogExteriorColor.text = vehicleExtColorStr
                 tvDialogInteriorColor.text = vehicleIntColorStr
                 var accessoriesStr = ""
                 var isFirstAcce = true
