@@ -223,11 +223,9 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private fun startHandler() {
         if (!isEmpty(pref?.getOneDealNearYou())) {
-            if (!isEmpty(pref?.getOneDealNearYou())) {
                 Log.e("Date Time", AppGlobal.stringToDate(pref?.getOneDealNearYou())?.toString()!!)
                 handler = Handler()
                 handler.postDelayed(runnable, 1000)
-            }
         }
 
     }
@@ -1655,7 +1653,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             trimStr = prefOneDealNearYouData.trimStr!!
             extColorStr = prefOneDealNearYouData.extColorStr!!
             intColorStr = prefOneDealNearYouData.intColorStr!!
-
 
             onChangeZipCode()
             if (prefOneDealNearYouData.zipCode?.length!! >= 1) {

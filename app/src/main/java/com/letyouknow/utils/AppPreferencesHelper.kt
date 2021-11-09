@@ -15,6 +15,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_REMEMBER_DATA = "KEY_REMEMBER_DATA"
         val KEY_CARD_LIST = "KEY_CARD_LIST"
         val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
+        val KEY_IS_BIOMATRIC = "KEY_IS_BIOMATRIC"
         val KEY_SUBMIT_PRICE_TIME = "KEY_SUBMIT_PRICE_TIME"
         val KEY_SUBMIT_PRICE = "KEY_SUBMIT_PRICE"
         val KEY_ONE_DEAL_NEAR_TIME = "KEY_ONE_DEAL_NEAR_TIME"
@@ -35,7 +36,9 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
     fun setLogOutData() {
         setLogin(false)
         val remData = isRememberData()
+        val loginData = getUserData()
         prefs.clear().apply()
+        setUserData(Gson().toJson(loginData))
         setRememberData(Gson().toJson(remData))
     }
 
@@ -214,4 +217,13 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
     fun getSearchDealTime(): String {
         return sharedpreferences.getString(KEY_SEARCH_DEAL_TIME, "")!!
     }
+
+    fun isBioMetric(): Boolean {
+        return sharedpreferences.getBoolean(KEY_IS_BIOMATRIC, false)
+    }
+
+    fun setBioMetric(cardList: String) {
+        prefs.putString(KEY_IS_BIOMATRIC, cardList).apply()
+    }
+
 }

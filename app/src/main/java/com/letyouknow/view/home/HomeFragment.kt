@@ -565,28 +565,32 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                         if (isEmpty(prefSearchDealData.extColorId))
                             Constant.dismissLoader()
                         Log.e("Make Data", Gson().toJson(data))
-                        if (data != null || data?.size!! > 0) {
-                            val trimData = VehicleTrimData()
-                            trimData.trim = "TRIM"
-                            data.add(0, trimData)
-                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
-                            spTrim.adapter = adapterTrim
-                            for (i in 0 until data.size) {
-                                if (!AppGlobal.isEmpty(prefSearchDealData.trimId) && prefSearchDealData.trimId == data[i].vehicleTrimID) {
-                                    spTrim.setSelection(i, true)
-                                    callExteriorColorAPI()
-                                    AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
+                        try {
+                            if (data != null || data?.size!! > 0) {
+                                val trimData = VehicleTrimData()
+                                trimData.trim = "TRIM"
+                                data.add(0, trimData)
+                                adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
+                                spTrim.adapter = adapterTrim
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.trimId) && prefSearchDealData.trimId == data[i].vehicleTrimID) {
+                                        spTrim.setSelection(i, true)
+                                        callExteriorColorAPI()
+                                        AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
+                                    }
                                 }
+                                spTrim.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<VehicleTrimData>()
+                                val trimData = VehicleTrimData()
+                                trimData.trim = "TRIM"
+                                arData.add(0, trimData)
+                                adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
+                                spTrim.adapter = adapterTrim
+                                spTrim.onItemSelectedListener = this
                             }
-                            spTrim.onItemSelectedListener = this
-                        } else {
-                            val arData = ArrayList<VehicleTrimData>()
-                            val trimData = VehicleTrimData()
-                            trimData.trim = "TRIM"
-                            arData.add(0, trimData)
-                            adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
-                            spTrim.adapter = adapterTrim
-                            spTrim.onItemSelectedListener = this
+                        } catch (e: Exception) {
+
                         }
                     }
                     )

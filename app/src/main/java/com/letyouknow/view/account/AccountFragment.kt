@@ -54,7 +54,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var changePasswordViewModel: ChangePasswordViewModel
     private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var binding: FragmentAccount1Binding
-    private lateinit var userData: UserProfileData
+    private var userData: UserProfileData? = UserProfileData()
     private var state = ""
 
     override fun onCreateView(
@@ -143,7 +143,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditLogin.setCancelable(true)
         dialogEditLogin.setCanceledOnTouchOutside(true)
         dialogEditLogin.setContentView(R.layout.dialog_change_password)
-        dialogEditLogin.edtDialogUserName.setText(userData.userName)
+        dialogEditLogin.edtDialogUserName.setText(userData?.userName)
         if (pref?.isRememberData()?.isChecked == true) {
             dialogEditLogin.edtDialogCurrentPassword.setText(pref?.isRememberData()?.password)
         }
@@ -207,22 +207,22 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     }
 
     private fun setEditInfoData() {
-        dialogEditInfo.run {
-            edtFirstName.setText(userData.firstName)
-            edtLastName.setText(userData.lastName)
-            edtMiddleName.setText(userData.middleName)
-            edtEmail.setText(userData.email)
-            edtConfirmEmail.setText(userData.email)
-            edtUserName.setText(userData.userName)
-            edtAddress1.setText(userData.address1)
-            edtAddress2.setText(userData.address2)
-            edtCity.setText(userData.city)
-            edtZipCode.setText(userData.zipcode)
+        dialogEditInfo?.run {
+            edtFirstName.setText(userData?.firstName)
+            edtLastName.setText(userData?.lastName)
+            edtMiddleName.setText(userData?.middleName)
+            edtEmail.setText(userData?.email)
+            edtConfirmEmail.setText(userData?.email)
+            edtUserName.setText(userData?.userName)
+            edtAddress1.setText(userData?.address1)
+            edtAddress2.setText(userData?.address2)
+            edtCity.setText(userData?.city)
+            edtZipCode.setText(userData?.zipcode)
             setState()
-            if (userData.phoneNumber?.contains("(") == false)
-                edtPhoneNumber.setText(formatPhoneNo(userData.phoneNumber))
+            if (userData?.phoneNumber?.contains("(") == false)
+                edtPhoneNumber.setText(formatPhoneNo(userData?.phoneNumber))
             else
-                edtPhoneNumber.setText(userData.phoneNumber)
+                edtPhoneNumber.setText(userData?.phoneNumber)
 
             edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         }
@@ -254,7 +254,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.spState.adapter = adapterState
         dialogEditInfo.spState.onItemSelectedListener = this
         for (i in 0 until AppGlobal.arState.size) {
-            if (AppGlobal.arState[i] == userData.state) {
+            if (AppGlobal.arState[i] == userData?.state) {
                 dialogEditInfo.spState.setSelection(i)
             }
         }
@@ -344,17 +344,17 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
                     dialogEditInfo.dismiss()
                     val user1 = userData
-                    user1.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
-                    user1.middleName = dialogEditInfo.edtMiddleName.text.toString().trim()
-                    user1.lastName = dialogEditInfo.edtLastName.text.toString().trim()
-                    user1.email = dialogEditInfo.edtEmail.text.toString().trim()
-                    user1.phoneNumber = dialogEditInfo.edtPhoneNumber.text.toString().trim()
-                    user1.address1 = dialogEditInfo.edtAddress1.text.toString().trim()
-                    user1.address2 = dialogEditInfo.edtAddress2.text.toString().trim()
-                    user1.city = dialogEditInfo.edtCity.text.toString().trim()
-                    user1.state = state
-                    user1.zipcode = dialogEditInfo.edtZipCode.text.toString().trim()
-                    setUserData(user1)
+                    user1?.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
+                    user1?.middleName = dialogEditInfo.edtMiddleName.text.toString().trim()
+                    user1?.lastName = dialogEditInfo.edtLastName.text.toString().trim()
+                    user1?.email = dialogEditInfo.edtEmail.text.toString().trim()
+                    user1?.phoneNumber = dialogEditInfo.edtPhoneNumber.text.toString().trim()
+                    user1?.address1 = dialogEditInfo.edtAddress1.text.toString().trim()
+                    user1?.address2 = dialogEditInfo.edtAddress2.text.toString().trim()
+                    user1?.city = dialogEditInfo.edtCity.text.toString().trim()
+                    user1?.state = state
+                    user1?.zipcode = dialogEditInfo.edtZipCode.text.toString().trim()
+                    setUserData(user1!!)
                     setClearEditInfoData()
                 }
                 )
@@ -521,7 +521,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callRefreshTokenApi() {
         try {
             if (Constant.isOnline(requireActivity())) {
-//                Constant.showLoader(requireActivity())
+                Constant.showLoader(requireActivity())
                 val request = java.util.HashMap<String, Any>()
                 request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
                 request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -567,7 +567,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         try {
             binding.userData = data
             userData = data
-            if (userData.phoneNumber?.contains("(") == false)
+            if (userData?.phoneNumber?.contains("(") == false)
                 tvPhoneNo.text = formatPhoneNo(data.phoneNumber)
             else
                 tvPhoneNo.text = data.phoneNumber

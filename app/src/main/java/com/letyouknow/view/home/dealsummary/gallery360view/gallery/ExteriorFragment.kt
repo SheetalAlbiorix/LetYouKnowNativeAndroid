@@ -81,7 +81,7 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
 
             interiorViewModel.getInterior(this.requireContext(), request)!!
                 .observe(this.requireActivity(), Observer { data ->
-                    Constant.dismissLoader()
+
                     if (arImages.size > 0)
                         arImages.addAll(arImages.size - 1, data)
                     else
@@ -90,6 +90,7 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
                     adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
                     rvGallery.adapter = adapterGallery
                     adapterGallery.addAll(arImages)
+                    Constant.dismissLoader()
                 }
                 )
         }

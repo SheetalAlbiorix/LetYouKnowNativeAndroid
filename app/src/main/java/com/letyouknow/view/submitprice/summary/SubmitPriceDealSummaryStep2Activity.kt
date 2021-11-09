@@ -312,6 +312,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
                         data.successResult.transactionInfo.remainingBalance =
                             (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
+                        Log.e("SubmitStep2Response", Gson().toJson(data))
                         startActivity<SubmitDealSummaryActivity>(
                             Constant.ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
@@ -395,7 +396,6 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     }
 
     override fun onNetworkStateChange(isConnect: Boolean) {
-
     }
 
 
