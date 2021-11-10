@@ -14,6 +14,10 @@
             name="data"
             type="com.letyouknow.model.YearModelMakeData" />
 
+        <variable
+            name="dealData"
+            type="com.letyouknow.model.SubmitDealLCDData" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -218,7 +222,8 @@
 
                 <include
                     layout="@layout/layout_final_submit_price_deal_summary"
-                    app:data="@{data}" />
+                    app:data="@{data}"
+                    app:dealData="@{dealData}" />
 
                 <!-- <include
                      layout="@layout/layout_deal_summery_hot_market"

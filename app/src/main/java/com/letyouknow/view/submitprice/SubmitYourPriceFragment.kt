@@ -1153,12 +1153,16 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                 dialogOptions.dismiss()
             }
             R.id.tvOptionalAccessories -> {
-                arSelectOption = ArrayList()
-                for (i in 0 until adapterOptions.itemCount) {
-                    arSelectOption.add(adapterOptions.getItem(i))
+                try {
+                    arSelectOption = ArrayList()
+                    for (i in 0 until adapterOptions.itemCount) {
+                        arSelectOption.add(adapterOptions.getItem(i))
+                    }
+                    selectOptionStr = Gson().toJson(arSelectOption)
+                    dialogOptions.show()
+                } catch (e: Exception) {
+
                 }
-                selectOptionStr = Gson().toJson(arSelectOption)
-                dialogOptions.show()
             }
             R.id.llOptions -> {
                 Log.e("select1", selectOptionStr)

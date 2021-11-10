@@ -9,7 +9,7 @@ data class SubmitDealLCDData(
     val isDisplayedPriceValid: Boolean,
     val matchedDealerInfo: MatchedDealerInfo,
     val messageList: ArrayList<String>? = ArrayList(),
-    val negativeResult: Any,
+    val negativeResult: NegativeResult? = NegativeResult(),
     val paymentResponse: PaymentResponse,
     val successResult: SuccessResult
 ) : Serializable

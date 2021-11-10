@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.SubmitDealLCDData
+import com.letyouknow.model.SubmitPriceErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -41,7 +42,7 @@ object SubmitDealRepository {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
-                   /* val dataError = Gson().fromJson(
+                    val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitPriceErrorData::class.java
                     )
@@ -61,11 +62,11 @@ object SubmitDealRepository {
                         AppGlobal.alertError(
                             context,
                             msgStr
-                        )*/
-                    submitDealLCDData.value = Gson().fromJson(
+                        )
+                    /*submitDealLCDData.value = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
-                    )
+                    )*/
                 }
             }
         })

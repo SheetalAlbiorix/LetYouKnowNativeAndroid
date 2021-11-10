@@ -98,6 +98,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         onTextChange(this, edtPassword, tvErrorPassword)
         hashKey()
         setRememberData()
+        if (pref?.isBioMetric()!!) {
+            ivFingerPrint.visibility = View.VISIBLE
+        } else {
+            ivFingerPrint.visibility = View.GONE
+        }
     }
 
     private fun setRememberData() {
@@ -164,11 +169,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     super.onAuthenticationSucceeded(result)
                     Log.e("Result", Gson().toJson(result.cryptoObject))
                     Log.e("Result", result.authenticationType.toString())
-                    Toast.makeText(
-                        applicationContext,
-                        "Authentication succeeded!", Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    pref?.setLogin(true)
+                    startActivity<MainActivity>()
+                    finish()
+//                    Toast.makeText(
+//                        applicationContext,
+//                        "Authentication succeeded!", Toast.LENGTH_SHORT
+//                    )
+//                        .show()
                 }
 
                 override fun onAuthenticationFailed() {
@@ -250,6 +258,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                       val cipher = getDecryptCipher(secretKey, initializationVector)
                   }*/
                 biometricPrompt.authenticate(promptInfo)
+
             }
             R.id.ivPasswordInfo -> {
                 popupPassword()

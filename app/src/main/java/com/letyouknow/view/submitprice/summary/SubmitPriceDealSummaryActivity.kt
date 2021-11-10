@@ -129,6 +129,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         tvViewOptions.setOnClickListener(this)
 
         ivBack.setOnClickListener(this)
+        ivEdit.visibility = View.VISIBLE
 //        MainActivity.getInstance().setVisibleEditImg
 //        backButton()
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match_submit_price))

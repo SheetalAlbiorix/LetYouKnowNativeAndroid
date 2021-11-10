@@ -273,7 +273,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
             map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
             map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
-
+Log.e("submitdealucd", Gson().toJson(map))
             submitDealUCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()

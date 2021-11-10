@@ -11,11 +11,13 @@ import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
+import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
+import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_final_submit_price_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -28,6 +30,7 @@ import org.jetbrains.anko.startActivity
 
 class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
+    private lateinit var submitDealData: SubmitDealLCDData
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var binding: ActivityFinalSubmitPriceDealSummaryBinding
     private var imageId = "0"
@@ -40,23 +43,32 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
-        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID)) {
+        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
+                ARG_SUBMIT_DEAL
+            )
+        ) {
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
             imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
+            submitDealData = Gson().fromJson(
+                intent.getStringExtra(Constant.ARG_SUBMIT_DEAL),
+                SubmitDealLCDData::class.java
+            )
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
             binding.data = yearModelMakeData
+            binding.dealData = submitDealData
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
         btnModify.setOnClickListener(this)
         btnWait.setOnClickListener(this)
+        tvLightingCar.setOnClickListener(this)
+        tvStep2.setOnClickListener(this)
         ivBack.visibility = View.GONE
         tvTitleTool.visibility = View.GONE
-
     }
 
     override fun getViewActivity(): Activity {
@@ -68,14 +80,17 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvLightingCar -> {
+                onBackPressed()
+            }
             R.id.btnFindYourCar -> {
                 onBackPressed()
             }
             R.id.btnModify -> {
-                onBackPressed()
+                finish()
             }
             R.id.btnWait -> {
-                onBackPressed()
+                finish()
             }
             R.id.tvViewOptions -> {
                 popupOption()

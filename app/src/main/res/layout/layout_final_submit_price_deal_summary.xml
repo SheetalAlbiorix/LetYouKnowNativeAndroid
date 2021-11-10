@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
         <import type="java.text.NumberFormat" />
 
@@ -21,8 +22,9 @@
             type="com.letyouknow.model.YearModelMakeData" />
 
         <variable
-            name="appGlobalData"
-            type="com.letyouknow.utils.AppGlobalBindData" />
+            name="dealData"
+            type="com.letyouknow.model.SubmitDealLCDData" />
+
 
     </data>
 
@@ -137,6 +139,7 @@
                 android:textSize="@dimen/_12sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility='@{dealData.negativeResult.firstLabel.equals("2") ? View.VISIBLE : View.GONE}'
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
@@ -152,9 +155,121 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Modify* your \nsearch criteria"
+                    android:text="Choose this instant deal* to get your car for"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_17sdp" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center"
+                    android:text='@{NumberFormat.getCurrencyInstance(Locale.US).format(dealData.negativeResult.lcdPrice)}'
+                    android:textColor="@color/offWhite1"
+                    android:textSize="@dimen/_14sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLightingCar"
+                    style="@style/medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/bg_button"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_12sdp"
+                    android:text="LightingCarDeals"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:text="*car is located within a 100-mile radius."
+                    android:textColor="@color/offWhite1"
+                    android:textSize="@dimen/_14sdp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:background="@drawable/bg_button3"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_17sdp"
+                android:visibility='@{dealData.negativeResult.secondLabel.equals("1") ? View.VISIBLE : View.GONE}'>
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text='@{@string/we_found_your_car(dealData.negativeResult.minimalDistance,data.zipCode)}'
                     android:textColor="@color/white"
                     android:textSize="@dimen/_20sdp" />
+
+                <!--<TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:gravity="center"
+                    android:text='@{NumberFormat.getCurrencyInstance(Locale.US).format(dealData.negativeResult.lcdPrice)}'
+                    android:textColor="@color/offWhite1"
+                    android:textSize="@dimen/_14sdp" />-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStep2"
+                    style="@style/medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_button"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_12sdp"
+                    android:text="@string/letyouknow"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:gravity="center"
+                    android:text="Submit a new price"
+                    android:textColor="@color/offWhite1"
+                    android:textSize="@dimen/_14sdp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:background="@drawable/bg_button3"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_17sdp">
+
+                <TextView
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Modify* your search criteria and submit your new price"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp" />
 
                 <TextView
                     style="@style/regular"
@@ -200,18 +315,19 @@
                 android:background="@drawable/bg_button3"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="@dimen/_15sdp">
+                android:padding="@dimen/_17sdp">
 
                 <TextView
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Wait up to 1 hour"
+                    android:text="Wait for up to 1 hour and resubmit the same car with a different price"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/_18sdp" />
 
                 <TextView
+                    android:visibility="gone"
                     style="@style/regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

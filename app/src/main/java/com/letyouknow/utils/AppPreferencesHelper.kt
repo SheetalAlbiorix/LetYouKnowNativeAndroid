@@ -38,6 +38,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val remData = isRememberData()
         val loginData = getUserData()
         prefs.clear().apply()
+        setBioMetric(true)
         setUserData(Gson().toJson(loginData))
         setRememberData(Gson().toJson(remData))
     }
@@ -222,8 +223,8 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         return sharedpreferences.getBoolean(KEY_IS_BIOMATRIC, false)
     }
 
-    fun setBioMetric(cardList: String) {
-        prefs.putString(KEY_IS_BIOMATRIC, cardList).apply()
+    fun setBioMetric(isBio: Boolean) {
+        prefs.putBoolean(KEY_IS_BIOMATRIC, isBio).apply()
     }
 
 }

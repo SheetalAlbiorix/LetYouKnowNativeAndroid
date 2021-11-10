@@ -17,7 +17,7 @@ data class FinalSubmitDealData(
 data class NegativeResult(
     val firstLabel: String? = "",
     val secondLabel: String? = "",
-    val lcdPrice: String? = "",
+    val lcdPrice: Float? = 0.0f,
     val vehicleInventoryID: String? = "",
     val minimalDistance: String? = ""
 ) : Serializable

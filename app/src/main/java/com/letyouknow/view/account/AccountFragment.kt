@@ -97,7 +97,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             MainActivity.getInstance().setVisibleLogoutImg(true)
             callRefreshTokenApi()
         } catch (e: Exception) {
-
         }
     }
 
@@ -131,7 +130,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             }
             R.id.tvViewNotification -> {
                 callNotificationOptionsAPI()
-
             }
         }
     }
@@ -197,7 +195,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             onTextChange(requireActivity(), edtMiddleName, tvErrorLastName)
 //            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtConfirmEmail, tvErrorConfirmEmailAddress)
-            onTextChange(requireActivity(), edtUserName, tvErrorUserName)
+            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtPhoneNumber, tvErrorPhoneNo)
             onTextChange(requireActivity(), edtAddress1, tvErrorAddress1)
             onTextChange(requireActivity(), edtAddress2, tvErrorAddress2)
@@ -338,8 +336,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     val user = pref?.getUserData()
                     user?.firstName = dialogEditInfo.edtFirstName.text.toString().trim()
                     user?.lastName = dialogEditInfo.edtLastName.text.toString().trim()
-                    user?.authToken = data.authToken
-                    user?.refreshToken = data.refreshToken
+                    user?.authToken = data?.authToken!!
+                    user?.refreshToken = data?.refreshToken!!
                     pref?.setUserData(Gson().toJson(user))
 
                     dialogEditInfo.dismiss()
@@ -413,12 +411,12 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtLastName, tvErrorLastName)
                     return false
                 }
-                /*TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
+                TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
                     tvErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
                 }
-                !Constant.emailValidator(edtEmail.text.toString().trim()) -> {
+                /*!Constant.emailValidator(edtEmail.text.toString().trim()) -> {
                     tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false

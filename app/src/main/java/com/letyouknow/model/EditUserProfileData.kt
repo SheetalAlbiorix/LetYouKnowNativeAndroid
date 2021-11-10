@@ -1,9 +1,10 @@
 package com.letyouknow.model
 
 data class EditUserProfileData(
-    val authToken: String,
-    val message: String,
-    val refreshToken: String
+    val authToken: String? = "",
+    val message: String? = "",
+    val refreshToken: String? = "",
+    val DuplicateEmail: ArrayList<String>? = ArrayList()
 )
 
 /*

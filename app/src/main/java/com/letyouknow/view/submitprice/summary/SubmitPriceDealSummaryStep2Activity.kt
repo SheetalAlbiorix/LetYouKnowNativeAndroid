@@ -37,6 +37,7 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
@@ -295,20 +296,23 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
 
             map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
             map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
-
+            Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                     pref?.setSubmitPriceTime("")
-                    if (!data.foundMatch)
+                    if (!data.foundMatch) {
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
                                 yearModelMakeData
                             ),
-                            ARG_IMAGE_ID to imageId
+                            ARG_IMAGE_ID to imageId, ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
                         )
-                    else {
+                        finish()
+                    } else {
                         data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
                         data.successResult.transactionInfo.remainingBalance =
                             (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
@@ -318,6 +322,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                                 data
                             )
                         )
+                        finish()
                     }
                 }
                 )

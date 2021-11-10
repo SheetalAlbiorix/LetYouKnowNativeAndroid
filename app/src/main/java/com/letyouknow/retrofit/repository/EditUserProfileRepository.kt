@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.EditUserProfileData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -39,12 +40,33 @@ object EditUserProfileRepository {
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        AppGlobal.alertError(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null) {
+                        val msgList = Gson().fromJson(
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                            EditUserProfileData::class.java
                         )
+                        if (!msgList.DuplicateEmail.isNullOrEmpty()) {
+                            var isFirst = true
+                            var msg = ""
+                            for (i in 0 until msgList.DuplicateEmail.size) {
+                                if (isFirst) {
+                                    msg = msgList.DuplicateEmail[i]
+                                    isFirst = false
+                                } else {
+                                    msg = msg + "\n" + msgList.DuplicateEmail[i]
+                                }
+                            }
+                            AppGlobal.alertError(
+                                context,
+                                msg
+                            )
+                        } else {
+                            AppGlobal.alertError(
+                                context,
+                                response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                            )
+                        }
+                    }
                 }
             }
         })

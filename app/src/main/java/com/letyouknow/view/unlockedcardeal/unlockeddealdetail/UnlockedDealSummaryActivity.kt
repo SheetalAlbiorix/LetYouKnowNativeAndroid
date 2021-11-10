@@ -113,6 +113,7 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
         btnProceedDeal.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
+        ivEdit.visibility = View.VISIBLE
         ivForwardDeal.setOnClickListener(this)
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
@@ -155,7 +156,6 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
                         }
                     }
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
