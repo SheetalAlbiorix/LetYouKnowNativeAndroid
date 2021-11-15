@@ -1493,7 +1493,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun onDestroy() {
-        if (Constant.progress.isShowing)
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
         super.onDestroy()
     }

@@ -75,7 +75,7 @@
                     android:paddingTop="@dimen/_4sdp"
                     android:paddingEnd="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_4sdp"
-                    android:text="0%"
+                    android:text="99%"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_10sdp"
                     android:visibility="visible" />
@@ -88,6 +88,7 @@
                     android:background="@drawable/bg_shadow_round_rectangle"
                     android:backgroundTint="@color/navyBlue"
                     android:padding="@dimen/_6sdp"
+                    android:layout_marginRight="@dimen/_4sdp"
                     android:text="Deal reserved for"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_9sdp" />

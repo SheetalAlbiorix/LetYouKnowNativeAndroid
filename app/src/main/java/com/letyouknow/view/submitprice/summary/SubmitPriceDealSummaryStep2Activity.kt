@@ -302,7 +302,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                     Constant.dismissLoader()
                     pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                     pref?.setSubmitPriceTime("")
-                    if (!data.foundMatch) {
+                    if (!data?.foundMatch!!) {
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
                                 yearModelMakeData
@@ -313,8 +313,9 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         )
                         finish()
                     } else {
-                        data.successResult.transactionInfo.vehiclePrice = yearModelMakeData.price!!
-                        data.successResult.transactionInfo.remainingBalance =
+                        data.successResult?.transactionInfo?.vehiclePrice =
+                            yearModelMakeData.price!!
+                        data.successResult?.transactionInfo?.remainingBalance =
                             (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
                         Log.e("SubmitStep2Response", Gson().toJson(data))
                         startActivity<SubmitDealSummaryActivity>(

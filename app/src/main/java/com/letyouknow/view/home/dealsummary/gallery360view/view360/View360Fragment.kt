@@ -6,21 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.gson.Gson
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.fragment_360_view.*
 
 class View360Fragment : BaseFragment() {
-
+    private lateinit var tokenModel: RefreshTokenViewModel
     companion object {
         fun newInstance(id: String?): View360Fragment {
             val fragment = View360Fragment()
@@ -53,10 +56,31 @@ class View360Fragment : BaseFragment() {
     }
 
     private fun init() {
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
             val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
             interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-            getInteriorAPI(imageId)
+            callRefreshTokenApi(imageId!!)
+        }
+    }
+
+    private fun callRefreshTokenApi(imageId: String) {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(requireActivity(), request)!!.observe(requireActivity(), { data ->
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                getInteriorAPI(imageId)
+            }
+            )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -89,7 +113,6 @@ class View360Fragment : BaseFragment() {
 
     private fun getInteriorAPI(imageId: String?) {
         if (Constant.isOnline(requireContext())) {
-            Constant.showLoader(requireActivity())
             val request = HashMap<String, Any>()
             request[ApiConstant.ImageId] = imageId!!
             request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano

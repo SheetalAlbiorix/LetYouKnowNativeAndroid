@@ -1,6 +1,7 @@
 package com.letyouknow.utils
 
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
@@ -287,6 +288,7 @@ class AppGlobal {
             dialog.setContentView(R.layout.dialog_authorization)
             dialog.run {
                 tvOk.setOnClickListener {
+                    pref?.setLogOutData()
                     context.startActivity(
                         context.intentFor<LoginActivity>().clearTask().newTask()
                     )
@@ -387,6 +389,23 @@ class AppGlobal {
                 tvErrorMessage.text = message
                 tvErrorOk.setOnClickListener {
                     dismiss()
+                }
+            }
+            setLayoutParam(dialog)
+            dialog.show()
+        }
+
+        fun alertErrorDialog(context: Activity, message: String?) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_error)
+            dialog.run {
+                tvErrorMessage.text = message
+                tvErrorOk.setOnClickListener {
+                    dismiss()
+                    context.finish()
                 }
             }
             setLayoutParam(dialog)

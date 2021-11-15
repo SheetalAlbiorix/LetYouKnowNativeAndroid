@@ -977,7 +977,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     }
 
     override fun onDestroy() {
-        if (Constant.progress.isShowing)
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
         super.onDestroy()
     }

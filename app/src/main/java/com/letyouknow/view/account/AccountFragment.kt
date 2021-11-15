@@ -639,7 +639,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
          super.onPause()
      }*/
     override fun onDestroy() {
-        if (Constant.progress.isShowing)
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
         super.onDestroy()
     }

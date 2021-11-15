@@ -35,6 +35,7 @@ object RefreshTokenRepository {
                     Constant.dismissLoader()
                     submitDealLCDData.value = data!!
                 } else if (response.code() == 401) {
+                    Constant.dismissLoader()
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
                     Constant.dismissLoader()

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="ucdData"
+            type="com.letyouknow.model.YearModelMakeData" />
+
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar_blue"
+            app:toolbarTitle="@{@string/deal_summary}" />
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:singleLine="true"
+                    android:text="@string/actual_model_may_vary"
+                    android:textColor="@color/color808080"
+                    android:textSize="@dimen/_8sdp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_250sdp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivMain"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_250sdp"
+                        android:orientation="vertical"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_image_car">
+
+                    </androidx.appcompat.widget.AppCompatImageView>
+
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/bg_half_round"
+                            android:backgroundTint="@color/offWhite" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/_20sdp">
+
+                            <FrameLayout
+                                android:id="@+id/llGallery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBgGallery"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_8sdp"
+                                    android:src="@drawable/ic_gallery"
+                                    android:text="Gallery"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/ll360"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBg360"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_6sdp"
+                                    android:src="@drawable/ic_360"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </FrameLayout>
+                </FrameLayout>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_button"
+                        android:backgroundTint="@color/offWhite"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_25sdp">
+                        <!--                -->
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{ucdData.vehicleYearStr+' '+ucdData.vehicleMakeStr+' '+' '+ucdData.vehicleModelStr+' '+ucdData.vehicleTrimStr}"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_16sdp"
+                            tool:text="2019 Audi A5 Couple premium plus 2.ot, Dealer Installed Accessories: ANY, Optional Packages: NONE" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/exterior_color_colon"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:text="@{ucdData.vehicleExtColorStr}"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp"
+                                tool:text="Cashmere" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/interior_color_colon"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:text="@{ucdData.vehicleIntColorStr}"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp"
+                                tool:text="Super Black Metalic" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                        <TextView
+                            android:id="@+id/tvViewOptions"
+                            style="@style/medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/bg_button3"
+                            android:backgroundTint="@color/colorcfeafa"
+                            android:padding="@dimen/_8sdp"
+                            android:text="@string/view_options_accessories"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_11sdp" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_12sdp"
+                        android:background="@drawable/bg_button3"
+                        android:backgroundTint="@color/navyBlue"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_15sdp">
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="We're Sorry"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_25sdp" />
+
+                        <TextView
+                            style="@style/medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:text="Your Vehicle is Unavailable Or Reseved"
+                            android:textColor="@color/offWhite"
+                            android:textSize="@dimen/_15sdp" />
+                        <!--                            android:text="Something went wrong, but don't worry your card hasn't been charged"-->
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/btnTryAgain"
+                            style="@style/medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginRight="@dimen/_12sdp"
+                            android:background="@drawable/bg_button"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/_12sdp"
+                            android:text="TRY AGAIN"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

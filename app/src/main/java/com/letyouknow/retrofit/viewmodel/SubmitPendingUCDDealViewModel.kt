@@ -1,6 +1,6 @@
 package com.letyouknow.retrofit.viewmodel
 
-import android.content.Context
+import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,7 @@ class SubmitPendingUCDDealViewModel : ViewModel() {
     var liveData: MutableLiveData<SubmitPendingUcdData>? = null
 
     fun pendingDeal(
-        context: Context,
+        context: Activity,
         request: HashMap<String, Any>
     ): LiveData<SubmitPendingUcdData>? {
         liveData = SubmitPendingUCDDealRepository.pendingUCDDealApiCall(

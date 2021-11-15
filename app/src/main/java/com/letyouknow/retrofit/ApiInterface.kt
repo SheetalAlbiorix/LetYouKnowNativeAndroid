@@ -9,8 +9,10 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
-    @POST("auth/login")
-    fun login(@Body request: HashMap<String, String>): Call<LoginData>
+//    @POST("auth/login")
+//    fun login(@Body request: HashMap<String, String>): Call<LoginData>
+@POST("auth/loginmobile")
+fun login(@Body request: HashMap<String, String>): Call<LoginData>
 
     @POST("userprofile")
     fun signUp(@Body request: HashMap<String, String>): Call<SignupData>

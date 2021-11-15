@@ -1624,7 +1624,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         super.onPause()
     }*/
     override fun onDestroy() {
-        if (Constant.progress.isShowing)
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
         super.onDestroy()
     }

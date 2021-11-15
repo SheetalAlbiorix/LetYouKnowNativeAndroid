@@ -71,6 +71,10 @@ class Constant {
 
         lateinit var progress: KProgressHUD
 
+        fun isInitProgress(): Boolean {
+            return ::progress.isInitialized
+        }
+
         val patternPassword =
             Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~_`#?{}()+!@\$%^&*-]).{8,16}\$")
 

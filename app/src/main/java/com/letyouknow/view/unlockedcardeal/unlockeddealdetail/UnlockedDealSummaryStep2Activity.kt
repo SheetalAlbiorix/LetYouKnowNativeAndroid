@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -19,6 +20,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -84,6 +86,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var arImage: ArrayList<String>
     private var isTimeOver = false
     private var imageId = "0"
+    private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +104,8 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealUCDViewModel = ViewModelProvider(this).get(SubmitDealUCDViewModel::class.java)
+        submitPendingUCDDealViewModel =
+            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
 
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
@@ -278,12 +283,24 @@ Log.e("submitdealucd", Gson().toJson(map))
                 .observe(this, { data ->
                     Constant.dismissLoader()
 
-                    data.successResult.transactionInfo.vehiclePrice = ucdData.price!!
-                    data.successResult.transactionInfo.remainingBalance =
+                    data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
+                    data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
                     pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
                     pref?.setSearchDealTime("")
-                    startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
+                    if (data.foundMatch!!)
+                        startActivity<SubmitDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
+                    else
+                        startActivity<UnlockedTryAnotherActivity>(
+                            ARG_UCD_DEAL to Gson().toJson(ucdData),
+                            ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_IMAGE_ID to imageId
+                        )
                 }
                 )
         } else {
@@ -430,7 +447,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                     tvTimer.visibility = View.GONE
                     llExpired.visibility = View.VISIBLE
                     isTimeOver = true
-                    tvSubmitStartOver.text = getString(R.string.start_over)
+                    tvSubmitStartOver.text = getString(R.string.try_again)
                     cancelTimer()
                     return
                 }
@@ -441,6 +458,27 @@ Log.e("submitdealucd", Gson().toJson(map))
             }
         }.start()
     }
+
+    private lateinit var handlerPer: Handler
+    private var countPer = 0
+    private var arPer = arrayListOf("75%", "50%", " 25%", "0%")
+
+    private fun setPer() {
+        handlerPer = Handler()
+        handlerPer.postDelayed(runnablePer, 30000)
+    }
+
+    private var runnablePer = object : Runnable {
+        override fun run() {
+            tvPerc.text = arPer[countPer]
+            countPer += 1
+            if (tvPerc.text.toString().trim() != "0%")
+                handlerPer.postDelayed(this, 30000)
+            else
+                tvSubmitStartOver.text = getString(R.string.start_over)
+        }
+    }
+
 
     private fun cancelTimer() {
         if (cTimer != null)
@@ -565,13 +603,24 @@ Log.e("submitdealucd", Gson().toJson(map))
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (isTimeOver) {
+                if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                    callSubmitPendingUCDDealAPI()
+                } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    onBackPressed()
+                } else {
+                    if (isValidCard()) {
+                        if (isValid()) {
+                            callBuyerAPI()
+                        }
+                    }
+                }
+                /*if (isTimeOver) {
                     onBackPressed()
                 } else if (isValidCard()) {
                     if (isValid()) {
                         callBuyerAPI()
                     }
-                }
+                }*/
 //
             }
             R.id.tvAddMin -> {
@@ -593,6 +642,42 @@ Log.e("submitdealucd", Gson().toJson(map))
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
+
+        }
+    }
+
+    private fun callSubmitPendingUCDDealAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.price] = ucdData.price!!
+            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
+            request[ApiConstant.searchRadius] =
+                if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
+                    " mi",
+                    ""
+                ).trim()
+            request[ApiConstant.loanType] = yearModelMakeData.loanType!!
+            request[ApiConstant.initial] = yearModelMakeData.initials!!
+            request[ApiConstant.timeZoneOffset] = "-330"
+            request[ApiConstant.vehicleInventoryID] = ucdData.vehicleInventoryID!!
+            request[ApiConstant.dealID] = ucdData.dealID!!
+            request[ApiConstant.guestID] = ucdData.guestID!!
+            Log.e("Request", Gson().toJson(request))
+            submitPendingUCDDealViewModel.pendingDeal(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                }
+                )
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 

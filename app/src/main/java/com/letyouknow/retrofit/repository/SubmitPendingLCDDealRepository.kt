@@ -1,6 +1,6 @@
 package com.letyouknow.retrofit.repository
 
-import android.content.Context
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -16,7 +16,7 @@ import retrofit2.Response
 object SubmitPendingLCDDealRepository {
 
     fun pendinLCDDealApiCall(
-        context: Context,
+        context: Activity,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitPendingUcdData> {
         val pendinLCDDealData = MutableLiveData<SubmitPendingUcdData>()
@@ -59,11 +59,12 @@ object SubmitPendingLCDDealRepository {
                         }
 
                     }
-                    if (msgStr != null)
-                        AppGlobal.alertError(
+                    if (msgStr != null) {
+                        AppGlobal.alertErrorDialog(
                             context,
                             msgStr
                         )
+                    }
                 }
             }
         })

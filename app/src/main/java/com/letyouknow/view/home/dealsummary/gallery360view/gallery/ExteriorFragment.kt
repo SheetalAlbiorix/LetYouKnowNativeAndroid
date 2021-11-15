@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
@@ -22,6 +25,7 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     private lateinit var adapterGallery: GalleryAdapter
     lateinit var exteriorViewModel: ExteriorViewModel
     lateinit var interiorViewModel: InteriorViewModel
+    private lateinit var tokenModel: RefreshTokenViewModel
     companion object {
         fun newInstance(id: String?): ExteriorFragment {
             val fragment = ExteriorFragment()
@@ -46,19 +50,40 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         if (arguments?.containsKey(ARG_IMAGE_ID) == true) {
             val imageId = arguments?.getString(ARG_IMAGE_ID)
             exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
             interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-            getExteriorAPI(imageId)
+            callRefreshTokenApi(imageId!!)
         }
     }
+
+    private fun callRefreshTokenApi(imageId: String) {
+        if (Constant.isOnline(requireActivity())) {
+            Constant.showLoader(requireActivity())
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(requireActivity(), request)!!.observe(requireActivity(), { data ->
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                getExteriorAPI(imageId)
+            }
+            )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     val arImages: ArrayList<String> = ArrayList()
 
     private fun getExteriorAPI(imageId: String?) {
         if (Constant.isOnline(requireContext())) {
-            Constant.showLoader(requireActivity())
             val request = HashMap<String, Any>()
             request[ApiConstant.ImageId] = imageId!!
             request[ApiConstant.ImageProduct] = "Splash"

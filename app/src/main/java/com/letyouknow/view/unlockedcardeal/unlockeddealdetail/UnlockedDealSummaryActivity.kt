@@ -284,7 +284,7 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.vehicleInventoryID] = dataUCDDeal.vehicleInventoryID!!
             request[ApiConstant.dealID] = dataUCDDeal.dealID!!
             request[ApiConstant.guestID] = dataUCDDeal.guestID!!
-
+            Log.e("Request", Gson().toJson(request))
             submitPendingUCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()

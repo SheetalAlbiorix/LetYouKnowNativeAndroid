@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -16,6 +17,7 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -32,6 +34,7 @@ import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.home.dealsummary.tryanotherdeal.TryAnotherActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
@@ -53,6 +56,7 @@ import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
@@ -64,7 +68,9 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var arCardList: ArrayList<CardListData> = ArrayList()
     private var lightBindData: LightDealBindData = LightDealBindData()
     private lateinit var cTimer: CountDownTimer
+
     private var seconds = 300
+//    private var seconds = 10
 
     private lateinit var dataLCDDeal: FindLCDDeaData
     private lateinit var dataPendingDeal: SubmitPendingUcdData
@@ -82,6 +88,9 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var state = "NC"
     private var imageId = "0"
 
+    private var arPer = arrayListOf("75%", "50%", " 25%", "0%")
+    private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +106,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealLCDViewModel = ViewModelProvider(this).get(SubmitDealLCDViewModel::class.java)
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+        submitPendingLCDDealViewModel =
+            ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -297,13 +308,26 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    data.successResult.transactionInfo.vehiclePrice = dataLCDDeal.price!!
-                    data.successResult.transactionInfo.remainingBalance =
+                    data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
+                    data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
                     pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
                     pref?.setOneDealNearYou("")
-                    startActivity<SubmitDealSummaryActivity>(ARG_SUBMIT_DEAL to Gson().toJson(data))
+
+                    if (data.foundMatch!!) {
+                        startActivity<SubmitDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
+                    } else {
+                        startActivity<TryAnotherActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                            ARG_IMAGE_ID to imageId,
+                            Constant.ARG_IMAGE_URL to Gson().toJson(arImage)
+                        )
+                    }
                 }
                 )
         } else {
@@ -400,13 +424,14 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
                     tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                 }
-                if (seconds == 0) {
+                if (seconds == 0 || seconds == 1) {
                     tvAddMin.visibility = View.GONE
                     tvTimer.visibility = View.GONE
                     llExpired.visibility = View.VISIBLE
                     isTimeOver = true
-                    tvSubmitStartOver.text = getString(R.string.start_over)
+                    tvSubmitStartOver.text = getString(R.string.try_again)
                     cancelTimer()
+                    setPer()
                     return
                 }
             }
@@ -415,6 +440,25 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
 
         }.start()
+    }
+
+    private lateinit var handlerPer: Handler
+    private var countPer = 0
+
+    private fun setPer() {
+        handlerPer = Handler()
+        handlerPer.postDelayed(runnablePer, 30000)
+    }
+
+    private var runnablePer = object : Runnable {
+        override fun run() {
+            tvPerc.text = arPer[countPer]
+            countPer += 1
+            if (tvPerc.text.toString().trim() != "0%")
+                handlerPer.postDelayed(this, 30000)
+            else
+                tvSubmitStartOver.text = getString(R.string.start_over)
+        }
     }
 
     private fun cancelTimer() {
@@ -540,13 +584,24 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (isTimeOver) {
+                if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                    callSubmitPendingLCDDealAPI()
+                } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     onBackPressed()
-                } else if (isValidCard()) {
-                    if (isValid()) {
-                        callBuyerAPI()
+                } else {
+                    if (isValidCard()) {
+                        if (isValid()) {
+                            callBuyerAPI()
+                        }
                     }
                 }
+                /* if (isTimeOver) {
+                     onBackPressed()
+                 } else if (isValidCard()) {
+                     if (isValid()) {
+                         callBuyerAPI()
+                     }
+                 }*/
             }
             R.id.tvAddMin -> {
                 seconds += 120;
@@ -567,6 +622,41 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
+        }
+    }
+
+    private fun callSubmitPendingLCDDealAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
+            request[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
+            request[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
+            request[ApiConstant.vehicleTrimID] = dataLCDDeal.trimId!!
+            request[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
+            request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
+            request[ApiConstant.price] = dataLCDDeal.price!!
+            request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
+            request[ApiConstant.searchRadius] = "1000"
+            request[ApiConstant.loanType] = dataLCDDeal.loanType!!
+            request[ApiConstant.initial] = dataLCDDeal.initial!!
+            request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
+            request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
+            request[ApiConstant.dealID] = dataLCDDeal.dealID!!
+            request[ApiConstant.guestID] = dataLCDDeal.guestID!!
+            request[ApiConstant.dealerAccessoryIDs] = Gson().toJson(dataLCDDeal.arAccessoriesId)
+            request[ApiConstant.vehiclePackageIDs] = Gson().toJson(dataLCDDeal.arPackageId)
+
+            submitPendingLCDDealViewModel.pendingDeal(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    finish()
+                }
+                )
+
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 
