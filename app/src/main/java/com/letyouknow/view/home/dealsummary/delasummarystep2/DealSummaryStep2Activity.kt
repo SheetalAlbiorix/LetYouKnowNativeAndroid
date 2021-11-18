@@ -585,7 +585,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    callSubmitPendingLCDDealAPI()
+                    finish()
+//                    callSubmitPendingLCDDealAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     onBackPressed()
                 } else {
@@ -637,7 +638,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
             request[ApiConstant.price] = dataLCDDeal.price!!
             request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
-            request[ApiConstant.searchRadius] = "1000"
+            request[ApiConstant.searchRadius] = "100"
             request[ApiConstant.loanType] = dataLCDDeal.loanType!!
             request[ApiConstant.initial] = dataLCDDeal.initial!!
             request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!

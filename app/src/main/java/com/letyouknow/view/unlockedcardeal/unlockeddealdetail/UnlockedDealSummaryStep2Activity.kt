@@ -604,7 +604,8 @@ Log.e("submitdealucd", Gson().toJson(map))
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    callSubmitPendingUCDDealAPI()
+                    finish()
+//                    callSubmitPendingUCDDealAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     onBackPressed()
                 } else {
@@ -615,7 +616,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                     }
                 }
                 /*if (isTimeOver) {
-                    onBackPressed()
+                    onBackPressed()x
                 } else if (isValidCard()) {
                     if (isValid()) {
                         callBuyerAPI()

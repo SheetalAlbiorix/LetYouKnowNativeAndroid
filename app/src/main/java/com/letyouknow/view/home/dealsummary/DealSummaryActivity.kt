@@ -289,7 +289,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
             request[ApiConstant.price] = dataLCDDeal.price!!
             request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
-            request[ApiConstant.searchRadius] = "1000"
+            request[ApiConstant.searchRadius] = "100"
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
             request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
@@ -312,7 +312,6 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                     )
                 }
                 )
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
