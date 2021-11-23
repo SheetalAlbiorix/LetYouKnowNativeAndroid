@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityDealSummaryBinding
@@ -280,6 +281,14 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     private fun callSubmitPendingLCDDealAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
+            val jsonPkg = JsonArray()
+            for (i in 0 until dataLCDDeal.arPackageId.size) {
+                jsonPkg.add(dataLCDDeal.arPackageId[i])
+            }
+            val jsonAcc = JsonArray()
+            for (i in 0 until dataLCDDeal.arAccessoriesId.size) {
+                jsonAcc.add(dataLCDDeal.arAccessoriesId[i])
+            }
             val request = HashMap<String, Any>()
             request[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
             request[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
@@ -292,12 +301,12 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.searchRadius] = "100"
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
+            request[ApiConstant.timeZoneOffset] = "-330"
             request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
             request[ApiConstant.dealID] = dataLCDDeal.dealID!!
             request[ApiConstant.guestID] = dataLCDDeal.guestID!!
-            request[ApiConstant.dealerAccessoryIDs] = Gson().toJson(dataLCDDeal.arAccessoriesId)
-            request[ApiConstant.vehiclePackageIDs] = Gson().toJson(dataLCDDeal.arPackageId)
+            request[ApiConstant.dealerAccessoryIDs] = jsonAcc
+            request[ApiConstant.vehiclePackageIDs] = jsonPkg
 
             submitPendingLCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->

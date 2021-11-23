@@ -1,4 +1,4 @@
-package com.letyouknow.view.submitprice.summary
+package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
@@ -16,7 +16,7 @@ import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
+import com.letyouknow.databinding.ActivityFinalUnlockedDealSummaryBinding
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
@@ -28,27 +28,27 @@ import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import kotlinx.android.synthetic.main.activity_final_submit_price_deal_summary.*
+import kotlinx.android.synthetic.main.activity_final_unlocked_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_final_submit_price_deal_summary.*
+import kotlinx.android.synthetic.main.layout_final_unlocked_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 
-class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
+class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var submitDealData: SubmitDealLCDData
     private lateinit var yearModelMakeData: YearModelMakeData
-    private lateinit var binding: ActivityFinalSubmitPriceDealSummaryBinding
+    private lateinit var binding: ActivityFinalUnlockedDealSummaryBinding
     private var imageId = "0"
-    private var arImage: ArrayList<String> = ArrayList()
-
+    private lateinit var arImage: ArrayList<String>
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_final_submit_price_deal_summary)
+        setContentView(R.layout.activity_final_unlocked_deal_summary)
         init()
     }
 
@@ -56,7 +56,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         checkVehicleStockViewModel =
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         binding =
-            DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
+            DataBindingUtil.setContentView(this, R.layout.activity_final_unlocked_deal_summary)
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
                 ARG_SUBMIT_DEAL
             )
@@ -110,10 +110,10 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btnModify -> {
-                finish()
+                callIsSoldAPI()
             }
             R.id.btnWait -> {
-                finish()
+                callIsSoldAPI()
             }
             R.id.tvViewOptions -> {
                 popupOption()
@@ -226,7 +226,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                     Constant.dismissLoader()
                     if (data) {
                         startActivity(
-                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
                                 .newTask()
                         )
                     } else {

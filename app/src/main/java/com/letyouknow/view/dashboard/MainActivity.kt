@@ -23,8 +23,12 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.submitprice.SubmitYourPriceFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_TITLE
 import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
+import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
+import com.pionymessenger.utils.Constant.Companion.TYPE_SEARCH_DEAL
+import com.pionymessenger.utils.Constant.Companion.TYPE_SUBMIT_PRICE
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -81,6 +85,7 @@ class MainActivity : BaseActivity(),
         llLogout.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
+
         bottomNavigation.setOnNavigationItemSelectedListener(this)
 
     }
@@ -158,7 +163,28 @@ class MainActivity : BaseActivity(),
         tvUserName.text = userData.firstName + " " + userData.lastName
         tvUserEmail.text = userData.userName
 //        loadFragment(HomeFragment(), getString(R.string.search_deals_title))
-        loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+        if (intent.hasExtra(ARG_SEL_TAB)) {
+            when (intent.getIntExtra(ARG_SEL_TAB, 0)) {
+                TYPE_SUBMIT_PRICE -> {
+                    loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+                    val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
+                    item.isChecked = true
+                }
+                TYPE_ONE_DEAL_NEAR_YOU -> {
+                    loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
+                    val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
+                    item.isChecked = true
+                }
+                TYPE_SEARCH_DEAL -> {
+                    loadFragment(SubmitYourPriceFragment(), getString(R.string.search_deals))
+                    val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
+                    item.isChecked = true
+                }
+            }
+        } else {
+            loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+        }
+
     }
 
     override fun getViewActivity(): Activity {

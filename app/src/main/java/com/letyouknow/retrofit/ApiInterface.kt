@@ -217,4 +217,11 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     fun transactionCode(
         @Query("code") code: String?
     ): Call<TransactionCodeData>
+
+    @POST("vehiclecriteria/CheckVehicleStock")
+    fun checkVehicleStock(@Body request: HashMap<String, Any>): Call<Boolean>
+
+    @POST("vehiclecriteria/issold")
+    fun isSold(@Body request: HashMap<String, Any>): Call<Boolean>
+
 }

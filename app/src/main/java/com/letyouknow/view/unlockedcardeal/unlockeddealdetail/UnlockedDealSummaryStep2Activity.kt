@@ -35,6 +35,7 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
@@ -55,6 +56,9 @@ import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import kotlinx.android.synthetic.main.layout_unlocked_deal_summary_step2.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
@@ -87,6 +91,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var isTimeOver = false
     private var imageId = "0"
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +103,8 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+        checkVehicleStockViewModel =
+            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
@@ -286,8 +293,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                     data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
-                    pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
-                    pref?.setSearchDealTime("")
+                    clearPrefSearchDealData()
                     if (data.foundMatch!!)
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
@@ -295,12 +301,19 @@ Log.e("submitdealucd", Gson().toJson(map))
                             )
                         )
                     else
-                        startActivity<UnlockedTryAnotherActivity>(
-                            ARG_UCD_DEAL to Gson().toJson(ucdData),
+                    /* startActivity<UnlockedTryAnotherActivity>(
+                         ARG_UCD_DEAL to Gson().toJson(ucdData),
+                         ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                         ARG_IMAGE_URL to Gson().toJson(arImage),
+                         ARG_IMAGE_ID to imageId
+                     )*/
+                        startActivity<FinalUnlockedDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(data),
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_IMAGE_ID to imageId
                         )
+                    finish()
                 }
                 )
         } else {
@@ -604,10 +617,9 @@ Log.e("submitdealucd", Gson().toJson(map))
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    finish()
-//                    callSubmitPendingUCDDealAPI()
+                    callCheckVehicleStockAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
-                    onBackPressed()
+                    callCheckVehicleStockAPI()
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
@@ -680,6 +692,67 @@ Log.e("submitdealucd", Gson().toJson(map))
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun callCheckVehicleStockAPI() {
+        if (Constant.isOnline(this)) {
+            val pkgList = JsonArray()
+            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
+                pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
+            }
+            val accList = JsonArray()
+            for (i in 0 until yearModelMakeData.arOptions!!.size) {
+                accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+            }
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ProductType] = 3
+            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
+            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    if (data) {
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                                .newTask()
+                        )
+                    } else {
+                        clearPrefSearchDealData()
+                        /*startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                                .newTask()
+                        )*/
+                        startActivity<UnlockedTryAnotherActivity>(
+                            ARG_UCD_DEAL to Gson().toJson(ucdData),
+                            ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_IMAGE_ID to imageId
+                        )
+                    }
+
+                }
+                )
+
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun clearPrefSearchDealData() {
+        pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+        pref?.setSearchDealTime("")
     }
 
     private val REQUEST_CODE_LOCATION = 1001

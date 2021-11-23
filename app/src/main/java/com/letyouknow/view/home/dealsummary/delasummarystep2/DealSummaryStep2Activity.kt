@@ -33,17 +33,20 @@ import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.home.dealsummary.tryanotherdeal.FinalOneDealNearSummaryActivity
 import com.letyouknow.view.home.dealsummary.tryanotherdeal.TryAnotherActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
-import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
@@ -53,6 +56,9 @@ import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.collections.ArrayList
@@ -90,6 +96,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private var arPer = arrayListOf("75%", "50%", " 25%", "0%")
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +107,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+        checkVehicleStockViewModel =
+            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
         promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
         paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
@@ -312,27 +321,32 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
-                    pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
-                    pref?.setOneDealNearYou("")
+                    clearOneDealNearData()
 
-                    if (data.foundMatch!!) {
-                        startActivity<SubmitDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
-                            )
-                        )
-                    } else {
-                        startActivity<TryAnotherActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
-                            ARG_IMAGE_ID to imageId,
-                            Constant.ARG_IMAGE_URL to Gson().toJson(arImage)
-                        )
-                    }
+                    /*  if (data.foundMatch!!) {
+                          startActivity<SubmitDealSummaryActivity>(
+                              ARG_SUBMIT_DEAL to Gson().toJson(
+                                  data
+                              )
+                          )
+                      } else {*/
+                    startActivity<FinalOneDealNearSummaryActivity>(
+                        ARG_SUBMIT_DEAL to Gson().toJson(data),
+                        ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
+                        ARG_IMAGE_ID to imageId,
+                        Constant.ARG_IMAGE_URL to Gson().toJson(arImage)
+                    )
+//                    }
                 }
                 )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun clearOneDealNearData() {
+        pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
+        pref?.setOneDealNearYou("")
     }
 
     private lateinit var cardStripeData: CardStripeData
@@ -585,10 +599,9 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    finish()
-//                    callSubmitPendingLCDDealAPI()
+                    callCheckVehicleStockAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
-                    onBackPressed()
+                    callCheckVehicleStockAPI()
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
@@ -656,6 +669,53 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 )
 
 
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callCheckVehicleStockAPI() {
+        if (Constant.isOnline(this)) {
+            val pkgList = JsonArray()
+            for (i in 0 until dataLCDDeal.arPackageId.size) {
+                pkgList.add(dataLCDDeal.arPackageId[i])
+            }
+            val accList = JsonArray()
+            for (i in 0 until dataLCDDeal.arAccessoriesId.size) {
+                accList.add(dataLCDDeal.arAccessoriesId[i])
+            }
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.YearId1] = dataLCDDeal.yearId!!
+            request[ApiConstant.MakeId1] = dataLCDDeal.makeId!!
+            request[ApiConstant.ModelID] = dataLCDDeal.modelId!!
+            request[ApiConstant.TrimID] = dataLCDDeal.trimId!!
+            request[ApiConstant.ExteriorColorID] = dataLCDDeal.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = dataLCDDeal.interiorColorId!!
+            request[ApiConstant.ZipCode1] = dataLCDDeal.zipCode!!
+            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    if (data) {
+                        startActivity(
+                            intentFor<MainActivity>(ARG_SEL_TAB to TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                                .newTask()
+                        )
+                    } else {
+                        clearOneDealNearData()
+                        startActivity<TryAnotherActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage)
+                        )
+                    }
+                }
+                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

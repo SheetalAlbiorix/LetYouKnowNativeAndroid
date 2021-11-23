@@ -74,6 +74,17 @@ class ApiConstant {
         var SMS = "SMS"
         var Email_NOTI = "Email"
         var PushNotification = "PushNotification"
+        var AccessoryList = "AccessoryList"
+        var PackageList1 = "PackageList"
+        var TrimID = "TrimID"
+        var ModelID = "ModelID"
+        var ProductType = "ProductType"
+        var YearId1 = "YearId"
+        var MakeId1 = "MakeId"
+        var ExteriorColorID = "ExteriorColorID"
+        var InteriorColorID = "InteriorColorID"
+        var ZipCode1 = "ZipCode"
+        var SearchRadius1 = "SearchRadius"
 
     }
 }

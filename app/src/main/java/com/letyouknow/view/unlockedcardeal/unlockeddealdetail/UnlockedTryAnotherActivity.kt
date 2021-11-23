@@ -102,7 +102,8 @@ class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         startActivity(
-            intentFor<MainActivity>().clearTask().newTask()
+            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                .newTask()
         )
     }
 
