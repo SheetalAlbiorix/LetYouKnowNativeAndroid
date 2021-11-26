@@ -43,6 +43,7 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
+import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -195,9 +196,9 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
             .withAccessTokenProvider(Single.defer {
                 Single.just(
-                    "Bearer " + pref?.getUserData()?.authToken
+                    pref?.getUserData()?.authToken
                 )
-            }).build()
+            }).withTransport(TransportEnum.LONG_POLLING).build()
 
         hubConnection?.start()?.blockingAwait()
 

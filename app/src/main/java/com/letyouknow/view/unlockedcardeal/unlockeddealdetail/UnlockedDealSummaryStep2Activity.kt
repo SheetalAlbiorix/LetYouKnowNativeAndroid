@@ -43,6 +43,7 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
+import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -50,7 +51,6 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.pionymessenger.utils.Constant.Companion.HUB_CONNECTION_URL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
@@ -198,14 +198,19 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initHub() {
-        hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+        /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+              .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
+              .build()*/
+        hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
             .withAccessTokenProvider(Single.defer {
                 Single.just(
                     "Bearer " + pref?.getUserData()?.authToken
                 )
-            }).build()
+            }).withTransport(TransportEnum.LONG_POLLING).build()
 
         hubConnection?.start()?.blockingAwait()
+
+
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
             handleHub()
         }
@@ -213,19 +218,37 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun handleHub() {
-        Log.e("dealId", ucdData.dealID.toString())
-        hubConnection?.invoke("SubscribeOnDeal", ucdData.dealID)
-        hubConnection!!.on(
-            "UpdateDealTimer",
-            { dealId: Any, timer: Any ->  // OK
-                Log.d(TAG, "$dealId: $timer")
-                Log.e("data", "$dealId: $timer")
-            },
-            Any::class.java,
-            Any::class.java
-        )
-    }
+        Log.e("dealId", ucdData.dealID!!)
+        Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
 
+        hubConnection?.invoke("SubscribeOnDeal", ucdData.dealID!!.toInt())?.blockingAwait()
+
+        Handler().postDelayed({
+            hubConnection!!.on(
+                "CantSubscribeOnDeal",
+                { vehicleId, message ->  // OK
+                    try {
+                        Log.e("data", "$vehicleId: $message")
+                    } catch (e: Exception) {
+                        Log.e("CantSubscribeOnDeal", e.message.toString())
+                    }
+                },
+                Any::class.java, Any::class.java
+            )
+            hubConnection!!.on(
+                "UpdateDealTimer",
+                { dealId, timer ->  // OK
+                    try {
+                        Log.e("data", "$dealId: $timer")
+                    } catch (e: Exception) {
+                        Log.e("UpdateDealTimer", e.message.toString())
+                    }
+                },
+                Any::class.java, Any::class.java
+            )
+        }, 30000)
+
+    }
 
     private lateinit var stripe: Stripe
 
