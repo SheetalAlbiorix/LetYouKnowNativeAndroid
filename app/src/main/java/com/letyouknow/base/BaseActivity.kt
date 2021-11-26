@@ -37,6 +37,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
+
         //overridePendingTransition(R.anim.animation_enter, R.anim.animation_leave);
         progressDialog = ProgressDialog(this@BaseActivity)
         progressDialog!!.setMessage("loading...")

@@ -50,7 +50,6 @@ import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
-import com.pionymessenger.utils.Constant.Companion.HUB_CONNECTION_URL
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
@@ -190,13 +189,18 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initHub() {
-        hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+        /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+              .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
+              .build()*/
+        hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
             .withAccessTokenProvider(Single.defer {
                 Single.just(
                     "Bearer " + pref?.getUserData()?.authToken
                 )
             }).build()
+
         hubConnection?.start()?.blockingAwait()
+
 
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
             handleHub()
@@ -205,15 +209,32 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun handleHub() {
-        hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID)
+        Log.e("dealId", dataLCDDeal.dealID!!)
+        Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
+
+        hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())?.blockingAwait()
+
+        hubConnection!!.on(
+            "CantSubscribeOnDeal",
+            { vehicleId, message ->  // OK
+                try {
+                    Log.e("data", "$vehicleId: $message")
+                } catch (e: Exception) {
+                    Log.e("CantSubscribeOnDeal", e.message.toString())
+                }
+            },
+            Any::class.java, Any::class.java
+        )
         hubConnection!!.on(
             "UpdateDealTimer",
             { dealId, timer ->  // OK
-                Log.d(TAG, "$dealId: $timer")
-                Log.e("data", "$dealId: $timer")
+                try {
+                    Log.e("data", "$dealId: $timer")
+                } catch (e: Exception) {
+                    Log.e("UpdateDealTimer", e.message.toString())
+                }
             },
-            String::class.java,
-            String::class.java
+            Any::class.java, Any::class.java
         )
 
     }
