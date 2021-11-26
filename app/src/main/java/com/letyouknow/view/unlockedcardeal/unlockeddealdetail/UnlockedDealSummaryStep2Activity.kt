@@ -43,7 +43,6 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
-import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -51,11 +50,11 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.pionymessenger.utils.Constant.Companion.HUB_CONNECTION_URL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -198,15 +197,15 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initHub() {
-        /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
-              .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
-              .build()*/
-        hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
-            .withAccessTokenProvider(Single.defer {
-                Single.just(
-                    "Bearer " + pref?.getUserData()?.authToken
-                )
-            }).withTransport(TransportEnum.LONG_POLLING).build()
+        hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+            .withHeader("Authorization", pref?.getUserData()?.authToken)
+            .build()
+        /* hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
+             .withAccessTokenProvider(Single.defer {
+                 Single.just(
+                     "Bearer " + pref?.getUserData()?.authToken
+                 )
+             }).withTransport(TransportEnum.LONG_POLLING).build()*/
 
         hubConnection?.start()?.blockingAwait()
 
@@ -221,9 +220,9 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         Log.e("dealId", ucdData.dealID!!)
         Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
 
-        hubConnection?.invoke("SubscribeOnDeal", ucdData.dealID!!.toInt())?.blockingAwait()
+        hubConnection?.invoke("SubscribeOnDeal", ucdData.dealID!!.toInt())
 
-        Handler().postDelayed({
+//        Handler().postDelayed({
             hubConnection!!.on(
                 "CantSubscribeOnDeal",
                 { vehicleId, message ->  // OK
@@ -246,7 +245,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 },
                 Any::class.java, Any::class.java
             )
-        }, 30000)
+//        }, 30000)
 
     }
 

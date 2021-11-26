@@ -3,6 +3,7 @@ package com.letyouknow.view.home.dealsummary.delasummarystep2
 import android.app.Activity
 import android.app.Dialog
 import android.content.res.ColorStateList
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -43,7 +44,6 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
-import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -56,7 +56,7 @@ import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import io.reactivex.Single
+import io.reactivex.Completable
 import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -193,15 +193,20 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
               .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
               .build()*/
+        /* hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
+             .withAccessTokenProvider(Single.defer {
+                 Single.just(
+                     pref?.getUserData()?.authToken
+                 )
+             }).withTransport(TransportEnum.LONG_POLLING).build()
+*/
         hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
-            .withAccessTokenProvider(Single.defer {
-                Single.just(
-                    pref?.getUserData()?.authToken
-                )
-            }).withTransport(TransportEnum.LONG_POLLING).build()
-
+            .withHeader("Authorization", pref?.getUserData()?.authToken)
+            .build()
         hubConnection?.start()?.blockingAwait()
 
+
+//        HubConnectionTask().execute(hubConnection)
 
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
             handleHub()
@@ -213,7 +218,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         Log.e("dealId", dataLCDDeal.dealID!!)
         Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
 
-        hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())?.blockingAwait()
+        val data: Completable =
+            hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())!!
 
         hubConnection!!.on(
             "CantSubscribeOnDeal",
@@ -237,7 +243,6 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             },
             Any::class.java, Any::class.java
         )
-
     }
 
     private lateinit var stripe: Stripe
@@ -250,7 +255,6 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun onStateChange() {
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -1139,4 +1143,18 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         return true
     }
 
+
+    internal class HubConnectionTask() :
+        AsyncTask<HubConnection?, Void?, Void?>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg hubConnections: HubConnection?): Void? {
+            val hubConnection = hubConnections[0]
+            hubConnection?.start()?.blockingAwait()
+
+            return null
+        }
+    }
 }

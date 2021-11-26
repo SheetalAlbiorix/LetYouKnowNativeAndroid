@@ -36,7 +36,8 @@ class Constant {
 
         //        var PRIVACY_POLICY_LINK = "https://letyouknow.com/privacypolicy"
         var HUB_CONNECTION_URL =
-            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
+            "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"
+//            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
 
         //blank error
         var emailBlank = "email can not be blank"
