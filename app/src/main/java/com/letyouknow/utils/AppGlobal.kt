@@ -101,7 +101,7 @@ class AppGlobal {
             val format = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
             try {
                 val date = format.parse(aDate)
-                println(date)
+//                println(date)
                 return date
             } catch (e: ParseException) {
                 e.printStackTrace()

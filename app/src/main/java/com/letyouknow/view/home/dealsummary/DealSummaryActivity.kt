@@ -109,6 +109,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
         tvViewOptions.setOnClickListener(this)
+        tvViewOptionsHot.setOnClickListener(this)
         ivBack.setOnClickListener(this)
         btnGoBack.setOnClickListener(this)
 //        MainActivity.getInstance().setVisibleEditImg
@@ -353,6 +354,9 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                 startActivity<Gallery360TabActivity>(ARG_TYPE_VIEW to 2, ARG_IMAGE_ID to imageId)
             }
             R.id.tvViewOptions -> {
+                popupOption()
+            }
+            R.id.tvViewOptionsHot -> {
                 popupOption()
             }
             R.id.btnGoBack -> {

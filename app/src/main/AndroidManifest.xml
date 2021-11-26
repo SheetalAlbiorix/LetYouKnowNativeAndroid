@@ -22,6 +22,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
+            android:name=".view.home.dealsummary.tryanotherdeal.FinalOneDealNearSummaryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.unlockedcardeal.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedTryAnotherActivity"
             android:exported="false" />
         <activity

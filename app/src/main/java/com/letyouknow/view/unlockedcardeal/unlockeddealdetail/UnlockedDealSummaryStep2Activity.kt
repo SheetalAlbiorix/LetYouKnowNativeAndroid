@@ -40,6 +40,9 @@ import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
+import com.microsoft.signalr.HubConnection
+import com.microsoft.signalr.HubConnectionBuilder
+import com.microsoft.signalr.HubConnectionState
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -47,10 +50,12 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.pionymessenger.utils.Constant.Companion.HUB_CONNECTION_URL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_unlocked_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -92,7 +97,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var imageId = "0"
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
-
+    var hubConnection: HubConnection? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,7 +193,39 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }*/
         initPayment()
         setOnChangeCard()
+
+        initHub()
     }
+
+    private fun initHub() {
+        hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+            .withAccessTokenProvider(Single.defer {
+                Single.just(
+                    "Bearer " + pref?.getUserData()?.authToken
+                )
+            }).build()
+
+        hubConnection?.start()?.blockingAwait()
+        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            handleHub()
+        }
+
+    }
+
+    private fun handleHub() {
+        Log.e("dealId", ucdData.dealID.toString())
+        hubConnection?.invoke("SubscribeOnDeal", ucdData.dealID)
+        hubConnection!!.on(
+            "UpdateDealTimer",
+            { dealId: Any, timer: Any ->  // OK
+                Log.d(TAG, "$dealId: $timer")
+                Log.e("data", "$dealId: $timer")
+            },
+            Any::class.java,
+            Any::class.java
+        )
+    }
+
 
     private lateinit var stripe: Stripe
 

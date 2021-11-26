@@ -120,7 +120,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     private fun startHandler() {
         if (!isEmpty(pref?.getSubmitPriceTime())) {
-            Log.e("DAte Time", stringToDate(pref?.getSubmitPriceTime())?.toString()!!)
+//            Log.e("DAte Time", stringToDate(pref?.getSubmitPriceTime())?.toString()!!)
             handler = Handler()
             handler.postDelayed(runnable, 1000)
         }
@@ -1201,7 +1201,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
         pref?.setSubmitPriceTime(date)
-        Log.e("Submit Date", date)
+//        Log.e("Submit Date", date)
         startHandler()
     }
 

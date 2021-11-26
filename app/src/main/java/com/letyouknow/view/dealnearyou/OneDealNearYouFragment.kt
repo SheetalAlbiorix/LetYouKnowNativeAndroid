@@ -217,13 +217,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
         pref?.setOneDealNearYou(date)
-        Log.e("Submit Date", date)
+      //  Log.e("Submit Date", date)
         startHandler()
     }
 
     private fun startHandler() {
         if (!isEmpty(pref?.getOneDealNearYou())) {
-                Log.e("Date Time", AppGlobal.stringToDate(pref?.getOneDealNearYou())?.toString()!!)
+            //  Log.e("Date Time", AppGlobal.stringToDate(pref?.getOneDealNearYou())?.toString()!!)
                 handler = Handler()
                 handler.postDelayed(runnable, 1000)
         }

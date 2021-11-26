@@ -998,13 +998,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
         pref?.setSearchDealTime(date)
-        Log.e("Submit Date", date)
+//        Log.e("Submit Date", date)
         startHandler()
     }
 
     private fun startHandler() {
         if (!AppGlobal.isEmpty(pref?.getSearchDealTime())) {
-            Log.e("DAte Time", AppGlobal.stringToDate(pref?.getSearchDealTime())?.toString()!!)
+//            Log.e("DAte Time", AppGlobal.stringToDate(pref?.getSearchDealTime())?.toString()!!)
             handler = Handler()
             handler.postDelayed(runnable, 1000)
         }

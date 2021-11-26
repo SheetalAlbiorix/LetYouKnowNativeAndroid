@@ -27,8 +27,8 @@ import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
+import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_final_one_deal_near_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_final_one_deal_near_summary.*
@@ -59,7 +59,7 @@ class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_final_one_deal_near_summary)
-        if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
+        if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
                 ARG_SUBMIT_DEAL
             )
         ) {
@@ -151,40 +151,12 @@ class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
-            yearModelMakeData.run {
-                tvDialogTitle.text =
-                    vehicleYearStr + " " + vehicleMakeStr + " " + vehicleModelStr + " " + vehicleTrimStr
-                tvDialogExteriorColor.text = vehicleExtColorStr
-                tvDialogInteriorColor.text = vehicleIntColorStr
-                var accessoriesStr = ""
-                var isFirstAcce = true
-                val arAccId: ArrayList<String> = ArrayList()
-                for (i in 0 until arOptions?.size!!) {
-                    if (arOptions!![i].isSelect!!) {
-                        arAccId.add(arOptions!![i].dealerAccessoryID!!)
-                        if (isFirstAcce) {
-                            isFirstAcce = false
-                            accessoriesStr = arOptions!![i].accessory!!
-                        } else
-                            accessoriesStr += ",\n" + arOptions!![i].accessory!!
-                    }
-                }
-                var packageStr = ""
-                var isFirstPackage = true
-
-                for (i in 0 until arPackages?.size!!) {
-                    if (arPackages!![i].isSelect!!) {
-                        if (isFirstPackage) {
-                            isFirstPackage = false
-                            packageStr = arPackages!![i].packageName!!
-                        } else {
-                            packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
-                        }
-                    }
-                }
-                tvDialogPackage.text = packageStr
-                tvDialogOptions.text = accessoriesStr
-            }
+            tvDialogTitle.text =
+                dataLCDDeal.yearStr + " " + dataLCDDeal.makeStr + " " + dataLCDDeal.modelStr + " " + dataLCDDeal.trimStr
+            tvDialogExteriorColor.text = dataLCDDeal.exteriorColorStr
+            tvDialogInteriorColor.text = dataLCDDeal.interiorColorStr
+            tvDialogPackage.text = dataLCDDeal.arPackage
+            tvDialogOptions.text = dataLCDDeal.arAccessories
         }
         setLayoutParam(dialog)
         dialog.show()

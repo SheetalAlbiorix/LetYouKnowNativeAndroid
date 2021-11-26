@@ -39,6 +39,10 @@ import com.letyouknow.view.home.dealsummary.tryanotherdeal.FinalOneDealNearSumma
 import com.letyouknow.view.home.dealsummary.tryanotherdeal.TryAnotherActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
+import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity
+import com.microsoft.signalr.HubConnection
+import com.microsoft.signalr.HubConnectionBuilder
+import com.microsoft.signalr.HubConnectionState
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -46,11 +50,13 @@ import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.pionymessenger.utils.Constant.Companion.HUB_CONNECTION_URL
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -97,6 +103,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var arPer = arrayListOf("75%", "50%", " 25%", "0%")
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+
+    var hubConnection: HubConnection? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,6 +186,36 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         onStateChange()
         initPayment()
         setOnChangeCard()
+        initHub()
+    }
+
+    private fun initHub() {
+        hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+            .withAccessTokenProvider(Single.defer {
+                Single.just(
+                    "Bearer " + pref?.getUserData()?.authToken
+                )
+            }).build()
+        hubConnection?.start()?.blockingAwait()
+
+        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            handleHub()
+        }
+
+    }
+
+    private fun handleHub() {
+        hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID)
+        hubConnection!!.on(
+            "UpdateDealTimer",
+            { dealId, timer ->  // OK
+                Log.d(TAG, "$dealId: $timer")
+                Log.e("data", "$dealId: $timer")
+            },
+            String::class.java,
+            String::class.java
+        )
+
     }
 
     private lateinit var stripe: Stripe
@@ -323,20 +361,21 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Log.e("data Deal", Gson().toJson(data))
                     clearOneDealNearData()
 
-                    /*  if (data.foundMatch!!) {
-                          startActivity<SubmitDealSummaryActivity>(
-                              ARG_SUBMIT_DEAL to Gson().toJson(
-                                  data
-                              )
-                          )
-                      } else {*/
-                    startActivity<FinalOneDealNearSummaryActivity>(
-                        ARG_SUBMIT_DEAL to Gson().toJson(data),
-                        ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
-                        ARG_IMAGE_ID to imageId,
-                        Constant.ARG_IMAGE_URL to Gson().toJson(arImage)
-                    )
-//                    }
+                    if (data.foundMatch!!) {
+                        startActivity<SubmitDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
+                    } else {
+                        startActivity<FinalOneDealNearSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(data),
+                            ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage)
+                        )
+                        finish()
+                    }
                 }
                 )
         } else {
