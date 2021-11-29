@@ -44,6 +44,7 @@ import com.letyouknow.view.unlockedcardeal.submitdealsummary.SubmitDealSummaryAc
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
+import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
@@ -56,7 +57,9 @@ import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
-import io.reactivex.Completable
+import io.reactivex.CompletableObserver
+import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -115,6 +118,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
+
         checkVehicleStockViewModel =
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
@@ -177,7 +181,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
-        startTimer()
+        // startTimer()
         setState()
         AppGlobal.strikeThrough(tvPrice)
 
@@ -190,36 +194,39 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun initHub() {
-        /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
-              .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
-              .build()*/
-        /* hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
-             .withAccessTokenProvider(Single.defer {
-                 Single.just(
-                     pref?.getUserData()?.authToken
-                 )
-             }).withTransport(TransportEnum.LONG_POLLING).build()
-*/
+        val token = pref?.getUserData()?.authToken
         hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
-            .withHeader("Authorization", pref?.getUserData()?.authToken)
-            .build()
-        hubConnection?.start()?.blockingAwait()
+            .withTransport(TransportEnum.LONG_POLLING)
+            .withAccessTokenProvider(Single.defer {
+                Single.just(
+                    token
+                )
+            }).build()
 
+        hubConnection?.start()?.subscribe(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) {
+                Log.e("onSubscribe", "onSubscribe")
+            }
 
-//        HubConnectionTask().execute(hubConnection)
+            override fun onComplete() {
+                Log.e("onComplete", "onComplete")
+                if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+                    handleHub()
+                }
+            }
 
-        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
-            handleHub()
-        }
+            override fun onError(e: Throwable) {
+                Log.e("onError", "onError")
+            }
 
+        })
     }
 
     private fun handleHub() {
         Log.e("dealId", dataLCDDeal.dealID!!)
         Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
 
-        val data: Completable =
-            hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())!!
+        hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())!!
 
         hubConnection!!.on(
             "CantSubscribeOnDeal",
@@ -232,17 +239,72 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             },
             Any::class.java, Any::class.java
         )
+        startTimerOn()
+
+    }
+
+    private fun startTimerOn() {
         hubConnection!!.on(
             "UpdateDealTimer",
-            { dealId, timer ->  // OK
+            { dealId, timer: Double ->
+                // OK
                 try {
                     Log.e("data", "$dealId: $timer")
+                    /* val time = timer.toString()
+                     seconds = time.toInt()*/
+//                    timerVisible(timer.toInt())
+                    seconds = timer.toInt()
+                    tvTimer.text = (String.format("%02d", seconds / 60)
+                            + ":" + String.format("%02d", seconds % 60))
+
+                    if (seconds == 60 && isFirst60) {
+                        Log.e("data", "aaaaaaa")
+                        this@DealSummaryStep2Activity.runOnUiThread {
+                            Log.e("data", "aaaaaaa")
+//                           binding.toolbarIsFirst60 = true
+                            tvAddMin.visibility = View.VISIBLE
+                            isFirst60 = false
+                        }
+                    }
+                    if (seconds < 60) {
+                        tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
+                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
+                    } else {
+                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
+                        tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
+                    }
+                    if (seconds == 0 || seconds == 1) {
+                        tvAddMin.visibility = View.GONE
+                        tvTimer.visibility = View.GONE
+                        llExpired.visibility = View.VISIBLE
+                        isTimeOver = true
+                        tvSubmitStartOver.text = getString(R.string.try_again)
+                        //cancelTimer()
+                        setPer()
+                        stopTimer()
+                        //  return
+                    }
                 } catch (e: Exception) {
                     Log.e("UpdateDealTimer", e.message.toString())
                 }
             },
-            Any::class.java, Any::class.java
+            Any::class.java, Double::class.java
         )
+    }
+
+
+    private fun stopTimer() {
+        hubConnection?.invoke("StopTimer")
+    }
+
+    private fun add2Min() {
+        hubConnection?.invoke("Add2Minutes", dataLCDDeal.dealID!!.toInt())
+    }
+
+    private fun removeHubConnection() {
+        hubConnection?.remove("UpdateDealTimer")
+        hubConnection?.remove("UpdateVehicleState")
+        hubConnection?.remove("CantSubscribeOnDeal")
     }
 
     private lateinit var stripe: Stripe
@@ -387,7 +449,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Log.e("data Deal", Gson().toJson(data))
                     clearOneDealNearData()
 
-                    if (data.foundMatch!!) {
+                    if (data.isDisplayedPriceValid!!) {
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
@@ -546,9 +608,12 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onDestroy() {
-        cancelTimer()
+        removeHubConnection()
+//        cancelTimer()
+        hubConnection?.close()
         super.onDestroy()
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -580,6 +645,14 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    override fun onBackPressed() {
+        if (isTimeOver) {
+            super.onBackPressed()
+        } else {
+            popupLeaveDeal()
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvApplyPromo -> {
@@ -590,11 +663,11 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 popupOption()
             }
             R.id.ivBack -> {
-                if (isTimeOver) {
+//                if (isTimeOver) {
                     onBackPressed()
-                } else {
+                /*} else {
                     popupLeaveDeal()
-                }
+                }*/
             }
             R.id.cardMain -> {
                 val pos = v.tag as Int
@@ -662,6 +735,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                removeHubConnection()
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
                     callCheckVehicleStockAPI()
@@ -683,11 +757,13 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                  }*/
             }
             R.id.tvAddMin -> {
-                seconds += 120;
+//                seconds += 120;
                 //seconds = ((60 * ((2 + minutes) + (second / 60))).toDouble())
+                add2Min()
+//                startTimerOn()
                 tvAddMin.visibility = View.GONE
-                cancelTimer()
-                startTimer()
+//                cancelTimer()
+//                startTimer()
             }
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
@@ -819,6 +895,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 dismiss()
             }
             tvLeaveDeal.setOnClickListener {
+                stopTimer()
                 dismiss()
                 finish()
             }

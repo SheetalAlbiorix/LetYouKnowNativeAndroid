@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,9 @@ import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.submitprice.SubmitYourPriceFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
+import com.microsoft.signalr.HubConnection
+import com.microsoft.signalr.HubConnectionBuilder
+import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_TITLE
@@ -29,6 +33,9 @@ import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.pionymessenger.utils.Constant.Companion.TYPE_SEARCH_DEAL
 import com.pionymessenger.utils.Constant.Companion.TYPE_SUBMIT_PRICE
+import io.reactivex.CompletableObserver
+import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -88,6 +95,55 @@ class MainActivity : BaseActivity(),
 
         bottomNavigation.setOnNavigationItemSelectedListener(this)
 
+//        initHub()
+
+
+    }
+
+    private lateinit var hubConnection: HubConnection
+    private fun initHub() {
+        /*  hubConnection = HubConnectionBuilder.create(HUB_CONNECTION_URL)
+              .withHeader("Authorization", "Bearer " + pref?.getUserData()?.authToken)
+              .build()*/
+        val token = pref?.getUserData()?.authToken
+        Log.e("Token", token!!)
+        hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
+            .withTransport(TransportEnum.LONG_POLLING)
+            .withAccessTokenProvider(Single.defer {
+                Single.just(
+                    token
+                )
+            }).build()
+
+        /*hubConnection = HubConnectionBuilder.create(Constant.HUB_CONNECTION_URL)
+            .withHeader("access_token", token)
+            .build()*/
+
+
+        /*  hubConnection?.start()?.blockingAwait()
+            if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+                handleHub()
+            }
+    */
+//        hubConnection?.start()?.doOnComplete(()->hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt()))
+//        hubConnection?.start()?.doOnComplete(() -> hubConnection?.invoke(Void.class, "GetConnectionId"))
+//        HubConnectionTask().execute(hubConnection)
+
+//hubConnection?.start()?.doOnComplete { hubConnection?.invoke("SubscribeOnDeal",dataLCDDeal.dealID!!.toInt()) }
+        hubConnection?.start()?.subscribe(object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) {
+                Log.e("onSubscribe", "onSubscribe")
+            }
+
+            override fun onComplete() {
+                Log.e("onComplete", "onComplete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("onError", "onError")
+            }
+
+        })
     }
 
     private fun setDrawerData() {

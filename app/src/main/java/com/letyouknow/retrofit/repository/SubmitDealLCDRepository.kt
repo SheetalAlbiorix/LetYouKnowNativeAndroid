@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.SubmitDealLCDData
-import com.letyouknow.model.SubmitPriceErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -44,25 +43,26 @@ object SubmitDealLCDRepository {
                     Constant.dismissLoader()
                     val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        SubmitPriceErrorData::class.java
+                        SubmitDealLCDData::class.java
                     )
-                    var msgStr = ""
-                    var isFirst = true
+                    /* var msgStr = ""
+                     var isFirst = true
 
-                    for (i in 0 until dataError?.messageList?.size!!) {
-                        if (isFirst) {
-                            isFirst = false
-                            msgStr = dataError?.messageList[i]!!
-                        } else {
-                            msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
-                        }
+                     for (i in 0 until dataError?.messageList?.size!!) {
+                         if (isFirst) {
+                             isFirst = false
+                             msgStr = dataError?.messageList[i]!!
+                         } else {
+                             msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                         }
 
-                    }
-                    if (msgStr != null)
-                        AppGlobal.alertError(
-                            context,
-                            msgStr
-                        )
+                     }
+                     if (msgStr != null)
+                         AppGlobal.alertError(
+                             context,
+                             msgStr
+                         )*/
+                    submitDealLCDData.value = dataError!!
                 }
             }
         })

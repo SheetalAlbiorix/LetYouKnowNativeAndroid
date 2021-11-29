@@ -137,7 +137,8 @@ class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         startActivity(
-            intentFor<MainActivity>().clearTask().newTask()
+            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                .newTask()
         )
     }
 
