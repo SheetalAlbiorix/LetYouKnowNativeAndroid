@@ -24,6 +24,7 @@ object VehicleYearRepository {
 
         call.enqueue(object : Callback<ArrayList<VehicleYearData>> {
             override fun onFailure(call: Call<ArrayList<VehicleYearData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

@@ -38,6 +38,7 @@ object SavingsToDateRepository {
             }
 
             override fun onFailure(call: Call<Float>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
         })

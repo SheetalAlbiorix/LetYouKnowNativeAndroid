@@ -23,6 +23,7 @@ object EditUserProfileRepository {
 
         call.enqueue(object : Callback<EditUserProfileData> {
             override fun onFailure(call: Call<EditUserProfileData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

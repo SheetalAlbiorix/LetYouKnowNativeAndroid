@@ -69,6 +69,7 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -273,15 +274,15 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
                         tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                     }
-                    if (seconds == 0 || seconds == 1) {
-                        tvAddMin.visibility = View.GONE
-                        tvTimer.visibility = View.GONE
-                        llExpired.visibility = View.VISIBLE
-                        isTimeOver = true
-                        tvSubmitStartOver.text = getString(R.string.try_again)
-                        //cancelTimer()
-                        setPer()
-                        stopTimer()
+                    if (seconds == 0) {
+                        this@DealSummaryStep2Activity.runOnUiThread {
+                            setPer()
+                            tvAddMin.visibility = View.GONE
+                            tvTimer.visibility = View.GONE
+                            llExpired.visibility = View.VISIBLE
+                            isTimeOver = true
+                            tvSubmitStartOver.text = getString(R.string.try_again)
+                        }
                         //  return
                     }
                 } catch (e: Exception) {
@@ -365,7 +366,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     if (data == "0.00") {
                         llDollar.visibility = View.GONE
                     }
-                    tvDollar.text = "$$data"
+                    tvDollar.text =
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                 }
                 )
         } else {
@@ -455,6 +457,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 data
                             )
                         )
+                        finish()
                     } else {
                         startActivity<FinalOneDealNearSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(data),

@@ -24,6 +24,7 @@ object VehicleOptionalAccessoriesRepository {
 
         call.enqueue(object : Callback<ArrayList<VehicleAccessoriesData>> {
             override fun onFailure(call: Call<ArrayList<VehicleAccessoriesData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

@@ -22,6 +22,7 @@ object LYKDollarRepository {
 
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

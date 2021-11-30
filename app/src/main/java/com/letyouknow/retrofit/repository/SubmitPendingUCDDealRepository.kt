@@ -24,6 +24,7 @@ object SubmitPendingUCDDealRepository {
 
         call.enqueue(object : Callback<SubmitPendingUcdData> {
             override fun onFailure(call: Call<SubmitPendingUcdData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

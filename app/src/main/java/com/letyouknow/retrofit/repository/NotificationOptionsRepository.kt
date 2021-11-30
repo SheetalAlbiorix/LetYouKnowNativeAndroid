@@ -21,6 +21,7 @@ object NotificationOptionsRepository {
 
         call.enqueue(object : Callback<NotificationOptionsData> {
             override fun onFailure(call: Call<NotificationOptionsData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

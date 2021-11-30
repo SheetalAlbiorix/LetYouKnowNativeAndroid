@@ -23,6 +23,7 @@ object BuyerRepository {
 
         call.enqueue(object : Callback<BuyerInfoData> {
             override fun onFailure(call: Call<BuyerInfoData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

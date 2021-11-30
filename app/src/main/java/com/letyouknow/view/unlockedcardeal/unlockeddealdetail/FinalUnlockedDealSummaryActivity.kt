@@ -232,11 +232,8 @@ class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         finish()
                     }
-
                 }
                 )
-
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

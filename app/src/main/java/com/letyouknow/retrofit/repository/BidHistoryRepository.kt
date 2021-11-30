@@ -23,6 +23,7 @@ object BidHistoryRepository {
 
         call.enqueue(object : Callback<ArrayList<BidPriceData>> {
             override fun onFailure(call: Call<ArrayList<BidPriceData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

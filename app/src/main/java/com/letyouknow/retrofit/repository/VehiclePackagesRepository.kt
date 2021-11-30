@@ -39,6 +39,7 @@ object VehiclePackagesRepository {
 
         call.enqueue(object : Callback<ArrayList<VehiclePackagesData>> {
             override fun onFailure(call: Call<ArrayList<VehiclePackagesData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

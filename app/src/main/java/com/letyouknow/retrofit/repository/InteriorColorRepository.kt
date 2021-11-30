@@ -37,6 +37,7 @@ object InteriorColorRepository {
 
         call.enqueue(object : Callback<ArrayList<InteriorColorData>> {
             override fun onFailure(call: Call<ArrayList<InteriorColorData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

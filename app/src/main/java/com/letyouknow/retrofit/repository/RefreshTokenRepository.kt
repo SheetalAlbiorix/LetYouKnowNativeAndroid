@@ -22,6 +22,7 @@ object RefreshTokenRepository {
 
         call.enqueue(object : Callback<RefreshTokenData> {
             override fun onFailure(call: Call<RefreshTokenData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

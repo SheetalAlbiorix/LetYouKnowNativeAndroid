@@ -67,6 +67,7 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -279,15 +280,18 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
                         tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                     }
-                    if (seconds == 0 || seconds == 1) {
-                        tvAddMin.visibility = View.GONE
-                        tvTimer.visibility = View.GONE
-                        llExpired.visibility = View.VISIBLE
-                        isTimeOver = true
-                        tvSubmitStartOver.text = getString(R.string.try_again)
+                    if (seconds == 0) {
+                        this@UnlockedDealSummaryStep2Activity.runOnUiThread {
+                            setPer()
+                            tvAddMin.visibility = View.GONE
+                            tvTimer.visibility = View.GONE
+                            llExpired.visibility = View.VISIBLE
+                            isTimeOver = true
+                            tvSubmitStartOver.text = getString(R.string.try_again)
+                        }
                         //cancelTimer()
-                        stopTimer()
-                        setPer()
+//                        stopTimer()
+
                         //  return
                     }
                 } catch (e: Exception) {
@@ -329,7 +333,8 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     if (data == "0.00") {
                         llDollar.visibility = View.GONE
                     }
-                    tvDollar.text = "$$data"
+                    tvDollar.text =
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                 }
                 )
         } else {
@@ -606,6 +611,7 @@ Log.e("submitdealucd", Gson().toJson(map))
 
     private var runnablePer = object : Runnable {
         override fun run() {
+            Log.e("Perc", arPer[countPer])
             tvPerc.text = arPer[countPer]
             countPer += 1
             if (tvPerc.text.toString().trim() != "0%")

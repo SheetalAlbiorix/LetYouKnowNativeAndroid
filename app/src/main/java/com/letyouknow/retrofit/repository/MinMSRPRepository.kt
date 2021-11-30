@@ -40,6 +40,7 @@ object MinMSRPRepository {
             }
 
             override fun onFailure(call: Call<Double>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
         })

@@ -22,6 +22,7 @@ object VehicleZipCodeRepository {
 
         call.enqueue(object : Callback<Boolean> {
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

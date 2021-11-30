@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.PromoCodeData
 import com.letyouknow.retrofit.RetrofitClient
+import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +22,7 @@ object PromoCodeRepository {
 
         call.enqueue(object : Callback<PromoCodeData> {
             override fun onFailure(call: Call<PromoCodeData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

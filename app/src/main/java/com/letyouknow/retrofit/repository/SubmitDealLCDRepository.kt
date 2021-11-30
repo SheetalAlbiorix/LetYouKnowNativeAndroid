@@ -24,6 +24,7 @@ object SubmitDealLCDRepository {
 
         call.enqueue(object : Callback<SubmitDealLCDData> {
             override fun onFailure(call: Call<SubmitDealLCDData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

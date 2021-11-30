@@ -19,7 +19,6 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityFinalOneDealNearSummaryBinding
 import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.model.SubmitDealLCDData
-import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
@@ -41,7 +40,6 @@ import org.jetbrains.anko.startActivity
 class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var submitDealData: SubmitDealLCDData
-    private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var binding: ActivityFinalOneDealNearSummaryBinding
     private var imageId = "0"
     private lateinit var arImage: ArrayList<String>
@@ -175,23 +173,23 @@ class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun callIsSoldAPI() {
         if (Constant.isOnline(this)) {
             val pkgList = JsonArray()
-            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
-                pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
+            for (i in 0 until dataLCDDeal.arPackageId.size) {
+                pkgList.add(dataLCDDeal.arPackageId[i])
             }
             val accList = JsonArray()
-            for (i in 0 until yearModelMakeData.arOptions!!.size) {
-                accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+            for (i in 0 until dataLCDDeal.arAccessoriesId.size) {
+                accList.add(dataLCDDeal.arAccessoriesId[i])
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
             request[ApiConstant.ProductType] = 2
-            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
-            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
-            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
+            request[ApiConstant.YearId1] = dataLCDDeal.yearId!!
+            request[ApiConstant.MakeId1] = dataLCDDeal.makeId!!
+            request[ApiConstant.ModelID] = dataLCDDeal.modelId!!
+            request[ApiConstant.TrimID] = dataLCDDeal.trimId!!
+            request[ApiConstant.ExteriorColorID] = dataLCDDeal.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = dataLCDDeal.interiorColorId!!
+            request[ApiConstant.ZipCode1] = dataLCDDeal.zipCode!!
             request[ApiConstant.SearchRadius1] = "6000"
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList

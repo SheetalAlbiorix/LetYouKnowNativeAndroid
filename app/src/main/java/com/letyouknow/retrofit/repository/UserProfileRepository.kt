@@ -21,6 +21,7 @@ object UserProfileRepository {
 
         call.enqueue(object : Callback<UserProfileData> {
             override fun onFailure(call: Call<UserProfileData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

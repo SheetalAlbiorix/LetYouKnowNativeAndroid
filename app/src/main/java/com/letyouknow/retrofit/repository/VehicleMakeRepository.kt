@@ -25,6 +25,7 @@ object VehicleMakeRepository {
 
         call.enqueue(object : Callback<ArrayList<VehicleMakeData>> {
             override fun onFailure(call: Call<ArrayList<VehicleMakeData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

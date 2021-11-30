@@ -35,6 +35,7 @@ object ExteriorColorRepository {
 
         call.enqueue(object : Callback<ArrayList<ExteriorColorData>> {
             override fun onFailure(call: Call<ArrayList<ExteriorColorData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

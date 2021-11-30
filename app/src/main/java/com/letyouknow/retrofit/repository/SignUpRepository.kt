@@ -24,6 +24,7 @@ object SignUpRepository {
 
         call.enqueue(object : Callback<SignupData> {
             override fun onFailure(call: Call<SignupData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

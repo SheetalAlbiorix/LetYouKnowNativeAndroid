@@ -23,6 +23,7 @@ object FindLCDDealRepository {
 
         call.enqueue(object : Callback<FindLCDDeaData> {
             override fun onFailure(call: Call<FindLCDDeaData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

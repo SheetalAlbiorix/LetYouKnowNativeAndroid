@@ -28,6 +28,7 @@ object VehicleTrimRepository {
 
         call.enqueue(object : Callback<ArrayList<VehicleTrimData>> {
             override fun onFailure(call: Call<ArrayList<VehicleTrimData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

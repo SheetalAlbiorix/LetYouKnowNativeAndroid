@@ -23,6 +23,7 @@ object CheckedAccessoriesInventoryRepository {
 
         call.enqueue(object : Callback<CheckedPackageData> {
             override fun onFailure(call: Call<CheckedPackageData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

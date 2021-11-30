@@ -23,6 +23,7 @@ object TransactionHistoryRepository {
 
         call.enqueue(object : Callback<ArrayList<TransactionHistoryData>> {
             override fun onFailure(call: Call<ArrayList<TransactionHistoryData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

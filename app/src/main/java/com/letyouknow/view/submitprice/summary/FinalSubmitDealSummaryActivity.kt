@@ -110,10 +110,10 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btnModify -> {
-                finish()
+                callIsSoldAPI()
             }
             R.id.btnWait -> {
-                finish()
+                callIsSoldAPI()
             }
             R.id.tvViewOptions -> {
                 popupOption()

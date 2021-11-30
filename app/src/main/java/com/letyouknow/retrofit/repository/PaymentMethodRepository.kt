@@ -44,6 +44,7 @@ fun paymentMethodApiCall(
         call.enqueue(object : Callback<CardStripeData> {
             override fun onFailure(call: Call<CardStripeData>, t: Throwable) {
                 pref?.setPaymentToken(false)
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

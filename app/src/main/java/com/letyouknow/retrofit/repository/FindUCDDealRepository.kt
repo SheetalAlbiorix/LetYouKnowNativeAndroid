@@ -24,6 +24,7 @@ object FindUCDDealRepository {
 
         call.enqueue(object : Callback<ArrayList<FindUcdDealData>> {
             override fun onFailure(call: Call<ArrayList<FindUcdDealData>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

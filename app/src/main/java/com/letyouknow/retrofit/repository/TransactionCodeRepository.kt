@@ -24,6 +24,7 @@ object TransactionCodeRepository {
 
         call.enqueue(object : Callback<TransactionCodeData> {
             override fun onFailure(call: Call<TransactionCodeData>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 

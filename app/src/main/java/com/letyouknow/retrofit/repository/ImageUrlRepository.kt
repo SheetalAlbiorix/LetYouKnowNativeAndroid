@@ -22,6 +22,7 @@ object ImageUrlRepository {
 
         call.enqueue(object : Callback<ArrayList<String>> {
             override fun onFailure(call: Call<ArrayList<String>>, t: Throwable) {
+                Constant.dismissLoader()
                 Log.v("DEBUG : ", t.message.toString())
             }
 
