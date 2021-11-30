@@ -307,7 +307,9 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
                                 yearModelMakeData
                             ),
-                            ARG_IMAGE_ID to imageId, ARG_SUBMIT_DEAL to Gson().toJson(
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
                             )
                         )

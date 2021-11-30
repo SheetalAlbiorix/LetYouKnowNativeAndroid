@@ -3,6 +3,7 @@ package com.letyouknow.view.home
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -954,7 +955,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
                 tvErrorInterior.visibility = View.VISIBLE
                 return false
             }
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                tvErrorZipCode.text = getString(R.string.enter_zipcode)
+                tvErrorZipCode.visibility = View.VISIBLE
+                return false
+            }
             !isValidZipCode -> {
+                tvErrorZipCode.text = getString(R.string.invalid_zip_code)
                 tvErrorZipCode.visibility = View.VISIBLE
                 return false
             }

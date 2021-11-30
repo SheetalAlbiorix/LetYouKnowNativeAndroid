@@ -68,7 +68,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             arImage = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_IMAGE_URL),
-                object : TypeToken<ArrayList<String>?>() {}.type
+                object : TypeToken<ArrayList<String>>() {}.type
             )
             if (arImage.size != 0) {
                 AppGlobal.loadImageUrl(this, ivMain, arImage[0])

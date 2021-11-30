@@ -306,7 +306,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
-                                android:text="@string/package_required"
+                                android:text="@string/search_radius_required"
                                 android:textColor="@color/red"
                                 android:textSize="@dimen/_11sdp"
                                 android:visibility="gone" />
