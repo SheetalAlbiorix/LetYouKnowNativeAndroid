@@ -498,4 +498,10 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
         tvErrorInitials.visibility = View.GONE
         tvErrorFullDisclouser.visibility = View.GONE
     }
+
+    override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 }

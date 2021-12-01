@@ -161,6 +161,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun onResume() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         super.onResume()
         startHandler()
     }

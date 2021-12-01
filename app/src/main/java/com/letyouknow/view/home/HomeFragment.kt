@@ -993,6 +993,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
     private lateinit var handler: Handler
     override fun onResume() {
         super.onResume()
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         startHandler()
     }
 

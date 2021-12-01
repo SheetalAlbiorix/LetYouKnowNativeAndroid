@@ -222,16 +222,22 @@ class MainActivity : BaseActivity(),
         if (intent.hasExtra(ARG_SEL_TAB)) {
             when (intent.getIntExtra(ARG_SEL_TAB, 0)) {
                 TYPE_SUBMIT_PRICE -> {
+                    if (Constant.isInitProgress() && Constant.progress.isShowing)
+                        Constant.dismissLoader()
                     loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
                     item.isChecked = true
                 }
                 TYPE_ONE_DEAL_NEAR_YOU -> {
+                    if (Constant.isInitProgress() && Constant.progress.isShowing)
+                        Constant.dismissLoader()
                     loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
                     item.isChecked = true
                 }
                 TYPE_SEARCH_DEAL -> {
+                    if (Constant.isInitProgress() && Constant.progress.isShowing)
+                        Constant.dismissLoader()
                     loadFragment(SubmitYourPriceFragment(), getString(R.string.search_deals))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
                     item.isChecked = true

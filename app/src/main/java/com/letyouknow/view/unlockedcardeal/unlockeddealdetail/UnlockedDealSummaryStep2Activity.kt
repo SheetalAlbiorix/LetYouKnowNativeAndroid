@@ -522,13 +522,12 @@ Log.e("submitdealucd", Gson().toJson(map))
         )
 //        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
-        spState.onItemSelectedListener = this
-
         for (i in 0 until arState.size) {
             if (arState[i] == pendingUCDData.buyer?.state) {
                 spState.setSelection(i)
             }
         }
+        spState.onItemSelectedListener = this
     }
 
     private fun onStateChange() {
@@ -628,6 +627,8 @@ Log.e("submitdealucd", Gson().toJson(map))
     }
 
     override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         removeHubConnection()
 //        cancelTimer()
         hubConnection?.close()
@@ -756,15 +757,18 @@ Log.e("submitdealucd", Gson().toJson(map))
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
-                removeHubConnection()
+
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                    removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
+                            removeHubConnection()
                             callBuyerAPI()
                         }
                     }
@@ -1303,4 +1307,6 @@ Log.e("submitdealucd", Gson().toJson(map))
         }
         return true
     }
+
+
 }

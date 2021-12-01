@@ -347,13 +347,13 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         )
 //        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spState.adapter = adapterState
-        spState.onItemSelectedListener = this
 
         for (i in 0 until arState.size) {
             if (arState[i] == dataPendingDeal.buyer?.state) {
                 spState.setSelection(i)
             }
         }
+        spState.onItemSelectedListener = this
     }
 
 
@@ -611,6 +611,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         removeHubConnection()
 //        cancelTimer()
         hubConnection?.close()
@@ -738,15 +740,17 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
-                removeHubConnection()
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                    removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
+                            removeHubConnection()
                             callBuyerAPI()
                         }
                     }

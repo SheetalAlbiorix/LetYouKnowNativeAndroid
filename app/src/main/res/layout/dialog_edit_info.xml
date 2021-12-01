@@ -148,6 +148,7 @@
                         android:visibility="gone" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/edtUserName"
                         style="@style/regular"
                         android:layout_width="match_parent"
@@ -177,7 +178,6 @@
                         android:inputType="textEmailAddress" />
 
                     <TextView
-
                         android:id="@+id/tvErrorConfirmEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

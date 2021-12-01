@@ -522,7 +522,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="PROCEED To REVIEW PAGE"
+                    android:text="PROCEED TO REVIEW PAGE"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

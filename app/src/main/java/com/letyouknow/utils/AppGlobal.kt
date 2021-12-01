@@ -307,9 +307,14 @@ class AppGlobal {
             // Create a new string
 
             // return the modified String
-            return (originalString.substring(0, index + 1)
-                    + stringToBeInserted
-                    + originalString.substring(index + 1))
+            try {
+                return (originalString.substring(0, index + 1)
+                        + stringToBeInserted
+                        + originalString.substring(index + 1))
+            } catch (e: Exception) {
+
+            }
+            return ""
         }
 
         var arState = arrayListOf(

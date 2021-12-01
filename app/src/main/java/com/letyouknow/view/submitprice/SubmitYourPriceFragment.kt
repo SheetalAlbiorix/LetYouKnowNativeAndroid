@@ -115,6 +115,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         startHandler()
     }
 
@@ -188,7 +190,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             ivClosePromo.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
         } catch (e: Exception) {
-
         }
     }
 

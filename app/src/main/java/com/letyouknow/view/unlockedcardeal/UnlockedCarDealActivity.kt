@@ -89,6 +89,8 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
             callRefreshTokenApi()
         }
 //        backButton()
+        ivEdit.visibility = View.VISIBLE
+        ivEdit.setOnClickListener(this)
         adapterUnlockedCarDeal = UnlockedCarDealAdapter(R.layout.list_item_unlocked_car, this)
         rvUnlockedCar.adapter = adapterUnlockedCarDeal
         adapterUnlockedCarDeal.addAll(arUnlocked)
@@ -141,6 +143,9 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
                 popupOption(adapterUnlockedCarDeal.getItem(pos))
             }
             R.id.ivBack -> {
+                onBackPressed()
+            }
+            R.id.ivEdit -> {
                 onBackPressed()
             }
         }
@@ -280,5 +285,11 @@ class UnlockedCarDealActivity : BaseActivity(), View.OnClickListener {
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
     }
 }

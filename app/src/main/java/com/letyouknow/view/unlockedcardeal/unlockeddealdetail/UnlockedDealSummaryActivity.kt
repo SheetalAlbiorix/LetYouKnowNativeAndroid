@@ -501,4 +501,10 @@ class UnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener,
         tvErrorFullDisclouser.visibility = View.GONE
         tvErrorFinancingOption.visibility = View.GONE
     }
+
+    override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 }
