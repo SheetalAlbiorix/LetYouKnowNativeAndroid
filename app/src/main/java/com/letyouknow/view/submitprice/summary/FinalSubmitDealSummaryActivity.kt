@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
+import com.letyouknow.model.PrefSubmitPriceData
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
@@ -79,6 +80,9 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 intent.getStringExtra(Constant.ARG_SUBMIT_DEAL),
                 SubmitDealLCDData::class.java
             )
+            if (submitDealData.negativeResult?.secondLabel == "1") {
+                pref?.setRadius(submitDealData.negativeResult?.minimalDistance!!)
+            }
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
             binding.data = yearModelMakeData
             binding.dealData = submitDealData
@@ -104,16 +108,16 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvLightingCar -> {
-                onBackPressed()
+                callIsSoldAPI()
             }
-            R.id.btnFindYourCar -> {
-                onBackPressed()
+            R.id.tvStep2 -> {
+                callIsSoldAPI()
             }
             R.id.btnModify -> {
-                callIsSoldAPI()
+                onBackPressed()
             }
             R.id.btnWait -> {
-                callIsSoldAPI()
+                onBackPressed()
             }
             R.id.tvViewOptions -> {
                 popupOption()
@@ -209,7 +213,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.ProductType] = 0
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
@@ -217,7 +221,11 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
             request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.SearchRadius1] =
+                if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
+                    " mi",
+                    ""
+                )
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))
@@ -225,6 +233,8 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
+                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                        pref?.setSubmitPriceTime("")
                         startActivity(
                             intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
                                 .newTask()
@@ -235,8 +245,6 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
                 }
                 )
-
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

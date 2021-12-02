@@ -300,8 +300,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                    pref?.setSubmitPriceTime("")
+
                     if (!data?.foundMatch!!) {
                         startActivity<FinalSubmitDealSummaryActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
@@ -315,6 +314,8 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                         )
                         finish()
                     } else {
+                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                        pref?.setSubmitPriceTime("")
                         data.successResult?.transactionInfo?.vehiclePrice =
                             yearModelMakeData.price!!
                         data.successResult?.transactionInfo?.remainingBalance =
@@ -414,6 +415,8 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     }
 
     override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
 //        cancelTimer()
         super.onDestroy()
     }

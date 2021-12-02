@@ -47,6 +47,7 @@ import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_SHOW_PER
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
@@ -101,6 +102,7 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
     var hubConnection: HubConnection? = null
+    var isPercentShow = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -255,47 +257,50 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             "UpdateDealTimer",
             { dealId, timer: Double ->
                 // OK
-                try {
-                    Log.e("data", "$dealId: $timer")
-                    /* val time = timer.toString()
+                this@UnlockedDealSummaryStep2Activity.runOnUiThread {
+                    try {
+                        Log.e("data", "$dealId: $timer")
+                        /* val time = timer.toString()
                      seconds = time.toInt()*/
 //                    timerVisible(timer.toInt())
-                    seconds = timer.toInt()
-                    tvTimer.text = (String.format("%02d", seconds / 60)
-                            + ":" + String.format("%02d", seconds % 60))
+                        seconds = timer.toInt()
+                        tvTimer.text = (String.format("%02d", seconds / 60)
+                                + ":" + String.format("%02d", seconds % 60))
 
-                    if (seconds == 60 && isFirst60) {
-                        Log.e("data", "aaaaaaa")
-                        this@UnlockedDealSummaryStep2Activity.runOnUiThread {
+                        if (seconds == 60 && isFirst60) {
                             Log.e("data", "aaaaaaa")
+                            this@UnlockedDealSummaryStep2Activity.runOnUiThread {
+                                Log.e("data", "aaaaaaa")
 //                           binding.toolbarIsFirst60 = true
-                            tvAddMin.visibility = View.VISIBLE
-                            isFirst60 = false
+                                tvAddMin.visibility = View.VISIBLE
+                                isFirst60 = false
+                            }
                         }
-                    }
-                    if (seconds < 60) {
-                        tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
-                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
-                    } else {
-                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
-                        tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
-                    }
-                    if (seconds == 0) {
-                        this@UnlockedDealSummaryStep2Activity.runOnUiThread {
-                            setPer()
-                            tvAddMin.visibility = View.GONE
-                            tvTimer.visibility = View.GONE
-                            llExpired.visibility = View.VISIBLE
-                            isTimeOver = true
-                            tvSubmitStartOver.text = getString(R.string.try_again)
+                        if (seconds < 60) {
+                            tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
+                            tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
+                        } else {
+                            tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
+                            tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                         }
-                        //cancelTimer()
+                        if (seconds == 0) {
+                            this@UnlockedDealSummaryStep2Activity.runOnUiThread {
+                                isPercentShow = true
+                                setPer()
+                                tvAddMin.visibility = View.GONE
+                                tvTimer.visibility = View.GONE
+                                llExpired.visibility = View.VISIBLE
+                                isTimeOver = true
+//                            tvSubmitStartOver.text = getString(R.string.try_again)
+                            }
+                            //cancelTimer()
 //                        stopTimer()
 
-                        //  return
+                            //  return
+                        }
+                    } catch (e: Exception) {
+                        Log.e("UpdateDealTimer", e.message.toString())
                     }
-                } catch (e: Exception) {
-                    Log.e("UpdateDealTimer", e.message.toString())
                 }
             },
             Any::class.java, Double::class.java
@@ -421,26 +426,28 @@ Log.e("submitdealucd", Gson().toJson(map))
                     data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
-                    clearPrefSearchDealData()
-                    if (data.foundMatch!!)
+
+                    if (data.foundMatch!!) {
+                        clearPrefSearchDealData()
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
                             )
                         )
-                    else
-                    /* startActivity<UnlockedTryAnotherActivity>(
-                         ARG_UCD_DEAL to Gson().toJson(ucdData),
-                         ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                         ARG_IMAGE_URL to Gson().toJson(arImage),
-                         ARG_IMAGE_ID to imageId
-                     )*/
-                        startActivity<FinalUnlockedDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(data),
+                    } else
+                        startActivity<UnlockedTryAnotherActivity>(
+                            ARG_UCD_DEAL to Gson().toJson(ucdData),
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                             ARG_IMAGE_URL to Gson().toJson(arImage),
-                            ARG_IMAGE_ID to imageId
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IS_SHOW_PER to isPercentShow
                         )
+                    /*startActivity<FinalUnlockedDealSummaryActivity>(
+                        ARG_SUBMIT_DEAL to Gson().toJson(data),
+                        ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                        ARG_IMAGE_URL to Gson().toJson(arImage),
+                        ARG_IMAGE_ID to imageId
+                    )*/
                     finish()
                 }
                 )
@@ -759,10 +766,10 @@ Log.e("submitdealucd", Gson().toJson(map))
             R.id.btnProceedDeal -> {
 
                 setErrorVisible()
-                if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                /*if (tvSubmitStartOver.text == getString(R.string.try_again)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
-                } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                } else*/ if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
@@ -857,7 +864,11 @@ Log.e("submitdealucd", Gson().toJson(map))
             request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
             request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.SearchRadius1] =
+                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius?.replace(
+                    " mi",
+                    ""
+                )!!
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))
@@ -871,15 +882,9 @@ Log.e("submitdealucd", Gson().toJson(map))
                         )
                     } else {
                         clearPrefSearchDealData()
-                        /*startActivity(
+                        startActivity(
                             intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
                                 .newTask()
-                        )*/
-                        startActivity<UnlockedTryAnotherActivity>(
-                            ARG_UCD_DEAL to Gson().toJson(ucdData),
-                            ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                            ARG_IMAGE_URL to Gson().toJson(arImage),
-                            ARG_IMAGE_ID to imageId
                         )
                     }
 

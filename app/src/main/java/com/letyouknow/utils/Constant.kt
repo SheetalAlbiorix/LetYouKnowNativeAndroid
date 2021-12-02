@@ -66,6 +66,7 @@ class Constant {
         var ARG_TRANSACTION_CODE = "ARG_TRANSACTION_CODE"
         var ARG_NOTIFICATIONS = "ARG_NOTIFICATIONS"
         var ARG_SEL_TAB = "ARG_SEL_TAB"
+        var ARG_IS_SHOW_PER = "ARG_IS_SHOW_PER"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2

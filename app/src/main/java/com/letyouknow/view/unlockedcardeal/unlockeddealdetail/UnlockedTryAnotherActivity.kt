@@ -1,18 +1,27 @@
 package com.letyouknow.view.unlockedcardeal.unlockeddealdetail
 
+import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
+import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUnlockedTryAnotherBinding
 import com.letyouknow.model.FindUcdDealData
+import com.letyouknow.model.PrefSearchDealData
 import com.letyouknow.model.YearModelMakeData
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
@@ -25,12 +34,14 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 
-class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
+class UnlockedTryAnotherActivity : BaseActivity(), View.OnClickListener {
     lateinit var binding: ActivityUnlockedTryAnotherBinding
     private lateinit var arImage: ArrayList<String>
     private lateinit var ucdData: FindUcdDealData
     private lateinit var yearModelMakeData: YearModelMakeData
     private var imageId = "0"
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+    private var isShowPer = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +51,21 @@ class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_try_another)
+        checkVehicleStockViewModel =
+            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         if (intent.hasExtra(
                 Constant.ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
                 Constant.ARG_IMAGE_URL
             )
         ) {
+            isShowPer = intent.getBooleanExtra(Constant.ARG_IS_SHOW_PER, false)
+            if (isShowPer) {
+                tvMessage.text = "The Market is Hot and your Vehicle is Unavailable"
+            } else {
+                tvMessage.text =
+                    "Something went wrong, but don't worry your card hasn't been charged"
+            }
             imageId = intent.getStringExtra(Constant.ARG_IMAGE_ID)!!
             arImage = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_IMAGE_URL),
@@ -72,6 +92,13 @@ class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
             tvViewOptions.setOnClickListener(this)
             btnTryAgain.setOnClickListener(this)
         }
+    }
+
+    override fun getViewActivity(): Activity? {
+        return this
+    }
+
+    override fun onNetworkStateChange(isConnect: Boolean) {
     }
 
     override fun onClick(v: View?) {
@@ -101,10 +128,8 @@ class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(
-            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
-                .newTask()
-        )
+        callCheckVehicleStockAPI()
+
     }
 
     private fun popupOption() {
@@ -166,5 +191,60 @@ class UnlockedTryAnotherActivity : AppCompatActivity(), View.OnClickListener {
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun callCheckVehicleStockAPI() {
+        if (Constant.isOnline(this)) {
+            val pkgList = JsonArray()
+            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
+                pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
+            }
+            val accList = JsonArray()
+            for (i in 0 until yearModelMakeData.arOptions!!.size) {
+                accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+            }
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ProductType] = 3
+            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
+            request[ApiConstant.SearchRadius1] =
+                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius?.replace(
+                    " mi",
+                    ""
+                )!!
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    if (data) {
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                                .newTask()
+                        )
+                    } else {
+                        clearPrefSearchDealData()
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                                .newTask()
+                        )
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun clearPrefSearchDealData() {
+        pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+        pref?.setSearchDealTime("")
     }
 }

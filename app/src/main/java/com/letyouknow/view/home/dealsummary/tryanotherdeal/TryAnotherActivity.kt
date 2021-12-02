@@ -3,16 +3,24 @@ package com.letyouknow.view.home.dealsummary.tryanotherdeal
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityTryAnotherBinding
 import com.letyouknow.model.FindLCDDeaData
+import com.letyouknow.model.PrefOneDealNearYouData
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
@@ -30,6 +38,8 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
     private lateinit var data: FindLCDDeaData
     private lateinit var arImage: ArrayList<String>
     private var imageId = "0"
+    private var isShowPer = false
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +49,21 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_try_another)
+        checkVehicleStockViewModel =
+            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         if (intent.hasExtra(Constant.ARG_SUBMIT_DEAL) && intent.hasExtra(Constant.ARG_IMAGE_URL) && intent.hasExtra(
                 Constant.ARG_IMAGE_ID
+            ) && intent.hasExtra(
+                Constant.ARG_IS_SHOW_PER
             )
         ) {
+            isShowPer = intent.getBooleanExtra(Constant.ARG_IS_SHOW_PER, false)
+            if (isShowPer) {
+                tvMessage.text = "The Market is Hot and your Vehicle is Unavailable"
+            } else {
+                tvMessage.text =
+                    "Something went wrong, but don't worry your card hasn't been charged"
+            }
             data = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_SUBMIT_DEAL),
                 FindLCDDeaData::class.java
@@ -113,7 +134,7 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btnTryAgain -> {
-                onBackPressed()
+                callCheckVehicleStockAPI()
             }
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
@@ -131,9 +152,57 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(
-            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
-                .newTask()
-        )
+        callCheckVehicleStockAPI()
+    }
+
+    private fun callCheckVehicleStockAPI() {
+        if (Constant.isOnline(this)) {
+            val pkgList = JsonArray()
+            for (i in 0 until data.arPackageId.size) {
+                pkgList.add(data.arPackageId[i])
+            }
+            val accList = JsonArray()
+            for (i in 0 until data.arAccessoriesId.size) {
+                accList.add(data.arAccessoriesId[i])
+            }
+            Constant.showLoader(this)
+            val request = HashMap<String, Any>()
+            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.YearId1] = data.yearId!!
+            request[ApiConstant.MakeId1] = data.makeId!!
+            request[ApiConstant.ModelID] = data.modelId!!
+            request[ApiConstant.TrimID] = data.trimId!!
+            request[ApiConstant.ExteriorColorID] = data.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = data.interiorColorId!!
+            request[ApiConstant.ZipCode1] = data.zipCode!!
+            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    if (data) {
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                                .newTask()
+                        )
+                    } else {
+                        clearOneDealNearData()
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                                .newTask()
+                        )
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun clearOneDealNearData() {
+        pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
+        pref?.setOneDealNearYou("")
     }
 }

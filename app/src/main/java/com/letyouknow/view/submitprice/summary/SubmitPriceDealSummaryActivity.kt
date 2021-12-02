@@ -96,6 +96,19 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!TextUtils.isEmpty(pref?.getRadius())) {
+            Log.e("Data", pref?.getRadius()!!)
+            callRadiusAPI()
+        }
+    }
+
+    override fun onBackPressed() {
+        pref?.setRadius("")
+        super.onBackPressed()
+    }
+
     private fun init() {
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
@@ -138,6 +151,11 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         callRadiusAPI()
     }
 
+    override fun onDestroy() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onDestroy()
+    }
 
     private fun onChangeZipCodePrice() {
         edtZipCode.addTextChangedListener(object : TextWatcher {
@@ -154,6 +172,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
                 }
+                pref?.setRadius("")
+                callRadiusAPI()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -318,7 +338,24 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
 
     private fun callRadiusAPI() {
-        adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
+        if (!TextUtils.isEmpty(pref?.getRadius())) {
+            val radius = pref?.getRadius() + " mi"
+            val arData: ArrayList<String> = ArrayList()
+            var isMatch = false
+            for (i in 0 until arRadius.size) {
+                if (radius != arRadius[i]) {
+                    if (isMatch)
+                        arData.add(arRadius[i])
+                } else {
+                    isMatch = true
+                    arData.add("Search Radius")
+                    arData.add(arRadius[i])
+                }
+            }
+            adapterRadius = RadiusSpinnerBlackDropAdapter(this, arData)
+        } else {
+            adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
+        }
         spRadius.adapter = adapterRadius
         spRadius.onItemSelectedListener = this
     }
@@ -499,6 +536,7 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (isValid()) {
+                    pref?.setRadius("")
                     callRefreshTokenApi()
                 }
             }

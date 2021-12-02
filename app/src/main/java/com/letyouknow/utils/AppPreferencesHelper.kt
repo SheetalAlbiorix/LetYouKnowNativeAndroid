@@ -22,6 +22,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_ONE_DEAL_NEAR = "KEY_ONE_DEAL_NEAR"
         val KEY_SEARCH_DEAL = "KEY_SEARCH_DEAL"
         val KEY_SEARCH_DEAL_TIME = "KEY_SEARCH_DEAL_TIME"
+        val KEY_RADIUS = "KEY_RADIUS"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -227,4 +228,11 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         prefs.putBoolean(KEY_IS_BIOMATRIC, isBio).apply()
     }
 
+    fun setRadius(radius: String) {
+        prefs.putString(KEY_RADIUS, radius).apply()
+    }
+
+    fun getRadius(): String {
+        return sharedpreferences.getString(KEY_RADIUS, "")!!
+    }
 }

@@ -36,7 +36,6 @@ import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
-import com.letyouknow.view.home.dealsummary.tryanotherdeal.FinalOneDealNearSummaryActivity
 import com.letyouknow.view.home.dealsummary.tryanotherdeal.TryAnotherActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
@@ -48,6 +47,7 @@ import com.microsoft.signalr.TransportEnum
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_SHOW_PER
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
@@ -110,7 +110,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     var hubConnection: HubConnection? = null
 
-
+    var isPercentShow = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deal_summary_step2)
@@ -179,6 +179,8 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         btnProceedDeal.setOnClickListener(this)
         tvAddMin.setOnClickListener(this)
         tvApplyPromo.setOnClickListener(this)
+        llGallery.setOnClickListener(this)
+        ll360.setOnClickListener(this)
 //        ivEdit.setOnClickListener(this)
         ivBack.setOnClickListener(this)
 
@@ -249,44 +251,47 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             "UpdateDealTimer",
             { dealId, timer: Double ->
                 // OK
-                try {
-                    Log.e("data", "$dealId: $timer")
-                    /* val time = timer.toString()
-                     seconds = time.toInt()*/
+                this@DealSummaryStep2Activity.runOnUiThread {
+                    try {
+                        Log.e("data", "$dealId: $timer")
+                        /* val time = timer.toString()
+                         seconds = time.toInt()*/
 //                    timerVisible(timer.toInt())
-                    seconds = timer.toInt()
-                    tvTimer.text = (String.format("%02d", seconds / 60)
-                            + ":" + String.format("%02d", seconds % 60))
+                        seconds = timer.toInt()
+                        tvTimer.text = (String.format("%02d", seconds / 60)
+                                + ":" + String.format("%02d", seconds % 60))
 
-                    if (seconds == 60 && isFirst60) {
-                        Log.e("data", "aaaaaaa")
-                        this@DealSummaryStep2Activity.runOnUiThread {
+                        if (seconds == 60 && isFirst60) {
                             Log.e("data", "aaaaaaa")
+                            this@DealSummaryStep2Activity.runOnUiThread {
+                                Log.e("data", "aaaaaaa")
 //                           binding.toolbarIsFirst60 = true
-                            tvAddMin.visibility = View.VISIBLE
-                            isFirst60 = false
+                                tvAddMin.visibility = View.VISIBLE
+                                isFirst60 = false
+                            }
                         }
-                    }
-                    if (seconds < 60) {
-                        tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
-                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
-                    } else {
-                        tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
-                        tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
-                    }
-                    if (seconds == 0) {
-                        this@DealSummaryStep2Activity.runOnUiThread {
-                            setPer()
-                            tvAddMin.visibility = View.GONE
-                            tvTimer.visibility = View.GONE
-                            llExpired.visibility = View.VISIBLE
-                            isTimeOver = true
-                            tvSubmitStartOver.text = getString(R.string.try_again)
+                        if (seconds < 60) {
+                            tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
+                            tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
+                        } else {
+                            tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
+                            tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
                         }
-                        //  return
+                        if (seconds == 0) {
+                            this@DealSummaryStep2Activity.runOnUiThread {
+                                isPercentShow = true
+                                setPer()
+                                tvAddMin.visibility = View.GONE
+                                tvTimer.visibility = View.GONE
+                                llExpired.visibility = View.VISIBLE
+                                isTimeOver = true
+//                            tvSubmitStartOver.text = getString(R.string.try_again)
+                            }
+                            //  return
+                        }
+                    } catch (e: Exception) {
+                        Log.e("UpdateDealTimer", e.message.toString())
                     }
-                } catch (e: Exception) {
-                    Log.e("UpdateDealTimer", e.message.toString())
                 }
             },
             Any::class.java, Double::class.java
@@ -449,9 +454,10 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
-                    clearOneDealNearData()
+
 
                     if (data.isDisplayedPriceValid!!) {
+                        clearOneDealNearData()
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
@@ -459,12 +465,19 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         )
                         finish()
                     } else {
-                        startActivity<FinalOneDealNearSummaryActivity>(
+                        startActivity<TryAnotherActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_IS_SHOW_PER to isPercentShow
+                        )
+                        /*startActivity<FinalOneDealNearSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(data),
                             ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
                             ARG_IMAGE_ID to imageId,
-                            ARG_IMAGE_URL to Gson().toJson(arImage)
-                        )
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_IS_SHOW_PER to isPercentShow
+                        )*/
                         finish()
                     }
                 }
@@ -600,8 +613,10 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             countPer += 1
             if (tvPerc.text.toString().trim() != "0%")
                 handlerPer.postDelayed(this, 30000)
-            else
+            else {
+                isPercentShow = false
                 tvSubmitStartOver.text = getString(R.string.start_over)
+            }
         }
     }
 
@@ -741,10 +756,10 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (tvSubmitStartOver.text == getString(R.string.try_again)) {
+                /*if (tvSubmitStartOver.text == getString(R.string.try_again)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
-                } else if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                } else */if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
@@ -856,11 +871,11 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         )
                     } else {
                         clearOneDealNearData()
-                        startActivity<TryAnotherActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
-                            ARG_IMAGE_ID to imageId,
-                            ARG_IMAGE_URL to Gson().toJson(arImage)
+                        startActivity(
+                            intentFor<MainActivity>(ARG_SEL_TAB to TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                                .newTask()
                         )
+
                     }
                 }
                 )

@@ -238,7 +238,7 @@ class MainActivity : BaseActivity(),
                 TYPE_SEARCH_DEAL -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(SubmitYourPriceFragment(), getString(R.string.search_deals))
+                    loadFragment(HomeFragment(), getString(R.string.search_deals))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
                     item.isChecked = true
                 }

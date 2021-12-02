@@ -275,14 +275,15 @@
                             android:textSize="@dimen/_25sdp" />
 
                         <TextView
+                            android:id="@+id/tvMessage"
                             style="@style/medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center"
-                            android:text="Your Vehicle is Unavailable Or Reseved"
+                            android:text="Your Vehicle is Unavailable Or Reserved"
                             android:textColor="@color/offWhite"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_13sdp" />
                         <!--                            android:text="Something went wrong, but don't worry your card hasn't been charged"-->
 
                         <androidx.appcompat.widget.AppCompatTextView
