@@ -309,7 +309,9 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
 
     private fun stopTimer() {
-        hubConnection?.invoke("StopTimer")
+        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            hubConnection?.invoke("StopTimer")
+        }
     }
 
     private fun add2Min() {
@@ -317,9 +319,11 @@ class UnlockedDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun removeHubConnection() {
-        hubConnection?.remove("UpdateDealTimer")
-        hubConnection?.remove("UpdateVehicleState")
-        hubConnection?.remove("CantSubscribeOnDeal")
+        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            hubConnection?.remove("UpdateDealTimer")
+            hubConnection?.remove("UpdateVehicleState")
+            hubConnection?.remove("CantSubscribeOnDeal")
+        }
     }
 
     private lateinit var stripe: Stripe

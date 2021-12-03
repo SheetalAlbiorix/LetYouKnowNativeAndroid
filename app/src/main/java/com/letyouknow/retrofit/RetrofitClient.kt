@@ -16,7 +16,7 @@ object RetrofitClient {
 //    private const val MainServer = "https://lykbuyerapi.azurewebsites.net/api/"
 private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api/"
 
-    const val ImageMainServer = "http://api.drfriday.in/";
+    const val ImageMainServer = "http://api.drfriday.in/"
     const val paymentToken =
         "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
 

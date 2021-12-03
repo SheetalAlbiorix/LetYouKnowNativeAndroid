@@ -763,7 +763,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 /*if (tvSubmitStartOver.text == getString(R.string.try_again)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
-                } else */if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                } else*/if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
@@ -774,13 +774,6 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         }
                     }
                 }
-                /* if (isTimeOver) {
-                     onBackPressed()
-                 } else if (isValidCard()) {
-                     if (isValid()) {
-                         callBuyerAPI()
-                     }
-                 }*/
             }
             R.id.tvAddMin -> {
 //                seconds += 120;
