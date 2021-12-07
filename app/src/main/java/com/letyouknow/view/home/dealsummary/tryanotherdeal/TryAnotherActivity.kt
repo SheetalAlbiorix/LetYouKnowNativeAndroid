@@ -49,6 +49,7 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_try_another)
+        binding.title = ""
         checkVehicleStockViewModel =
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         if (intent.hasExtra(Constant.ARG_SUBMIT_DEAL) && intent.hasExtra(Constant.ARG_IMAGE_URL) && intent.hasExtra(

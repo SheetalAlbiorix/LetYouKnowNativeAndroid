@@ -46,24 +46,27 @@ object SubmitDealLCDRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    /* var msgStr = ""
-                     var isFirst = true
+                    if (!dataError.isBadRequest!!) {
+                        submitDealLCDData.value = dataError!!
+                    } else {
+                        var msgStr = ""
+                        var isFirst = true
 
-                     for (i in 0 until dataError?.messageList?.size!!) {
-                         if (isFirst) {
-                             isFirst = false
-                             msgStr = dataError?.messageList[i]!!
-                         } else {
-                             msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
-                         }
+                        for (i in 0 until dataError?.messageList?.size!!) {
+                            if (isFirst) {
+                                isFirst = false
+                                msgStr = dataError?.messageList[i]!!
+                            } else {
+                                msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                            }
 
-                     }
-                     if (msgStr != null)
-                         AppGlobal.alertError(
-                             context,
-                             msgStr
-                         )*/
-                    submitDealLCDData.value = dataError!!
+                        }
+                        if (msgStr != null)
+                            AppGlobal.alertError(
+                                context,
+                                msgStr
+                            )
+                    }
                 }
             }
         })

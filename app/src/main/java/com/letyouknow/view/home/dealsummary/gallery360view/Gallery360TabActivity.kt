@@ -37,6 +37,7 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        binding.title = ""
         exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
         interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
         ivEdit.visibility = View.INVISIBLE

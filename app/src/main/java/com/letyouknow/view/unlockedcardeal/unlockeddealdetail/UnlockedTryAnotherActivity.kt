@@ -51,6 +51,7 @@ class UnlockedTryAnotherActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_try_another)
+        binding.title = ""
         checkVehicleStockViewModel =
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         if (intent.hasExtra(

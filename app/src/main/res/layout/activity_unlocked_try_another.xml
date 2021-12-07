@@ -11,6 +11,9 @@
             name="ucdData"
             type="com.letyouknow.model.YearModelMakeData" />
 
+        <variable
+            name="title"
+            type="String" />
 
     </data>
 
@@ -23,7 +26,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar_blue"
-            app:toolbarTitle="@{@string/deal_summary_title}" />
+            app:toolbarTitle="@{title}" />
 
 
         <androidx.core.widget.NestedScrollView

@@ -169,9 +169,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     super.onAuthenticationSucceeded(result)
                     Log.e("Result", Gson().toJson(result.cryptoObject))
                     Log.e("Result", result.authenticationType.toString())
-                    pref?.setLogin(true)
-                    startActivity<MainActivity>()
-                    finish()
+                    callLoginBioAPI()
 //                    Toast.makeText(
 //                        applicationContext,
 //                        "Authentication succeeded!", Toast.LENGTH_SHORT
@@ -281,6 +279,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 Constant.dismissLoader()
                 if (data.buyerId != 0) {
                     pref?.setLogin(true)
+
+                    data.password = edtPassword.text.toString()
                     pref?.setUserData(Gson().toJson(data))
                     startActivity<MainActivity>()
                     finish()
@@ -294,7 +294,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun callLoginBioAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = HashMap<String, String>()
+            request[ApiConstant.username] = pref?.getUserData()?.userName!!
+            request[ApiConstant.password] = pref?.getUserData()?.password!!
 
+            loginViewModel.getUser(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (data.buyerId != 0) {
+                    pref?.setLogin(true)
+                    pref?.setUserData(Gson().toJson(data))
+                    startActivity<MainActivity>()
+                    finish()
+                } else {
+                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
     private fun isValid(): Boolean {
