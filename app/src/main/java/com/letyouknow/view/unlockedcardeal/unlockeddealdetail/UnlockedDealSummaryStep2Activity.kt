@@ -431,7 +431,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                     data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount!!))
 
-                    if (data.foundMatch!!) {
+                    if (data.foundMatch!! && data.isDisplayedPriceValid!!) {
                         clearPrefSearchDealData()
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
@@ -860,7 +860,7 @@ Log.e("submitdealucd", Gson().toJson(map))
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 3
+            request[ApiConstant.Product] = 3
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!

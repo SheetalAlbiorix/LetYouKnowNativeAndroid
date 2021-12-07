@@ -46,24 +46,27 @@ object SubmitDealUCDRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    submitDealUCDData.value = dataError!!
-                    /*var msgStr = ""
-                    var isFirst = true
+                    if (!dataError.isBadRequest!!) {
+                        submitDealUCDData.value = dataError!!
+                    } else {
+                        var msgStr = ""
+                        var isFirst = true
 
-                    for (i in 0 until dataError?.messageList?.size!!) {
-                        if (isFirst) {
-                            isFirst = false
-                            msgStr = dataError?.messageList[i]!!
-                        } else {
-                            msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                        for (i in 0 until dataError?.messageList?.size!!) {
+                            if (isFirst) {
+                                isFirst = false
+                                msgStr = dataError?.messageList[i]!!
+                            } else {
+                                msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                            }
+
                         }
-
+                        if (msgStr != null)
+                            AppGlobal.alertError(
+                                context,
+                                msgStr
+                            )
                     }
-                    if (msgStr != null)
-                        AppGlobal.alertError(
-                            context,
-                            msgStr
-                        )*/
                 }
             }
         })

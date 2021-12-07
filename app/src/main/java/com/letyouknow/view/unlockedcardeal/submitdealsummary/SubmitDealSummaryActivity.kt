@@ -2,6 +2,7 @@ package com.letyouknow.view.unlockedcardeal.submitdealsummary
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.google.gson.Gson
@@ -36,6 +37,23 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             )
             binding.userName = pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName
             binding.data = submitDealData
+
+            var add2 = submitDealData.successResult?.transactionInfo?.buyerAddress2
+            if (!TextUtils.isEmpty(add2) && add2 != "null" && add2 != "NULL") {
+                add2 += "\n"
+            }
+            var buyerInfo = ""
+            buyerInfo =
+                pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName + "\n" +
+                        submitDealData.successResult?.transactionInfo?.buyerAddress1 + "\n" +
+                        add2?.trim() +
+                        submitDealData.successResult?.transactionInfo?.buyerCity + "," +
+                        submitDealData.successResult?.transactionInfo?.buyerState + " " +
+                        submitDealData.successResult?.transactionInfo?.buyerZipcode + "\n" +
+                        submitDealData.successResult?.transactionInfo?.buyerPhone + "\n" +
+                        submitDealData.successResult?.transactionInfo?.buyerEmail
+
+            tvBuyerInfo.text = buyerInfo
         }
         btnFindYourCar.setOnClickListener(this)
         ivBack.visibility = View.GONE

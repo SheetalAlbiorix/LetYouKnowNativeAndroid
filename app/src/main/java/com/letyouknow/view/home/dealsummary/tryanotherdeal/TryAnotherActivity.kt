@@ -167,7 +167,7 @@ class TryAnotherActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = data.yearId!!
             request[ApiConstant.MakeId1] = data.makeId!!
             request[ApiConstant.ModelID] = data.modelId!!

@@ -460,7 +460,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Log.e("data Deal", Gson().toJson(data))
 
 
-                    if (data.isDisplayedPriceValid!!) {
+                    if (data.isDisplayedPriceValid!! && data.foundMatch!!) {
                         clearOneDealNearData()
                         startActivity<SubmitDealSummaryActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(
@@ -846,7 +846,7 @@ class DealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = dataLCDDeal.yearId!!
             request[ApiConstant.MakeId1] = dataLCDDeal.makeId!!
             request[ApiConstant.ModelID] = dataLCDDeal.modelId!!

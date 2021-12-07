@@ -23,7 +23,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar_blue"
-            app:toolbarTitle="@{@string/deal_summary}" />
+            app:toolbarTitle="@{@string/deal_summary_title}" />
 
 
         <androidx.core.widget.NestedScrollView

@@ -626,7 +626,7 @@
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"
-                    android:text="@string/findyourcar"
+                    android:text="@string/go_back_home"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>

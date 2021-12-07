@@ -209,7 +209,7 @@ class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!

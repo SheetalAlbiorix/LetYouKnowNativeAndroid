@@ -182,7 +182,7 @@ class FinalOneDealNearSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 2
+            request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = dataLCDDeal.yearId!!
             request[ApiConstant.MakeId1] = dataLCDDeal.makeId!!
             request[ApiConstant.ModelID] = dataLCDDeal.modelId!!

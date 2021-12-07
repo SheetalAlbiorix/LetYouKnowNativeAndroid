@@ -93,7 +93,7 @@
                     android:backgroundTint="@color/navyBlue"
                     android:padding="@dimen/_6sdp"
                     android:layout_marginRight="@dimen/_4sdp"
-                    android:text="Deal reserved for"
+                    android:text="Deal Success Rate"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8sdp" />
 

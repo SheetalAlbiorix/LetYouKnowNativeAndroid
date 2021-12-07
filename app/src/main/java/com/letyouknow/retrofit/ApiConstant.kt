@@ -79,6 +79,7 @@ class ApiConstant {
         var TrimID = "TrimID"
         var ModelID = "ModelID"
         var ProductType = "ProductType"
+        var Product = "Product"
         var YearId1 = "YearId"
         var MakeId1 = "MakeId"
         var ExteriorColorID = "ExteriorColorID"

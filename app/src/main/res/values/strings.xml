@@ -4,6 +4,7 @@
     <string name="step_2_of_4">Step 2 of 4</string>
     <string name="step_3_of_4">Step 3 of 4</string>
     <string name="deal_summary">Deal Summary</string>
+    <string name="deal_summary_title"></string>
 
     <!--Google Client ID-->
     <string name="google_web_client_id">701813435131-6v2o8gk49vbc3o85sh14r5nthh528q2t.apps.googleusercontent.com</string>
@@ -261,10 +262,11 @@
     <string name="hot_market">Hot Market!</string>
     <string name="go_back_and_try_again">GO BACK AND TRY AGAIN</string>
     <string name="account_last_4digit">%1s   *****%2s</string>
-    <string name="buyer_info_detail"><![CDATA[%1s\n%2s\n%3s\n%4s, %5s %6s\n%7s\n%8s]]></string>
+    <string name="buyer_info_detail"><![CDATA[%1s\n%2s\n%3s\n%4s,%5s %6s\n%7s\n%8s]]></string>
     <string name="buyer_info_detail1"><![CDATA[%1s\n%2s\n%3s, %4s %5s \n%6s\n%7s]]></string>
     <string name="dealer_info_detail"><![CDATA[%1s\n%2s, %3s %4s\n%5s\n%6s]]></string>
     <string name="findyourcar">Find Your Car</string>
+    <string name="go_back_home">Go Back Home</string>
     <string name="price_must_be_799_00"><![CDATA[Price must be >= $799.00]]></string>
     <string name="we_did_not_find_a_match">%1s, we did not find a match for your requested price of %2s. Your Card was not charged.\nWe don\'t stop working for you, so check out these options</string>
     <string name="letyouknow">LETYOUKNOW</string>
@@ -299,7 +301,7 @@
     <string name="dollar_lyk_credit">$100 LetYouKnow Credit</string>
     <string name="dollar_check">$25 Check</string>
     <string name="sessionExpired">Session Expired</string>
-    <string name="sessionExpiredLoginAgain">Your Session is Expired. \nPlease Login Again.</string>
+    <string name="sessionExpiredLoginAgain">Your Session has Expired. \nPlease Log In Again.</string>
     <string name="changePassword">Change Password</string>
     <string name="editMyInfo">Edit My Info</string>
     <string name="by_leaving_page">By Leaving this page, you will lose your Reserved Deal. </string>

@@ -21,7 +21,7 @@ import com.letyouknow.model.PrefSubmitPriceData
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
+import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
@@ -46,7 +46,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     private var imageId = "0"
     private var arImage: ArrayList<String> = ArrayList()
 
-    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+    private lateinit var isSoldViewModel: IsSoldViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_final_submit_price_deal_summary)
@@ -54,8 +54,8 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        checkVehicleStockViewModel =
-            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
+        isSoldViewModel =
+            ViewModelProvider(this).get(IsSoldViewModel::class.java)
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
@@ -138,6 +138,8 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
+        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+        pref?.setSubmitPriceTime("")
         startActivity(
             intentFor<MainActivity>().clearTask().newTask()
         )
@@ -213,7 +215,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.ProductType] = 0
+            request[ApiConstant.Product] = 1
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
@@ -229,7 +231,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))
-            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+            isSoldViewModel.isSoldCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {

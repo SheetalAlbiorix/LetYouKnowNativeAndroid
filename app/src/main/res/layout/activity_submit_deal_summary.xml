@@ -460,11 +460,12 @@
                     android:background="@color/lightGray" />
 
                 <TextView
+                    android:id="@+id/tvBuyerInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/buyer_info_detail(userName,data.successResult.transactionInfo.buyerAddress1,data.successResult.transactionInfo.buyerAddress2,data.successResult.transactionInfo.buyerCity,data.successResult.transactionInfo.buyerState,data.successResult.transactionInfo.buyerZipcode,data.successResult.transactionInfo.buyerPhone,data.successResult.transactionInfo.buyerEmail)}"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
+                <!--                    android:text="@{@string/buyer_info_detail(userName,data.successResult.transactionInfo.buyerAddress1,data.successResult.transactionInfo.buyerAddress2,data.successResult.transactionInfo.buyerCity,data.successResult.transactionInfo.buyerState,data.successResult.transactionInfo.buyerZipcode,data.successResult.transactionInfo.buyerPhone,data.successResult.transactionInfo.buyerEmail)}"-->
 
                 <TextView
                     style="@style/medium"
@@ -535,7 +536,7 @@
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"
-                    android:text="@string/findyourcar"
+                    android:text="@string/go_back_home"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
