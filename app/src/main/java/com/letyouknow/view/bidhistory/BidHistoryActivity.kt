@@ -93,7 +93,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 if (!TextUtils.isEmpty(data.transactionCode)) {
                     startActivity<TransactionCodeDetailActivity>(ARG_TRANSACTION_CODE to data.transactionCode)
                 } else {
-                    callIsSoldAPI(data)
+//                    callIsSoldAPI(data)
                 }
             }
         }
