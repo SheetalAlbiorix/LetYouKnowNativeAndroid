@@ -16,6 +16,8 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_CARD_LIST = "KEY_CARD_LIST"
         val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
         val KEY_IS_BIOMATRIC = "KEY_IS_BIOMATRIC"
+        val KEY_IS_BID = "KEY_IS_BID"
+        val KEY_IS_LCD = "KEY_IS_LCD"
         val KEY_SUBMIT_PRICE_TIME = "KEY_SUBMIT_PRICE_TIME"
         val KEY_SUBMIT_PRICE = "KEY_SUBMIT_PRICE"
         val KEY_ONE_DEAL_NEAR_TIME = "KEY_ONE_DEAL_NEAR_TIME"
@@ -234,5 +236,21 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
 
     fun getRadius(): String {
         return sharedpreferences.getString(KEY_RADIUS, "")!!
+    }
+
+    fun isBid(): Boolean {
+        return sharedpreferences.getBoolean(KEY_IS_BID, false)
+    }
+
+    fun setBid(isBid: Boolean) {
+        prefs.putBoolean(KEY_IS_BID, isBid).apply()
+    }
+
+    fun isLCD(): Boolean {
+        return sharedpreferences.getBoolean(KEY_IS_LCD, false)
+    }
+
+    fun setLCD(isLCD: Boolean) {
+        prefs.putBoolean(KEY_IS_LCD, isLCD).apply()
     }
 }

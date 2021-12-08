@@ -61,7 +61,7 @@ object SubmitPendingLCDDealRepository {
 
                     }
                     if (msgStr != null) {
-                        AppGlobal.alertErrorDialog(
+                        AppGlobal.alertError(
                             context,
                             msgStr
                         )

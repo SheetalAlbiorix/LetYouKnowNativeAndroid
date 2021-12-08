@@ -31,11 +31,13 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -47,6 +49,9 @@ import kotlinx.android.synthetic.main.layout_deal_summary.ivForwardDeal
 import kotlinx.android.synthetic.main.layout_deal_summary_hot_market.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 
 
@@ -67,6 +72,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var adapterLoan: FinancingOptionSpinnerAdapter
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private var imageId = "0"
+    private var isLCD = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +99,11 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             binding.lcdDealData = dataLCDDeal
 
         }
+
+        if (intent.hasExtra(ARG_IS_LCD)) {
+            isLCD = intent.getBooleanExtra(ARG_IS_LCD, false)
+        }
+
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))
         strikeThrough(tvPrice)
@@ -308,7 +319,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.guestID] = dataLCDDeal.guestID!!
             request[ApiConstant.dealerAccessoryIDs] = jsonAcc
             request[ApiConstant.vehiclePackageIDs] = jsonPkg
-
+            Log.e("request submitpendingdeallcd ", Gson().toJson(request))
             submitPendingLCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -367,6 +378,16 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if (isLCD) {
+            startActivity(
+                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                    .newTask()
+            )
+        }
+        super.onBackPressed()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

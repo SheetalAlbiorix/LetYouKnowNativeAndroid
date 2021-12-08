@@ -32,6 +32,7 @@ import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.letyouknow.view.spinneradapter.RadiusSpinnerBlackDropAdapter
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_BID
 import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.pionymessenger.utils.Constant.Companion.makeLinks
@@ -75,7 +76,6 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var imageIdViewModel: ImageIdViewModel
     private lateinit var imageUrlViewModel: ImageUrlViewModel
 
-
     private lateinit var binding: ActivitySubmitPriceDealSummaryBinding
     private lateinit var tokenModel: RefreshTokenViewModel
     private lateinit var yearModelMakeData: YearModelMakeData
@@ -84,10 +84,11 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
     private lateinit var submitPendingDealViewModel: SubmitPendingDealViewModel
 
-
     private var isValidZipCode = false
+    private var isBid = false
     private var price = 0.0
     private var imageId = "0"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_price_deal_summary)
@@ -105,6 +106,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onBackPressed() {
+        if (isBid) {
+            pref?.setBid(true)
+        }
         pref?.setRadius("")
         super.onBackPressed()
     }
@@ -124,7 +128,9 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             )
             callImageIdAPI()
             binding.data = yearModelMakeData
-
+        }
+        if (intent.hasExtra(ARG_IS_BID)) {
+            isBid = intent.getBooleanExtra(ARG_IS_BID, false)
         }
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))

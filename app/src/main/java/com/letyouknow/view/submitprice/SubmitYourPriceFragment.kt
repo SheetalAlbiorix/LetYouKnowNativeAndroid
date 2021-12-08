@@ -117,6 +117,9 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         super.onResume()
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
+        /* if (!isEmpty(pref?.getSubmitPriceTime())) {
+             setTimerPrefData()
+         }*/
         startHandler()
     }
 
@@ -339,7 +342,6 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
                                 adapterYear = YearSpinnerAdapter(requireActivity(), data)
                                 spYear.adapter = adapterYear
 
-
                                 for (i in 0 until data.size) {
                                     if (!isEmpty(prefSubmitPriceData.yearId) && prefSubmitPriceData.yearId == data[i].vehicleYearID) {
                                         spYear.setSelection(i, true)
@@ -379,7 +381,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             vehicleMakeModel.getMake(
                 requireActivity(),
                 productId,
-                yearId,
+                prefSubmitPriceData.yearId,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
@@ -428,8 +430,8 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             vehicleModelModel.getModel(
                 requireActivity(),
                 productId,
-                yearId,
-                makeId,
+                prefSubmitPriceData.yearId,
+                prefSubmitPriceData.makeId,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
@@ -477,9 +479,9 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             vehicleTrimModel.getTrim(
                 requireActivity(),
                 productId,
-                yearId,
-                makeId,
-                modelId,
+                prefSubmitPriceData.yearId,
+                prefSubmitPriceData.makeId,
+                prefSubmitPriceData.modelId,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
@@ -527,10 +529,10 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             exteriorColorModel.getExteriorColor(
                 requireActivity(),
                 productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId,
+                prefSubmitPriceData.yearId,
+                prefSubmitPriceData.makeId,
+                prefSubmitPriceData.modelId,
+                prefSubmitPriceData.trimId,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
@@ -590,11 +592,11 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             interiorColorModel.getInteriorColor(
                 requireActivity(),
                 productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId,
-                extColorId,
+                prefSubmitPriceData.yearId,
+                prefSubmitPriceData.makeId,
+                prefSubmitPriceData.modelId,
+                prefSubmitPriceData.trimId,
+                prefSubmitPriceData.extColorId,
                 ""
             )!!
                 .observe(requireActivity(), Observer { data ->
@@ -721,12 +723,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             packagesModel.getPackages(
                 requireActivity(),
                 productId,
-                yearId,
-                makeId,
-                modelId,
-                trimId,
-                extColorId,
-                intColorId, ""
+                prefSubmitPriceData.yearId,
+                prefSubmitPriceData.makeId,
+                prefSubmitPriceData.modelId,
+                prefSubmitPriceData.trimId,
+                prefSubmitPriceData.extColorId,
+                prefSubmitPriceData.intColorId, ""
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -768,12 +770,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             val request = HashMap<String, Any>()
             request[ApiConstant.packageList] = jsonArray
             request[ApiConstant.productId] = productId
-            request[ApiConstant.yearId] = yearId
-            request[ApiConstant.makeId] = makeId
-            request[ApiConstant.modelId] = modelId
-            request[ApiConstant.trimId] = trimId
-            request[ApiConstant.exteriorColorId] = extColorId
-            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.yearId] = prefSubmitPriceData.yearId!!
+            request[ApiConstant.makeId] = prefSubmitPriceData.makeId!!
+            request[ApiConstant.modelId] = prefSubmitPriceData.modelId!!
+            request[ApiConstant.trimId] = prefSubmitPriceData.trimId!!
+            request[ApiConstant.exteriorColorId] = prefSubmitPriceData.extColorId!!
+            request[ApiConstant.interiorColorId] = prefSubmitPriceData.intColorId!!
             request[ApiConstant.zipCode] = ""
 
             packagesOptional.getOptional(
@@ -819,12 +821,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             val request = HashMap<String, Any>()
             request[ApiConstant.checkedList] = jsonArray
             request[ApiConstant.productId] = productId
-            request[ApiConstant.yearId] = yearId
-            request[ApiConstant.makeId] = makeId
-            request[ApiConstant.modelId] = modelId
-            request[ApiConstant.trimId] = trimId
-            request[ApiConstant.exteriorColorId] = extColorId
-            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.yearId] = prefSubmitPriceData.yearId!!
+            request[ApiConstant.makeId] = prefSubmitPriceData.makeId!!
+            request[ApiConstant.modelId] = prefSubmitPriceData.modelId!!
+            request[ApiConstant.trimId] = prefSubmitPriceData.trimId!!
+            request[ApiConstant.exteriorColorId] = prefSubmitPriceData.extColorId!!
+            request[ApiConstant.interiorColorId] = prefSubmitPriceData.intColorId!!
             request[ApiConstant.zipCode] = ""
 
             checkedPackageModel.checkedPackage(requireActivity(), request)!!
@@ -880,12 +882,12 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
             request[ApiConstant.packageList] = jsonArrayPackage
             request[ApiConstant.checkedList] = jsonArray
             request[ApiConstant.productId] = productId
-            request[ApiConstant.yearId] = yearId
-            request[ApiConstant.makeId] = makeId
-            request[ApiConstant.modelId] = modelId
-            request[ApiConstant.trimId] = trimId
-            request[ApiConstant.exteriorColorId] = extColorId
-            request[ApiConstant.interiorColorId] = intColorId
+            request[ApiConstant.yearId] = prefSubmitPriceData.yearId!!
+            request[ApiConstant.makeId] = prefSubmitPriceData.makeId!!
+            request[ApiConstant.modelId] = prefSubmitPriceData.modelId!!
+            request[ApiConstant.trimId] = prefSubmitPriceData.trimId!!
+            request[ApiConstant.exteriorColorId] = prefSubmitPriceData.extColorId!!
+            request[ApiConstant.interiorColorId] = prefSubmitPriceData.intColorId!!
             request[ApiConstant.zipCode] = ""
 
             checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!

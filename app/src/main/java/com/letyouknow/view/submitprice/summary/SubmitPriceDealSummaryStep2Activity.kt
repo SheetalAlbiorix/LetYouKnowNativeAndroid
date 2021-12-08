@@ -310,6 +310,8 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
+                            ), ARG_UCD_DEAL_PENDING to Gson().toJson(
+                                dataPendingDeal
                             )
                         )
                         finish()
@@ -773,7 +775,7 @@ class SubmitPriceDealSummaryStep2Activity : BaseActivity(), View.OnClickListener
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
-            val request = java.util.HashMap<String, Any>()
+            val request = HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
 

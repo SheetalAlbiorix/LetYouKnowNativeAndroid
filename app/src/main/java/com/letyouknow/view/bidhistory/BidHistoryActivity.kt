@@ -19,21 +19,21 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityBidHistoryBinding
 import com.letyouknow.model.BidPriceData
 import com.letyouknow.model.PrefSubmitPriceData
+import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.BidHistoryViewModel
 import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
-import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.submitprice.summary.SubmitPriceDealSummaryActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_BID
 import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class BidHistoryActivity : BaseActivity(), View.OnClickListener {
@@ -93,6 +93,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 if (!TextUtils.isEmpty(data.transactionCode)) {
                     startActivity<TransactionCodeDetailActivity>(ARG_TRANSACTION_CODE to data.transactionCode)
                 } else {
+                    setPrefSubmitPriceData(data)
 //                    callIsSoldAPI(data)
                 }
             }
@@ -180,28 +181,30 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         dialog.window?.attributes = layoutParams
     }
 
-    private fun callIsSoldAPI(data: BidPriceData) {
+    private fun callIsSoldAPI(dataBid: BidPriceData) {
         if (Constant.isOnline(this)) {
             val pkgList = JsonArray()
-            for (i in 0 until data.vehiclePackages?.size!!) {
-                pkgList.add(data.vehiclePackages!![i].vehiclePackageID!!)
+            for (i in 0 until dataBid.vehiclePackages?.size!!) {
+                pkgList.add(dataBid.vehiclePackages[i].vehiclePackageID!!)
             }
             val accList = JsonArray()
-            for (i in 0 until data.vehicleAccessories!!.size) {
-                accList.add(data.vehicleAccessories!![i].dealerAccessoryID)
+            for (i in 0 until dataBid.vehicleAccessories?.size!!) {
+                accList.add(dataBid.vehicleAccessories[i].dealerAccessoryID)
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 1
-            request[ApiConstant.YearId1] = data.vehicleInStockCheckInput?.yearId!!
-            request[ApiConstant.MakeId1] = data.vehicleInStockCheckInput.makeId!!
-            request[ApiConstant.ModelID] = data.vehicleInStockCheckInput.modelId!!
-            request[ApiConstant.TrimID] = data.vehicleInStockCheckInput.trimId!!
-            request[ApiConstant.ExteriorColorID] = data.vehicleInStockCheckInput.exteriorColorId!!
-            request[ApiConstant.InteriorColorID] = data.vehicleInStockCheckInput.interiorColorId!!
-            request[ApiConstant.ZipCode1] = data.vehicleInStockCheckInput.zipcode!!
+            request[ApiConstant.YearId1] = dataBid.vehicleInStockCheckInput?.yearId!!
+            request[ApiConstant.MakeId1] = dataBid.vehicleInStockCheckInput.makeId!!
+            request[ApiConstant.ModelID] = dataBid.vehicleInStockCheckInput.modelId!!
+            request[ApiConstant.TrimID] = dataBid.vehicleInStockCheckInput.trimId!!
+            request[ApiConstant.ExteriorColorID] =
+                dataBid.vehicleInStockCheckInput.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] =
+                dataBid.vehicleInStockCheckInput.interiorColorId!!
+            request[ApiConstant.ZipCode1] = dataBid.vehicleInStockCheckInput.zipcode!!
             request[ApiConstant.SearchRadius1] =
-                if (data.vehicleInStockCheckInput.searchRadius!! == "ALL") "6000" else data.vehicleInStockCheckInput.searchRadius.replace(
+                if (dataBid.vehicleInStockCheckInput.searchRadius!! == "ALL") "6000" else dataBid.vehicleInStockCheckInput.searchRadius.replace(
                     " mi",
                     ""
                 )
@@ -212,12 +215,10 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
-                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                        pref?.setSubmitPriceTime("")
-                        startActivity(
-                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
-                                .newTask()
-                        )
+//
+                        setPrefSubmitPriceData(dataBid)
+
+
                     } else {
                         finish()
                     }
@@ -227,5 +228,57 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setPrefSubmitPriceData(data: BidPriceData) {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
+
+        val submitData = PrefSubmitPriceData()
+        submitData.yearId = data.vehicleInStockCheckInput?.yearId!!
+        submitData.makeId = data.vehicleInStockCheckInput.makeId!!
+        submitData.modelId = data.vehicleInStockCheckInput.modelId!!
+        submitData.trimId = data.vehicleInStockCheckInput.trimId!!
+        submitData.extColorId = data.vehicleInStockCheckInput.exteriorColorId!!
+        submitData.intColorId = data.vehicleInStockCheckInput.interiorColorId!!
+        submitData.yearStr = data.vehicleYear!!
+        submitData.makeStr = data.vehicleMake!!
+        submitData.modelStr = data.vehicleModel!!
+        submitData.trimStr = data.vehicleTrim!!
+        submitData.extColorStr =
+            if (data.vehicleInStockCheckInput.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
+        submitData.intColorStr =
+            if (data.vehicleInStockCheckInput.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
+        submitData.packagesData = data.vehiclePackages!!
+        submitData.optionsData = data.vehicleAccessories!!
+        pref?.setSubmitPriceData(Gson().toJson(submitData))
+
+
+        val yearMakeData = YearModelMakeData()
+        yearMakeData.vehicleYearID = data.vehicleInStockCheckInput.yearId
+        yearMakeData.vehicleMakeID = data.vehicleInStockCheckInput.makeId
+        yearMakeData.vehicleModelID = data.vehicleInStockCheckInput.modelId
+        yearMakeData.vehicleTrimID = data.vehicleInStockCheckInput.trimId
+        yearMakeData.vehicleExtColorID = data.vehicleInStockCheckInput.exteriorColorId
+        yearMakeData.vehicleIntColorID = data.vehicleInStockCheckInput.interiorColorId
+        yearMakeData.vehicleYearStr = data.vehicleYear
+        yearMakeData.vehicleMakeStr = data.vehicleMake
+        yearMakeData.vehicleModelStr = data.vehicleModel
+        yearMakeData.vehicleTrimStr = data.vehicleTrim
+        yearMakeData.vehicleExtColorStr =
+            if (data.vehicleInStockCheckInput.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
+        yearMakeData.vehicleIntColorStr =
+            if (data.vehicleInStockCheckInput.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
+        yearMakeData.arPackages = data.vehiclePackages
+        yearMakeData.arOptions = data.vehicleAccessories
+
+        startActivity<SubmitPriceDealSummaryActivity>(
+            Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                yearMakeData
+            ),
+            ARG_IS_BID to true
+        )
+        finish()
     }
 }

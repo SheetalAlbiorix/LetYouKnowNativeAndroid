@@ -17,16 +17,16 @@ import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
-import com.letyouknow.model.PrefSubmitPriceData
-import com.letyouknow.model.SubmitDealLCDData
-import com.letyouknow.model.YearModelMakeData
+import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.home.dealsummary.DealSummaryActivity
 import com.letyouknow.view.home.dealsummary.gallery360view.Gallery360TabActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_final_submit_price_deal_summary.*
@@ -42,6 +42,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var submitDealData: SubmitDealLCDData
     private lateinit var yearModelMakeData: YearModelMakeData
+    private lateinit var dataPendingDeal: SubmitPendingUcdData
     private lateinit var binding: ActivityFinalSubmitPriceDealSummaryBinding
     private var imageId = "0"
     private var arImage: ArrayList<String> = ArrayList()
@@ -60,12 +61,18 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
                 ARG_SUBMIT_DEAL
-            )
+            ) && intent.hasExtra(Constant.ARG_UCD_DEAL_PENDING)
         ) {
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
+
+            dataPendingDeal = Gson().fromJson(
+                intent.getStringExtra(Constant.ARG_UCD_DEAL_PENDING),
+                SubmitPendingUcdData::class.java
+            )
+
             imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             arImage = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_IMAGE_URL),
@@ -108,10 +115,11 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvLightingCar -> {
-                callIsSoldAPI()
+                setLCDPrefData()
+//                callIsSoldAPI(true)
             }
             R.id.tvStep2 -> {
-                callIsSoldAPI()
+                callIsSoldAPI(false)
             }
             R.id.btnModify -> {
                 onBackPressed()
@@ -203,7 +211,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         dialog.window?.attributes = layoutParams
     }
 
-    private fun callIsSoldAPI() {
+    private fun callIsSoldAPI(isLCD: Boolean) {
         if (Constant.isOnline(this)) {
             val pkgList = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
@@ -242,7 +250,11 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                                 .newTask()
                         )
                     } else {
-                        finish()
+                        if (isLCD) {
+                            setLCDPrefData()
+                        } else {
+                            finish()
+                        }
                     }
 
                 }
@@ -250,6 +262,86 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setLCDPrefData() {
+        val lcdData = PrefOneDealNearYouData()
+        lcdData.zipCode = yearModelMakeData.zipCode
+        lcdData.yearId = yearModelMakeData.vehicleYearID
+        lcdData.makeId = yearModelMakeData.vehicleMakeID
+        lcdData.modelId = yearModelMakeData.vehicleModelID
+        lcdData.trimId = yearModelMakeData.vehicleTrimID
+        lcdData.extColorId = yearModelMakeData.vehicleExtColorID
+        lcdData.intColorId = yearModelMakeData.vehicleIntColorID
+        lcdData.yearStr = yearModelMakeData.vehicleYearStr
+        lcdData.makeStr = yearModelMakeData.vehicleMakeStr
+        lcdData.modelStr = yearModelMakeData.vehicleModelStr
+        lcdData.trimStr = yearModelMakeData.vehicleTrimStr
+        lcdData.extColorStr = yearModelMakeData.vehicleExtColorStr
+        lcdData.intColorStr = yearModelMakeData.vehicleIntColorStr
+        lcdData.packagesData = yearModelMakeData.arPackages
+        lcdData.optionsData = yearModelMakeData.arOptions
+        pref?.setOneDealNearYouData(Gson().toJson(lcdData))
+
+
+        var accessoriesStr = ""
+        var isFirstAcce = true
+        val arAccId: ArrayList<String> = ArrayList()
+        for (i in 0 until yearModelMakeData.arOptions?.size!!) {
+
+            arAccId.add(yearModelMakeData.arOptions!![i].dealerAccessoryID!!)
+            if (isFirstAcce) {
+                isFirstAcce = false
+                accessoriesStr = yearModelMakeData.arOptions!![i].accessory!!
+            } else
+                accessoriesStr += ",\n" + yearModelMakeData.arOptions!![i].accessory!!
+
+        }
+        var packageStr = ""
+        var isFirstPackage = true
+        val arPackageId: ArrayList<String> = ArrayList()
+
+        for (i in 0 until yearModelMakeData.arPackages?.size!!) {
+            arPackageId.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
+            if (isFirstPackage) {
+                isFirstPackage = false
+                packageStr = yearModelMakeData.arPackages!![i].packageName!!
+            } else {
+                packageStr =
+                    packageStr + ",\n" + yearModelMakeData.arPackages!![i].packageName!!
+            }
+
+        }
+        val data = FindLCDDeaData()
+        data.productId = "2"
+        data.zipCode = yearModelMakeData.zipCode
+        data.yearId = yearModelMakeData.vehicleYearID
+        data.makeId = yearModelMakeData.vehicleMakeID
+        data.modelId = yearModelMakeData.vehicleModelID
+        data.trimId = yearModelMakeData.vehicleTrimID
+        data.exteriorColorId = yearModelMakeData.vehicleExtColorID
+        data.interiorColorId = yearModelMakeData.vehicleIntColorID
+        data.yearStr = yearModelMakeData.vehicleYearStr
+        data.makeStr = yearModelMakeData.vehicleMakeStr
+        data.modelStr = yearModelMakeData.vehicleModelStr
+        data.trimStr = yearModelMakeData.vehicleTrimStr
+        data.exteriorColorStr = yearModelMakeData.vehicleExtColorStr
+        data.interiorColorStr = yearModelMakeData.vehicleIntColorStr
+        data.price = yearModelMakeData.price
+        data.arPackage = packageStr
+        data.arAccessories = accessoriesStr
+        data.arAccessoriesId = arAccId
+        data.arPackageId = arPackageId
+        data.dealID = dataPendingDeal.dealID
+        data.guestID = dataPendingDeal.guestID
+
+        startActivity(
+            intentFor<DealSummaryActivity>(
+                Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(data),
+                ARG_IS_LCD to true
+            ).clearTask()
+                .newTask()
+        )
     }
 
 }

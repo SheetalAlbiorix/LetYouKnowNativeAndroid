@@ -39,14 +39,14 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             binding.data = submitDealData
 
             var add2 = submitDealData.successResult?.transactionInfo?.buyerAddress2
-            if (!TextUtils.isEmpty(add2) && add2 != "null" && add2 != "NULL") {
+            if (add2 != "null" && add2 != "NULL" && !TextUtils.isEmpty(add2?.trim())) {
                 add2 += "\n"
             }
             var buyerInfo = ""
             buyerInfo =
                 pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName + "\n" +
                         submitDealData.successResult?.transactionInfo?.buyerAddress1 + "\n" +
-                        add2?.trim() +
+                        add2 +
                         submitDealData.successResult?.transactionInfo?.buyerCity + "," +
                         submitDealData.successResult?.transactionInfo?.buyerState + " " +
                         submitDealData.successResult?.transactionInfo?.buyerZipcode + "\n" +
@@ -60,7 +60,7 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         tvTitleTool.visibility = View.GONE
     }
 
-    override fun getViewActivity(): Activity? {
+    override fun getViewActivity(): Activity {
         return this
     }
 

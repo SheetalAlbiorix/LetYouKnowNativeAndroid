@@ -3,13 +3,13 @@ package com.letyouknow.model
 import java.io.Serializable
 
 data class FindLCDDeaData(
-    val dealID: String? = "",
+    var dealID: String? = "",
     val userID: String? = "",
-    val guestID: String? = "",
+    var guestID: String? = "",
     val vehicleInventoryID: String? = "",
     var price: Float? = 0.0f,
     var msrp: Float? = 0.0f,
-    val zipCode: String? = "",
+    var zipCode: String? = "",
     val searchRadius: String? = "",
     var loanType: String? = "",
     var initial: String? = "",
