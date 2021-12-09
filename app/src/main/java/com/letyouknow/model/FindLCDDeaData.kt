@@ -6,7 +6,7 @@ data class FindLCDDeaData(
     var dealID: String? = "",
     val userID: String? = "",
     var guestID: String? = "",
-    val vehicleInventoryID: String? = "",
+    var vehicleInventoryID: String? = "",
     var price: Float? = 0.0f,
     var msrp: Float? = 0.0f,
     var zipCode: String? = "",

@@ -17,12 +17,10 @@ import com.google.gson.JsonArray
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityBidHistoryBinding
-import com.letyouknow.model.BidPriceData
-import com.letyouknow.model.PrefSubmitPriceData
-import com.letyouknow.model.YearModelMakeData
+import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.BidHistoryViewModel
-import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
+import com.letyouknow.retrofit.viewmodel.*
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.submitprice.summary.SubmitPriceDealSummaryActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.pionymessenger.utils.Constant
@@ -31,16 +29,26 @@ import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BidHistoryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapterBidHistory: BidHistoryAdapter
     private lateinit var binding: ActivityBidHistoryBinding
     private lateinit var bidHistoryViewModel: BidHistoryViewModel
     private lateinit var isSoldViewModel: IsSoldViewModel
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+    private lateinit var packagesModel: VehiclePackagesViewModel
+    private lateinit var packagesOptional: VehicleOptionalViewModel
+    private var arSelectAccessories: ArrayList<VehicleAccessoriesData> = ArrayList()
+    private var arSelectPackages: ArrayList<VehiclePackagesData> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bid_history)
@@ -49,6 +57,10 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
+        packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+        checkVehicleStockViewModel =
+            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
         bidHistoryViewModel = ViewModelProvider(this).get(BidHistoryViewModel::class.java)
         isSoldViewModel =
             ViewModelProvider(this).get(IsSoldViewModel::class.java)
@@ -93,8 +105,8 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 if (!TextUtils.isEmpty(data.transactionCode)) {
                     startActivity<TransactionCodeDetailActivity>(ARG_TRANSACTION_CODE to data.transactionCode)
                 } else {
-                    setPrefSubmitPriceData(data)
-//                    callIsSoldAPI(data)
+                    callVehiclePackagesAPI(data)
+
                 }
             }
         }
@@ -181,48 +193,170 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         dialog.window?.attributes = layoutParams
     }
 
-    private fun callIsSoldAPI(dataBid: BidPriceData) {
+
+    private fun callVehiclePackagesAPI(dataBid: BidPriceData) {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            packagesModel.getPackages(
+                this,
+                getProductType(dataBid.label!!).toString(),
+                dataBid.vehicleInStockCheckInput?.yearId,
+                dataBid.vehicleInStockCheckInput?.makeId,
+                dataBid.vehicleInStockCheckInput?.modelId,
+                dataBid.vehicleInStockCheckInput?.trimId,
+                dataBid.vehicleInStockCheckInput?.exteriorColorId,
+                dataBid.vehicleInStockCheckInput?.interiorColorId, ""
+            )!!
+                .observe(this, Observer { data ->
+                    Log.e("Packages Data", Gson().toJson(data))
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val packagesData = VehiclePackagesData()
+                            packagesData.vehiclePackageID = "0"
+                            packagesData.packageName = "ANY"
+                            data.add(0, packagesData)
+                            selectPackageData(dataBid, data)
+
+                        } else {
+                            val arData = ArrayList<VehiclePackagesData>()
+                            val packagesData = VehiclePackagesData()
+                            packagesData.vehiclePackageID = "0"
+                            packagesData.packageName = "ANY"
+                            arData.add(0, packagesData)
+                            selectPackageData(dataBid, arData)
+                        }
+                    } catch (e: Exception) {
+                    }
+
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun selectPackageData(dataBid: BidPriceData, arData: ArrayList<VehiclePackagesData>) {
+        for (i in 0 until arData.size) {
+            for (j in 0 until dataBid.vehicleInStockCheckInput?.packageList?.size!!) {
+                if (arData[i].vehiclePackageID == dataBid.vehicleInStockCheckInput?.packageList[j]) {
+                    val packData = arData[i]
+                    packData.isSelect = true
+                    arSelectPackages.add(packData)
+                }
+            }
+        }
+        Log.e("selectData", Gson().toJson(arSelectPackages))
+        callOptionalAccessoriesAPI(dataBid)
+    }
+
+    private fun callOptionalAccessoriesAPI(dataBid: BidPriceData) {
+        if (Constant.isOnline(this)) {
+            val jsonArray = JsonArray()
+            for (i in 0 until arSelectPackages.size) {
+                jsonArray.add(arSelectPackages[i].vehiclePackageID)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArray
+            request[ApiConstant.productId] = getProductType(dataBid.label!!)
+            request[ApiConstant.yearId] = dataBid.vehicleInStockCheckInput?.yearId!!
+            request[ApiConstant.makeId] = dataBid.vehicleInStockCheckInput.makeId!!
+            request[ApiConstant.modelId] = dataBid.vehicleInStockCheckInput.modelId!!
+            request[ApiConstant.trimId] = dataBid.vehicleInStockCheckInput.trimId!!
+            request[ApiConstant.exteriorColorId] =
+                dataBid.vehicleInStockCheckInput.exteriorColorId!!
+            request[ApiConstant.interiorColorId] =
+                dataBid.vehicleInStockCheckInput.interiorColorId!!
+            request[ApiConstant.zipCode] = ""
+
+            packagesOptional.getOptional(
+                this,
+                request
+            )!!
+                .observe(this, Observer { data ->
+                    Log.e("Options Data", Gson().toJson(data))
+                    try {
+                        if (data != null || data?.size!! > 0) {
+                            val accessoriesData = VehicleAccessoriesData()
+                            accessoriesData.dealerAccessoryID = "0"
+                            accessoriesData.accessory = "ANY"
+                            data.add(0, accessoriesData)
+                            selectAccessoriesData(dataBid, data)
+                        } else {
+                            val arData = ArrayList<VehicleAccessoriesData>()
+                            val accessoriesData = VehicleAccessoriesData()
+                            accessoriesData.dealerAccessoryID = "0"
+                            accessoriesData.accessory = "ANY"
+                            arData.add(0, accessoriesData)
+                            selectAccessoriesData(dataBid, arData)
+                        }
+                    } catch (e: Exception) {
+                    }
+                    callCheckVehicleStockAPI(dataBid)
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun selectAccessoriesData(
+        dataBid: BidPriceData,
+        arData: ArrayList<VehicleAccessoriesData>
+    ) {
+        for (i in 0 until arData.size) {
+            for (j in 0 until dataBid.vehicleInStockCheckInput?.accessoryList?.size!!) {
+                if (arData[i].dealerAccessoryID == dataBid.vehicleInStockCheckInput?.accessoryList[j]) {
+                    val accData = arData[i]
+                    accData.isSelect = true
+                    arSelectAccessories.add(accData)
+                }
+            }
+        }
+        Log.e("selectAccData", Gson().toJson(arSelectAccessories))
+    }
+
+    private fun callCheckVehicleStockAPI(data: BidPriceData) {
         if (Constant.isOnline(this)) {
             val pkgList = JsonArray()
-            for (i in 0 until dataBid.vehiclePackages?.size!!) {
-                pkgList.add(dataBid.vehiclePackages[i].vehiclePackageID!!)
+            if (!data.vehicleInStockCheckInput?.packageList.isNullOrEmpty()) {
+                for (i in 0 until data.vehicleInStockCheckInput?.packageList?.size!!) {
+                    pkgList.add(data.vehicleInStockCheckInput.packageList[i])
+                }
             }
             val accList = JsonArray()
-            for (i in 0 until dataBid.vehicleAccessories?.size!!) {
-                accList.add(dataBid.vehicleAccessories[i].dealerAccessoryID)
+            if (!data.vehicleInStockCheckInput?.accessoryList.isNullOrEmpty()) {
+                for (i in 0 until data.vehicleInStockCheckInput?.accessoryList?.size!!) {
+                    accList.add(data.vehicleInStockCheckInput.accessoryList[i])
+                }
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = 1
-            request[ApiConstant.YearId1] = dataBid.vehicleInStockCheckInput?.yearId!!
-            request[ApiConstant.MakeId1] = dataBid.vehicleInStockCheckInput.makeId!!
-            request[ApiConstant.ModelID] = dataBid.vehicleInStockCheckInput.modelId!!
-            request[ApiConstant.TrimID] = dataBid.vehicleInStockCheckInput.trimId!!
-            request[ApiConstant.ExteriorColorID] =
-                dataBid.vehicleInStockCheckInput.exteriorColorId!!
-            request[ApiConstant.InteriorColorID] =
-                dataBid.vehicleInStockCheckInput.interiorColorId!!
-            request[ApiConstant.ZipCode1] = dataBid.vehicleInStockCheckInput.zipcode!!
-            request[ApiConstant.SearchRadius1] =
-                if (dataBid.vehicleInStockCheckInput.searchRadius!! == "ALL") "6000" else dataBid.vehicleInStockCheckInput.searchRadius.replace(
-                    " mi",
-                    ""
-                )
+            request[ApiConstant.Product] = getProductType(data.label!!)
+            request[ApiConstant.YearId1] = data.vehicleInStockCheckInput?.yearId!!
+            request[ApiConstant.MakeId1] = data.vehicleInStockCheckInput.makeId!!
+            request[ApiConstant.ModelID] = data.vehicleInStockCheckInput.modelId!!
+            request[ApiConstant.TrimID] = data.vehicleInStockCheckInput.trimId!!
+            request[ApiConstant.ExteriorColorID] = data.vehicleInStockCheckInput.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = data.vehicleInStockCheckInput.interiorColorId!!
+            request[ApiConstant.ZipCode1] = data.vehicleInStockCheckInput.zipcode!!
+            request[ApiConstant.SearchRadius1] = data.vehicleInStockCheckInput.searchRadius!!
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))
-            isSoldViewModel.isSoldCall(this, request)!!
-                .observe(this, Observer { data ->
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { dataStock ->
                     Constant.dismissLoader()
-                    if (data) {
-//
-                        setPrefSubmitPriceData(dataBid)
-
-
+                    if (dataStock) {
+                        setPrefSubmitPriceData(data)
                     } else {
-                        finish()
+                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                        pref?.setSubmitPriceTime("")
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
+                                .newTask()
+                        )
                     }
-
                 }
                 )
         } else {
@@ -250,8 +384,8 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             if (data.vehicleInStockCheckInput.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
         submitData.intColorStr =
             if (data.vehicleInStockCheckInput.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
-        submitData.packagesData = data.vehiclePackages!!
-        submitData.optionsData = data.vehicleAccessories!!
+        submitData.packagesData = arSelectPackages
+        submitData.optionsData = arSelectAccessories
         pref?.setSubmitPriceData(Gson().toJson(submitData))
 
 
@@ -270,8 +404,11 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             if (data.vehicleInStockCheckInput.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
         yearMakeData.vehicleIntColorStr =
             if (data.vehicleInStockCheckInput.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
-        yearMakeData.arPackages = data.vehiclePackages
-        yearMakeData.arOptions = data.vehicleAccessories
+        yearMakeData.arPackages = arSelectPackages
+        yearMakeData.arOptions = arSelectAccessories
+        yearMakeData.price = data.price
+        yearMakeData.radius = data.searchRadius
+        yearMakeData.zipCode = data.vehicleInStockCheckInput.zipcode
 
         startActivity<SubmitPriceDealSummaryActivity>(
             Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
@@ -280,5 +417,28 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             ARG_IS_BID to true
         )
         finish()
+    }
+
+    private fun getProductType(data: String): Int {
+        var productType = 0
+        when (data) {
+            "LYK" -> {
+                productType = 1
+            }
+            "LCD" -> {
+                productType = 2
+            }
+            "UCD" -> {
+                productType = 3
+            }
+            "DIY" -> {
+                productType = 4
+            }
+            else -> {
+                productType = 0
+            }
+        }
+
+        return productType
     }
 }

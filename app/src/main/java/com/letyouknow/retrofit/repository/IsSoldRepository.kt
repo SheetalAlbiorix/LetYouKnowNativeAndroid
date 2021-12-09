@@ -15,7 +15,7 @@ object IsSoldRepository {
 
     fun isSoldCall(
         context: Context,
-        request: HashMap<String, Any>
+        request: String
     ): MutableLiveData<Boolean> {
         val minMsrpData = MutableLiveData<Boolean>()
         val call = RetrofitClient.apiInterface.isSold(request)

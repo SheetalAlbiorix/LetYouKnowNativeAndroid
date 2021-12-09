@@ -334,4 +334,5 @@
     <string name="you_have_10_days_from_the_timestamp">You have 10 days from the timestamp below to complete your vehicle transaction.</string>
     <string name="your_letyouknow_price">Your LetYouKnow Price:</string>
     <string name="we_found_your_car">We found your car within a %1s-mile radius of %2s</string>
+    <string name="the_car_is_no_longer_available">The car is no longer available</string>
 </resources>

@@ -94,10 +94,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
                 intent.getStringExtra(ARG_LCD_DEAL_GUEST),
                 FindLCDDeaData::class.java
             )
-
-
             binding.lcdDealData = dataLCDDeal
-
         }
 
         if (intent.hasExtra(ARG_IS_LCD)) {
@@ -176,11 +173,11 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private fun scrollTouchListener() {
 //        tvInfo.movementMethod = ScrollingMovementMethod()
-        nestedSc.setOnTouchListener { v, event ->
+        nestedSc.setOnTouchListener { _, _ ->
             scrollInfo.parent.requestDisallowInterceptTouchEvent(false)
             false
         }
-        scrollInfo.setOnTouchListener { v, event ->
+        scrollInfo.setOnTouchListener { v, _ ->
             v.parent.requestDisallowInterceptTouchEvent(true)
             false
         }
@@ -226,7 +223,6 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun setPrivacyPolicyLink() {
-
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
                 AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
@@ -319,7 +315,7 @@ class DealSummaryActivity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.guestID] = dataLCDDeal.guestID!!
             request[ApiConstant.dealerAccessoryIDs] = jsonAcc
             request[ApiConstant.vehiclePackageIDs] = jsonPkg
-            Log.e("request submitpendingdeallcd ", Gson().toJson(request))
+            Log.e("requestsubmitpending ", Gson().toJson(request))
             submitPendingLCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()

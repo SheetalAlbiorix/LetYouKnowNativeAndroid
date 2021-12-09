@@ -155,6 +155,21 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         scrollTouchListener()
         onChangeZipCodePrice()
         callRadiusAPI()
+        if (isBid)
+            setBidPreSelectionData()
+    }
+
+    private fun setBidPreSelectionData() {
+        edtZipCode.setText(yearModelMakeData.zipCode)
+        val formatter: DecimalFormat =
+            NumberFormat.getInstance(Locale.US) as DecimalFormat
+        formatter.applyPattern("#,###,###,###")
+        val formattedString: String = formatter.format(yearModelMakeData.price)
+
+        //setting text after format to EditText
+        edtPrice.setText(formattedString)
+        edtPrice.setSelection(edtPrice.text.toString().trim().length)
+        llViewPrice.visibility = View.GONE
     }
 
     override fun onDestroy() {
@@ -318,7 +333,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
 
     private fun callVehicleZipCodeAPI(zipCode: String?) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.progress.isShowing)
+                Constant.showLoader(this)
             zipCodeModel.getZipCode(this, zipCode)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -361,9 +377,18 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
             adapterRadius = RadiusSpinnerBlackDropAdapter(this, arData)
         } else {
             adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
+            spRadius.adapter = adapterRadius
+            spRadius.onItemSelectedListener = this
+            if (isBid) {
+                val radius = yearModelMakeData.radius + " mi"
+                for (i in 0 until arRadius.size) {
+                    if (radius == arRadius[i]) {
+                        spRadius.setSelection(i)
+                    }
+                }
+            }
         }
-        spRadius.adapter = adapterRadius
-        spRadius.onItemSelectedListener = this
+
     }
 
     private var isScrollable = false
@@ -415,6 +440,13 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         adapterLoan = FinancingOptionSpinnerAdapter(this, arLoan)
         spLoan.adapter = adapterLoan
         setWhiteSpinnerLayoutPos(0, spLoan, this)
+        for (i in 0 until arLoan.size) {
+            if (isBid) {
+                if (arLoan[i] == yearModelMakeData.loanType) {
+                    spLoan.setSelection(i)
+                }
+            }
+        }
         spLoan.onItemSelectedListener = this
     }
 

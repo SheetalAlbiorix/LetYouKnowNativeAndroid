@@ -198,8 +198,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
                 prefOneDealNearYouData.zipCode = edtZipCode.text.toString().trim()
-
-                setPrefData()
+                pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
+//                setPrefData()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -374,10 +374,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+
     private fun callVehicleZipCodeAPI(zipCode: String?) {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.progress.isShowing)
+                    Constant.showLoader(requireActivity())
                 zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
@@ -414,9 +416,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private fun callVehicleYearAPI() {
         try {
-            spYear.isEnabled = true
+
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.progress.isShowing)
+                    Constant.showLoader(requireActivity())
                 vehicleYearModel.getYear(
                     requireActivity(),
                     productId,
@@ -428,13 +431,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         try {
                             Log.e("Year Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
+                                spYear.isEnabled = true
                                 val yearData = VehicleYearData()
                                 yearData.year = "YEAR - NEW CARS"
                                 data.add(0, yearData)
                                 adapterYear = YearSpinnerAdapter(requireActivity(), data)
                                 spYear.adapter = adapterYear
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(yearId) && yearId == data[i].vehicleYearID) {
+                                    if (!isEmpty(prefOneDealNearYouData.yearId) && prefOneDealNearYouData.yearId == data[i].vehicleYearID) {
                                         spYear.setSelection(i, true)
                                         AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
                                         callVehicleMakeAPI()
@@ -486,7 +490,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterMake = MakeSpinnerAdapter(requireActivity(), data)
                                 spMake.adapter = adapterMake
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(makeId) && makeId == data[i].vehicleMakeID) {
+                                    if (!isEmpty(prefOneDealNearYouData.makeId) && prefOneDealNearYouData.makeId == data[i].vehicleMakeID) {
                                         spMake.setSelection(i, true)
                                         callVehicleModelAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spMake, requireActivity())
@@ -539,7 +543,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterModel = ModelSpinnerAdapter(requireActivity(), data)
                                 spModel.adapter = adapterModel
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(modelId) && modelId == data[i].vehicleModelID) {
+                                    if (!isEmpty(prefOneDealNearYouData.modelId) && prefOneDealNearYouData.modelId == data[i].vehicleModelID) {
                                         spModel.setSelection(i, true)
                                         callVehicleTrimAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spModel, requireActivity())
@@ -593,7 +597,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
                                 spTrim.adapter = adapterTrim
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(trimId) && trimId == data[i].vehicleTrimID) {
+                                    if (!isEmpty(prefOneDealNearYouData.trimId) && prefOneDealNearYouData.trimId == data[i].vehicleTrimID) {
                                         spTrim.setSelection(i, true)
                                         callExteriorColorAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
@@ -652,7 +656,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
                                 spExteriorColor.adapter = adapterExterior
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(extColorId) && extColorId == data[i].vehicleExteriorColorID) {
+                                    if (!isEmpty(prefOneDealNearYouData.extColorId) && prefOneDealNearYouData.extColorId == data[i].vehicleExteriorColorID) {
                                         spExteriorColor.setSelection(i, true)
                                         callInteriorColorAPI()
                                         AppGlobal.setSpinnerLayoutPos(
@@ -719,7 +723,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
                                 spInteriorColor.adapter = adapterInterior
                                 for (i in 0 until data.size) {
-                                    if (!isEmpty(intColorId) && intColorId == data[i].vehicleInteriorColorID) {
+                                    if (!isEmpty(prefOneDealNearYouData.intColorId) && prefOneDealNearYouData.intColorId == data[i].vehicleInteriorColorID) {
                                         spInteriorColor.setSelection(i, true)
                                         AppGlobal.setSpinnerLayoutPos(
                                             i,
@@ -1117,7 +1121,15 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         data.arAccessories = accessoriesStr
                         data.arAccessoriesId = arAccId
                         data.arPackageId = arPackageId
-                        startActivity<DealSummaryActivity>(ARG_LCD_DEAL_GUEST to Gson().toJson(data))
+                        if (data.dealID == "0") {
+                            showWarningDialog()
+                        } else {
+                            startActivity<DealSummaryActivity>(
+                                ARG_LCD_DEAL_GUEST to Gson().toJson(
+                                    data
+                                )
+                            )
+                        }
                     }
                     )
             } else {
@@ -1642,7 +1654,9 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             setInteriorColor()
             setPackages(false)
             setOptions(false)
-            if (!isEmpty(prefOneDealNearYouData.zipCode)) edtZipCode.setText(prefOneDealNearYouData.zipCode)
+            if (!isEmpty(prefOneDealNearYouData.zipCode)) edtZipCode.setText(prefOneDealNearYouData.zipCode) else edtZipCode.setText(
+                ""
+            )
             yearId = prefOneDealNearYouData.yearId!!
             makeId = prefOneDealNearYouData.makeId!!
             modelId = prefOneDealNearYouData.modelId!!
@@ -1656,11 +1670,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             extColorStr = prefOneDealNearYouData.extColorStr!!
             intColorStr = prefOneDealNearYouData.intColorStr!!
 
-            onChangeZipCode()
+
             if (prefOneDealNearYouData.zipCode?.length!! >= 1) {
                 val str = prefOneDealNearYouData.zipCode.toString()
                 if (str.length == 5) {
                     callVehicleZipCodeAPI(str)
+                    onChangeZipCode()
                 } else if (str.length < 5) {
                     isValidZipCode = false
                     prefOneDealNearYouData.isZipCode = isValidZipCode!!
@@ -1669,9 +1684,34 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 }
                 prefOneDealNearYouData.zipCode = edtZipCode.text.toString().trim()
                 setPrefData()
+            } else {
+                edtZipCode.setText("")
+                onChangeZipCode()
             }
+
         } catch (e: Exception) {
 
         }
+    }
+
+    private fun showWarningDialog() {
+        val dialog = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_car_not_available)
+        dialog.run {
+            clearOneDealNearData()
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun clearOneDealNearData() {
+        pref?.setOneDealNearYou("")
+        pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
+        prefOneDealNearYouData = pref?.getOneDealNearYouData()!!
     }
 }

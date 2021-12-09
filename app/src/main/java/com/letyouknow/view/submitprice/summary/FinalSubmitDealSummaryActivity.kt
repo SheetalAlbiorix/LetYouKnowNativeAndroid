@@ -115,8 +115,8 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvLightingCar -> {
-                setLCDPrefData()
-//                callIsSoldAPI(true)
+//                setLCDPrefData()
+                callIsSoldAPI(true)
             }
             R.id.tvStep2 -> {
                 callIsSoldAPI(false)
@@ -238,17 +238,26 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 )
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
-            isSoldViewModel.isSoldCall(this, request)!!
+//            Log.e("RequestStock", Gson().toJson(request))
+            Log.e("RequestStock", dataPendingDeal.dealID!!)
+            isSoldViewModel.isSoldCall(this, dataPendingDeal.dealID!!)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
-                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                        pref?.setSubmitPriceTime("")
-                        startActivity(
-                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
-                                .newTask()
-                        )
+                        if (!isLCD) {
+                            pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                            pref?.setSubmitPriceTime("")
+                            startActivity(
+                                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
+                                    .newTask()
+                            )
+                        } else {
+                            clearOneDealNearData()
+                            startActivity(
+                                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
+                                    .newTask()
+                            )
+                        }
                     } else {
                         if (isLCD) {
                             setLCDPrefData()
@@ -334,6 +343,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         data.arPackageId = arPackageId
         data.dealID = dataPendingDeal.dealID
         data.guestID = dataPendingDeal.guestID
+        data.vehicleInventoryID = submitDealData.negativeResult?.vehicleInventoryID
 
         startActivity(
             intentFor<DealSummaryActivity>(
@@ -342,6 +352,11 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             ).clearTask()
                 .newTask()
         )
+    }
+
+    private fun clearOneDealNearData() {
+        pref?.setOneDealNearYou("")
+        pref?.setOneDealNearYouData(Gson().toJson(PrefOneDealNearYouData()))
     }
 
 }

@@ -11,7 +11,7 @@ class IsSoldViewModel : ViewModel() {
 
     fun isSoldCall(
         context: Context,
-        request: HashMap<String, Any>
+        request: String
     ): LiveData<Boolean>? {
         liveData = IsSoldRepository.isSoldCall(
             context,

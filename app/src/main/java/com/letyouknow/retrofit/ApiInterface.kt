@@ -102,7 +102,6 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     @POST("findmydeal/findLCDDeal")
     fun findLCDDeal(@Body request: HashMap<String, Any>): Call<FindLCDDeaData>
 
-
     @POST("findmydeal/FindUCDDeal")
     fun findUCDDeal(@Body request: HashMap<String, Any>): Call<ArrayList<FindUcdDealData>>
 
@@ -121,10 +120,8 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     @POST("auth/refresh")
     fun refresh(@Body request: HashMap<String, Any>): Call<RefreshTokenData>
 
-
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
-
 
     @POST("image/getimageurl")
     fun getImageURL(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
@@ -222,6 +219,7 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     fun checkVehicleStock(@Body request: HashMap<String, Any>): Call<Boolean>
 
     @POST("vehiclecriteria/issold")
-    fun isSold(@Body request: HashMap<String, Any>): Call<Boolean>
+    fun isSold(@Body request: String): Call<Boolean>
+//    fun isSold(@Body request: HashMap<String, Any>): Call<Boolean>
 
 }
