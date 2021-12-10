@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.app.Activity
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -60,7 +61,7 @@ object SubmitPendingLCDDealRepository {
                         }
 
                     }
-                    if (msgStr != null) {
+                    if (!TextUtils.isEmpty(msgStr)) {
                         AppGlobal.alertError(
                             context,
                             msgStr

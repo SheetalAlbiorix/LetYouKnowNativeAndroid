@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -54,7 +55,7 @@ object SignUpRepository {
                     }
                     errorMSG = email + "\n" + userName
 
-                    if (errorMSG != null)
+                    if (!TextUtils.isEmpty(errorMSG))
                         AppGlobal.alertError(
                             context,
                             errorMSG

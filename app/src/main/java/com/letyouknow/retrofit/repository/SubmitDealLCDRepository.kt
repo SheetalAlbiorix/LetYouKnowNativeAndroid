@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -46,7 +47,7 @@ object SubmitDealLCDRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    if (!dataError.isBadRequest!!) {
+                    if (!dataError.isBadRequest!! || dataError.messageList == null) {
                         submitDealLCDData.value = dataError!!
                     } else {
                         var msgStr = ""
@@ -61,7 +62,7 @@ object SubmitDealLCDRepository {
                             }
 
                         }
-                        if (msgStr != null)
+                        if (!TextUtils.isEmpty(msgStr))
                             AppGlobal.alertError(
                                 context,
                                 msgStr

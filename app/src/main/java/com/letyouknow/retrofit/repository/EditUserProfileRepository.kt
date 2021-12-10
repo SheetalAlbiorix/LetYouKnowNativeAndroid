@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -57,10 +58,11 @@ object EditUserProfileRepository {
                                     msg = msg + "\n" + msgList.DuplicateEmail[i]
                                 }
                             }
-                            AppGlobal.alertError(
-                                context,
-                                msg
-                            )
+                            if (!TextUtils.isEmpty(msg))
+                                AppGlobal.alertError(
+                                    context,
+                                    msg
+                                )
                         } else {
                             AppGlobal.alertError(
                                 context,

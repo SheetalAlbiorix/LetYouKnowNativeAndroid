@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -46,22 +47,22 @@ object SubmitDealUCDRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    if (!dataError.isBadRequest!!) {
+                    if (!dataError.isBadRequest!! || dataError.messageList == null) {
                         submitDealUCDData.value = dataError!!
                     } else {
                         var msgStr = ""
                         var isFirst = true
 
-                        for (i in 0 until dataError?.messageList?.size!!) {
+                        for (i in 0 until dataError?.messageList.size) {
                             if (isFirst) {
                                 isFirst = false
-                                msgStr = dataError?.messageList[i]!!
+                                msgStr = dataError?.messageList[i]
                             } else {
-                                msgStr = msgStr + ",\n" + dataError?.messageList[i]!!
+                                msgStr = msgStr + ",\n" + dataError?.messageList[i]
                             }
 
                         }
-                        if (msgStr != null)
+                        if (!TextUtils.isEmpty(msgStr))
                             AppGlobal.alertError(
                                 context,
                                 msgStr
