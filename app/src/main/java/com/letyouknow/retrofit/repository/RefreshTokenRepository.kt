@@ -33,7 +33,7 @@ object RefreshTokenRepository {
                 Log.v("DEBUG : ", response.body().toString())
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Constant.dismissLoader()
+                   // Constant.dismissLoader()
                     submitDealLCDData.value = data!!
                 } else if (response.code() == 401) {
                     Constant.dismissLoader()

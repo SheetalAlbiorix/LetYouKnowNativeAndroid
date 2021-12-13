@@ -1,10 +1,13 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.LetYouKnowApp
 import com.letyouknow.model.CardStripeData
+import com.letyouknow.model.ErrorStripeData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -68,11 +71,21 @@ fun paymentMethodApiCall(
                         "Error Payment",
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8()!!
                     )
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        AppGlobal.alertError(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null) {
+                        Constant.dismissLoader()
+                        val dataError = Gson().fromJson(
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                            ErrorStripeData::class.java
                         )
+
+                        var msgStr = dataError.error?.message
+
+                        if (!TextUtils.isEmpty(msgStr))
+                            AppGlobal.alertError(
+                                context,
+                                msgStr
+                            )
+                    }
                 }
             }
         })

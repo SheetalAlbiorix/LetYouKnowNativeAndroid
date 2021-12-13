@@ -374,7 +374,15 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                     arData.add(arRadius[i])
                 }
             }
-            adapterRadius = RadiusSpinnerBlackDropAdapter(this, arData)
+            if (isMatch) {
+                adapterRadius = RadiusSpinnerBlackDropAdapter(this, arData)
+                spRadius.adapter = adapterRadius
+                spRadius.onItemSelectedListener = this
+            } else {
+                adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
+                spRadius.adapter = adapterRadius
+                spRadius.onItemSelectedListener = this
+            }
         } else {
             adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
             spRadius.adapter = adapterRadius
@@ -388,7 +396,6 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-
     }
 
     private var isScrollable = false
@@ -451,7 +458,6 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun setPrivacyPolicyLink() {
-
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
                 AppGlobal.dialogWebView(this, Constant.TERMS_CONDITIONS_LINK)
@@ -573,8 +579,8 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (isValid()) {
                     pref?.setRadius("")
+                if (isValid()) {
                     callRefreshTokenApi()
                 }
             }
@@ -616,7 +622,6 @@ class SubmitPriceDealSummaryActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
         when (parent?.id) {
             R.id.spLoan -> {
                 val data = adapterLoan.getItem(position) as String

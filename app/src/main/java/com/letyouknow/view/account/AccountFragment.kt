@@ -16,6 +16,7 @@ import com.letyouknow.base.BaseFragment
 import com.letyouknow.databinding.FragmentAccount1Binding
 import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.model.NotificationOptionsData
+import com.letyouknow.model.RememberMeData
 import com.letyouknow.model.UserProfileData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -374,6 +375,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             changePasswordViewModel.changePasswordCall(requireActivity(), reqData)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
+                    val userData = pref?.getUserData()
+                    userData?.password = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
+                    pref?.setUserData(Gson().toJson(userData))
+                    pref?.setRememberData(Gson().toJson(RememberMeData()))
                     Toast.makeText(requireActivity(), data, Toast.LENGTH_SHORT).show()
                     dialogEditLogin.dismiss()
                     startActivity(
@@ -519,7 +524,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callRefreshTokenApi() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.progress.isShowing)
+                    Constant.showLoader(requireActivity())
                 val request = java.util.HashMap<String, Any>()
                 request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
                 request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!

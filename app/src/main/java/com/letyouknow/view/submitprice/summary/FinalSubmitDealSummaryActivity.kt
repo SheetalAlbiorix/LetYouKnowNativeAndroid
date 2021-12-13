@@ -3,7 +3,6 @@ package com.letyouknow.view.submitprice.summary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -12,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
@@ -20,6 +18,7 @@ import com.letyouknow.databinding.ActivityFinalSubmitPriceDealSummaryBinding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
+import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.home.dealsummary.DealSummaryActivity
@@ -46,6 +45,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityFinalSubmitPriceDealSummaryBinding
     private var imageId = "0"
     private var arImage: ArrayList<String> = ArrayList()
+    private lateinit var tokenModel: RefreshTokenViewModel
 
     private lateinit var isSoldViewModel: IsSoldViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +57,7 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         isSoldViewModel =
             ViewModelProvider(this).get(IsSoldViewModel::class.java)
+        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_final_submit_price_deal_summary)
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
@@ -116,10 +117,10 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.tvLightingCar -> {
 //                setLCDPrefData()
-                callIsSoldAPI(true)
+                callRefreshTokenApi(true)
             }
             R.id.tvStep2 -> {
-                callIsSoldAPI(false)
+                callRefreshTokenApi(false)
             }
             R.id.btnModify -> {
                 onBackPressed()
@@ -211,36 +212,29 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         dialog.window?.attributes = layoutParams
     }
 
+    private fun callRefreshTokenApi(isLCD: Boolean) {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val request = java.util.HashMap<String, Any>()
+            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
+            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
+
+            tokenModel.refresh(this, request)!!.observe(this, { data ->
+                val userData = pref?.getUserData()
+                userData?.authToken = data.auth_token!!
+                userData?.refreshToken = data.refresh_token!!
+                pref?.setUserData(Gson().toJson(userData))
+                callIsSoldAPI(isLCD)
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun callIsSoldAPI(isLCD: Boolean) {
         if (Constant.isOnline(this)) {
-            val pkgList = JsonArray()
-            for (i in 0 until yearModelMakeData.arPackages?.size!!) {
-                pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
-            }
-            val accList = JsonArray()
-            for (i in 0 until yearModelMakeData.arOptions!!.size) {
-                accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
-            }
-            Constant.showLoader(this)
-            val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = 1
-            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
-            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
-            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] =
-                if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
-                    " mi",
-                    ""
-                )
-            request[ApiConstant.AccessoryList] = accList
-            request[ApiConstant.PackageList1] = pkgList
-//            Log.e("RequestStock", Gson().toJson(request))
-            Log.e("RequestStock", dataPendingDeal.dealID!!)
-            isSoldViewModel.isSoldCall(this, dataPendingDeal.dealID!!)!!
+            isSoldViewModel.isSoldCall(this, submitDealData.negativeResult?.vehicleInventoryID!!)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
@@ -336,12 +330,12 @@ class FinalSubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         data.trimStr = yearModelMakeData.vehicleTrimStr
         data.exteriorColorStr = yearModelMakeData.vehicleExtColorStr
         data.interiorColorStr = yearModelMakeData.vehicleIntColorStr
-        data.price = yearModelMakeData.price
+        data.price = submitDealData.negativeResult?.lcdPrice
         data.arPackage = packageStr
         data.arAccessories = accessoriesStr
         data.arAccessoriesId = arAccId
         data.arPackageId = arPackageId
-        data.dealID = dataPendingDeal.dealID
+        data.dealID = submitDealData.negativeResult?.dealID
         data.guestID = dataPendingDeal.guestID
         data.vehicleInventoryID = submitDealData.negativeResult?.vehicleInventoryID
 

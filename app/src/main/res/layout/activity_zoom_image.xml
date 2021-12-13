@@ -5,7 +5,9 @@
     <data>
 
         <import type="android.view.View" />
-
+<variable
+    name="title"
+    type="String" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
@@ -16,7 +18,7 @@
 
         <include
             layout="@layout/layout_toolbar_blue"
-            app:toolbarTitle="@{@string/app_name}" />
+            app:toolbarTitle="@{title}" />
 
         <FrameLayout
             android:layout_width="match_parent"

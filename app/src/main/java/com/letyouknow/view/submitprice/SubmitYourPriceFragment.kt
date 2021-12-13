@@ -322,8 +322,7 @@ class SubmitYourPriceFragment : BaseFragment(), View.OnClickListener,
         try {
             isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
-
-                Constant.showLoader(requireActivity())
+                    Constant.showLoader(requireActivity())
                 vehicleYearModel.getYear(
                     requireActivity(),
                     productId,

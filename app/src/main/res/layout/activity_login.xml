@@ -169,16 +169,16 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtForgotUserId"
                         style="@style/medium"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
@@ -188,14 +188,15 @@
                         android:textSize="@dimen/_11sdp" />
 
 
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
+                    <!-- <Space
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1" />
+ -->
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtForgotPassword"
                         style="@style/medium"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/_2sdp"

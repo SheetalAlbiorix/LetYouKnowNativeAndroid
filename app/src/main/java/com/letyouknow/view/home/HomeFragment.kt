@@ -408,7 +408,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSel
         try {
             isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                    Constant.showLoader(requireActivity())
                 vehicleYearModel.getYear(requireActivity(), productId, "")!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.makeId))

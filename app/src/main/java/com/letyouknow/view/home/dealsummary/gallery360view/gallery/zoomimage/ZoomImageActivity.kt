@@ -23,6 +23,7 @@ class ZoomImageActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_zoom_image)
+        binding.title = ""
         if (intent.hasExtra(ARG_IMAGE_URL)) {
 //            pager.currentItem =intent.getIntExtra(ARG_TYPE_VIEW,0)
             var data = intent.getStringExtra(ARG_IMAGE_URL)

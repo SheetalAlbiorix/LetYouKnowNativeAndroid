@@ -33,11 +33,15 @@ class BidHistoryAdapter(layout: Int, val clickListener: View.OnClickListener) :
                 tvInterior.text =
                     if (TextUtils.isEmpty(vehicleInteriorColor)) "ANY" else vehicleInteriorColor
                 var packages = ""
-                for (i in 0 until vehiclePackages?.size!!) {
-                    packages = if (i == 0) {
-                        vehiclePackages[i].packageName!!
-                    } else {
-                        packages + ",\n" + vehiclePackages[i].packageName!!
+                if (vehiclePackages.isNullOrEmpty() && isPackageNone!!) {
+                    packages = "NONE"
+                } else {
+                    for (i in 0 until vehiclePackages?.size!!) {
+                        packages = if (i == 0) {
+                            vehiclePackages[i].packageName!!
+                        } else {
+                            packages + ",\n" + vehiclePackages[i].packageName!!
+                        }
                     }
                 }
                 tvPackages.text = if (packages.isEmpty()) "ANY" else packages

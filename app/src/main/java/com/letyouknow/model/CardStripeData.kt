@@ -60,3 +60,15 @@ data class NetworksData(
 data class ThreeDSecureUsageData(
     val supported: Boolean? = false
 ) : Serializable
+
+data class ErrorStripeData(
+    val error: ErrorData? = ErrorData()
+) : Serializable
+
+data class ErrorData(
+    val code: String? = "",
+    val doc_url: String? = "",
+    val message: String? = "",
+    val param: String? = "",
+    val type: String? = ""
+) : Serializable

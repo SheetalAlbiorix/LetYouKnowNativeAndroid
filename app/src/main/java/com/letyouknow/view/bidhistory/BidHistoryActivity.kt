@@ -164,11 +164,15 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 var packages = ""
-                for (i in 0 until vehiclePackages?.size!!) {
-                    packages = if (i == 0) {
-                        vehiclePackages[i].packageName!!
-                    } else {
-                        packages + ",\n" + vehiclePackages[i].packageName!!
+                if (vehiclePackages.isNullOrEmpty() && isPackageNone!!) {
+                    packages = "NONE"
+                } else {
+                    for (i in 0 until vehiclePackages?.size!!) {
+                        packages = if (i == 0) {
+                            vehiclePackages[i].packageName!!
+                        } else {
+                            packages + ",\n" + vehiclePackages[i].packageName!!
+                        }
                     }
                 }
 

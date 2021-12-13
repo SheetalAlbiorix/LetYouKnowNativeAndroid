@@ -18,6 +18,7 @@ data class NegativeResult(
     val firstLabel: String? = "",
     val secondLabel: String? = "",
     val lcdPrice: Float? = 0.0f,
+    val dealID: String? = "0",
     val vehicleInventoryID: String? = "",
     val minimalDistance: String? = ""
 ) : Serializable
