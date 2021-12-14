@@ -39,7 +39,15 @@ object EditUserProfileRepository {
                     Constant.dismissLoader()
                     editUserProfileData.value = data!!
                 } else if (response.code() == 401) {
+                    Constant.dismissLoader()
                     AppGlobal.isAuthorizationFailed(context)
+                } else if (response.code() == 400) {
+                    Constant.dismissLoader()
+                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
+                        AppGlobal.alertError(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
                 } else {
                     Constant.dismissLoader()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null) {

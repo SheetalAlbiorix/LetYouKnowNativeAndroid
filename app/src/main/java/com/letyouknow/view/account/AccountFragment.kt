@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
@@ -331,6 +332,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             map[ApiConstant.city] = dialogEditInfo.edtCity.text.toString().trim()
             map[ApiConstant.state] = state
             map[ApiConstant.zipcode] = dialogEditInfo.edtZipCode.text.toString().trim()
+            Log.e("EditLoginReq", Gson().toJson(map))
             editUserProfileViewModel.editUserCall(requireActivity(), map)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()

@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -63,10 +64,33 @@ object SubmitDealRepository {
                             context,
                             msgStr
                         )*/
-                    submitDealLCDData.value = Gson().fromJson(
+
+                    val errorData = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
+                    if (errorData.isBadRequest!! && errorData.messageList.isNullOrEmpty()) {
+                        submitDealLCDData.value = errorData
+                    } else {
+                        var msgStr = ""
+                        var isFirst = true
+
+                        for (i in 0 until errorData?.messageList?.size!!) {
+                            if (isFirst) {
+                                isFirst = false
+                                msgStr = errorData?.messageList[i]!!
+                            } else {
+                                msgStr = msgStr + ",\n" + errorData?.messageList[i]!!
+                            }
+
+                        }
+                        if (!TextUtils.isEmpty(msgStr))
+                            AppGlobal.alertError(
+                                context,
+                                msgStr
+                            )
+                    }
+
                 }
             }
         })

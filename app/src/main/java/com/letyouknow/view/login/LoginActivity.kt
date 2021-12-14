@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.security.keystore.KeyProperties
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Log
@@ -45,6 +44,7 @@ import com.letyouknow.view.signup.SignUpActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.PRIVACY_POLICY_LINK
 import com.pionymessenger.utils.Constant.Companion.TERMS_CONDITIONS_LINK
+import com.pionymessenger.utils.Constant.Companion.emailValidator
 import com.pionymessenger.utils.Constant.Companion.makeLinks
 import com.pionymessenger.utils.Constant.Companion.onTextChange
 import com.pionymessenger.utils.Constant.Companion.passwordValidator
@@ -52,13 +52,9 @@ import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.startActivity
-import java.security.Key
-import java.security.KeyStore
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.concurrent.Executor
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
 
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -326,11 +322,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 setErrorBorder(edtEmailAddress, tvErrorEmailAddress)
                 return false
             }
-           /* !emailValidator(edtEmailAddress.text.toString().trim()) -> {
+            !emailValidator(edtEmailAddress.text.toString().trim()) -> {
                 tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
                 setErrorBorder(edtEmailAddress, tvErrorEmailAddress)
                 return false
-            }*/
+            }
             TextUtils.isEmpty(edtPassword.text.toString().trim()) -> {
                 tvErrorPassword.text = getString(R.string.enter_password)
                 setErrorBorder(edtPassword, tvErrorPassword)
@@ -414,7 +410,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == GOOGLE_SIGN_IN) {
                 val task: Task<GoogleSignInAccount> =
@@ -423,15 +418,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     // Google Sign In was successful, authenticate with Firebase
                     val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
                     Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                    firebaseAuthWithGoogle(account.idToken)
+                    account.idToken?.let { firebaseAuthWithGoogle(it) }
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately
                     Log.w(TAG, "Google sign in failed", e)
                 }
             }
-
-
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -491,21 +487,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         auth.signOut()
     }
 
-    private val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
-    private val BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC
-    private val PADDING = KeyProperties.ENCRYPTION_PADDING_PKCS7
 
-    private fun getDecryptCipher(key: Key, iv: ByteArray): Cipher =
-        Cipher.getInstance(keyTransformation())
-            .apply { init(Cipher.DECRYPT_MODE, key, IvParameterSpec(iv)) }
-
-    private fun keyTransformation() =
-        listOf(ALGORITHM, BLOCK_MODE, PADDING).joinToString(separator = "/")
-
-    private val KEY_NAME = "MY_KEY"
-    private val KEYSTORE = "AndroidKeyStore"
-    private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) }
-    private fun getKey(): Key? = keyStore.getKey(KEY_NAME, null)
 }
 
 

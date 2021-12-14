@@ -26,7 +26,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.home.dealsummary.DealSummaryActivity
+import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
 import com.letyouknow.view.spinneradapter.*
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
@@ -1124,7 +1124,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         if (data.dealID == "0") {
                             showWarningDialog()
                         } else {
-                            startActivity<DealSummaryActivity>(
+                            startActivity<LCDDealSummaryStep1Activity>(
                                 ARG_LCD_DEAL_GUEST to Gson().toJson(
                                     data
                                 )

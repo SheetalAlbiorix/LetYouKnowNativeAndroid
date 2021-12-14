@@ -21,7 +21,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.submitprice.summary.SubmitPriceDealSummaryActivity
+import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IS_BID
@@ -414,7 +414,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         yearMakeData.radius = data.searchRadius
         yearMakeData.zipCode = data.vehicleInStockCheckInput.zipcode
 
-        startActivity<SubmitPriceDealSummaryActivity>(
+        startActivity<LYKStep1Activity>(
             Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
                 yearMakeData
             ),

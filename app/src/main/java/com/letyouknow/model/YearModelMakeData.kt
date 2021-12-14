@@ -20,6 +20,7 @@ data class YearModelMakeData(
     var zipCode: String? = "",
     var loanType: String? = "",
     var price: Float? = 0.0f,
+    var msrp: Float? = 0.0f,
     var discount: Float? = 0.0f,
     var initials: String? = "",
     var arPackages: ArrayList<VehiclePackagesData>? = ArrayList(),

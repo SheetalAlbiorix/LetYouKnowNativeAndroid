@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.home.dealsummary.gallery360view.Gallery360TabActivity">
+        tools:context=".view.gallery360view.Gallery360TabActivity">
 
         <include
             layout="@layout/layout_toolbar_blue"

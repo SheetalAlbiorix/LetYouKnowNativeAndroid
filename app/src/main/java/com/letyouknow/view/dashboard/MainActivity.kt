@@ -17,10 +17,10 @@ import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
-import com.letyouknow.view.home.HomeFragment
 import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
+import com.letyouknow.view.lcd.UCDFragment
 import com.letyouknow.view.login.LoginActivity
-import com.letyouknow.view.submitprice.SubmitYourPriceFragment
+import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
@@ -99,7 +99,7 @@ class MainActivity : BaseActivity(),
             pref?.setBid(false)
             if (Constant.isInitProgress() && Constant.progress.isShowing)
                 Constant.dismissLoader()
-            loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
         }
@@ -184,7 +184,7 @@ class MainActivity : BaseActivity(),
                 TYPE_SUBMIT_PRICE -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+                    loadFragment(LYKFragment(), getString(R.string.submit_your_price))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
                     item.isChecked = true
                 }
@@ -198,13 +198,13 @@ class MainActivity : BaseActivity(),
                 TYPE_SEARCH_DEAL -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(HomeFragment(), getString(R.string.search_deals))
+                    loadFragment(UCDFragment(), getString(R.string.search_deals))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
                     item.isChecked = true
                 }
             }
         } else {
-            loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
         }
 
     }
@@ -245,7 +245,7 @@ class MainActivity : BaseActivity(),
                 adapterDrawer.update(selectDrawerPos, data)
             }
             selectDrawerPos = -1
-            loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             item.isChecked = true
         }
     }
@@ -314,7 +314,7 @@ class MainActivity : BaseActivity(),
                 drawer.closeDrawer(Gravity.RIGHT)
             }
             R.id.ivEdit -> {
-                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+                loadFragment(UCDFragment(), getString(R.string.search_deals_title))
             }
             R.id.ivLogOut -> {
                 popupLogout()
@@ -329,13 +329,13 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(SubmitYourPriceFragment(), getString(R.string.submit_your_price))
+                loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             }
             R.id.itemBottom2 -> {
                 loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
             }
             R.id.itemBottom3 -> {
-                loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+                loadFragment(UCDFragment(), getString(R.string.search_deals_title))
             }
             R.id.itemBottom4 -> {
                 loadFragment(AccountFragment(), getString(R.string.account))

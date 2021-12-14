@@ -22,19 +22,16 @@
         android:theme="@style/Theme.LetYouKnow"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
+
         <activity
-            android:name=".view.home.dealsummary.tryanotherdeal.FinalOneDealNearSummaryActivity"
+            android:name=".view.ucd.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedTryAnotherActivity"
+            android:name=".view.ucd.unlockeddealdetail.UnlockedTryAnotherActivity"
             android:exported="false" />
         <activity
-            android:name=".view.home.dealsummary.tryanotherdeal.TryAnotherActivity"
+            android:name=".view.lcd.negative.LCDNegativeActivity"
             android:exported="false" />
         <activity
             android:name=".view.howitworkhelp.HowItWorkHelpWebViewActivity"
@@ -75,19 +72,19 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.submitdealsummary.SubmitDealSummaryActivity"
+            android:name=".view.ucd.submitdealsummary.SubmitDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummary.gallery360view.view360.View360Activty"
+            android:name="com.letyouknow.view.gallery360view.view360.View360Activty"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummary.gallery360view.gallery.zoomimage.ZoomImageActivity"
+            android:name="com.letyouknow.view.gallery360view.gallery.zoomimage.ZoomImageActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummary.gallery360view.Gallery360TabActivity"
+            android:name="com.letyouknow.view.gallery360view.Gallery360TabActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -95,7 +92,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.UnlockedCarDealActivity"
+            android:name=".view.ucd.UCDDealListStep1Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -159,31 +156,31 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummary.DealSummaryActivity"
+            android:name=".view.lcd.summary.LCDDealSummaryStep1Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.home.dealsummary.delasummarystep2.DealSummaryStep2Activity"
+            android:name=".view.lcd.summary.LCDDealSummaryStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryActivity"
+            android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.unlockedcardeal.unlockeddealdetail.UnlockedDealSummaryStep2Activity"
+            android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.submitprice.summary.SubmitPriceDealSummaryActivity"
+            android:name=".view.lyk.summary.LYKStep1Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.submitprice.summary.SubmitPriceDealSummaryStep2Activity"
+            android:name=".view.lyk.summary.LYKStep2Activity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.submitprice.summary.FinalSubmitDealSummaryActivity"
+            android:name=".view.lyk.summary.LYKNegativeActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
 
@@ -213,6 +210,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
