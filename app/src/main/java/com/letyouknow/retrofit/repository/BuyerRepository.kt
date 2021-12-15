@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.BuyerInfoData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -18,6 +19,7 @@ object BuyerRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<BuyerInfoData> {
+        AppGlobal.printRequestAuth("buyer req", Gson().toJson(request))
         val buyerData = MutableLiveData<BuyerInfoData>()
         val call = RetrofitClient.apiInterface.buyer(request)
 
@@ -35,11 +37,14 @@ object BuyerRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("buyer Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     buyerData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("buyer Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("buyer Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

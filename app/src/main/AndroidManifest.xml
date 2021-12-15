@@ -23,12 +23,17 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
 
+
+        <activity
+            android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ucd.unlockeddealdetail.UnlockedTryAnotherActivity"
+            android:name=".view.ucd.unlockeddealdetail.UCDNegativeActivity"
             android:exported="false" />
         <activity
             android:name=".view.lcd.negative.LCDNegativeActivity"

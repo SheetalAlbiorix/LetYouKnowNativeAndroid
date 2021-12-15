@@ -97,7 +97,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             tvViewDollar.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(true)
-            callRefreshTokenApi()
+//            callRefreshTokenApi()
+            callUserProfileAPI()
         } catch (e: Exception) {
         }
     }
@@ -553,9 +554,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callUserProfileAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
+                if (!Constant.progress.isShowing)
+                    Constant.showLoader(requireActivity())
                 userProfileViewModel.userProfileCall(requireActivity())!!
                     .observe(requireActivity(), Observer { data ->
-
                         setUserData(data)
                         callSavingsToDateAPI()
                     }
@@ -586,7 +588,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 if (isEmpty(data.address1)) "" else data.address1 + if (isEmpty(data.address2)) "" else {
                     "\n" + data.address2
                 } + if (isEmpty(data.city)) "" else {
-                    "\n" + data.city + ","
+                    "\n" + data.city + ", "
                 } + if (isEmpty(data.state)) "" else data.state
             if (isEmpty(tvAddress.text.toString())) {
                 tvAddress.text = "-"

@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.LoginData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -18,6 +19,7 @@ object LoginRepository {
         context: Context,
         request: HashMap<String, String>
     ): MutableLiveData<LoginData> {
+        AppGlobal.printRequestAuth("login req", Gson().toJson(request))
         val loginVo = MutableLiveData<LoginData>()
         val call = RetrofitClient.apiInterface.login(request)
 
@@ -37,11 +39,12 @@ object LoginRepository {
                 call: Call<LoginData>,
                 response: Response<LoginData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("Login Resp : ", Gson().toJson(response.body()))
                     loginVo.value = data!!
                 } else {
+                    Log.v("Login Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

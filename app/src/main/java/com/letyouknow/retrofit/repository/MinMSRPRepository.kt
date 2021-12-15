@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object MinMSRPRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<Double> {
+        AppGlobal.printRequestAuth("MinMSRP req", Gson().toJson(request))
         val minMsrpData = MutableLiveData<Double>()
         val call = RetrofitClient.apiInterface.getMinMSRP(request)
 
@@ -26,9 +28,11 @@ object MinMSRPRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("minMSRP Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     minMsrpData.value = data!!
                 } else {
+                    Log.v("minMSRP Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

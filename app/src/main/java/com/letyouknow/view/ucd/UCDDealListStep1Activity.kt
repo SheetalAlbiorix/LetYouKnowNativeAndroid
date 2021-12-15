@@ -23,7 +23,7 @@ import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
 import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
-import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity
+import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
@@ -64,9 +64,9 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
-        imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+        imageIdViewModel = ViewModelProvider(this)[ImageIdViewModel::class.java]
+        imageUrlViewModel = ViewModelProvider(this)[ImageUrlViewModel::class.java]
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(
                 ARG_RADIUS
             ) && intent.hasExtra(ARG_ZIPCODE)
@@ -86,7 +86,8 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
             zipCode = intent.getStringExtra(ARG_ZIPCODE)!!
             binding.searchRadius = searchRadius.trim()
             binding.zipCode = zipCode.trim()
-            callRefreshTokenApi()
+//            callRefreshTokenApi()
+            callImageIdAPI()
         }
 //        backButton()
         ivEdit.visibility = View.VISIBLE
@@ -132,7 +133,7 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
                 adapterUnlockedCarDeal.update(pos, data)
                 selectPos = pos
 
-                startActivity<UCDDealSummaryStep3Activity>(
+                startActivity<UCDDealSummaryStep2Activity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
                     ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                     ARG_IMAGE_ID to imageId

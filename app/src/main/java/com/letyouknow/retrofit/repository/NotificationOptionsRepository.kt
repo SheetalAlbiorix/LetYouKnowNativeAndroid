@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.NotificationOptionsData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -16,6 +17,7 @@ object NotificationOptionsRepository {
     fun notificationOptionsRepositoryApiCall(
         context: Context,
     ): MutableLiveData<NotificationOptionsData> {
+        AppGlobal.printRequestAuth("Notification req", "No request")
         val notificationOptionsData = MutableLiveData<NotificationOptionsData>()
         val call = RetrofitClient.apiInterface.notificationOptions(AppGlobal.getUserID())
 
@@ -29,15 +31,17 @@ object NotificationOptionsRepository {
                 call: Call<NotificationOptionsData>,
                 response: Response<NotificationOptionsData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("notiOptions Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     notificationOptionsData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("notiOptions Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("notiOptions Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

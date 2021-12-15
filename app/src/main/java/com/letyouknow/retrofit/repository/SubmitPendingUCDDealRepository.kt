@@ -20,6 +20,7 @@ object SubmitPendingUCDDealRepository {
         context: Activity,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitPendingUcdData> {
+        AppGlobal.printRequestAuth("submitUCD req", Gson().toJson(request))
         val pendingUCDDealData = MutableLiveData<SubmitPendingUcdData>()
         val call = RetrofitClient.apiInterface.submitPendingDealUcd(request)
 
@@ -33,15 +34,17 @@ object SubmitPendingUCDDealRepository {
                 call: Call<SubmitPendingUcdData>,
                 response: Response<SubmitPendingUcdData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("PendingUCD Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     pendingUCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("PendingUCD Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("PendingUCD Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     Constant.dismissLoader()

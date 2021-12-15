@@ -20,6 +20,7 @@ object SubmitPendingLCDDealRepository {
         context: Activity,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitPendingUcdData> {
+        AppGlobal.printRequestAuth("pendingLCD req", Gson().toJson(request))
         val pendinLCDDealData = MutableLiveData<SubmitPendingUcdData>()
         val call = RetrofitClient.apiInterface.submitPendingDealLCD(request)
 
@@ -33,15 +34,17 @@ object SubmitPendingLCDDealRepository {
                 call: Call<SubmitPendingUcdData>,
                 response: Response<SubmitPendingUcdData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("PendingLCD Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     pendinLCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("PendingLCD Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("PendingLCD Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     Constant.dismissLoader()

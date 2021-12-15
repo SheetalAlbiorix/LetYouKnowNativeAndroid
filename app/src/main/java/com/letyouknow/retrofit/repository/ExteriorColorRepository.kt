@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.ExteriorColorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -23,6 +24,10 @@ object ExteriorColorRepository {
         trimId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<ExteriorColorData>> {
+        AppGlobal.printRequestAuth(
+            "Ext req",
+            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "zipCode: " + zipCode
+        )
         val getExteriorColorData = MutableLiveData<ArrayList<ExteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleExteriorColors(
             productId,
@@ -43,12 +48,13 @@ object ExteriorColorRepository {
                 call: Call<ArrayList<ExteriorColorData>>,
                 response: Response<ArrayList<ExteriorColorData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("extColor Resp ", Gson().toJson(response.body()))
                     getExteriorColorData.value = data!!
                 } else {
+                    Log.v("extColor Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object InteriorRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<ArrayList<String>> {
+        AppGlobal.printRequestAuth("InteriorImg req", Gson().toJson(request))
         val interiorData = MutableLiveData<ArrayList<String>>()
         val call = RetrofitClient.apiInterface.interior360(request)
 
@@ -30,15 +32,16 @@ object InteriorRepository {
                 call: Call<ArrayList<String>>,
                 response: Response<ArrayList<String>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
-
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("interior Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     interiorData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("interior Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("interior Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

@@ -127,7 +127,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
-            callRefreshTokenApi()
+//            callRefreshTokenApi()
+            callDollarAPI()
 
             if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
                 edtPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
@@ -318,6 +319,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     } else {
                         pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                         pref?.setSubmitPriceTime("")
+                        data.successResult?.transactionInfo?.vehiclePromoCode =
+                            yearModelMakeData.discount
                         data.successResult?.transactionInfo?.vehiclePrice =
                             yearModelMakeData.price!!
                         data.successResult?.transactionInfo?.remainingBalance =

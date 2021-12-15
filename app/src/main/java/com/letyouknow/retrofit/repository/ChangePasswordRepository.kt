@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.ChangePasswordRequestData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -18,6 +19,7 @@ object ChangePasswordRepository {
         context: Context,
         request: ChangePasswordRequestData
     ): MutableLiveData<String> {
+        AppGlobal.printRequestAuth("changePass req", Gson().toJson(request))
         val editUserProfileData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.changePassword(request)
 
@@ -31,14 +33,16 @@ object ChangePasswordRepository {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>,
             ) {
-                Log.e("DEBUG : ", response.body().toString())
 
                 Constant.dismissLoader()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("changePass Resp ", response.toString())
                     editUserProfileData.value = response.body()!!.string()
                 } else if (response.code() == 401) {
+                    Log.v("changePass Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("changePass Resp ", response.toString())
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         AppGlobal.alertError(

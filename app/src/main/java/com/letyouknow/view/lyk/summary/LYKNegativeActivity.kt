@@ -122,17 +122,16 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvLightingCar -> {
-//                setLCDPrefData()
-                callRefreshTokenApi(true, false)
+                    callIsSoldAPI()
             }
             R.id.tvStep2 -> {
-                callRefreshTokenApi(false, true)
+                callCheckVehicleStockAPI(true)
             }
             R.id.btnModify -> {
-                callRefreshTokenApi(false, false)
+                callCheckVehicleStockAPI(false)
             }
             R.id.btnWait -> {
-                callRefreshTokenApi(false, false)
+                callCheckVehicleStockAPI(false)
             }
             R.id.tvViewOptions -> {
                 popupOption()
@@ -230,10 +229,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 userData?.authToken = data.auth_token!!
                 userData?.refreshToken = data.refresh_token!!
                 pref?.setUserData(Gson().toJson(userData))
-                if (isLCD)
-                    callIsSoldAPI(isLCD)
-                else
-                    callCheckVehicleStockAPI(isRadius)
+
             }
             )
         } else {
@@ -241,32 +237,23 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun callIsSoldAPI(isLCD: Boolean) {
+    private fun callIsSoldAPI() {
         if (Constant.isOnline(this)) {
             isSoldViewModel.isSoldCall(this, submitDealData.negativeResult?.vehicleInventoryID!!)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
-                        if (!isLCD) {
-                            pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                            pref?.setSubmitPriceTime("")
-                            startActivity(
-                                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
-                                    .newTask()
-                            )
-                        } else {
-                            clearOneDealNearData()
-                            startActivity(
-                                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU).clearTask()
-                                    .newTask()
-                            )
-                        }
+                        clearOneDealNearData()
+                        startActivity(
+                            intentFor<MainActivity>(
+                                Constant.ARG_SEL_TAB to Constant.TYPE_ONE_DEAL_NEAR_YOU,
+                                ARG_IS_LCD to true
+                            ).clearTask()
+                                .newTask()
+                        )
+
                     } else {
-                        if (isLCD) {
                             setLCDPrefData()
-                        } else {
-                            finish()
-                        }
                     }
 
                 }
@@ -375,15 +362,18 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             }
             Constant.showLoader(this)
             val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = 2
+            request[ApiConstant.Product] = 1
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
             request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
             request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] = "6000"
+            if (isRadius) {
+                request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
+                request[ApiConstant.SearchRadius1] =
+                    submitDealData.negativeResult?.minimalDistance!!
+            }
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))

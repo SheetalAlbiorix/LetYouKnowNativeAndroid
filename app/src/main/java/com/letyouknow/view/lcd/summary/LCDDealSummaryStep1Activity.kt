@@ -123,7 +123,8 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         backButton()
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match))
         scrollTouchListener()
-        callRefreshTokenApi()
+//        callRefreshTokenApi()
+        callImageIdAPI()
         onChangeInitials()
     }
 

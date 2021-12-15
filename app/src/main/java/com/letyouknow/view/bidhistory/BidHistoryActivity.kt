@@ -106,7 +106,6 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                     startActivity<TransactionCodeDetailActivity>(ARG_TRANSACTION_CODE to data.transactionCode)
                 } else {
                     callVehiclePackagesAPI(data)
-
                 }
             }
         }

@@ -1165,7 +1165,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             R.id.btnSearch -> {
                 // loadFragment(DealSummeryActivity(), getString(R.string.one_deal_near_you))
                 if (isValid())
-                    callRefreshTokenApi()
+                    callSearchFindDealAPI()
+//                    callRefreshTokenApi()
             }
             R.id.tvPackages -> {
                 arSelectPackage = ArrayList()

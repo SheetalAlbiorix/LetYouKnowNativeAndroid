@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.BidPriceData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -19,6 +20,7 @@ object BidHistoryRepository {
         context: Context
     ): MutableLiveData<ArrayList<BidPriceData>> {
         val findUCDDealData = MutableLiveData<ArrayList<BidPriceData>>()
+        AppGlobal.printRequestAuth("Bid Req", "no Any Request Get Api")
         val call = RetrofitClient.apiInterface.priceBid()
 
         call.enqueue(object : Callback<ArrayList<BidPriceData>> {
@@ -31,15 +33,18 @@ object BidHistoryRepository {
                 call: Call<ArrayList<BidPriceData>>,
                 response: Response<ArrayList<BidPriceData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                Log.v("DEBUG : ", response.toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("bid Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     findUCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("bid Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("bid Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     /* Toast.makeText(

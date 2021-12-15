@@ -60,7 +60,8 @@ class View360Fragment : BaseFragment() {
         if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
             val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
             interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-            callRefreshTokenApi(imageId!!)
+//            callRefreshTokenApi(imageId!!)
+            getInteriorAPI(imageId)
         }
     }
 
@@ -113,6 +114,7 @@ class View360Fragment : BaseFragment() {
 
     private fun getInteriorAPI(imageId: String?) {
         if (Constant.isOnline(requireContext())) {
+            Constant.showLoader(requireActivity())
             val request = HashMap<String, Any>()
             request[ApiConstant.ImageId] = imageId!!
             request[ApiConstant.ImageProduct] = ApiConstant.interior360Pano

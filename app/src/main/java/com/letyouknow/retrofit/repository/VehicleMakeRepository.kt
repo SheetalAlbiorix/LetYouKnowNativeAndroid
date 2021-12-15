@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehicleMakeData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -20,6 +21,10 @@ object VehicleMakeRepository {
         yearId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleMakeData>> {
+        AppGlobal.printRequestAuth(
+            "make req",
+            "productId: " + productId + ", yearId: " + yearId + ", zipCode: " + zipCode
+        )
         val getVehicleMakeData = MutableLiveData<ArrayList<VehicleMakeData>>()
         val call = RetrofitClient.apiInterface.getVehicleMake(productId, yearId, zipCode)
 
@@ -33,12 +38,13 @@ object VehicleMakeRepository {
                 call: Call<ArrayList<VehicleMakeData>>,
                 response: Response<ArrayList<VehicleMakeData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("make Resp : ", Gson().toJson(response.body()))
                     getVehicleMakeData.value = data!!
                 } else {
+                    Log.v("make Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

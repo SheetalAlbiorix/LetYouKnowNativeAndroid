@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehicleModelData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -21,6 +22,10 @@ object VehicleModelRepository {
         makeID: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleModelData>> {
+        AppGlobal.printRequestAuth(
+            "make req",
+            "productId: " + productId + ", yearId: " + yearId + ", makeID: " + makeID + ", zipCode: " + zipCode
+        )
         val getVehicleModelData = MutableLiveData<ArrayList<VehicleModelData>>()
         val call = RetrofitClient.apiInterface.getVehicleModels(productId, yearId, makeID, zipCode)
 
@@ -34,12 +39,13 @@ object VehicleModelRepository {
                 call: Call<ArrayList<VehicleModelData>>,
                 response: Response<ArrayList<VehicleModelData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("model Resp : ", Gson().toJson(response.body()))
                     getVehicleModelData.value = data!!
                 } else {
+                    Log.v("model Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

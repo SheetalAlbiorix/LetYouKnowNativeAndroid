@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object ForgotPasswordRepository {
         context: Context,
         request: HashMap<String, String>
     ): MutableLiveData<Void> {
+        AppGlobal.printRequestAuth("ForgotPass req", Gson().toJson(request))
         val getForgotPasswordData = MutableLiveData<Void>()
         val call = RetrofitClient.apiInterface.forgotPassword(request)
 
@@ -30,10 +32,10 @@ object ForgotPasswordRepository {
                 call: Call<Void>,
                 response: Response<Void>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("forgot Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     /* Toast.makeText(
                          context,
@@ -51,6 +53,7 @@ object ForgotPasswordRepository {
                      }, 3000)*/
 //                    forgotPasswordVo.value = ""
                 } else {
+                    Log.v("forgot Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

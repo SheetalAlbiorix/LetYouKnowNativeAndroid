@@ -156,7 +156,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
             binding.ucdData = ucdData
             binding.pendingUcdData = pendingUCDData
-            callRefreshTokenApi()
+//            callRefreshTokenApi()
+            callDollarAPI()
 
             val mNo = "(" + pendingUCDData.buyer?.phoneNumber
             val mno1 = AppGlobal.insertString(mNo, ")", 3)
@@ -311,6 +312,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private fun stopTimer() {
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
             hubConnection?.invoke("StopTimer")
+            removeHubConnection()
         }
     }
 
@@ -323,6 +325,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             hubConnection?.remove("UpdateDealTimer")
             hubConnection?.remove("UpdateVehicleState")
             hubConnection?.remove("CantSubscribeOnDeal")
+            hubConnection?.close()
         }
     }
 
@@ -426,32 +429,28 @@ Log.e("submitdealucd", Gson().toJson(map))
             submitDealUCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-
+                    removeHubConnection()
+                    data.successResult?.transactionInfo?.vehiclePromoCode = ucdData.discount
                     data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
-                        (ucdData.price!! - (799.0f + ucdData.discount!!))
+                        (ucdData.price!! - (799.0f + ucdData.discount))
 
-                    if (data.foundMatch!! && data.isDisplayedPriceValid!!) {
-                        clearPrefSearchDealData()
-                        startActivity<SubmitDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
-                            )
-                        )
-                    } else
-                        startActivity<UnlockedTryAnotherActivity>(
+                    if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
+                        startActivity<UCDNegativeActivity>(
                             ARG_UCD_DEAL to Gson().toJson(ucdData),
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_IMAGE_ID to imageId,
                             ARG_IS_SHOW_PER to isPercentShow
                         )
-                    /*startActivity<FinalUnlockedDealSummaryActivity>(
-                        ARG_SUBMIT_DEAL to Gson().toJson(data),
-                        ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                        ARG_IMAGE_URL to Gson().toJson(arImage),
-                        ARG_IMAGE_ID to imageId
-                    )*/
+                    } else {
+                        clearPrefSearchDealData()
+                        startActivity<SubmitDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
+                    }
                     finish()
                 }
                 )
@@ -640,9 +639,9 @@ Log.e("submitdealucd", Gson().toJson(map))
     override fun onDestroy() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
-        removeHubConnection()
+//        removeHubConnection()
 //        cancelTimer()
-        hubConnection?.close()
+//        hubConnection?.close()
         super.onDestroy()
     }
 
@@ -779,7 +778,6 @@ Log.e("submitdealucd", Gson().toJson(map))
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
-                            removeHubConnection()
                             callBuyerAPI()
                         }
                     }

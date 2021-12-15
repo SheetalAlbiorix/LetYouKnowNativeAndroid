@@ -301,6 +301,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 Constant.dismissLoader()
                 if (data.buyerId != 0) {
                     pref?.setLogin(true)
+                    val dataUser = pref?.getUserData()
+                    data.password = dataUser?.password!!
                     pref?.setUserData(Gson().toJson(data))
                     startActivity<MainActivity>()
                     finish()
@@ -393,7 +395,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         ivFacebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:$loginResult")
+                Log.d(TAG, "facebook:onSuccess:" + Gson().toJson(loginResult))
                 handleFacebookAccessToken(loginResult.accessToken)
             }
 
@@ -417,7 +419,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                    Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                    Log.d(TAG, "firebaseAuthWithGoogle:" + account.idToken)
                     account.idToken?.let { firebaseAuthWithGoogle(it) }
                 } catch (e: ApiException) {
                     // Google Sign In failed, update UI appropriately

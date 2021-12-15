@@ -19,6 +19,7 @@ object EditUserProfileRepository {
         context: Context,
         request: HashMap<String, String>
     ): MutableLiveData<EditUserProfileData> {
+        AppGlobal.printRequestAuth("editUser req", Gson().toJson(request))
         val editUserProfileData = MutableLiveData<EditUserProfileData>()
         val call = RetrofitClient.apiInterface.editUserProfile(AppGlobal.getUserID(), request)
 
@@ -36,12 +37,15 @@ object EditUserProfileRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("editUser Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     editUserProfileData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("editUser Resp ", response.toString())
                     Constant.dismissLoader()
                     AppGlobal.isAuthorizationFailed(context)
                 } else if (response.code() == 400) {
+                    Log.v("editUser Resp ", response.toString())
                     Constant.dismissLoader()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         AppGlobal.alertError(
@@ -49,6 +53,7 @@ object EditUserProfileRepository {
                             response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                         )
                 } else {
+                    Log.v("editUser Resp ", response.toString())
                     Constant.dismissLoader()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null) {
                         val msgList = Gson().fromJson(

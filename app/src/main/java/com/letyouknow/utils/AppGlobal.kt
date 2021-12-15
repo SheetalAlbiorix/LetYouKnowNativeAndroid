@@ -45,6 +45,11 @@ class AppGlobal {
         private var userData: LoginData? = null;
         var pref = LetYouKnowApp.getInstance()?.getAppPreferencesHelper()
 
+        fun printRequestAuth(key: String, request: String) {
+            Log.e("Auth", getAuthToken())
+            Log.e(key, request)
+        }
+
         fun isNotEmpty(str: String?): Boolean {
             return str != null && str != ""
         }
@@ -375,6 +380,11 @@ class AppGlobal {
         fun getUserID(): Int {
             userData = pref?.getUserData()!!
             return userData!!.buyerId!!;
+        }
+
+        fun getAuthToken(): String {
+            userData = pref?.getUserData()!!
+            return userData!!.authToken!!;
         }
 
         fun formatPhoneNo(phon: String?): String? {

@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object VehicleZipCodeRepository {
         context: Context,
         zipCode: String?
     ): MutableLiveData<Boolean> {
+        AppGlobal.printRequestAuth("zipcode req", "zipCode: " + zipCode)
         val getVehicleZipCodeData = MutableLiveData<Boolean>()
         val call = RetrofitClient.apiInterface.isValidZip(zipCode)
 
@@ -30,12 +32,13 @@ object VehicleZipCodeRepository {
                 call: Call<Boolean>,
                 response: Response<Boolean>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("zipcode Resp : ", Gson().toJson(response.body()))
                     getVehicleZipCodeData.value = data!!
                 } else {
+                    Log.v("zipcode Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

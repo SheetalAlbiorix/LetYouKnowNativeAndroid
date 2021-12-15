@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object LYKDollarRepository {
         context: Context,
         dealerId: String?
     ): MutableLiveData<String> {
+        AppGlobal.printRequestAuth("LYKDollar req", dealerId!!)
         val getDollarData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.getlykdollar(dealerId)
 
@@ -30,12 +32,13 @@ object LYKDollarRepository {
                 call: Call<String>,
                 response: Response<String>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("LYKDollar Resp ", Gson().toJson(response.body()))
                     getDollarData.value = data!!
                 } else {
+                    Log.v("LYKDollar Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

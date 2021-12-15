@@ -33,6 +33,10 @@ fun paymentMethodApiCall(
         time_on_page: String?,
         key: String?
     ): MutableLiveData<CardStripeData> {
+    AppGlobal.printRequestAuth(
+        "payment req",
+        "type: " + type + ", " + "cardnumber: " + cardnumber + ", " + "cardcvc: " + cardcvc + ", " + "cardexp_month: " + cardexp_month + ", " + "cardexp_year: " + cardexp_year + ", " + "billing_detailsaddresspostal_code: " + billing_detailsaddresspostal_code
+    )
         val paymentMethodData = MutableLiveData<CardStripeData>()
     val call = RetrofitClient.apiInterface.paymentMethods(
         type,
@@ -60,11 +64,14 @@ fun paymentMethodApiCall(
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("payment Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     paymentMethodData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("payment Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("payment Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     Log.e(

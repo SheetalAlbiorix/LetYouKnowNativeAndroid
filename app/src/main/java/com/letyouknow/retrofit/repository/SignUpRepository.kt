@@ -20,6 +20,7 @@ object SignUpRepository {
         context: Context,
         request: HashMap<String, String>
     ): MutableLiveData<SignupData> {
+        AppGlobal.printRequestAuth("SignUp req", Gson().toJson(request))
         val signupVo = MutableLiveData<SignupData>()
         val call = RetrofitClient.apiInterface.signUp(request)
 
@@ -37,8 +38,10 @@ object SignUpRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("signUp Resp ", Gson().toJson(response.body()))
                     signupVo.value = data!!
                 } else {
+                    Log.v("signUp Resp ", response.toString())
                     Constant.dismissLoader()
                     val data = response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     var signupVoError = SignupDataError()

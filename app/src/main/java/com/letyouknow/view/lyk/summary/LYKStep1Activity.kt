@@ -102,8 +102,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (!TextUtils.isEmpty(pref?.getRadius())) {
             Log.e("Data", pref?.getRadius()!!)
             callRadiusAPI()
-        } else {
-            callRadiusAPI()
         }
     }
 
@@ -116,10 +114,10 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
-        imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
-        zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
+        imageIdViewModel = ViewModelProvider(this)[ImageIdViewModel::class.java]
+        imageUrlViewModel = ViewModelProvider(this)[ImageUrlViewModel::class.java]
+        zipCodeModel = ViewModelProvider(this)[VehicleZipCodeViewModel::class.java]
         submitPendingDealViewModel =
             ViewModelProvider(this).get(SubmitPendingDealViewModel::class.java)
 
@@ -583,7 +581,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 setErrorVisible()
                     pref?.setRadius("")
                 if (isValid()) {
-                    callRefreshTokenApi()
+//                    callRefreshTokenApi()
+                    callSubmitPendingDealAPI()
                 }
             }
             R.id.ivBackDeal -> {

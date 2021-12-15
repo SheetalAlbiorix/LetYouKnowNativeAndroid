@@ -541,9 +541,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@{@string/buyer_info_detail1(data.buyerName,data.buyerAddress1,data.buyerCity,data.buyerState,data.buyerZipcode,data.buyerPhone,data.buyerEmail)}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_10sdp" />
+                    <!--                    android:text="@{@string/buyer_info_detail1(data.buyerName,data.buyerAddress1,data.buyerCity,data.buyerState,data.buyerZipcode,data.buyerPhone,data.buyerEmail)}"-->
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat

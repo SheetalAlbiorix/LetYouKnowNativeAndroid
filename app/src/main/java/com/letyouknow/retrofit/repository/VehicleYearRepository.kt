@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehicleYearData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -19,6 +20,7 @@ object VehicleYearRepository {
         productId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleYearData>> {
+        AppGlobal.printRequestAuth("Year req", "ProductId: " + productId + ", zipCode: " + zipCode)
         val getVehicleYearData = MutableLiveData<ArrayList<VehicleYearData>>()
         val call = RetrofitClient.apiInterface.getVehicleYears(productId, zipCode)
 
@@ -32,12 +34,13 @@ object VehicleYearRepository {
                 call: Call<ArrayList<VehicleYearData>>,
                 response: Response<ArrayList<VehicleYearData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("year Resp : ", Gson().toJson(response.body()))
                     getVehicleYearData.value = data!!
                 } else {
+                    Log.v("year Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

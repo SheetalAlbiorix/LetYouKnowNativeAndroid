@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehicleTrimData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -22,6 +23,10 @@ object VehicleTrimRepository {
         modelId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehicleTrimData>> {
+        AppGlobal.printRequestAuth(
+            "Trim req",
+            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", zipCode: " + zipCode
+        )
         val getVehicleTrimData = MutableLiveData<ArrayList<VehicleTrimData>>()
         val call =
             RetrofitClient.apiInterface.getVehicleTrims(productId, yearId, makeId, modelId, zipCode)
@@ -36,12 +41,13 @@ object VehicleTrimRepository {
                 call: Call<ArrayList<VehicleTrimData>>,
                 response: Response<ArrayList<VehicleTrimData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("trim Resp : ", Gson().toJson(response.body()))
                     getVehicleTrimData.value = data!!
                 } else {
+                    Log.v("trim Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

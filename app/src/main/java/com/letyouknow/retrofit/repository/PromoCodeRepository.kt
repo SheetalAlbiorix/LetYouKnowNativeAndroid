@@ -3,8 +3,10 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.PromoCodeData
 import com.letyouknow.retrofit.RetrofitClient
+import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +19,10 @@ object PromoCodeRepository {
         promoCode: String?,
         dealerId: String?
     ): MutableLiveData<PromoCodeData> {
+        AppGlobal.printRequestAuth(
+            "Promo req",
+            "promoCode: " + promoCode + ", " + "dealerId: " + dealerId
+        )
         val getPromoCodeData = MutableLiveData<PromoCodeData>()
         val call = RetrofitClient.apiInterface.validatePromoCode(promoCode, dealerId)
 
@@ -30,12 +36,13 @@ object PromoCodeRepository {
                 call: Call<PromoCodeData>,
                 response: Response<PromoCodeData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("promoCode Resp ", Gson().toJson(response.body()))
                     getPromoCodeData.value = data!!
                 } else {
+                    Log.v("promoCode Resp ", response.toString())
                     val loginVoData = PromoCodeData()
                     loginVoData?.discount = 0.0f
                     loginVoData?.promotionID = "-1"

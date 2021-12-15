@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -19,6 +20,7 @@ object FindUCDDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<ArrayList<FindUcdDealData>> {
+        AppGlobal.printRequestAuth("FindUCD req", Gson().toJson(request))
         val findUCDDealData = MutableLiveData<ArrayList<FindUcdDealData>>()
         val call = RetrofitClient.apiInterface.findUCDDeal(request)
 
@@ -32,15 +34,17 @@ object FindUCDDealRepository {
                 call: Call<ArrayList<FindUcdDealData>>,
                 response: Response<ArrayList<FindUcdDealData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("findUCD Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     findUCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("findUCD Resp ", response.toString())
                     isAuthorizationFailed(context)
                 } else {
+                    Log.v("findUCD Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

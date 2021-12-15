@@ -6,6 +6,7 @@ data class SubmitDealLCDData(
     val canDisplaySuccessResult: Boolean? = false,
     val foundMatch: Boolean? = false,
     val isBadRequest: Boolean? = false,
+    val somethingWentWrong: Boolean? = false,
     val isDisplayedPriceValid: Boolean? = false,
     val matchedDealerInfo: MatchedDealerInfo? = MatchedDealerInfo(),
     val messageList: ArrayList<String>? = ArrayList(),
@@ -93,6 +94,7 @@ data class TransactionInfo(
     val vehicleModel: String? = "",
     val vehiclePackages: ArrayList<VehiclePackage>? = ArrayList(),
     var vehiclePrice: Float? = 0.0f,
+    var vehiclePromoCode: Float? = 0.0f,
     val vehicleTrim: String? = "",
     val vehicleVIN: String? = "",
     val vehicleYear: String? = ""

@@ -158,7 +158,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
-            callRefreshTokenApi()
+//            callRefreshTokenApi()
+            callDollarAPI()
             if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
                 edtPhoneNumber.setText(formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
             else
@@ -302,6 +303,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun stopTimer() {
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
             hubConnection?.invoke("StopTimer")
+            removeHubConnection()
         }
     }
 
@@ -314,6 +316,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             hubConnection?.remove("UpdateDealTimer")
             hubConnection?.remove("UpdateVehicleState")
             hubConnection?.remove("CantSubscribeOnDeal")
+            hubConnection?.close()
         }
     }
 
@@ -454,34 +457,28 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
+                    removeHubConnection()
+                    data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
                     data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
 
-
-                    if (data.isDisplayedPriceValid!! && data.foundMatch!!) {
-                        clearOneDealNearData()
-                        startActivity<SubmitDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
-                            )
-                        )
-                        finish()
-                    } else {
+                    if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
                         startActivity<LCDNegativeActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
                             ARG_IMAGE_ID to imageId,
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_IS_SHOW_PER to isPercentShow
                         )
-                        /*startActivity<FinalOneDealNearSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(data),
-                            ARG_LCD_DEAL_GUEST to Gson().toJson(dataLCDDeal),
-                            ARG_IMAGE_ID to imageId,
-                            ARG_IMAGE_URL to Gson().toJson(arImage),
-                            ARG_IS_SHOW_PER to isPercentShow
-                        )*/
+                        finish()
+                    } else {
+                        clearOneDealNearData()
+                        startActivity<SubmitDealSummaryActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            )
+                        )
                         finish()
                     }
                 }
@@ -632,9 +629,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     override fun onDestroy() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
-        removeHubConnection()
+//        removeHubConnection()
 //        cancelTimer()
-        hubConnection?.close()
+//        hubConnection?.close()
         super.onDestroy()
     }
 
@@ -760,16 +757,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                /*if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    removeHubConnection()
-                    callCheckVehicleStockAPI()
-                } else*/if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
-                            removeHubConnection()
                             callBuyerAPI()
                         }
                     }

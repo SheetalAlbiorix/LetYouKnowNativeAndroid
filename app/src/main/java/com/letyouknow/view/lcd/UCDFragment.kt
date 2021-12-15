@@ -298,10 +298,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
      }
  */
     private fun callSearchFindDealAPI() {
-
         if (Constant.isOnline(requireActivity())) {
             Constant.showLoader(requireActivity())
-
             val request = HashMap<String, Any>()
             request[ApiConstant.vehicleYearID] = yearId
             request[ApiConstant.vehicleMakeID] = makeId
@@ -354,7 +352,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 if (isValid()) {
-                    callRefreshTokenApi()
+                    callSearchFindDealAPI()
+//                    callRefreshTokenApi()
                 }
             }
             R.id.tvPromo -> {

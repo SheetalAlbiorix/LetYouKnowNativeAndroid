@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.InteriorColorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -24,6 +25,10 @@ object InteriorColorRepository {
         exteriorColorId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<InteriorColorData>> {
+        AppGlobal.printRequestAuth(
+            "Interior req",
+            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "exteriorColorId: " + exteriorColorId + ", " + "zipCode: " + zipCode
+        )
         val getInteriorColorData = MutableLiveData<ArrayList<InteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleInteriorColors(
             productId,
@@ -49,8 +54,10 @@ object InteriorColorRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("interiorColor Resp ", Gson().toJson(response.body()))
                     getInteriorColorData.value = data!!
                 } else {
+                    Log.v("interiorColor Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

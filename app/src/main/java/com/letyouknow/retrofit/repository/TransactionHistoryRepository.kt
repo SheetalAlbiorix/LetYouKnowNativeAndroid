@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.TransactionHistoryData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -18,6 +19,7 @@ object TransactionHistoryRepository {
     fun transactionHistoryApiCall(
         context: Context
     ): MutableLiveData<ArrayList<TransactionHistoryData>> {
+        AppGlobal.printRequestAuth("transHistory req", "No Req")
         val findUCDDealData = MutableLiveData<ArrayList<TransactionHistoryData>>()
         val call = RetrofitClient.apiInterface.transactionsHistory()
 
@@ -31,15 +33,17 @@ object TransactionHistoryRepository {
                 call: Call<ArrayList<TransactionHistoryData>>,
                 response: Response<ArrayList<TransactionHistoryData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("TransHist Resp : ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     findUCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("TransHist Resp : ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("TransHist Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     /* Toast.makeText(

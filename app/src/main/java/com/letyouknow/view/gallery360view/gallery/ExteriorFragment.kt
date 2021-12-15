@@ -55,7 +55,8 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
             val imageId = arguments?.getString(ARG_IMAGE_ID)
             exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
             interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-            callRefreshTokenApi(imageId!!)
+            getExteriorAPI(imageId)
+//            callRefreshTokenApi(imageId!!)
         }
     }
 
@@ -84,6 +85,7 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
 
     private fun getExteriorAPI(imageId: String?) {
         if (Constant.isOnline(requireContext())) {
+            Constant.showLoader(requireActivity())
             val request = HashMap<String, Any>()
             request[ApiConstant.ImageId] = imageId!!
             request[ApiConstant.ImageProduct] = "Splash"

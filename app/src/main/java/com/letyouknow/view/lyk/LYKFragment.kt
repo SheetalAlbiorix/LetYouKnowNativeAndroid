@@ -950,6 +950,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             request[ApiConstant.exteriorColorId] = extColorId
             request[ApiConstant.interiorColorId] = intColorId
 
+            Log.e("RequestMin", Gson().toJson(request))
+
             minMSRPViewModel.minMSRPCall(requireActivity(), request)!!
                 .observe(this, Observer { dataMSRP ->
                     Constant.dismissLoader()

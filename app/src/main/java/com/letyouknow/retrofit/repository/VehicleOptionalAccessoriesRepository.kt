@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehicleAccessoriesData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -17,6 +18,7 @@ object VehicleOptionalAccessoriesRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<ArrayList<VehicleAccessoriesData>> {
+        AppGlobal.printRequestAuth("OptionalAcc req", Gson().toJson(request))
         val getOptionalData = MutableLiveData<ArrayList<VehicleAccessoriesData>>()
         val call = RetrofitClient.apiInterface.getVehicleDealerAccessories(
             request
@@ -32,12 +34,13 @@ object VehicleOptionalAccessoriesRepository {
                 call: Call<ArrayList<VehicleAccessoriesData>>,
                 response: Response<ArrayList<VehicleAccessoriesData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("Acc Resp : ", Gson().toJson(response.body()))
                     getOptionalData.value = data!!
                 } else {
+                    Log.v("Acc Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

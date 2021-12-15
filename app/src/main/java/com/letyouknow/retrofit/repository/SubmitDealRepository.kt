@@ -20,6 +20,7 @@ object SubmitDealRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitDealLCDData> {
+        AppGlobal.printRequestAuth("submitDeal req", Gson().toJson(request))
         val submitDealLCDData = MutableLiveData<SubmitDealLCDData>()
         val call = RetrofitClient.apiInterface.submitdeal(request)
 
@@ -33,15 +34,17 @@ object SubmitDealRepository {
                 call: Call<SubmitDealLCDData>,
                 response: Response<SubmitDealLCDData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("submitDeal Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     submitDealLCDData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("submitDeal Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("submitDeal Resp ", response.toString())
                     Constant.dismissLoader()
                    /* val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),

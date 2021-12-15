@@ -16,7 +16,7 @@ import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.letyouknow.databinding.ActivityUnlockedTryAnotherBinding
+import com.letyouknow.databinding.ActivityUcdNegativeBinding
 import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.model.PrefSearchDealData
 import com.letyouknow.model.YearModelMakeData
@@ -26,7 +26,7 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.pionymessenger.utils.Constant
-import kotlinx.android.synthetic.main.activity_unlocked_try_another.*
+import kotlinx.android.synthetic.main.activity_ucd_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
@@ -34,8 +34,8 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 
-class UnlockedTryAnotherActivity : BaseActivity(), View.OnClickListener {
-    lateinit var binding: ActivityUnlockedTryAnotherBinding
+class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
+    lateinit var binding: ActivityUcdNegativeBinding
     private lateinit var arImage: ArrayList<String>
     private lateinit var ucdData: FindUcdDealData
     private lateinit var yearModelMakeData: YearModelMakeData
@@ -45,12 +45,12 @@ class UnlockedTryAnotherActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_unlocked_try_another)
+        setContentView(R.layout.activity_ucd_negative)
         init()
     }
 
     private fun init() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_unlocked_try_another)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_ucd_negative)
         binding.title = ""
         checkVehicleStockViewModel =
             ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)

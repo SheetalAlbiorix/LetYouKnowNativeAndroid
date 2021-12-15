@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.pionymessenger.utils.Constant
@@ -17,6 +18,7 @@ object ImageIdRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<String> {
+        AppGlobal.printRequestAuth("ImageID req", Gson().toJson(request))
         val imageIdData = MutableLiveData<String>()
         val call = RetrofitClient.apiInterface.getImageId(request)
 
@@ -34,9 +36,11 @@ object ImageIdRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("imgID Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     imageIdData.value = data!!
                 } else {
+                    Log.v("imgID Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()

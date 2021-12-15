@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.VehiclePackagesData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -25,6 +26,10 @@ object VehiclePackagesRepository {
         interiorColorId: String?,
         zipCode: String?
     ): MutableLiveData<ArrayList<VehiclePackagesData>> {
+        AppGlobal.printRequestAuth(
+            "Package req",
+            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "exteriorColorId: " + exteriorColorId + ", " + "interiorColorId: " + interiorColorId + ", " + "zipCode: " + zipCode
+        )
         val getVehiclePackagesData = MutableLiveData<ArrayList<VehiclePackagesData>>()
         val call = RetrofitClient.apiInterface.getVehiclePackages(
             productId,
@@ -47,12 +52,13 @@ object VehiclePackagesRepository {
                 call: Call<ArrayList<VehiclePackagesData>>,
                 response: Response<ArrayList<VehiclePackagesData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("Package Resp : ", Gson().toJson(response.body()))
                     getVehiclePackagesData.value = data!!
                 } else {
+                    Log.v("Package Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

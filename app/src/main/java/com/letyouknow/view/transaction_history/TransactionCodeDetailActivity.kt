@@ -2,6 +2,7 @@ package com.letyouknow.view.transaction_history
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -100,6 +101,21 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                     if (data.buyerPhone?.contains("(") != true) {
                         data.buyerPhone = formatPhoneNo(data.buyerPhone)
                     }
+                    var add2 = data.buyerAddress2
+                    if (add2 != "null" && add2 != "NULL" && !TextUtils.isEmpty(add2?.trim())) {
+                        add2 += "\n"
+                    }
+                    var buyerInfo = ""
+                    buyerInfo =
+                        data.buyerName + "\n" +
+                                data.buyerAddress1 + "\n" +
+                                add2 +
+                                data.buyerCity + ", " +
+                                data.buyerState + " " +
+                                data.buyerZipcode + "\n" +
+                                data.buyerPhone + "\n" +
+                                data.buyerEmail
+                    tvBuyerInfo.text = buyerInfo
                     binding.data = data
                 }
                 )

@@ -3,6 +3,7 @@ package com.letyouknow.retrofit.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.letyouknow.model.CheckedPackageData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
@@ -18,6 +19,7 @@ object CheckedAccessoriesInventoryRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<CheckedPackageData> {
+        AppGlobal.printRequestAuth("checkAcc req", Gson().toJson(request))
         val checkedAccessoriesInventoryData = MutableLiveData<CheckedPackageData>()
         val call = RetrofitClient.apiInterface.checkVehicleAccessoriesInventory(request)
 
@@ -35,9 +37,11 @@ object CheckedAccessoriesInventoryRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("checkAcc Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     checkedAccessoriesInventoryData.value = data!!
                 } else {
+                    Log.v("checkAcc Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

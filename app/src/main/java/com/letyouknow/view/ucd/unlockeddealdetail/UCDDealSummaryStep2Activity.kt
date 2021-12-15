@@ -311,7 +311,8 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.btnProceedDeal -> {
                 setErrorVisible()
                 if (isValid()) {
-                    callRefreshTokenApi()
+                    callSubmitPendingUCDDealAPI()
+//                    callRefreshTokenApi()
                 }
             }
             R.id.ivBackDeal -> {

@@ -23,6 +23,7 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.pionymessenger.utils.Constant
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_TITLE
 import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
@@ -194,6 +195,9 @@ class MainActivity : BaseActivity(),
                     loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
                     item.isChecked = true
+                    if (intent.hasExtra(ARG_IS_LCD)) {
+                        showWarningDialog()
+                    }
                 }
                 TYPE_SEARCH_DEAL -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
@@ -207,6 +211,20 @@ class MainActivity : BaseActivity(),
             loadFragment(LYKFragment(), getString(R.string.submit_your_price))
         }
 
+    }
+
+    private fun showWarningDialog() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_car_not_available)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
     }
 
     override fun getViewActivity(): Activity {

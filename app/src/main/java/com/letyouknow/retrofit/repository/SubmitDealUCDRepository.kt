@@ -1,7 +1,6 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -20,6 +19,7 @@ object SubmitDealUCDRepository {
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<SubmitDealLCDData> {
+        AppGlobal.printRequestAuth("submitUCD req", Gson().toJson(request))
         val submitDealUCDData = MutableLiveData<SubmitDealLCDData>()
         val call = RetrofitClient.apiInterface.submitdealucd(request)
 
@@ -37,37 +37,41 @@ object SubmitDealUCDRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
+                    Log.v("submitUCD Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     submitDealUCDData.value = data!!
                 } else if (response.code() == 401) {
+                    Log.v("submitUCD Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
+                    Log.v("submitUCD Resp ", response.toString())
                     Constant.dismissLoader()
                     val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    if (!dataError.isBadRequest!! || dataError.messageList == null) {
-                        submitDealUCDData.value = dataError!!
-                    } else {
-                        var msgStr = ""
-                        var isFirst = true
+                    submitDealUCDData.value = dataError!!
+                    /*  if (!dataError.isBadRequest!! || dataError.messageList == null) {
+                          submitDealUCDData.value = dataError!!
+                      } else {
+                          var msgStr = ""
+                          var isFirst = true
 
-                        for (i in 0 until dataError?.messageList.size) {
-                            if (isFirst) {
-                                isFirst = false
-                                msgStr = dataError?.messageList[i]
-                            } else {
-                                msgStr = msgStr + ",\n" + dataError?.messageList[i]
-                            }
+                          for (i in 0 until dataError?.messageList.size) {
+                              if (isFirst) {
+                                  isFirst = false
+                                  msgStr = dataError?.messageList[i]
+                              } else {
+                                  msgStr = msgStr + ",\n" + dataError?.messageList[i]
+                              }
 
-                        }
-                        if (!TextUtils.isEmpty(msgStr))
-                            AppGlobal.alertError(
-                                context,
-                                msgStr
-                            )
-                    }
+                          }
+                          if (!TextUtils.isEmpty(msgStr))
+                              AppGlobal.alertError(
+                                  context,
+                                  msgStr
+                              )
+                      }*/
                 }
             }
         })
