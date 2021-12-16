@@ -13,32 +13,25 @@ import retrofit2.Response
 
 
 object CheckVehicleStockRepository {
-
     fun checkVehicleStockCall(
         context: Context,
         request: HashMap<String, Any>
     ): MutableLiveData<Boolean> {
         AppGlobal.printRequestAuth("checkStock req", Gson().toJson(request))
-        val minMsrpData = MutableLiveData<Boolean>()
+        val checkVehicleData = MutableLiveData<Boolean>()
         val call = RetrofitClient.apiInterface.checkVehicleStock(request)
 
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Log.v("checkStock Resp : ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
-                    minMsrpData.value = data!!
+                    checkVehicleData.value = data!!
                 } else {
                     Log.v("checkStock Resp : ", response.toString())
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
-                        AppGlobal.alertError(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                        )
+                    checkVehicleData.value = false
                 }
             }
 
@@ -47,6 +40,6 @@ object CheckVehicleStockRepository {
                 Log.v("DEBUG : ", t.message.toString())
             }
         })
-        return minMsrpData
+        return checkVehicleData
     }
 }

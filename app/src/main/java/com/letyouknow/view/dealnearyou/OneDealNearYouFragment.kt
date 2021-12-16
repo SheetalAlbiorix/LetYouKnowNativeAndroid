@@ -198,8 +198,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
                 prefOneDealNearYouData.zipCode = edtZipCode.text.toString().trim()
-                pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
-//                setPrefData()
+
+                setPrefData()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -1676,7 +1676,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 val str = prefOneDealNearYouData.zipCode.toString()
                 if (str.length == 5) {
                     callVehicleZipCodeAPI(str)
-                    onChangeZipCode()
+
                 } else if (str.length < 5) {
                     isValidZipCode = false
                     prefOneDealNearYouData.isZipCode = isValidZipCode!!
@@ -1687,8 +1687,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 setPrefData()
             } else {
                 edtZipCode.setText("")
-                onChangeZipCode()
             }
+            onChangeZipCode()
 
         } catch (e: Exception) {
 

@@ -176,7 +176,7 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.ExteriorColorID] = data.exteriorColorId!!
             request[ApiConstant.InteriorColorID] = data.interiorColorId!!
             request[ApiConstant.ZipCode1] = data.zipCode!!
-            request[ApiConstant.SearchRadius1] = "6000"
+            request[ApiConstant.SearchRadius1] = "100"
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
             Log.e("RequestStock", Gson().toJson(request))

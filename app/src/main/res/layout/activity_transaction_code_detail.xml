@@ -395,7 +395,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
-                            android:text="$0.00"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
 
@@ -421,7 +420,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
-                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.lykDollar)}"
+                            android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.lykDollar)}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
 
@@ -603,6 +602,7 @@
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
+                    android:id="@+id/tvCallNumber"
                     style="@style/regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

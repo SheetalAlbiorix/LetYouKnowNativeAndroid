@@ -30,6 +30,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.pionymessenger.utils.Constant.Companion.TYPE_SEARCH_DEAL
 import com.pionymessenger.utils.Constant.Companion.TYPE_SUBMIT_PRICE
+import com.stripe.android.Stripe
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
 import kotlinx.android.synthetic.main.layout_nav_drawer.*
@@ -88,7 +89,7 @@ class MainActivity : BaseActivity(),
         setNavDrawerData()
 
         bottomNavigation.setOnNavigationItemSelectedListener(this)
-
+        AppGlobal.getTimeZoneOffset()
 //        initHub()
     }
 
@@ -289,6 +290,7 @@ class MainActivity : BaseActivity(),
                      loadFragment(AccountFragment(), getString(R.string.account))
                  }*/
                     0 -> {
+//                        initStripe()
                         startActivity<BidHistoryActivity>()
                     }
                     1 -> {
@@ -407,4 +409,28 @@ class MainActivity : BaseActivity(),
           adapter.addFragment(accountFragment)
           viewPager.adapter = adapter
       }*/
+
+    private lateinit var stripe: Stripe
+    private fun initStripe() {
+        /* val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
+             .setLabelCustomization(
+                 PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                     .setTextFontSize(12)
+                     .build()
+             )
+             .build()
+         PaymentAuthConfig.init(
+             PaymentAuthConfig.Builder()
+                 .set3ds2Config(
+                     PaymentAuthConfig.Stripe3ds2Config.Builder()
+                         .setTimeout(5)
+                         .setUiCustomization(uiCustomization)
+                         .build()
+                 )
+                 .build()
+         )*/
+
+
+    }
+
 }

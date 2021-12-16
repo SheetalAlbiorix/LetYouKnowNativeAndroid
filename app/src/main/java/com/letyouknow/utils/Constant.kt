@@ -90,6 +90,7 @@ class Constant {
             return Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()
         }
 
+
         fun passwordValidator(strPassword: String): Boolean {
             return patternPassword.matcher(strPassword).matches()
         }

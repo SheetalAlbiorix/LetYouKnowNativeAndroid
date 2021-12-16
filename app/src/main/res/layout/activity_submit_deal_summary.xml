@@ -316,7 +316,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePromoCode)}"
+                            android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePromoCode)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -335,7 +335,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.lykDollar)}"
+                            android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.lykDollar)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -506,6 +506,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
+                    android:id="@+id/tvCallNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/number"

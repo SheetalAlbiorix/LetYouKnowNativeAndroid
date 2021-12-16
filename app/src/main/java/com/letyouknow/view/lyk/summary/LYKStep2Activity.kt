@@ -28,6 +28,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
@@ -277,7 +278,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             map[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
             map[ApiConstant.price] = yearModelMakeData.price!!
-            map[ApiConstant.timeZoneOffset] = "-330"
+            map[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             map[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
             map[ApiConstant.searchRadius] =
                 if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(

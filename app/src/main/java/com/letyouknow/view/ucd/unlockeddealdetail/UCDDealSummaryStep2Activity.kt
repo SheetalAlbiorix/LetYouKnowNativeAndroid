@@ -28,6 +28,7 @@ import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingUCDDealViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
@@ -280,7 +281,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 ).trim()
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = "-330"
+            request[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             request[ApiConstant.vehicleInventoryID] = dataUCDDeal.vehicleInventoryID!!
             request[ApiConstant.dealID] = dataUCDDeal.dealID!!
             request[ApiConstant.guestID] = dataUCDDeal.guestID!!

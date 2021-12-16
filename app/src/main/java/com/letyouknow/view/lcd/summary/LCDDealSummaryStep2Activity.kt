@@ -3,7 +3,6 @@ package com.letyouknow.view.lcd.summary
 import android.app.Activity
 import android.app.Dialog
 import android.content.res.ColorStateList
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -20,6 +19,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
@@ -32,6 +32,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.dashboard.MainActivity
@@ -55,6 +56,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
+import com.stripe.android.model.PaymentMethod
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
 import io.reactivex.CompletableObserver
@@ -65,6 +67,7 @@ import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -76,7 +79,7 @@ import kotlin.collections.HashMap
 
 
 class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentMethod> {
     lateinit var binding: ActivityLcdDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
@@ -432,9 +435,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
             map[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
             map[ApiConstant.price] = dataLCDDeal.price!!
-            map[ApiConstant.timeZoneOffset] = "-330"
+            map[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             map[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
-            map[ApiConstant.searchRadius] = "6000"
+            map[ApiConstant.searchRadius] = "100"
             map[ApiConstant.loanType] = dataLCDDeal.loanType!!
             map[ApiConstant.initial] = dataLCDDeal.initial!!
 //            map[ApiConstant.timeZoneOffset] = pendingUCDData.buyer?.buyerId!!
@@ -463,15 +466,47 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
-
-                    if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
+                    if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
                         startActivity<LCDNegativeActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
                             ARG_IMAGE_ID to imageId,
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_IS_SHOW_PER to isPercentShow
                         )
-                        finish()
+                    } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
+                        if (data.foundMatch!!) {
+                            clearOneDealNearData()
+                            startActivity<SubmitDealSummaryActivity>(
+                                ARG_SUBMIT_DEAL to Gson().toJson(
+                                    data
+                                )
+                            )
+                        } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
+                            startActivity<LCDNegativeActivity>(
+                                ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                                ARG_IMAGE_ID to imageId,
+                                ARG_IMAGE_URL to Gson().toJson(arImage),
+                                ARG_IS_SHOW_PER to isPercentShow
+                            )
+                        } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
+                            if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
+                                AppGlobal.alertError(
+                                    this,
+                                    data.paymentResponse.errorMessage
+                                )
+                        } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+
+                        }
+                    }
+                    finish()
+
+                    /*if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
+                        startActivity<LCDNegativeActivity>(
+                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_IS_SHOW_PER to isPercentShow
+                        )
                     } else {
                         clearOneDealNearData()
                         startActivity<SubmitDealSummaryActivity>(
@@ -479,8 +514,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 data
                             )
                         )
-                        finish()
-                    }
+
+                    }*/
                 }
                 )
         } else {
@@ -756,6 +791,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+//                initStripe()
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
@@ -792,40 +828,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitPendingLCDDealAPI() {
-        if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
-            val request = HashMap<String, Any>()
-            request[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
-            request[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
-            request[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
-            request[ApiConstant.vehicleTrimID] = dataLCDDeal.trimId!!
-            request[ApiConstant.vehicleExteriorColorID] = dataLCDDeal.exteriorColorId!!
-            request[ApiConstant.vehicleInteriorColorID] = dataLCDDeal.interiorColorId!!
-            request[ApiConstant.price] = dataLCDDeal.price!!
-            request[ApiConstant.zipCode] = dataLCDDeal.zipCode!!
-            request[ApiConstant.searchRadius] = "100"
-            request[ApiConstant.loanType] = dataLCDDeal.loanType!!
-            request[ApiConstant.initial] = dataLCDDeal.initial!!
-            request[ApiConstant.timeZoneOffset] = dataLCDDeal.timeZoneOffset!!
-            request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
-            request[ApiConstant.dealID] = dataLCDDeal.dealID!!
-            request[ApiConstant.guestID] = dataLCDDeal.guestID!!
-            request[ApiConstant.dealerAccessoryIDs] = Gson().toJson(dataLCDDeal.arAccessoriesId)
-            request[ApiConstant.vehiclePackageIDs] = Gson().toJson(dataLCDDeal.arPackageId)
-
-            submitPendingLCDDealViewModel.pendingDeal(this, request)!!
-                .observe(this, Observer { data ->
-                    Constant.dismissLoader()
-                    finish()
-                }
-                )
-
-
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
@@ -1233,17 +1235,46 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-    internal class HubConnectionTask() :
-        AsyncTask<HubConnection?, Void?, Void?>() {
-        override fun onPreExecute() {
-            super.onPreExecute()
+    private fun initStripe() {
+        cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
+        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
+        cardInputWidget.setExpiryDate(12, 22)
+
+        val params = cardInputWidget.paymentMethodCreateParams
+        if (params == null) {
+            return
         }
-
-        override fun doInBackground(vararg hubConnections: HubConnection?): Void? {
-            val hubConnection = hubConnections[0]
-            hubConnection?.start()?.blockingAwait()
-
-            return null
+        stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
+        lifecycleScope.launch {
+            runCatching {
+                stripe.createPaymentMethod(
+                    params,
+                    "",
+                    getString(R.string.stripe_publishable_key),
+                    this@LCDDealSummaryStep2Activity
+                )
+            }.fold(
+                onSuccess = { result ->
+                    // Create a PaymentIntent on the server with a PaymentMethod
+                    print("Created PaymentMethod")
+                    // print(result.id)
+//                    pay(result.id, null)
+                },
+                onFailure = {
+                    Log.e("Failer", "Payment failed Error: $it")
+                }
+            )
         }
     }
+
+    override fun onError(e: Exception) {
+        Log.e("Failer", "Payment failed Error: $e")
+    }
+
+    override fun onSuccess(result: PaymentMethod) {
+        print("Created PaymentMethod")
+        print(result.id)
+    }
+
+
 }

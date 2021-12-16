@@ -220,5 +220,5 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
 
     @POST("vehiclecriteria/issold")
     fun isSold(@Body request: String): Call<Boolean>
-//    fun isSold(@Body request: HashMap<String, Any>): Call<Boolean>
+
 }

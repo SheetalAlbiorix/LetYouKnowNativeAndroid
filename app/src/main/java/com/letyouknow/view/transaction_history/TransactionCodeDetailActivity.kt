@@ -14,6 +14,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityTransactionCodeDetailBinding
 import com.letyouknow.retrofit.viewmodel.TransactionCodeViewModel
+import com.letyouknow.utils.AppGlobal.Companion.callDialerOpen
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant
@@ -23,6 +24,8 @@ import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
+import java.text.NumberFormat
+import java.util.*
 
 class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTransactionCodeDetailBinding
@@ -38,13 +41,14 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         transactionCodeViewModel =
-            ViewModelProvider(this).get(TransactionCodeViewModel::class.java)
+            ViewModelProvider(this)[TransactionCodeViewModel::class.java]
         backButton()
         if (intent.hasExtra(ARG_TRANSACTION_CODE)) {
             val code = intent.getStringExtra(ARG_TRANSACTION_CODE)
             callTransactionCodeAPI(code)
         }
         btnFindYourCar.setOnClickListener(this)
+        tvCallNumber.setOnClickListener(this)
     }
 
     private fun backButton() {
@@ -105,9 +109,30 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                     if (add2 != "null" && add2 != "NULL" && !TextUtils.isEmpty(add2?.trim())) {
                         add2 += "\n"
                     }
+                    var buyerName = ""
+
+                    if (TextUtils.isEmpty(data.buyerName)) {
+                        buyerName = ""
+                    } else {
+                        val arName = data.buyerName?.split(" ")
+                        if (arName?.size!! > 0) {
+                            buyerName = when (arName.size) {
+                                3 -> {
+                                    arName[0] + " " + arName[1][0] + " " + arName[2] + "\n"
+                                }
+                                2 -> {
+                                    arName[0] + " " + arName[1] + "\n"
+                                }
+                                else -> {
+                                    arName[0] + "\n"
+                                }
+                            }
+
+                        }
+                    }
                     var buyerInfo = ""
                     buyerInfo =
-                        data.buyerName + "\n" +
+                        buyerName +
                                 data.buyerAddress1 + "\n" +
                                 add2 +
                                 data.buyerCity + ", " +
@@ -116,6 +141,12 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                                 data.buyerPhone + "\n" +
                                 data.buyerEmail
                     tvBuyerInfo.text = buyerInfo
+                    var promoCode = "-$0.00"
+                    if (!TextUtils.isEmpty(data.discount)) {
+                        promoCode = "-" + NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data.discount?.toFloat())
+                    }
+                    tvPromoCode.text = promoCode
                     binding.data = data
                 }
                 )
@@ -128,6 +159,9 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.btnFindYourCar -> {
                 onBackPressed()
+            }
+            R.id.tvCallNumber -> {
+                callDialerOpen(this, tvCallNumber.text.toString().trim())
             }
         }
     }

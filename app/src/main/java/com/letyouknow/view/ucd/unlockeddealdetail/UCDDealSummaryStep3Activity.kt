@@ -2,7 +2,6 @@ package com.letyouknow.view.ucd.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -17,8 +16,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +30,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.dashboard.MainActivity
@@ -400,7 +398,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
             map[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
             map[ApiConstant.price] = ucdData.price!!
-            map[ApiConstant.timeZoneOffset] = "-330"
+            map[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             map[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
             map[ApiConstant.searchRadius] =
                 if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius?.replace(
@@ -434,8 +432,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                     data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount))
-
-                    if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
+                    if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
                         startActivity<UCDNegativeActivity>(
                             ARG_UCD_DEAL to Gson().toJson(ucdData),
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -443,15 +440,52 @@ Log.e("submitdealucd", Gson().toJson(map))
                             ARG_IMAGE_ID to imageId,
                             ARG_IS_SHOW_PER to isPercentShow
                         )
-                    } else {
-                        clearPrefSearchDealData()
-                        startActivity<SubmitDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
+                    } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
+                        if (data.foundMatch!!) {
+                            clearPrefSearchDealData()
+                            startActivity<SubmitDealSummaryActivity>(
+                                ARG_SUBMIT_DEAL to Gson().toJson(
+                                    data
+                                )
                             )
-                        )
+                        } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
+                            startActivity<UCDNegativeActivity>(
+                                ARG_UCD_DEAL to Gson().toJson(ucdData),
+                                ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                                ARG_IMAGE_URL to Gson().toJson(arImage),
+                                ARG_IMAGE_ID to imageId,
+                                ARG_IS_SHOW_PER to isPercentShow
+                            )
+                        } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
+                            if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
+                                AppGlobal.alertError(
+                                    this,
+                                    data.paymentResponse.errorMessage
+                                )
+                        } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+
+//stripe 3d secure
+                        }
+
                     }
                     finish()
+                    /* if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
+                         startActivity<UCDNegativeActivity>(
+                             ARG_UCD_DEAL to Gson().toJson(ucdData),
+                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                             ARG_IMAGE_URL to Gson().toJson(arImage),
+                             ARG_IMAGE_ID to imageId,
+                             ARG_IS_SHOW_PER to isPercentShow
+                         )
+                     } else {
+                         clearPrefSearchDealData()
+                         startActivity<SubmitDealSummaryActivity>(
+                             ARG_SUBMIT_DEAL to Gson().toJson(
+                                 data
+                             )
+                         )
+                     }
+                     finish()*/
                 }
                 )
         } else {
@@ -811,40 +845,6 @@ Log.e("submitdealucd", Gson().toJson(map))
         }
     }
 
-    private fun callSubmitPendingUCDDealAPI() {
-        if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
-            val request = HashMap<String, Any>()
-            request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
-            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
-            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-            request[ApiConstant.price] = ucdData.price!!
-            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
-            request[ApiConstant.searchRadius] =
-                if (yearModelMakeData.radius!! == "ALL") "6000" else yearModelMakeData.radius!!.replace(
-                    " mi",
-                    ""
-                ).trim()
-            request[ApiConstant.loanType] = yearModelMakeData.loanType!!
-            request[ApiConstant.initial] = yearModelMakeData.initials!!
-            request[ApiConstant.timeZoneOffset] = "-330"
-            request[ApiConstant.vehicleInventoryID] = ucdData.vehicleInventoryID!!
-            request[ApiConstant.dealID] = ucdData.dealID!!
-            request[ApiConstant.guestID] = ucdData.guestID!!
-            Log.e("Request", Gson().toJson(request))
-            submitPendingUCDDealViewModel.pendingDeal(this, request)!!
-                .observe(this, Observer { data ->
-                    Constant.dismissLoader()
-                }
-                )
-
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
@@ -905,32 +905,6 @@ Log.e("submitdealucd", Gson().toJson(map))
         pref?.setSearchDealTime("")
     }
 
-    private val REQUEST_CODE_LOCATION = 1001
-
-    private fun checkPermission() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            // REQUEST_CODE_LOCATION should be defined on your app level
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_LOCATION)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_LOCATION && grantResults.isNotEmpty()
-            && grantResults[0] != PackageManager.PERMISSION_GRANTED
-        ) {
-            throw RuntimeException("Location services are required in order to " + "connect to a reader.")
-        }
-    }
 
     private fun setClearData() {
         edtCardNumber.setText("")

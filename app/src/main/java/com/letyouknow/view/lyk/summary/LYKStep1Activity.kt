@@ -25,6 +25,7 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
@@ -546,7 +547,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 if (radiusId == "ALL") "6000" else radiusId.replace(" mi", "")
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = "-330"
+            request[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             request[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
             request[ApiConstant.vehiclePackageIDs] = arJsonPackage
             Log.e("Request pendingDeal", Gson().toJson(request))

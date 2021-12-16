@@ -4,12 +4,14 @@ package com.letyouknow.utils
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -425,6 +427,27 @@ class AppGlobal {
             }
             setLayoutParam(dialog)
             dialog.show()
+        }
+
+        fun callDialerOpen(context: Context, number: String) {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:$number")
+            context.startActivity(intent)
+        }
+
+        fun getTimeZoneOffset(): String {
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
+            val currentLocalTime = calendar.time
+            val date = SimpleDateFormat("Z")
+            val localTime = date.format(currentLocalTime)
+            var min = "+330"
+            if (localTime.length == 5) {
+                val subTime = localTime.substring(1, 3)
+                val subMinutes = localTime.substring(3, 5)
+                min = "+" + ((subTime.toInt() * 60) + subMinutes.toInt())
+            }
+            println("${min} ${localTime}  TimeZone   ")
+            return min
         }
 
     }

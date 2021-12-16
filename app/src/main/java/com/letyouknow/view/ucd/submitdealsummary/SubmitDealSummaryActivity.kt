@@ -10,6 +10,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivitySubmitDealSummaryBinding
 import com.letyouknow.model.SubmitDealLCDData
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import kotlinx.android.synthetic.main.activity_submit_deal_summary.*
@@ -47,7 +48,7 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
                 pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName + "\n" +
                         submitDealData.successResult?.transactionInfo?.buyerAddress1 + "\n" +
                         add2 +
-                        submitDealData.successResult?.transactionInfo?.buyerCity + "," +
+                        submitDealData.successResult?.transactionInfo?.buyerCity + ", " +
                         submitDealData.successResult?.transactionInfo?.buyerState + " " +
                         submitDealData.successResult?.transactionInfo?.buyerZipcode + "\n" +
                         submitDealData.successResult?.transactionInfo?.buyerPhone + "\n" +
@@ -56,6 +57,7 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             tvBuyerInfo.text = buyerInfo
         }
         btnFindYourCar.setOnClickListener(this)
+        tvCallNumber.setOnClickListener(this)
         ivBack.visibility = View.GONE
         tvTitleTool.visibility = View.GONE
     }
@@ -71,6 +73,9 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.btnFindYourCar -> {
                 onBackPressed()
+            }
+            R.id.tvCallNumber -> {
+                AppGlobal.callDialerOpen(this, tvCallNumber.text.toString().trim())
             }
         }
     }

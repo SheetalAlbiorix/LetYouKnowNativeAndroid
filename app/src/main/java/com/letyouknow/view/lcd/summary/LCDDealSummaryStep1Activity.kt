@@ -28,6 +28,7 @@ import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
@@ -309,7 +310,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.searchRadius] = "100"
             request[ApiConstant.loanType] = financingStr
             request[ApiConstant.initial] = edtInitials.text.toString().trim()
-            request[ApiConstant.timeZoneOffset] = "-330"
+            request[ApiConstant.timeZoneOffset] = getTimeZoneOffset()
             request[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
             request[ApiConstant.dealID] = dataLCDDeal.dealID!!
             request[ApiConstant.guestID] = dataLCDDeal.guestID!!
