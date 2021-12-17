@@ -179,7 +179,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.setCancelable(true)
         dialogEditInfo.setCanceledOnTouchOutside(true)
         dialogEditInfo.setContentView(R.layout.dialog_edit_info)
-
         onStateChange()
         setEditInfoData()
         dialogEditInfo.run {
@@ -188,7 +187,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             setEmojiKeyBoard(edtLastName)
             setEmojiKeyBoard(edtEmail)
             setEmojiKeyBoard(edtConfirmEmail)
-            setEmojiKeyBoard(edtPhoneNumber)
             setEmojiKeyBoard(edtAddress1)
             setEmojiKeyBoard(edtAddress2)
             setEmojiKeyBoard(edtCity)
@@ -235,12 +233,14 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             edtCity.setText(userData?.city)
             edtZipCode.setText(userData?.zipcode)
             setState()
+
             if (userData?.phoneNumber?.contains("(") == false)
                 edtPhoneNumber.setText(formatPhoneNo(userData?.phoneNumber))
             else
                 edtPhoneNumber.setText(userData?.phoneNumber)
+            dialogEditInfo.edtPhoneNumber.filters =
+                arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
 
-            edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
         }
     }
 

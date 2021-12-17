@@ -1171,15 +1171,15 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         data.arAccessories = accessoriesStr
                         data.arAccessoriesId = arAccId
                         data.arPackageId = arPackageId
-                        if (data.dealID == "0") {
+                       /* if (data.dealID == "0") {
                             showWarningDialog()
-                        } else {
+                        } else {*/
                             startActivity<LCDDealSummaryStep1Activity>(
                                 ARG_LCD_DEAL_GUEST to Gson().toJson(
                                     data
                                 )
                             )
-                        }
+//                        }
                     }
                     )
             } else {

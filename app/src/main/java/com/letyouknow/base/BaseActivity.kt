@@ -16,7 +16,7 @@ import com.letyouknow.R
 import com.letyouknow.utils.AppGlobal
 
 public abstract class BaseActivity : AppCompatActivity(), BaseView {
-
+//    private lateinit var myReceiver: MyReceiver
     protected val TAG = this.javaClass.simpleName
     var progressDialog: ProgressDialog? = null
     var receiver: BroadcastReceiver? = null
@@ -51,7 +51,14 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         }
         intentFilter = IntentFilter()
         intentFilter?.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+//        broadcastIntent()
     }
+
+    /*  private fun broadcastIntent(){
+          myReceiver = MyReceiver()
+          registerReceiver(myReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+      }*/
+
 
     override fun onResume() {
 //        this.registerReceiver(receiver, intentFilter)
@@ -62,6 +69,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun onPause() {
 //        unregisterReceiver(receiver)
         super.onPause()
+//        unregisterReceiver(myReceiver)
     }
 
     override fun hideProgress() {

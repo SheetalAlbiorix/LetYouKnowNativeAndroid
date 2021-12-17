@@ -4,7 +4,9 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
@@ -37,6 +39,7 @@ import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.utils.MyReceiver
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.negative.LCDNegativeActivity
@@ -82,6 +85,7 @@ import kotlin.collections.HashMap
 
 class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentMethod> {
+    lateinit var myReceiver: MyReceiver
     lateinit var binding: ActivityLcdDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
@@ -202,22 +206,29 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         initHub()
         setEmojiOnEditText()
         setPowerSaving()
+        broadcastIntent()
     }
+
+    private fun broadcastIntent() {
+        myReceiver = MyReceiver()
+        registerReceiver(myReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
 
     private fun setPowerSaving() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             val powerSaveMode = powerManager.isPowerSaveMode
-            if (powerSaveMode) {
-                val intent = Intent()
-                val packageName = packageName
-                val pm = getSystemService(POWER_SERVICE) as PowerManager
+//            if (powerSaveMode) {
+            val intent = Intent()
+            val packageName = packageName
+            val pm = getSystemService(POWER_SERVICE) as PowerManager
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                     intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                     intent.data = Uri.parse("package:$packageName")
                     startActivity(intent)
                 }
-            }
+//            }
         }
     }
 
@@ -698,6 +709,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     override fun onDestroy() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
+        unregisterReceiver(myReceiver)
 //        removeHubConnection()
 //        cancelTimer()
 //        hubConnection?.close()
@@ -707,6 +719,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onPause() {
         super.onPause()
+
 //        cancelTimer()
     }
 

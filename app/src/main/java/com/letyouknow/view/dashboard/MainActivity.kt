@@ -47,6 +47,7 @@ class MainActivity : BaseActivity(),
     View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var adapterDrawer: DrawerListAdapter
+
     private var arDrawer: ArrayList<DrawerData> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +55,7 @@ class MainActivity : BaseActivity(),
         setContentView(R.layout.activity_main)
         init()
     }
+
 
     companion object {
         private lateinit var main: MainActivity
@@ -97,23 +99,27 @@ class MainActivity : BaseActivity(),
         bottomNavigation.setOnNavigationItemSelectedListener(this)
         AppGlobal.getTimeZoneOffset()
         setPowerSaving()
-//        initHub()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     private fun setPowerSaving() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             val powerSaveMode = powerManager.isPowerSaveMode
-            if (powerSaveMode) {
-                val intent = Intent()
-                val packageName = packageName
+//            if (powerSaveMode) {
+            val intent = Intent()
+            val packageName = packageName
                 val pm = getSystemService(POWER_SERVICE) as PowerManager
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                     intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                     intent.data = Uri.parse("package:$packageName")
                     startActivity(intent)
                 }
-            }
+//            }
         }
     }
 
