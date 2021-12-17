@@ -110,7 +110,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (isBid) {
             pref?.setBid(true)
         }
-        pref?.setRadius("")
         super.onBackPressed()
     }
 

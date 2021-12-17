@@ -30,6 +30,7 @@ import com.letyouknow.retrofit.viewmodel.SubmitPendingLCDDealViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
+import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
 import com.letyouknow.view.dashboard.MainActivity
@@ -127,6 +128,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
 //        callRefreshTokenApi()
         callImageIdAPI()
         onChangeInitials()
+        setEmojiKeyBoard(edtInitials)
     }
 
     private fun onChangeInitials() {

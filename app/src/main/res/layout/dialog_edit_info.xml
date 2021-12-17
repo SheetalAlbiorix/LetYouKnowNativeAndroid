@@ -69,7 +69,7 @@
                         android:padding="@dimen/_12sdp"
                         android:textColor="@color/color545d64"
                         android:textColorHint="@color/color545d64"
-                        android:inputType="text" />
+                        android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
 
                     <TextView
                         android:id="@+id/tvErrorFirstName"
@@ -219,6 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:padding="@dimen/_12sdp"
+                        android:maxLength="13"
                         android:background="@drawable/bg_edittext"
                         android:hint="@string/phone_number_required"
                         android:textColor="@color/color545d64"

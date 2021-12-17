@@ -43,7 +43,7 @@ data class MatchedDealerInfo(
 data class PaymentResponse(
     val errorMessage: String? = "",
     val hasError: Boolean? = false,
-    val payment_intent_client_secret: Any? = "",
+    val payment_intent_client_secret: String? = "",
     val requires_action: Boolean? = false
 )
 

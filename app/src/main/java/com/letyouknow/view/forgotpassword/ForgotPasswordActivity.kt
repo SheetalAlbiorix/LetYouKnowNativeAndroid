@@ -13,6 +13,7 @@ import com.letyouknow.databinding.ActivityForgotPasswordBinding
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ForgotPasswordViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
 import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
@@ -43,6 +44,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
         btnSubmit.setOnClickListener(this)
+        setEmojiKeyBoard(edtEmail)
     }
 
     override fun getViewActivity(): Activity {

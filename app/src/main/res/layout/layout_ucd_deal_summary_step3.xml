@@ -877,6 +877,8 @@
                     android:maxLength="19"
                     android:background="@drawable/bg_edittext"
                     android:digits="1234567890"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
                     android:drawableLeft="@drawable/ic_camera"
                     android:hint="@string/card_number"
                     android:inputType="number" />

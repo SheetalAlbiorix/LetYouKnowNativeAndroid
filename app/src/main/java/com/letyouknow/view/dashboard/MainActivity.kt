@@ -2,8 +2,14 @@ package com.letyouknow.view.dashboard
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,10 +24,10 @@ import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
-import com.letyouknow.view.lcd.UCDFragment
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
+import com.letyouknow.view.ucd.UCDFragment
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
@@ -90,7 +96,30 @@ class MainActivity : BaseActivity(),
 
         bottomNavigation.setOnNavigationItemSelectedListener(this)
         AppGlobal.getTimeZoneOffset()
+        setPowerSaving()
 //        initHub()
+    }
+
+    private fun setPowerSaving() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            val powerSaveMode = powerManager.isPowerSaveMode
+            if (powerSaveMode) {
+                val intent = Intent()
+                val packageName = packageName
+                val pm = getSystemService(POWER_SERVICE) as PowerManager
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                    intent.data = Uri.parse("package:$packageName")
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
     override fun onResume() {

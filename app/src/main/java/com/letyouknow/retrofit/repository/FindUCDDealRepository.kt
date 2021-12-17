@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -47,10 +48,14 @@ object FindUCDDealRepository {
                     Log.v("findUCD Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    AppGlobal.alertError(
-                        context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    if (!TextUtils.isEmpty(
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
                     )
+                        AppGlobal.alertError(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
                 }
             }
         })

@@ -24,6 +24,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
+import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
 import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
@@ -178,16 +179,30 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.setCancelable(true)
         dialogEditInfo.setCanceledOnTouchOutside(true)
         dialogEditInfo.setContentView(R.layout.dialog_edit_info)
+
         onStateChange()
         setEditInfoData()
-        dialogEditInfo.btnDialogSave.setOnClickListener {
-            if (isValid()) {
-                callEditUserProfileAPI()
+        dialogEditInfo.run {
+            setEmojiKeyBoard(edtFirstName)
+            setEmojiKeyBoard(edtMiddleName)
+            setEmojiKeyBoard(edtLastName)
+            setEmojiKeyBoard(edtEmail)
+            setEmojiKeyBoard(edtConfirmEmail)
+            setEmojiKeyBoard(edtPhoneNumber)
+            setEmojiKeyBoard(edtAddress1)
+            setEmojiKeyBoard(edtAddress2)
+            setEmojiKeyBoard(edtCity)
+
+            btnDialogSave.setOnClickListener {
+                if (isValid()) {
+                    callEditUserProfileAPI()
+                }
+            }
+            ivDialogEditClose.setOnClickListener {
+                dialogEditInfo.dismiss()
             }
         }
-        dialogEditInfo.ivDialogEditClose.setOnClickListener {
-            dialogEditInfo.dismiss()
-        }
+
         setLayoutParam(dialogEditInfo)
         dialogEditInfo.show()
     }
@@ -299,7 +314,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var dataNotification: NotificationOptionsData
     private fun callNotificationOptionsAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             notificationOptionsViewModel.notificationCall(requireActivity())!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -319,7 +338,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callEditUserProfileAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             val map: HashMap<String, String> = HashMap()
             map[ApiConstant.middleName] = dialogEditInfo.edtMiddleName.text.toString().trim()
             map[ApiConstant.firstName] = dialogEditInfo.edtFirstName.text.toString().trim()
@@ -368,7 +391,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callChangePasswordAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             val reqData = ChangePasswordRequestData()
             reqData.userName = pref?.getUserData()?.userName!!
             reqData.newPassword = dialogEditLogin.edtDialogNewPassword.text.toString().trim()
@@ -554,8 +581,11 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private fun callUserProfileAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                if (!Constant.progress.isShowing)
+                if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 userProfileViewModel.userProfileCall(requireActivity())!!
                     .observe(requireActivity(), Observer { data ->
                         setUserData(data)
@@ -570,6 +600,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
         }
     }
+
 
     private fun setUserData(data: UserProfileData) {
         try {
@@ -598,6 +629,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         }
     }
 
+    /*
+        private fun setKeyboardType(mTextView:EditText){
+        mTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+        }*/
     private var filter = InputFilter { source, start, end, dest, dstart, dend ->
         dialogEditInfo.run {
             var source = source

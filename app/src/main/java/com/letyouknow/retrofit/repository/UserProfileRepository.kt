@@ -34,7 +34,6 @@ object UserProfileRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Log.v("UserProf Resp : ", Gson().toJson(response.body()))
-                    Constant.dismissLoader()
                     buyerData.value = data!!
                 } else if (response.code() == 401) {
                     Log.v("UserProf Resp : ", response.toString())

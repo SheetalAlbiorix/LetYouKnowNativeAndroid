@@ -163,6 +163,17 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         onStateChange()
         initPayment()
         setOnChangeCard()
+        setEmojiOnEditText()
+    }
+
+    private fun setEmojiOnEditText() {
+        AppGlobal.setEmojiKeyBoard(edtGiftCard)
+        AppGlobal.setEmojiKeyBoard(edtFirstName)
+        AppGlobal.setEmojiKeyBoard(edtLastName)
+        AppGlobal.setEmojiKeyBoard(edtAddress1)
+        AppGlobal.setEmojiKeyBoard(edtAddress2)
+        AppGlobal.setEmojiKeyBoard(edtCity)
+        AppGlobal.setEmojiKeyBoard(edtMiddleName)
     }
 
     private lateinit var stripe: Stripe

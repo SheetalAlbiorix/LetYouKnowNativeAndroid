@@ -2,10 +2,12 @@ package com.letyouknow.view.lcd.summary
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
+import android.net.Uri
+import android.os.*
+import android.provider.Settings
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -124,15 +126,15 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun init() {
 
         checkVehicleStockViewModel =
-            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
-        lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
-        promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
-        paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
-        buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
-        submitDealLCDViewModel = ViewModelProvider(this).get(SubmitDealLCDViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            ViewModelProvider(this)[CheckVehicleStockViewModel::class.java]
+        lykDollarViewModel = ViewModelProvider(this)[LYKDollarViewModel::class.java]
+        promoCodeViewModel = ViewModelProvider(this)[PromoCodeViewModel::class.java]
+        paymentMethodViewModel = ViewModelProvider(this)[PaymentMethodViewModel::class.java]
+        buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
+        submitDealLCDViewModel = ViewModelProvider(this)[SubmitDealLCDViewModel::class.java]
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
         submitPendingLCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingLCDDealViewModel::class.java)
+            ViewModelProvider(this)[SubmitPendingLCDDealViewModel::class.java]
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -198,6 +200,35 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         initPayment()
         setOnChangeCard()
         initHub()
+        setEmojiOnEditText()
+        setPowerSaving()
+    }
+
+    private fun setPowerSaving() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            val powerSaveMode = powerManager.isPowerSaveMode
+            if (powerSaveMode) {
+                val intent = Intent()
+                val packageName = packageName
+                val pm = getSystemService(POWER_SERVICE) as PowerManager
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                    intent.data = Uri.parse("package:$packageName")
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun setEmojiOnEditText() {
+        AppGlobal.setEmojiKeyBoard(edtGiftCard)
+        AppGlobal.setEmojiKeyBoard(edtFirstName)
+        AppGlobal.setEmojiKeyBoard(edtMiddleName)
+        AppGlobal.setEmojiKeyBoard(edtLastName)
+        AppGlobal.setEmojiKeyBoard(edtAddress1)
+        AppGlobal.setEmojiKeyBoard(edtAddress2)
+        AppGlobal.setEmojiKeyBoard(edtCity)
     }
 
     private fun initHub() {
@@ -473,6 +504,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             ARG_IMAGE_URL to Gson().toJson(arImage),
                             ARG_IS_SHOW_PER to isPercentShow
                         )
+                        finish()
                     } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
                         if (data.foundMatch!!) {
                             clearOneDealNearData()
@@ -481,6 +513,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     data
                                 )
                             )
+                            finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
                             startActivity<LCDNegativeActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
@@ -488,6 +521,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 ARG_IMAGE_URL to Gson().toJson(arImage),
                                 ARG_IS_SHOW_PER to isPercentShow
                             )
+                            finish()
                         } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
                             if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
                                 AppGlobal.alertError(
@@ -495,10 +529,10 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-
+                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
                         }
                     }
-                    finish()
+
 
                     /*if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
                         startActivity<LCDNegativeActivity>(
@@ -1235,7 +1269,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-    private fun initStripe() {
+    private fun initStripe(key: String) {
         cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
         cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
         cardInputWidget.setExpiryDate(12, 22)
@@ -1250,7 +1284,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 stripe.createPaymentMethod(
                     params,
                     "",
-                    getString(R.string.stripe_publishable_key),
+                    key,
                     this@LCDDealSummaryStep2Activity
                 )
             }.fold(

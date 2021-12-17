@@ -1,4 +1,4 @@
-package com.letyouknow.view.lcd
+package com.letyouknow.view.ucd
 
 import android.os.Bundle
 import android.os.Handler
@@ -28,7 +28,6 @@ import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
-import com.letyouknow.view.ucd.UCDDealListStep1Activity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
@@ -374,6 +373,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         if (Constant.isOnline(requireActivity())) {
             if (!isCallingYear)
                 Constant.showLoader(requireActivity())
+
             zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -407,7 +407,11 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
+                if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 vehicleYearModel.getYear(requireActivity(), productId, "")!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.makeId))
@@ -455,8 +459,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spMake.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefSearchDealData.makeId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefSearchDealData.makeId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.modelId))
@@ -503,8 +512,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spModel.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefSearchDealData.modelId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefSearchDealData.modelId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.trimId))
@@ -551,8 +565,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spTrim.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefSearchDealData.trimId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefSearchDealData.trimId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 vehicleTrimModel.getTrim(
                     requireActivity(),
                     productId,
@@ -606,8 +625,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spExteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefSearchDealData.extColorId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefSearchDealData.extColorId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 exteriorColorModel.getExteriorColor(
                     requireActivity(),
                     productId,
@@ -673,8 +697,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spInteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefSearchDealData.intColorId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefSearchDealData.intColorId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 interiorColorModel.getInteriorColor(
                     requireActivity(),
                     productId,

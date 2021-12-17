@@ -23,6 +23,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
 import com.letyouknow.LetYouKnowApp
@@ -39,6 +40,7 @@ import org.jetbrains.anko.singleLine
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class AppGlobal {
     companion object {
@@ -440,14 +442,20 @@ class AppGlobal {
             val currentLocalTime = calendar.time
             val date = SimpleDateFormat("Z")
             val localTime = date.format(currentLocalTime)
-            var min = "+330"
+            var min = "-330"
             if (localTime.length == 5) {
                 val subTime = localTime.substring(1, 3)
                 val subMinutes = localTime.substring(3, 5)
-                min = "+" + ((subTime.toInt() * 60) + subMinutes.toInt())
+                min = "-" + ((subTime.toInt() * 60) + subMinutes.toInt())
             }
+
             println("${min} ${localTime}  TimeZone   ")
+
             return min
+        }
+
+        fun setEmojiKeyBoard(edtView: AppCompatEditText) {
+            edtView.filters = EmojiFilter.getFilter()
         }
 
     }

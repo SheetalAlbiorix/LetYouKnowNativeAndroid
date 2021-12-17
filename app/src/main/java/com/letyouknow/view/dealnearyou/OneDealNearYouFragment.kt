@@ -378,8 +378,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleZipCodeAPI(zipCode: String?) {
         try {
             if (Constant.isOnline(requireActivity())) {
-                if (!Constant.progress.isShowing)
+                if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
@@ -418,8 +421,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
 
             if (Constant.isOnline(requireActivity())) {
-                if (!Constant.progress.isShowing)
+                if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 vehicleYearModel.getYear(
                     requireActivity(),
                     productId,
@@ -470,8 +476,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
             spMake.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefOneDealNearYouData.makeId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefOneDealNearYouData.makeId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
+
                 vehicleMakeModel.getMake(
                     requireActivity(),
                     productId,
@@ -522,8 +534,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
             spModel.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefOneDealNearYouData.modelId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefOneDealNearYouData.modelId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 vehicleModelModel.getModel(
                     requireActivity(),
                     productId,
@@ -575,8 +592,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
             spTrim.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefOneDealNearYouData.trimId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefOneDealNearYouData.trimId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
+
                 vehicleTrimModel.getTrim(
                     requireActivity(),
                     productId,
@@ -629,8 +652,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
             spExteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefOneDealNearYouData.extColorId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefOneDealNearYouData.extColorId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
+
                 exteriorColorModel.getExteriorColor(
                     requireActivity(),
                     productId,
@@ -696,8 +725,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         try {
             spInteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
-                if (isEmpty(prefOneDealNearYouData.intColorId))
-                    Constant.showLoader(requireActivity())
+                if (isEmpty(prefOneDealNearYouData.intColorId)) {
+                    if (!Constant.isInitProgress()) {
+                        Constant.showLoader(requireActivity())
+                    } else if (!Constant.progress.isShowing) {
+                        Constant.showLoader(requireActivity())
+                    }
+                }
                 interiorColorModel.getInteriorColor(
                     requireActivity(),
                     productId,
@@ -831,7 +865,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callVehiclePackagesAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 packagesModel.getPackages(
                     requireActivity(),
                     productId,
@@ -876,7 +914,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callOptionalAccessoriesAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 val jsonArray = JsonArray()
                 for (i in 0 until adapterPackages.itemCount) {
                     if (adapterPackages.getItem(i).isSelect!!) {
@@ -931,7 +973,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callCheckedPackageAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 val jsonArray = JsonArray()
                 for (i in 0 until adapterPackages.itemCount) {
                     if (adapterPackages.getItem(i).isSelect!!) {
@@ -989,7 +1035,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private fun callCheckedAccessoriesAPI() {
         try {
             if (Constant.isOnline(requireActivity())) {
-                Constant.showLoader(requireActivity())
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 val jsonArray = JsonArray()
                 for (i in 0 until adapterOptions.itemCount) {
                     if (adapterOptions.getItem(i).isSelect!!) {

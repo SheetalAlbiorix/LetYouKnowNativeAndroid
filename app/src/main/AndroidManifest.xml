@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:hardwareAccelerated="true"
@@ -26,11 +27,13 @@
 
         <activity
             android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+            android:exported="false"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".view.ucd.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.unlockeddealdetail.UCDNegativeActivity"
@@ -40,11 +43,11 @@
             android:exported="false" />
         <activity
             android:name=".view.howitworkhelp.HowItWorkHelpWebViewActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.transaction_history.TransactionCodeDetailActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -53,7 +56,7 @@
         <!--
   <activity
               android:name=".view.CardValidationActivity"
-              android:exported="true" />
+              android:exported="false" />
         -->
         <activity
             android:name=".view.splash.SplashActivity"
@@ -74,119 +77,120 @@
 
         <activity
             android:name=".view.account.viewDollar.ViewDollarActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.submitdealsummary.SubmitDealSummaryActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.letyouknow.view.gallery360view.view360.View360Activty"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.letyouknow.view.gallery360view.gallery.zoomimage.ZoomImageActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.letyouknow.view.gallery360view.Gallery360TabActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.account.editrefer.referstep2.ReferStep2Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.UCDDealListStep1Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.account.editrefer.EditReferActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.account.editnotification.EditNotificationActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.account.editinfo.EditInformationActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.savedsearches.SavedSearchesActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.transaction_history.TransactionHistoryActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.account.editlogin.EditLoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.privacypolicy.PrivacyPolicyTermsCondActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.login.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.resetpassword.ResetPasswordActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.forgotpassword.ForgotPasswordActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.bidhistory.BidHistoryActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.signup.SignUpActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" /> <!--  -->
         <!-- android:name=".view.splash.SplashActivity" -->
         <activity
             android:name=".view.CardValidationActivity"
-            android:exported="true"
+            android:exported="false"
             android:noHistory="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".view.dashboard.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+            android:exported="false"
+            android:screenOrientation="portrait">
+
+
+        </activity>
+
         <activity
             android:name=".view.lcd.summary.LCDDealSummaryStep1Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.lcd.summary.LCDDealSummaryStep2Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.lyk.summary.LYKStep1Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.lyk.summary.LYKStep2Activity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.lyk.summary.LYKNegativeActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -201,7 +205,7 @@
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider246218917393547"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity
             android:name="com.facebook.CustomTabActivity"
@@ -215,6 +219,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
 
     </application>
 

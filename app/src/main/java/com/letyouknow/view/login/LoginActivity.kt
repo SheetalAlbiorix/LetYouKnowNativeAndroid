@@ -175,11 +175,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(
+                   /* Toast.makeText(
                         applicationContext, "Authentication failed",
                         Toast.LENGTH_SHORT
                     )
-                        .show()
+                        .show()*/
                 }
             })
 

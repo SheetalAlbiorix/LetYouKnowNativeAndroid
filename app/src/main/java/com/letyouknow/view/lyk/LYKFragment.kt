@@ -180,11 +180,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
             packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
             checkedPackageModel =
-                ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
+                ViewModelProvider(this)[CheckedPackageInventoryViewModel::class.java]
             checkedAccessoriesModel =
-                ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
+                ViewModelProvider(this)[CheckedAccessoriesInventoryViewModel::class.java]
             minMSRPViewModel =
-                ViewModelProvider(this).get(MinMSRPViewModel::class.java)
+                ViewModelProvider(this)[MinMSRPViewModel::class.java]
             setTimerPrefData()
 
             btnSearch.setOnClickListener(this)
@@ -322,7 +322,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         try {
             isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
+                if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
                 vehicleYearModel.getYear(
                     requireActivity(),
                     productId,
@@ -375,8 +379,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleMakeAPI() {
         spMake.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.makeId!!))
-                Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.makeId!!)) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+            }
             vehicleMakeModel.getMake(
                 requireActivity(),
                 productId,
@@ -424,8 +433,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleModelAPI() {
         spModel.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.modelId!!))
-                Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.modelId!!)) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+            }
             vehicleModelModel.getModel(
                 requireActivity(),
                 productId,
@@ -473,8 +487,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleTrimAPI() {
         spTrim.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.trimId!!))
-                Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.trimId!!)) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+            }
             vehicleTrimModel.getTrim(
                 requireActivity(),
                 productId,
@@ -523,8 +542,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callExteriorColorAPI() {
         spExteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.extColorId!!))
-                Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.extColorId!!)) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+            }
             exteriorColorModel.getExteriorColor(
                 requireActivity(),
                 productId,
@@ -586,8 +610,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callInteriorColorAPI() {
         spInteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.intColorId!!))
-                Constant.showLoader(requireActivity())
+            if (isEmpty(prefSubmitPriceData.intColorId!!)) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+            }
             interiorColorModel.getInteriorColor(
                 requireActivity(),
                 productId,
@@ -718,7 +747,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun callVehiclePackagesAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             packagesModel.getPackages(
                 requireActivity(),
                 productId,
@@ -759,7 +792,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun callOptionalAccessoriesAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             val jsonArray = JsonArray()
             for (i in 0 until adapterPackages.itemCount) {
                 if (adapterPackages.getItem(i).isSelect!!) {
@@ -810,7 +847,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun callCheckedPackageAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             val jsonArray = JsonArray()
             for (i in 0 until adapterPackages.itemCount) {
                 if (adapterPackages.getItem(i).isSelect!!) {
@@ -864,7 +905,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun callCheckedAccessoriesAPI() {
         if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
             val jsonArray = JsonArray()
             for (i in 0 until adapterOptions.itemCount) {
                 if (adapterOptions.getItem(i).isSelect!!) {
@@ -1061,6 +1106,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 prefSubmitPriceData.optionsData = ArrayList()
                 pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                 setCurrentTime()
+                setRadius()
                 dialogPackage.dismiss()
             }
             R.id.tvCancelPackage -> {
@@ -1137,6 +1183,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 prefSubmitPriceData.optionsData = adapterOptions.getAll()
                 pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                 setCurrentTime()
+                setRadius()
                 dialogOptions.dismiss()
             }
             R.id.tvResetOption -> {
@@ -1244,6 +1291,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
+                    setRadius()
                 }
             }
             R.id.spMake -> {
@@ -1274,6 +1322,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
+                    setRadius()
                 }
             }
             R.id.spModel -> {
@@ -1301,6 +1350,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
+                    setRadius()
                 }
 
             }
@@ -1326,6 +1376,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
+                    setRadius()
                 }
 
             }
@@ -1349,6 +1400,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
+                    setRadius()
                 }
 
             }
@@ -1369,6 +1421,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
+                    setRadius()
                 }
 
             }
@@ -1531,5 +1584,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     }
 
 
+    private fun setRadius() {
+        pref?.setRadius("")
+    }
 
 }

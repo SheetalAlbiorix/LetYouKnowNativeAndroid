@@ -2,10 +2,12 @@ package com.letyouknow.view.ucd.unlockeddealdetail
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
+import android.net.Uri
+import android.os.*
+import android.provider.Settings
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -199,6 +201,35 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         setOnChangeCard()
 
         initHub()
+        setEmojiOnEditText()
+        setPowerSaving()
+    }
+
+    private fun setPowerSaving() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+            val powerSaveMode = powerManager.isPowerSaveMode
+            if (powerSaveMode) {
+                val intent = Intent()
+                val packageName = packageName
+                val pm = getSystemService(POWER_SERVICE) as PowerManager
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                    intent.data = Uri.parse("package:$packageName")
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun setEmojiOnEditText() {
+        AppGlobal.setEmojiKeyBoard(edtGiftCard)
+        AppGlobal.setEmojiKeyBoard(edtFirstName)
+        AppGlobal.setEmojiKeyBoard(edtMiddleName)
+        AppGlobal.setEmojiKeyBoard(edtLastName)
+        AppGlobal.setEmojiKeyBoard(edtCity)
+        AppGlobal.setEmojiKeyBoard(edtAddress1)
+        AppGlobal.setEmojiKeyBoard(edtAddress2)
     }
 
     private fun initHub() {
@@ -440,6 +471,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                             ARG_IMAGE_ID to imageId,
                             ARG_IS_SHOW_PER to isPercentShow
                         )
+                        finish()
                     } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
                         if (data.foundMatch!!) {
                             clearPrefSearchDealData()
@@ -448,6 +480,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                                     data
                                 )
                             )
+                            finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
                             startActivity<UCDNegativeActivity>(
                                 ARG_UCD_DEAL to Gson().toJson(ucdData),
@@ -456,6 +489,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                                 ARG_IMAGE_ID to imageId,
                                 ARG_IS_SHOW_PER to isPercentShow
                             )
+                            finish()
                         } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
                             if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
                                 AppGlobal.alertError(
@@ -468,7 +502,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                         }
 
                     }
-                    finish()
+
                     /* if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
                          startActivity<UCDNegativeActivity>(
                              ARG_UCD_DEAL to Gson().toJson(ucdData),
@@ -801,12 +835,8 @@ Log.e("submitdealucd", Gson().toJson(map))
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
-
                 setErrorVisible()
-                /*if (tvSubmitStartOver.text == getString(R.string.try_again)) {
-                    removeHubConnection()
-                    callCheckVehicleStockAPI()
-                } else*/ if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
