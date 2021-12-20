@@ -44,7 +44,7 @@ object SubmitPendingDealRepository {
                     Log.v("PendingDeal Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
-                    Log.v("PendingDeal Resp ", response.toString())
+                //    Log.v("PendingDeal Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null) {

@@ -221,4 +221,7 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     @POST("vehiclecriteria/issold")
     fun isSold(@Body request: String): Call<Boolean>
 
+    /*  @GET("https://api.stripe.com/v1/payment_intents/{id}")
+      fun paymentIntent(@Path(value = "id") id:String?,@Query("key") key:String?,@Query("is_stripe_sdk") is_stripe_sdk:Boolean,@Query("client_secret") client_secret:String): Call<Boolean>
+  */
 }

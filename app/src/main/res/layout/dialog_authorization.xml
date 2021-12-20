@@ -56,10 +56,9 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingBottom="@dimen/_8sdp"
-                    android:text="@string/okay"
+                    android:text="@string/login"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
-
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

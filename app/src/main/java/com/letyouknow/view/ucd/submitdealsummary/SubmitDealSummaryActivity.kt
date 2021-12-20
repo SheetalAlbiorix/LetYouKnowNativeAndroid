@@ -12,6 +12,7 @@ import com.letyouknow.databinding.ActivitySubmitDealSummaryBinding
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.view.dashboard.MainActivity
+import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import kotlinx.android.synthetic.main.activity_submit_deal_summary.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -43,9 +44,43 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             if (add2 != "null" && add2 != "NULL" && !TextUtils.isEmpty(add2?.trim())) {
                 add2 += "\n"
             }
+
+            var buyerName = ""
+
+            if (TextUtils.isEmpty(submitDealData.successResult?.transactionInfo?.buyerName)) {
+                buyerName = ""
+            } else {
+                val arName = submitDealData.successResult?.transactionInfo?.buyerName?.split(" ")
+                if (arName?.size!! > 0) {
+                    buyerName = when (arName.size) {
+                        3 -> {
+                            val isMiddle = arName[1][0].let {
+                                Constant.middleNameValidator(
+                                    it.toString()
+                                )
+                            }
+
+                            val middleName = if (isMiddle) {
+                                (arName[1][0] + " ")
+                            } else {
+                                ""
+                            }
+
+                            arName[0] + " " + middleName + arName[2] + "\n"
+                        }
+                        2 -> {
+                            arName[0] + " " + arName[1] + "\n"
+                        }
+                        else -> {
+                            arName[0] + "\n"
+                        }
+                    }
+
+                }
+            }
             var buyerInfo = ""
             buyerInfo =
-                pref?.getUserData()?.firstName + " " + pref?.getUserData()?.lastName + "\n" +
+                buyerName + "\n" +
                         submitDealData.successResult?.transactionInfo?.buyerAddress1 + "\n" +
                         add2 +
                         submitDealData.successResult?.transactionInfo?.buyerCity + ", " +

@@ -458,6 +458,7 @@ class AppGlobal {
             edtView.filters = EmojiFilter.getFilter()
         }
 
+
     }
 
 }

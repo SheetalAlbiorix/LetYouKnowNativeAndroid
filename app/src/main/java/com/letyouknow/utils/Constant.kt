@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.letyouknow.R
@@ -94,6 +95,47 @@ class Constant {
         fun passwordValidator(strPassword: String): Boolean {
             return patternPassword.matcher(strPassword).matches()
         }
+
+        val patternMiddleName =
+            Pattern.compile("^[a-zA-Z]+")
+
+        fun middleNameValidator(str: String): Boolean {
+            return patternMiddleName.matcher(str).matches()
+        }
+
+        fun middleNameValidatorText(str: String): Boolean {
+            return patternMiddleName.matcher(str).matches()
+        }
+
+        private val firstNameValidator1 = Pattern.compile("^[A-Za-z]{0,50}?\$")
+        private val firstNameValidator2 = Pattern.compile("^[A-Za-z]{0,2}'[A-Za-z]{0,47}?\$")
+        private val firstNameValidator3 = Pattern.compile("^[A-Za-z]{0,25}? [A-Za-z]{0,24}?\$")
+
+        fun firstNameValidator(str: String): Boolean {
+            return !(firstNameValidator1.matcher(str).matches() || firstNameValidator2.matcher(str)
+                .matches() || firstNameValidator3.matcher(str).matches())
+        }
+
+        private val lastNameValidator1 = Pattern.compile("^[A-Za-z]{0,50}?\$")
+        private val lastNameValidator2 = Pattern.compile("^[A-Za-z]{0,2}'[A-Za-z]{0,47}?\$")
+        private val lastNameValidator3 = Pattern.compile("^[A-Za-z]{0,25}? [A-Za-z]{0,24}?\$/")
+        private val lastNameValidator4 = Pattern.compile("^[A-Za-z]{0,25}?\\-[A-Za-z]{1,24}?\$")
+
+
+        fun lastNameValidator(str: String): Boolean {
+            return !(lastNameValidator1.matcher(str).matches() || lastNameValidator2.matcher(str)
+                .matches() || lastNameValidator3.matcher(str)
+                .matches() || lastNameValidator4.matcher(str).matches())
+        }
+
+        private val cityValidator =
+            Pattern.compile("^[a-zA-Z\\u0080-\\u024F\\s\\/\\-\\)\\(\\`\\.\\\"\\']{3,50}\$")
+
+
+        fun cityValidator(str: String): Boolean {
+            return !(cityValidator.matcher(str).matches())
+        }
+
 
         fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
             val spannableString = SpannableString(this.text)
@@ -196,6 +238,166 @@ class Constant {
                     if (str?.length!! >= 0) {
                         edtText.setBackgroundResource(R.drawable.bg_edittext)
                         errorText.visibility = View.GONE
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+        }
+
+        fun onTextChangeFirstName(context: Context, edtText: EditText, errorText: TextView) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! >= 0) {
+                        if (firstNameValidator(str)) {
+                            Constant.setErrorBorder(edtText, errorText)
+                            errorText.text = context.getString(R.string.enter_valid_first_name)
+                            errorText.visibility = View.VISIBLE
+                        } else {
+                            edtText.setBackgroundResource(R.drawable.bg_edittext)
+                            errorText.visibility = View.GONE
+                        }
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+        }
+
+        fun onTextChangeMiddleName(context: Context, edtText: EditText) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! >= 0) {
+                        /* if (middleNameValidatorText(str)) {
+                             setErrorBorder(edtText, errorText)
+                             errorText.text = context.getString(R.string.enter_valid_middle_name)
+                             errorText.visibility = View.VISIBLE
+                         } else {
+                             edtText.setBackgroundResource(R.drawable.bg_edittext)
+                             errorText.visibility = View.GONE
+                         }*/
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    val str = edtText.text.toString().trim()
+
+                    if (s != null) {
+                        if (str.length > 0) {
+                            if (!str.substring(s.length - 1)
+                                    .isDigitsOnly() && middleNameValidatorText(str)
+                            ) {
+                                if (s.length > 1) {
+                                    edtText.setText(s.subSequence(1, s.length))
+                                    edtText.setSelection(1)
+                                }
+                            } else {
+                                edtText.setText("")
+                            }
+
+                        }
+                    }
+                }
+
+            })
+        }
+
+        fun onTextChangeLastName(context: Context, edtText: EditText, errorText: TextView) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! >= 0) {
+                        if (lastNameValidator(str)) {
+                            setErrorBorder(edtText, errorText)
+                            errorText.text = context.getString(R.string.enter_valid_last_name)
+                            errorText.visibility = View.VISIBLE
+                        } else {
+                            edtText.setBackgroundResource(R.drawable.bg_edittext)
+                            errorText.visibility = View.GONE
+                        }
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+        }
+
+        fun onTextChangeCity(context: Context, edtText: EditText, errorText: TextView) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! >= 0) {
+                        if (cityValidator(str)) {
+                            setErrorBorder(edtText, errorText)
+                            errorText.text = context.getString(R.string.enter_valid_City)
+                            errorText.visibility = View.VISIBLE
+                        } else {
+                            edtText.setBackgroundResource(R.drawable.bg_edittext)
+                            errorText.visibility = View.GONE
+                        }
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
                     } else {
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)

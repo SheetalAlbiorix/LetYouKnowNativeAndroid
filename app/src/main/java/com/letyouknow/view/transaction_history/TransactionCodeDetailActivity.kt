@@ -118,7 +118,18 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                         if (arName?.size!! > 0) {
                             buyerName = when (arName.size) {
                                 3 -> {
-                                    arName[0] + " " + arName[1][0] + " " + arName[2] + "\n"
+                                    val isMiddle = arName[1][0].let {
+                                        Constant.middleNameValidator(
+                                            it.toString()
+                                        )
+                                    }
+                                    val middleName = if (isMiddle) {
+                                        (arName[1][0] + " ")
+                                    } else {
+                                        ""
+                                    }
+
+                                    arName[0] + " " + middleName + arName[2] + "\n"
                                 }
                                 2 -> {
                                     arName[0] + " " + arName[1] + "\n"

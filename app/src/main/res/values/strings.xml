@@ -36,9 +36,14 @@
     <string name="remember_me">Remember me</string>
     <string name="first_name">First Name</string>
     <string name="first_name_required">First Name*</string>
+    <string name="enter_valid_first_name">Enter Valid First Name</string>
     <string name="middle_name">MI</string>
     <string name="last_name">Last Name</string>
-    <string name="last_name_required">Last Name*</string>
+    <string name="enter_valid_last_name">Enter Valid Last Name</string>
+    <string name="enter_valid_middle_name">Enter Valid Middle Name</string>
+    <string name="enter_valid_City">Enter Valid City</string>
+    <string name="enter_valid_zipcode">Enter Valid ZipCode</string>
+    <string name="last_name_required">Last Name</string>
     <string name="address_1">Address 1</string>
     <string name="address_2">Address 2</string>
     <string name="city">City</string>

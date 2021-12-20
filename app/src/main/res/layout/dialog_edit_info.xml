@@ -93,8 +93,17 @@
                         android:hint="@string/middle_name"
                         android:padding="@dimen/_12sdp"
                         android:textColor="@color/color545d64"
-                        android:textColorHint="@color/color545d64"
-                        android:inputType="text" />
+                        android:textColorHint="@color/color545d64" />
+
+                    <TextView
+                        android:id="@+id/tvErrorMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_valid_middle_name"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/regular"

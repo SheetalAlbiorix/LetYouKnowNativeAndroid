@@ -160,10 +160,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
         edtPhoneNumber.filters =
             arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
+
         onStateChange()
         initPayment()
         setOnChangeCard()
         setEmojiOnEditText()
+
     }
 
     private fun setEmojiOnEditText() {
@@ -184,6 +186,16 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onStateChange() {
+        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
+        Constant.onTextChangeMiddleName(this, edtMiddleName)
+        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
+        Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
+        Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
+        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+        Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
+        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
+        Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
+
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -250,7 +262,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = dataPendingDeal.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
-            map[ApiConstant.middleName] = edtFirstName.text.toString().trim()
+            map[ApiConstant.middleName] = edtMiddleName.text.toString().trim()
             map[ApiConstant.lastName] = edtLastName.text.toString().trim()
             map[ApiConstant.phoneNumber] = dataPendingDeal.buyer?.phoneNumber!!
             map[ApiConstant.email] = edtEmail.text.toString().trim()
@@ -314,21 +326,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 .observe(this, { data ->
                     Constant.dismissLoader()
 
-                    if (!data?.foundMatch!!) {
-                        startActivity<LYKNegativeActivity>(
-                            ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                                yearModelMakeData
-                            ),
-                            ARG_IMAGE_ID to imageId,
-                            ARG_IMAGE_URL to Gson().toJson(arImage),
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
-                            ), ARG_UCD_DEAL_PENDING to Gson().toJson(
-                                dataPendingDeal
-                            )
-                        )
-                        finish()
-                    } else {
+                    if (data?.foundMatch!!) {
                         pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                         pref?.setSubmitPriceTime("")
                         data.successResult?.transactionInfo?.vehiclePromoCode =
@@ -341,6 +339,47 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         startActivity<SubmitDealSummaryActivity>(
                             Constant.ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
+                            )
+                        )
+                        finish()
+
+                    } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
+                        if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
+                            AppGlobal.alertError(
+                                this,
+                                data.paymentResponse.errorMessage
+                            )
+                    } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+                        Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
+                    } else if (data.foundMatch && data.isBadRequest!!) {
+                        var msgStr = ""
+                        var isFirst = true
+
+                        for (i in 0 until data?.messageList?.size!!) {
+                            if (isFirst) {
+                                isFirst = false
+                                msgStr = data?.messageList[i]!!
+                            } else {
+                                msgStr = msgStr + ",\n" + data?.messageList[i]!!
+                            }
+
+                        }
+                        if (!TextUtils.isEmpty(msgStr))
+                            AppGlobal.alertError(
+                                this,
+                                msgStr
+                            )
+                    } else {
+                        startActivity<LYKNegativeActivity>(
+                            ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                                yearModelMakeData
+                            ),
+                            ARG_IMAGE_ID to imageId,
+                            ARG_IMAGE_URL to Gson().toJson(arImage),
+                            ARG_SUBMIT_DEAL to Gson().toJson(
+                                data
+                            ), ARG_UCD_DEAL_PENDING to Gson().toJson(
+                                dataPendingDeal
                             )
                         )
                         finish()
@@ -673,41 +712,22 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.first_name_required)
+                return false
+            }
+            (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.enter_valid_first_name)
                 return false
             }
             TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.last_name_required)
                 return false
             }
-            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
-                return false
-            }
-            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
-                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
-                  return false
-              }*/
-            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtCity, tvErrorCity)
-                return false
-            }
-
-            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
-                return false
-            }
-            TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
-                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
-                return false
-            }
-            state == "State" -> {
-                tvErrorState.visibility = View.VISIBLE
-                return false
-            }
-            (edtPhoneNumber.text.toString().length != 13) -> {
-                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
-                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+            (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.enter_valid_last_name)
                 return false
             }
             TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
@@ -720,6 +740,50 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                 return false
             }
+            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                return false
+            }
+            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
+                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
+                  return false
+              }*/
+            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.city_required)
+                return false
+            }
+            (Constant.cityValidator(edtCity.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.enter_valid_City)
+                return false
+            }
+
+            TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+
+            (edtPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                return false
+            }
+            state == "State" -> {
+                tvErrorState.visibility = View.VISIBLE
+                return false
+            }
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                return false
+            }
+            (edtZipCode.text.toString().length != 5) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                tvErrorZipCode.text = getString(R.string.enter_valid_zipcode)
+                return false
+            }
+
             else -> return true
         }
     }

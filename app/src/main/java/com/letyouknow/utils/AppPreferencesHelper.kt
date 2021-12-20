@@ -25,6 +25,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_SEARCH_DEAL = "KEY_SEARCH_DEAL"
         val KEY_SEARCH_DEAL_TIME = "KEY_SEARCH_DEAL_TIME"
         val KEY_RADIUS = "KEY_RADIUS"
+        val KEY_PAYMENT_URL = "KEY_PAYMENT_URL"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -253,4 +254,13 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
     fun setLCD(isLCD: Boolean) {
         prefs.putBoolean(KEY_IS_LCD, isLCD).apply()
     }
+
+    fun setPaymentUrl(url: String) {
+        prefs.putString(KEY_PAYMENT_URL, url).apply()
+    }
+
+    fun getPaymentUrl(): String {
+        return sharedpreferences.getString(KEY_PAYMENT_URL, "")!!
+    }
+
 }

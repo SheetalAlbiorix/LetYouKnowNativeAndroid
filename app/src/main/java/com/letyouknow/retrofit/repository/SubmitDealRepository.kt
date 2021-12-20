@@ -1,7 +1,6 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -72,7 +71,8 @@ object SubmitDealRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
                     )
-                    if (errorData.isBadRequest!! && errorData.messageList.isNullOrEmpty()) {
+                    submitDealLCDData.value = errorData
+                    /*if (errorData.isBadRequest!! && errorData.messageList.isNullOrEmpty()) {
                         submitDealLCDData.value = errorData
                     } else {
                         var msgStr = ""
@@ -92,7 +92,7 @@ object SubmitDealRepository {
                                 context,
                                 msgStr
                             )
-                    }
+                    }*/
 
                 }
             }

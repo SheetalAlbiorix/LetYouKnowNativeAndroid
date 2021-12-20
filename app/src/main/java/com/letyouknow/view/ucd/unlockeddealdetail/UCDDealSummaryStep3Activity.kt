@@ -507,7 +507,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-
+                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
 //stripe 3d secure
                         }
 
@@ -619,6 +619,16 @@ Log.e("submitdealucd", Gson().toJson(map))
     }
 
     private fun onStateChange() {
+        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
+        Constant.onTextChangeMiddleName(this, edtMiddleName)
+        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
+        Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
+        Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
+        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+        Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
+        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
+        Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
+
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -976,13 +986,34 @@ Log.e("submitdealucd", Gson().toJson(map))
             return false
         }
         when {
-
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.first_name_required)
+                return false
+            }
+            (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.enter_valid_first_name)
                 return false
             }
             TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.last_name_required)
+                return false
+            }
+            (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.enter_valid_last_name)
+                return false
+            }
+            TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
+                return false
+            }
+            !Constant.emailValidator(edtEmail.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                 return false
             }
             TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
@@ -995,35 +1026,37 @@ Log.e("submitdealucd", Gson().toJson(map))
               }*/
             TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.city_required)
+                return false
+            }
+            (Constant.cityValidator(edtCity.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.enter_valid_City)
                 return false
             }
 
-            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
-                return false
-            }
             TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
                 tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+
+            (edtPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
                 return false
             }
             state == "State" -> {
                 tvErrorState.visibility = View.VISIBLE
                 return false
             }
-            (edtPhoneNumber.text.toString().length != 13) -> {
-                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
-                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
                 return false
             }
-            TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
-                tvErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
-                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
-                return false
-            }
-            !Constant.emailValidator(edtEmail.text.toString().trim()) -> {
-                tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
-                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
+            (edtZipCode.text.toString().length != 5) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                tvErrorZipCode.text = getString(R.string.enter_valid_zipcode)
                 return false
             }
             else -> return true

@@ -23,7 +23,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
@@ -60,10 +59,10 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
+import com.stripe.android.PaymentAuthConfig
+import com.stripe.android.PaymentConfiguration
 import com.stripe.android.Stripe
-import com.stripe.android.model.PaymentMethod
-import com.stripe.android.model.Source
-import com.stripe.android.model.SourceParams
+import com.stripe.android.model.*
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -72,7 +71,6 @@ import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
-import kotlinx.coroutines.launch
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -373,6 +371,16 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onStateChange() {
+        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
+        Constant.onTextChangeMiddleName(this, edtMiddleName)
+        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
+        Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
+        Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
+        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+        Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
+        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
+        Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
+
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -540,6 +548,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
                             initStripe(data.paymentResponse.payment_intent_client_secret!!)
                         }
                     }
@@ -1019,10 +1028,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
-        /*if (!::cardStripeData.isInitialized) {
-            Toast.makeText(this, "enter valid data", Toast.LENGTH_SHORT).show()
-            return false
-        }*/
         when {
             edtCardZipCode.text.toString().trim().length != 5 -> {
                 tvErrorCardZip.visibility = View.VISIBLE
@@ -1031,41 +1036,22 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.first_name_required)
+                return false
+            }
+            (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.enter_valid_first_name)
                 return false
             }
             TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.last_name_required)
                 return false
             }
-            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
-                return false
-            }
-            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
-                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
-                  return false
-              }*/
-            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtCity, tvErrorCity)
-                return false
-            }
-
-            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
-                return false
-            }
-            TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
-                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
-                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
-                return false
-            }
-            state == "State" -> {
-                tvErrorState.visibility = View.VISIBLE
-                return false
-            }
-            (edtPhoneNumber.text.toString().length != 13) -> {
-                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
-                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+            (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.enter_valid_last_name)
                 return false
             }
             TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
@@ -1078,6 +1064,50 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                 return false
             }
+            TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                return false
+            }
+            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
+                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
+                  return false
+              }*/
+            TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.city_required)
+                return false
+            }
+            (Constant.cityValidator(edtCity.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtCity, tvErrorCity)
+                tvErrorCity.text = getString(R.string.enter_valid_City)
+                return false
+            }
+
+            TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+
+            (edtPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                return false
+            }
+            state == "State" -> {
+                tvErrorState.visibility = View.VISIBLE
+                return false
+            }
+            TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                return false
+            }
+            (edtZipCode.text.toString().length != 5) -> {
+                Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                tvErrorZipCode.text = getString(R.string.enter_valid_zipcode)
+                return false
+            }
+
             else -> return true
         }
     }
@@ -1291,7 +1321,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (params == null) {
             return
         }
-        stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
+        /*stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
         lifecycleScope.launch {
             runCatching {
                 stripe.createPaymentMethod(
@@ -1311,8 +1341,58 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Log.e("Failer", "Payment failed Error: $it")
                 }
             )
+        }*/
+        /* val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
+             .setLabelCustomization(
+                 PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                     .setTextFontSize(12)
+                     .build()
+             )
+             .build()
+         PaymentAuthConfig.init(
+             PaymentAuthConfig.Builder()
+                 .set3ds2Config(
+                     PaymentAuthConfig.Stripe3ds2Config.Builder()
+                         .setTimeout(5)
+                         .setUiCustomization(uiCustomization)
+                         .build()
+                 )
+                 .build()
+         )*/
+        val uiCustomization =
+            PaymentAuthConfig.Stripe3ds2UiCustomization.Builder().build()
+        PaymentAuthConfig.init(
+            PaymentAuthConfig.Builder()
+                .set3ds2Config(
+                    PaymentAuthConfig.Stripe3ds2Config.Builder()
+                        .setTimeout(6)
+                        .setUiCustomization(uiCustomization)
+                        .build()
+                )
+                .build()
+        )
+
+        if (params != null) {
+            val extraParams: MutableMap<String, String> = HashMap()
+            extraParams["setup_future_usage"] = "off_session"
+            val confirmParams = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(
+                params,
+                "pi_3K8j2qCeSnBm0gpF1UfYZI0N_secret_kvEbARJJH2VdyDs0fcWK7zlvQ\n",
+                null,
+                false,
+                extraParams
+            )
+            val context = applicationContext
+            stripe = Stripe(
+                context,
+                PaymentConfiguration.getInstance(context).publishableKey
+            )
+            stripe.confirmPayment(this, confirmParams)
         }
+
+
     }
+
 
     override fun onError(e: Exception) {
         Log.e("Failer", "Payment failed Error: $e")

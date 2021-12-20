@@ -35,7 +35,12 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_NOTIFICATIONS
+import com.pionymessenger.utils.Constant.Companion.middleNameValidator
 import com.pionymessenger.utils.Constant.Companion.onTextChange
+import com.pionymessenger.utils.Constant.Companion.onTextChangeCity
+import com.pionymessenger.utils.Constant.Companion.onTextChangeFirstName
+import com.pionymessenger.utils.Constant.Companion.onTextChangeLastName
+import com.pionymessenger.utils.Constant.Companion.onTextChangeMiddleName
 import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
@@ -207,15 +212,16 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun onStateChange() {
         dialogEditInfo.run {
-            onTextChange(requireActivity(), edtFirstName, tvErrorFirstName)
-            onTextChange(requireActivity(), edtMiddleName, tvErrorLastName)
+            onTextChangeFirstName(requireActivity(), edtFirstName, tvErrorFirstName)
+            onTextChangeMiddleName(requireActivity(), edtMiddleName)
+            onTextChangeLastName(requireActivity(), edtLastName, tvErrorLastName)
 //            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtConfirmEmail, tvErrorConfirmEmailAddress)
             onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtPhoneNumber, tvErrorPhoneNo)
             onTextChange(requireActivity(), edtAddress1, tvErrorAddress1)
             onTextChange(requireActivity(), edtAddress2, tvErrorAddress2)
-            onTextChange(requireActivity(), edtCity, tvErrorCity)
+            onTextChangeCity(requireActivity(), edtCity, tvErrorCity)
             onTextChange(requireActivity(), edtZipCode, tvErrorZipCode)
         }
     }
@@ -440,10 +446,22 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             when {
                 TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                    tvErrorFirstName.text = getString(R.string.first_name_required)
+                    return false
+                }
+                (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
+                    Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                    tvErrorFirstName.text = getString(R.string.enter_valid_first_name)
                     return false
                 }
                 TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                    tvErrorLastName.text = getString(R.string.last_name_required)
+                    return false
+                }
+                (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
+                    Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                    tvErrorLastName.text = getString(R.string.enter_valid_last_name)
                     return false
                 }
                 TextUtils.isEmpty(edtEmail.text.toString().trim()) -> {
@@ -451,30 +469,30 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
                 }
-                /*!Constant.emailValidator(edtEmail.text.toString().trim()) -> {
+                !Constant.emailValidator(edtEmail.text.toString().trim()) -> {
                     tvErrorEmailAddress.text = getString(R.string.enter_valid_email)
                     Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                     return false
                 }
-                 TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
-                     tvErrorConfirmEmailAddress.text = getString(R.string.enter_email_address_vali)
-                     Constant.setErrorBorder(edtConfirmEmail, tvErrorConfirmEmailAddress)
-                     return false
-                 }
-                 !Constant.emailValidator(edtConfirmEmail.text.toString().trim()) -> {
-                     tvErrorConfirmEmailAddress.text = getString(R.string.enter_valid_email)
-                     Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
-                     return false
-                 }
-                 (edtEmail.text.toString().trim() != edtConfirmEmail.text.toString().trim()) -> {
-                     tvErrorConfirmEmailAddress.text = getString(R.string.did_n_t_match_email)
-                     Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
-                     return false
-                 }
-                 TextUtils.isEmpty(edtUserName.text.toString().trim()) -> {
-                     Constant.setErrorBorder(edtUserName, tvErrorUserName)
-                     return false
-                 }*/
+                /*TextUtils.isEmpty(edtConfirmEmail.text.toString().trim()) -> {
+                   tvErrorConfirmEmailAddress.text = getString(R.string.enter_email_address_vali)
+                   Constant.setErrorBorder(edtConfirmEmail, tvErrorConfirmEmailAddress)
+                   return false
+               }
+               !Constant.emailValidator(edtConfirmEmail.text.toString().trim()) -> {
+                   tvErrorConfirmEmailAddress.text = getString(R.string.enter_valid_email)
+                   Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
+                   return false
+               }
+               (edtEmail.text.toString().trim() != edtConfirmEmail.text.toString().trim()) -> {
+                   tvErrorConfirmEmailAddress.text = getString(R.string.did_n_t_match_email)
+                   Constant.setErrorBorder(edtEmail, tvErrorConfirmEmailAddress)
+                   return false
+               }
+               TextUtils.isEmpty(edtUserName.text.toString().trim()) -> {
+                   Constant.setErrorBorder(edtUserName, tvErrorUserName)
+                   return false
+               }*/
                 TextUtils.isEmpty(edtPhoneNumber.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
                     tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
@@ -491,11 +509,26 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 }
                 TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtCity, tvErrorCity)
+                    tvErrorCity.text = getString(R.string.city_required)
                     return false
                 }
-
+                (Constant.cityValidator(edtCity.text.toString().trim())) -> {
+                    Constant.setErrorBorder(edtCity, tvErrorCity)
+                    tvErrorCity.text = getString(R.string.enter_valid_City)
+                    return false
+                }
+                state == "State" -> {
+                    tvErrorState.visibility = View.VISIBLE
+                    return false
+                }
                 TextUtils.isEmpty(edtZipCode.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                    tvErrorZipCode.text = getString(R.string.zipcode_required)
+                    return false
+                }
+                (edtZipCode.text.toString().length != 5) -> {
+                    Constant.setErrorBorder(edtZipCode, tvErrorZipCode)
+                    tvErrorZipCode.text = getString(R.string.enter_valid_zipcode)
                     return false
                 }
                 else -> return true
@@ -613,7 +646,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             tvFirstName.text = if (isEmpty(data.firstName)) "-" else {
                 data.firstName + " "
             } + if (isEmpty(data.middleName)) "" else {
-                data.middleName + " "
+                val isMiddle = data.middleName?.get(0)?.let { middleNameValidator(it.toString()) }
+                if (isMiddle!!) {
+                    (data.middleName?.get(0)?.toString() + " ")
+                } else ""
             } + if (isEmpty(data.lastName)) "" else data.lastName
             tvAddress.text =
                 if (isEmpty(data.address1)) "" else data.address1 + if (isEmpty(data.address2)) "" else {
@@ -673,6 +709,23 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     }
                 }
             } else {
+            }
+            source
+        }
+    }
+    private var filterMiddleName = InputFilter { source, start, end, dest, dstart, dend ->
+        dialogEditInfo.run {
+            var source = source
+            when {
+                source.length > 0 -> {
+                    ""
+                }
+                middleNameValidator(source.toString()) -> {
+                    source
+                }
+                else -> {
+                    ""
+                }
             }
             source
         }
