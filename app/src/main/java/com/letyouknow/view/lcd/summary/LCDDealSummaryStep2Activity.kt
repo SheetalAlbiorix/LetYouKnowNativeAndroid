@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
@@ -32,13 +33,10 @@ import com.letyouknow.databinding.ActivityLcdDealSummaryStep2Binding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
-import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.*
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
-import com.letyouknow.utils.CreditCardNumberTextWatcher
-import com.letyouknow.utils.CreditCardType
-import com.letyouknow.utils.MyReceiver
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.negative.LCDNegativeActivity
@@ -59,8 +57,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
-import com.stripe.android.PaymentAuthConfig
-import com.stripe.android.PaymentConfiguration
+import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
 import com.stripe.android.model.*
 import io.reactivex.CompletableObserver
@@ -71,10 +68,13 @@ import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
+import okhttp3.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.io.IOException
+import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -82,7 +82,7 @@ import kotlin.collections.HashMap
 
 
 class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentMethod> {
+    AdapterView.OnItemSelectedListener, Callback, ApiResultCallback<PaymentIntentResult> {
     lateinit var myReceiver: MyReceiver
     lateinit var binding: ActivityLcdDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
@@ -510,7 +510,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    removeHubConnection()
                     data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
                     data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
@@ -548,10 +547,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
                             initStripe(data.paymentResponse.payment_intent_client_secret!!)
+//                            stripeAc(data.paymentResponse.payment_intent_client_secret!!)
                         }
                     }
+                    removeHubConnection()
 
 
                     /*if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
@@ -1315,33 +1316,36 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun initStripe(key: String) {
         cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
         cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
-        cardInputWidget.setExpiryDate(12, 22)
+        cardInputWidget.setExpiryDate(1, 2022)
 
         val params = cardInputWidget.paymentMethodCreateParams
         if (params == null) {
             return
         }
-        /*stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
-        lifecycleScope.launch {
-            runCatching {
-                stripe.createPaymentMethod(
-                    params,
-                    "",
-                    key,
-                    this@LCDDealSummaryStep2Activity
-                )
-            }.fold(
-                onSuccess = { result ->
-                    // Create a PaymentIntent on the server with a PaymentMethod
-                    print("Created PaymentMethod")
-                    // print(result.id)
-//                    pay(result.id, null)
-                },
-                onFailure = {
-                    Log.e("Failer", "Payment failed Error: $it")
-                }
-            )
-        }*/
+        stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
+        startCheckout(params, key)
+        /*  val idKey = key.split("_secret_")
+          stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
+          lifecycleScope.launch {
+              runCatching {
+                  stripe.createPaymentMethod(
+                      params,
+                      idKey[0],
+                      key,
+                      this@LCDDealSummaryStep2Activity
+                  )
+              }.fold(
+                  onSuccess = { result ->
+                      // Create a PaymentIntent on the server with a PaymentMethod
+                      print("Created PaymentMethod")
+                      // print(result.id)
+  //                    pay(result.id, null)
+                  },
+                  onFailure = {
+                      Log.e("Failer", "Payment failed Error: $it")
+                  }
+              )
+          }*/
         /* val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
              .setLabelCustomization(
                  PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
@@ -1359,48 +1363,169 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                  )
                  .build()
          )*/
-        val uiCustomization =
-            PaymentAuthConfig.Stripe3ds2UiCustomization.Builder().build()
-        PaymentAuthConfig.init(
-            PaymentAuthConfig.Builder()
-                .set3ds2Config(
-                    PaymentAuthConfig.Stripe3ds2Config.Builder()
-                        .setTimeout(6)
-                        .setUiCustomization(uiCustomization)
-                        .build()
-                )
-                .build()
-        )
+        /* val uiCustomization =
+             PaymentAuthConfig.Stripe3ds2UiCustomization.Builder().build()
+         PaymentAuthConfig.init(
+             PaymentAuthConfig.Builder()
+                 .set3ds2Config(
+                     PaymentAuthConfig.Stripe3ds2Config.Builder()
+                         .setTimeout(6)
+                         .setUiCustomization(uiCustomization)
+                         .build()
+                 )
+                 .build()
+         )
 
-        if (params != null) {
-            val extraParams: MutableMap<String, String> = HashMap()
-            extraParams["setup_future_usage"] = "off_session"
-            val confirmParams = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(
-                params,
-                "pi_3K8j2qCeSnBm0gpF1UfYZI0N_secret_kvEbARJJH2VdyDs0fcWK7zlvQ\n",
-                null,
-                false,
-                extraParams
-            )
-            val context = applicationContext
-            stripe = Stripe(
-                context,
-                PaymentConfiguration.getInstance(context).publishableKey
-            )
-            stripe.confirmPayment(this, confirmParams)
-        }
-
+         if (params != null) {
+             val extraParams: MutableMap<String, String> = HashMap()
+             extraParams["setup_future_usage"] = "off_session"
+             val confirmParams = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(
+                 params,
+                 "pi_3K8j2qCeSnBm0gpF1UfYZI0N_secret_kvEbARJJH2VdyDs0fcWK7zlvQ",
+                 null,
+                 false,
+                 extraParams
+             )
+             val context = applicationContext
+             stripe = Stripe(
+                 context,
+                 PaymentConfiguration.getInstance(context).publishableKey
+             )
+             stripe.confirmPayment(this, confirmParams)
+         }*/
 
     }
 
+
+    private fun stripeAc(clientSecret: String) {
+        cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
+        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
+        cardInputWidget.setExpiryDate(12, 22)
+        val params = cardInputWidget.paymentMethodCreateParams
+        if (params == null) {
+            return
+        }
+        stripe = Stripe(
+            this,
+            "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
+        )
+        stripe.confirmPayment(
+            this,
+            ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params, clientSecret)
+        )
+        Log.e("Stripe", "3D secure")
+    }
+
+    private val BACKEND_URL = "https://api.stripe.com/v3/"
+    private val httpClient = OkHttpClient()
+    private var paymentIntentClientSecret: String? = null
+
+    private fun startCheckout(params: PaymentMethodCreateParams, keySecret: String) {
+        // Create a PaymentIntent by calling the server's endpoint.
+        /* val idKey = keySecret.split("_secret_")
+         val mediaType: MediaType = "application/json; charset=utf-8".toMediaType()
+         val amount: Double = 15000.00
+         val payMap: MutableMap<String, Any> = HashMap()
+         val itemMap: MutableMap<String, Any> = HashMap()
+         val itemList: MutableList<Map<String, Any>> = ArrayList()
+         payMap["currency"] = "usd" //dont change currency in testing phase otherwise it won't work
+         itemMap["id"] = idKey
+         itemMap["amount"] = amount
+         itemList.add(itemMap)
+         payMap["items"] = itemList
+         val json = Gson().toJson(payMap)
+         val body: RequestBody = RequestBody.create(mediaType,json )
+         val request: Request = Request.Builder()
+             .addHeader(
+                 "Authorization",
+                 "Bearer "+keySecret
+             ) //.addHeader("Authorization","Bearer sk_test_51HaDBECeSnBm0gpFYr32CeQF4lOudcFSXzt7XP4ZLw0dvLGS1yfkk9KEgjbtuq9rZNkp7hCUKEQDm32Qn8XdMlOh0056dBLbq7")
+             .url(BACKEND_URL.toString() + "payment_intents")
+             .post(body)
+             .build()
+         httpClient.newCall(request)
+             .enqueue(this)*/
+        val confirmParams = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(
+            params,
+            keySecret
+        )
+        stripe.confirmPayment(this, confirmParams)
+
+        // Hook up the pay button to the card widget and stripe instance
+        /* Button payButton = findViewById(R.id.payButton);
+        payButton.setOnClickListener((View view) -> {
+
+        });*/
+    }
+
+    private fun onPaymentSuccess(response: Response) {
+        val gson = Gson()
+        val type: Type = object : TypeToken<Map<String?, String?>?>() {}.type
+        val responseMap: Map<String, String> = gson.fromJson(
+            Objects.requireNonNull(response.body)?.string(),
+            type
+        )
+//        paymentIntentClientSecret =
+//            "sk_test_51HaDBECeSnBm0gpFYr32CeQF4lOudcFSXzt7XP4ZLw0dvLGS1yfkk9KEgjbtuq9rZNkp7hCUKEQDm32Qn8XdMlOh0056dBLbq7"
+        paymentIntentClientSecret = responseMap["clientSecret"];
+    }
+
+
+    /* override fun onError(e: Exception) {
+         Log.e("Failer", "Payment failed Error: $e")
+     }
+
+     override fun onSuccess(result: PaymentMethod) {
+         print("Created PaymentMethod")
+         print(result.id)
+     }*/
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Stripe", "requestCode")
+        stripe.onPaymentResult(requestCode, data, this@LCDDealSummaryStep2Activity)
+    }
+
+    override fun onFailure(call: Call, e: IOException) {
+    }
+
+    override fun onResponse(call: Call, response: Response) {
+    }
 
     override fun onError(e: Exception) {
-        Log.e("Failer", "Payment failed Error: $e")
+        Toast.makeText(
+            this,
+            "Payment failed" + Gson().toJson(e), Toast.LENGTH_LONG
+        ).show()
+        Log.e("PaymentFailed", Gson().toJson(e).toString())
     }
 
-    override fun onSuccess(result: PaymentMethod) {
-        print("Created PaymentMethod")
-        print(result.id)
+    override fun onSuccess(result: PaymentIntentResult) {
+        val paymentIntent: PaymentIntent = result.intent
+        val status: StripeIntent.Status? = paymentIntent.status
+        if (status == StripeIntent.Status.Succeeded) {
+            // Payment completed successfully
+            val gson = GsonBuilder().setPrettyPrinting().create()
+            Toast.makeText(
+                this,
+                "Payment completed" +
+                        gson.toJson(paymentIntent), Toast.LENGTH_LONG
+            ).show()
+            Log.e("completed", gson.toJson(paymentIntent))
+        } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
+            // Payment failed – allow retrying using a different payment method
+            Log.e("Failed", Objects.requireNonNull(paymentIntent.lastPaymentError).toString())
+            Toast.makeText(
+                this,
+                "Payment failed" + Objects.requireNonNull(paymentIntent.lastPaymentError),
+                Toast.LENGTH_LONG
+            ).show()
+            /* activity.displayAlert(
+                 "Payment failed",
+                 Objects.requireNonNull(paymentIntent.lastPaymentError).getMessage()
+             )*/
+        }
     }
 
 
