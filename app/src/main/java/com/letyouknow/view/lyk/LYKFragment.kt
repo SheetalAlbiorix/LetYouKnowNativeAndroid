@@ -799,7 +799,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             }
             val jsonArray = JsonArray()
             for (i in 0 until adapterPackages.itemCount) {
-                if (adapterPackages.getItem(i).isSelect!!) {
+                if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
                     jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
                 }
             }

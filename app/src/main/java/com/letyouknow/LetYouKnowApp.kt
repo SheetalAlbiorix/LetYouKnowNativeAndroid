@@ -30,7 +30,7 @@ class LetYouKnowApp : Application() {
         appPreferencesHelper = AppPreferencesHelper(this, getString(R.string.app_name))
         PaymentConfiguration.init(
             applicationContext,
-            "pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+            getString(R.string.stripe_publishable_key)
         )
 //        FirebaseApp.initializeApp(this)
 
