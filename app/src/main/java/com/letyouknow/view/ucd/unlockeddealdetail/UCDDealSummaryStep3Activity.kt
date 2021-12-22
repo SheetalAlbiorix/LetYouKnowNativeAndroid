@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.reflect.TypeToken
 import com.letyouknow.R
@@ -56,9 +57,12 @@ import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
+import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.model.PaymentIntent
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
+import com.stripe.android.model.StripeIntent
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -77,7 +81,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentIntentResult> {
     lateinit var myReceiver: MyReceiver
     lateinit var binding: ActivityUcdDealSummaryStep3Binding
     private lateinit var adapterCardList: CardListAdapter
@@ -507,8 +511,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
-//stripe 3d secure
+                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
                         }
 
                     }
@@ -829,7 +832,7 @@ Log.e("submitdealucd", Gson().toJson(map))
 //                llCardViewDetail.visibility = View.VISIBLE
             }
             R.id.btnSave -> {
-                val card = cardInputWidget.card
+                val card = cardInputWidget.cardParams
                 if (card == null) {
                     Toast.makeText(this, "Invalid card data", Toast.LENGTH_LONG).show()
                     return
@@ -1362,6 +1365,67 @@ Log.e("submitdealucd", Gson().toJson(map))
 
         }
         return true
+    }
+
+    private fun initStripe(key: String) {
+        stripe = Stripe(this, getString(R.string.stripe_publishable_key))
+        stripe.handleNextActionForPayment(this@UCDDealSummaryStep3Activity, key)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Stripe", "requestCode" + requestCode)
+        stripe.onPaymentResult(requestCode, data, this@UCDDealSummaryStep3Activity)
+    }
+
+    override fun onError(e: Exception) {
+        Toast.makeText(
+            this,
+            "Payment failed", Toast.LENGTH_LONG
+        ).show()
+        Log.e("PaymentFailed", Gson().toJson(e).toString())
+    }
+
+    override fun onSuccess(result: PaymentIntentResult) {
+        val paymentIntent: PaymentIntent = result.intent
+        val status: StripeIntent.Status? = paymentIntent.status
+        Log.e("Status", Gson().toJson(status))
+        when (status) {
+            StripeIntent.Status.Succeeded -> {
+                // Payment completed successfully
+                val gson = GsonBuilder().setPrettyPrinting().create()
+                Log.e("completed", gson.toJson(paymentIntent))
+//                callSubmitDealLCDAPI(true)
+            }
+            StripeIntent.Status.RequiresPaymentMethod -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "RequiresPaymentMethod",
+                    Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
+                )
+            }
+            StripeIntent.Status.Canceled -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e("Canceled", "Payment Canceled")
+
+            }
+            StripeIntent.Status.Processing -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "Processing",
+                    "Payment Processing"
+                )
+
+            }
+            StripeIntent.Status.RequiresConfirmation -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "RequiresConfirmation",
+                    "Payment Confirmation"
+                )
+
+            }
+        }
     }
 
 

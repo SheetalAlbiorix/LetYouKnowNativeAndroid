@@ -753,7 +753,7 @@
 
             <com.stripe.android.view.CardInputWidget
                 android:id="@+id/cardInputWidget"
-                android:visibility="visible"
+                android:visibility="gone"
                 style="@style/Stripe.CardInputWidget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -73,7 +73,6 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
-import java.io.IOException
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -81,7 +80,7 @@ import kotlin.collections.HashMap
 
 
 class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener, Callback, ApiResultCallback<PaymentIntentResult> {
+    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentIntentResult> {
     lateinit var myReceiver: MyReceiver
     lateinit var binding: ActivityLcdDealSummaryStep2Binding
     private lateinit var adapterCardList: CardListAdapter
@@ -460,7 +459,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    callSubmitDealLCDAPI()
+                    callSubmitDealLCDAPI(false)
                 }
                 )
         } else {
@@ -468,7 +467,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitDealLCDAPI() {
+    private fun callSubmitDealLCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val map: HashMap<String, Any> = HashMap()
@@ -546,9 +545,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                            Toast.makeText(this, "3D secure is open", Toast.LENGTH_SHORT).show()
-//                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
-//                            stripeAc(data.paymentResponse.payment_intent_client_secret!!)
+                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
                         }
                     }
                     removeHubConnection()
@@ -818,7 +815,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //                llCardViewDetail.visibility = View.VISIBLE
             }
             R.id.btnSave -> {
-                val card = cardInputWidget.card
+                val card = cardInputWidget.cardParams
                 if (card == null) {
                     Toast.makeText(this, "Invalid card data", Toast.LENGTH_LONG).show()
                     return
@@ -1313,70 +1310,25 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
 
     private fun initStripe(key: String) {
-        /* cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
-         cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
-         cardInputWidget.setExpiryDate(1, 2022)*/
-        /*val params = cardInputWidget.paymentMethodCreateParams
-        Log.e("cardParam",Gson().toJson(params))
-        if (params == null) {
-            return
-        }
-        stripe = Stripe(applicationContext, getString(R.string.stripe_publishable_key))
-        lifecycleScope.launch {
-            runCatching {
-                stripe.createPaymentMethod(params,"",key,this)
-            }.fold(
-                onSuccess = { result ->
-                    // Create a PaymentIntent on the server with a PaymentMethod
-                    print("Created PaymentMethod")
-//                    pay(result.id, null)
-                },
-                onFailure = {
-                    Log.e("Failure","Error: $it")
-//                    displayAlert(weakActivity.get(), "Payment failed", "Error: $it")
-                }
-            )
-        }*/
-//        startCheckout(params, key)
-        /*cardInputWidget.paymentMethodCreateParams?.let { pmCreateParams: PaymentMethodCreateParams ->
-            stripe.createPaymentMethod(pmCreateParams,"pm_1K97QwCeSnBm0gpFPYIAlSRh",
-               object : ApiResultCallback<PaymentMethod>{
-
-               }
-            )
-        }*/
+        stripe = Stripe(this, getString(R.string.stripe_publishable_key))
+        stripe.handleNextActionForPayment(this@LCDDealSummaryStep2Activity, key)
     }
 
 
-
-    private fun startCheckout(params: PaymentMethodCreateParams, keySecret: String) {
-
-        val confirmParams = ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(
-            params,
-            keySecret
-        )
-        stripe.confirmPayment(this, confirmParams)
-
-
-    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("Stripe", "requestCode")
+        Log.e("Stripe", "requestCode" + requestCode)
         stripe.onPaymentResult(requestCode, data, this@LCDDealSummaryStep2Activity)
     }
 
-    override fun onFailure(call: Call, e: IOException) {
-    }
 
-    override fun onResponse(call: Call, response: Response) {
-    }
 
     override fun onError(e: Exception) {
         Toast.makeText(
             this,
-            "Payment failed" + Gson().toJson(e), Toast.LENGTH_LONG
+            e.message, Toast.LENGTH_LONG
         ).show()
         Log.e("PaymentFailed", Gson().toJson(e).toString())
     }
@@ -1384,27 +1336,42 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        if (status == StripeIntent.Status.Succeeded) {
-            // Payment completed successfully
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            Toast.makeText(
-                this,
-                "Payment completed" +
-                        gson.toJson(paymentIntent), Toast.LENGTH_LONG
-            ).show()
-            Log.e("completed", gson.toJson(paymentIntent))
-        } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
-            // Payment failed – allow retrying using a different payment method
-            Log.e("Failed", Objects.requireNonNull(paymentIntent.lastPaymentError).toString())
-            Toast.makeText(
-                this,
-                "Payment failed" + Objects.requireNonNull(paymentIntent.lastPaymentError),
-                Toast.LENGTH_LONG
-            ).show()
-            /* activity.displayAlert(
-                 "Payment failed",
-                 Objects.requireNonNull(paymentIntent.lastPaymentError).getMessage()
-             )*/
+        Log.e("Status", Gson().toJson(status))
+        when (status) {
+            StripeIntent.Status.Succeeded -> {
+                // Payment completed successfully
+                val gson = GsonBuilder().setPrettyPrinting().create()
+                Log.e("completed", gson.toJson(paymentIntent))
+                callSubmitDealLCDAPI(true)
+            }
+            StripeIntent.Status.RequiresPaymentMethod -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "RequiresPaymentMethod",
+                    Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
+                )
+            }
+            StripeIntent.Status.Canceled -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e("Canceled", "Payment Canceled")
+
+            }
+            StripeIntent.Status.Processing -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "Processing",
+                    "Payment Processing"
+                )
+
+            }
+            StripeIntent.Status.RequiresConfirmation -> {
+                // Payment failed – allow retrying using a different payment method
+                Log.e(
+                    "RequiresConfirmation",
+                    "Payment Confirmation"
+                )
+
+            }
         }
     }
 
