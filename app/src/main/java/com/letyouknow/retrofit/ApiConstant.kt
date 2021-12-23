@@ -61,6 +61,7 @@ class ApiConstant {
         var country = "country"
         var buyerID = "buyerID"
         var card_last4 = "card_last4"
+        var payment_intent_id = "payment_intent_id"
         var payment_method_id = "payment_method_id"
         var card_brand = "card_brand"
         var exterior360 = "Exterior360"

@@ -1230,7 +1230,7 @@
                 android:digits="1234567890"
                 android:hint="@string/zip_code_required"
                 android:inputType="number"
-                android:maxLength="6"
+                android:maxLength="5"
                 android:text="@{pendingUCDData.buyer.zipcode}" />
 
             <TextView

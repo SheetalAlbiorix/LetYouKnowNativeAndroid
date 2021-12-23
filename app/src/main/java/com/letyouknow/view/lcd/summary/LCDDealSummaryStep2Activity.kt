@@ -34,6 +34,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.*
+import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
@@ -57,6 +58,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
+import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
 import com.stripe.android.model.*
@@ -473,9 +475,13 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
-            map[ApiConstant.payment_method_id] = cardStripeData.id!!
-            map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
-            map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            if (isStripe) {
+                map[ApiConstant.payment_intent_id] = paymentIntentId
+            } else {
+                map[ApiConstant.payment_method_id] = cardStripeData.id!!
+                map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
+                map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            }
             map[ApiConstant.vehicleYearID] = dataLCDDeal.yearId!!
             map[ApiConstant.vehicleMakeID] = dataLCDDeal.makeId!!
             map[ApiConstant.vehicleModelID] = dataLCDDeal.modelId!!
@@ -514,6 +520,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
                     Log.e("data Deal", Gson().toJson(data))
                     if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
+                        removeHubConnection()
                         startActivity<LCDNegativeActivity>(
                             ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
                             ARG_IMAGE_ID to imageId,
@@ -523,6 +530,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         finish()
                     } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
                         if (data.foundMatch!!) {
+                            removeHubConnection()
                             clearOneDealNearData()
                             startActivity<SubmitDealSummaryActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(
@@ -531,6 +539,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
+                            removeHubConnection()
                             startActivity<LCDNegativeActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
                                 ARG_IMAGE_ID to imageId,
@@ -544,11 +553,22 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
+
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                            if (data.paymentResponse.requires_action!!)
+                                initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                            else {
+                                removeHubConnection()
+                                startActivity<LCDNegativeActivity>(
+                                    ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                                    ARG_IMAGE_ID to imageId,
+                                    ARG_IMAGE_URL to Gson().toJson(arImage),
+                                    ARG_IS_SHOW_PER to isPercentShow
+                                )
+                                finish()
+                            }
                         }
                     }
-                    removeHubConnection()
 
 
                     /*if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
@@ -580,7 +600,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private lateinit var cardStripeData: CardStripeData
-    private fun callPaymentMethodAPI() {
+    private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -602,6 +622,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     cardStripeData = data
+                    if (isPayment)
+                        callBuyerAPI()
                 }
                 )
         } else {
@@ -852,7 +874,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
-                            callBuyerAPI()
+                            callPaymentMethodAPI(true)
                         }
                     }
                 }
@@ -1246,7 +1268,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         inputLength == 5 -> {
                             tvErrorCardZip.visibility = View.GONE
                             if (isValidCard()) {
-                                callPaymentMethodAPI()
+                                callPaymentMethodAPI(false)
                             }
                         }
                         inputLength < 5 -> {
@@ -1311,65 +1333,121 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun initStripe(key: String) {
         stripe = Stripe(this, getString(R.string.stripe_publishable_key))
+        val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
+            .setLabelCustomization(
+                PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                    .setTextFontSize(12)
+                    .build()
+            )
+            .build()
+        PaymentAuthConfig.init(
+            PaymentAuthConfig.Builder()
+                .set3ds2Config(
+                    PaymentAuthConfig.Stripe3ds2Config.Builder()
+                        .setTimeout(5)
+                        .setUiCustomization(uiCustomization)
+                        .build()
+                )
+                .build()
+        )
+        /*cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
+        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
+        cardInputWidget.setExpiryDate(1, 2022)
+        val params = cardInputWidget.paymentMethodCreateParams*/
+
+//        stripe.confirmPayment(this@LCDDealSummaryStep2Activity, ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params!!,key),authenticationContext: self)
+        secretKey = key
         stripe.handleNextActionForPayment(this@LCDDealSummaryStep2Activity, key)
     }
 
-
-
+    private var secretKey = ""
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("Stripe", "requestCode" + requestCode)
+        Log.e("Stripe", "requestCode " + requestCode)
+        cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
+        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
+        cardInputWidget.setExpiryDate(1, 2022)
+        val params = cardInputWidget.paymentMethodCreateParams
+
+        // stripe.confirmPayment(this@LCDDealSummaryStep2Activity, ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params!!,secretKey))
         stripe.onPaymentResult(requestCode, data, this@LCDDealSummaryStep2Activity)
     }
 
 
 
     override fun onError(e: Exception) {
-        Toast.makeText(
-            this,
-            e.message, Toast.LENGTH_LONG
-        ).show()
+        /* Toast.makeText(
+             this,
+             e.message, Toast.LENGTH_LONG
+         ).show()*/
         Log.e("PaymentFailed", Gson().toJson(e).toString())
+        alertError(
+            this,
+            "We are unable to authenticate your payment method. please choose a different payment method and try again"
+        )
     }
 
+    private var paymentIntentId = ""
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        Log.e("Status", Gson().toJson(status))
+        Log.e("Status", Gson().toJson(paymentIntent))
         when (status) {
             StripeIntent.Status.Succeeded -> {
                 // Payment completed successfully
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 Log.e("completed", gson.toJson(paymentIntent))
+                paymentIntentId = paymentIntent.id!!
                 callSubmitDealLCDAPI(true)
             }
             StripeIntent.Status.RequiresPaymentMethod -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresPaymentMethod",
                     Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
                 )
+                /* if(!TextUtils.isEmpty(paymentIntent.id)) {
+                     paymentIntentId = paymentIntent.id!!
+                     callSubmitDealLCDAPI(true)
+                 }else{
+                     Toast.makeText(this,"Requires Payment Method",Toast.LENGTH_LONG).show()
+                 }*/
+                AppGlobal.alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
             }
             StripeIntent.Status.Canceled -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e("Canceled", "Payment Canceled")
-
+//                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
+                alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
             }
             StripeIntent.Status.Processing -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "Processing",
                     "Payment Processing"
                 )
-
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealLCDAPI(true)
+                } else {
+                    Toast.makeText(this, "Payment Processing", Toast.LENGTH_LONG).show()
+                }
             }
             StripeIntent.Status.RequiresConfirmation -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresConfirmation",
                     "Payment Confirmation"
                 )
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealLCDAPI(true)
+                } else {
+                    Toast.makeText(this, "Requires Payment Confirmation", Toast.LENGTH_LONG).show()
+                }
 
             }
         }

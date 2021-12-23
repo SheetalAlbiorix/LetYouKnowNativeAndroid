@@ -418,7 +418,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    callSubmitDealLCDAPI()
+                    callSubmitDealUCDAPI(false)
 
                 }
                 )
@@ -427,15 +427,19 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitDealLCDAPI() {
+    private fun callSubmitDealUCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = pendingUCDData.dealID!!
             map[ApiConstant.buyerID] = pendingUCDData.buyer?.buyerId!!
-            map[ApiConstant.payment_method_id] = cardStripeData.id!!
-            map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
-            map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            if (isStripe) {
+                map[ApiConstant.payment_intent_id] = paymentIntentId
+            } else {
+                map[ApiConstant.payment_method_id] = cardStripeData.id!!
+                map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
+                map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            }
             map[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
@@ -472,12 +476,12 @@ Log.e("submitdealucd", Gson().toJson(map))
             submitDealUCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    removeHubConnection()
                     data.successResult?.transactionInfo?.vehiclePromoCode = ucdData.discount
                     data.successResult?.transactionInfo?.vehiclePrice = ucdData.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (ucdData.price!! - (799.0f + ucdData.discount))
                     if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
+                        removeHubConnection()
                         startActivity<UCDNegativeActivity>(
                             ARG_UCD_DEAL to Gson().toJson(ucdData),
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -488,6 +492,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                         finish()
                     } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
                         if (data.foundMatch!!) {
+                            removeHubConnection()
                             clearPrefSearchDealData()
                             startActivity<SubmitDealSummaryActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(
@@ -496,6 +501,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
+                            removeHubConnection()
                             startActivity<UCDNegativeActivity>(
                                 ARG_UCD_DEAL to Gson().toJson(ucdData),
                                 ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -511,7 +517,19 @@ Log.e("submitdealucd", Gson().toJson(map))
                                     data.paymentResponse.errorMessage
                                 )
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                            if (data.paymentResponse.requires_action!!)
+                                initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                            else {
+                                removeHubConnection()
+                                startActivity<UCDNegativeActivity>(
+                                    ARG_UCD_DEAL to Gson().toJson(ucdData),
+                                    ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                                    ARG_IMAGE_URL to Gson().toJson(arImage),
+                                    ARG_IMAGE_ID to imageId,
+                                    ARG_IS_SHOW_PER to isPercentShow
+                                )
+                                finish()
+                            }
                         }
 
                     }
@@ -541,7 +559,7 @@ Log.e("submitdealucd", Gson().toJson(map))
     }
 
     private lateinit var cardStripeData: CardStripeData
-    private fun callPaymentMethodAPI() {
+    private fun callPaymentMethodAPI(isSubmit: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -563,6 +581,8 @@ Log.e("submitdealucd", Gson().toJson(map))
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     cardStripeData = data
+                    if (isSubmit)
+                        callBuyerAPI()
                 }
                 )
         } else {
@@ -867,7 +887,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                 } else {
                     if (isValidCard()) {
                         if (isValid()) {
-                            callBuyerAPI()
+                            callPaymentMethodAPI(true)
                         }
                     }
                 }
@@ -1305,7 +1325,7 @@ Log.e("submitdealucd", Gson().toJson(map))
                         inputLength == 5 -> {
                             tvErrorCardZip.visibility = View.GONE
                             if (isValidCard()) {
-                                callPaymentMethodAPI()
+                                callPaymentMethodAPI(false)
                             }
                         }
                         inputLength < 5 -> {
@@ -1379,50 +1399,78 @@ Log.e("submitdealucd", Gson().toJson(map))
     }
 
     override fun onError(e: Exception) {
-        Toast.makeText(
-            this,
-            "Payment failed", Toast.LENGTH_LONG
-        ).show()
+        /* Toast.makeText(
+             this,
+             e.message, Toast.LENGTH_LONG
+         ).show()*/
         Log.e("PaymentFailed", Gson().toJson(e).toString())
+        AppGlobal.alertError(
+            this,
+            "We are unable to authenticate your payment method. please choose a different payment method and try again"
+        )
     }
 
+    private var paymentIntentId = ""
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        Log.e("Status", Gson().toJson(status))
+        Log.e("Status", Gson().toJson(paymentIntent))
         when (status) {
             StripeIntent.Status.Succeeded -> {
                 // Payment completed successfully
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 Log.e("completed", gson.toJson(paymentIntent))
-//                callSubmitDealLCDAPI(true)
+                paymentIntentId = paymentIntent.id!!
+                callSubmitDealUCDAPI(true)
             }
             StripeIntent.Status.RequiresPaymentMethod -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresPaymentMethod",
                     Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
                 )
-            }
-            StripeIntent.Status.Canceled -> {
-                // Payment failed – allow retrying using a different payment method
-                Log.e("Canceled", "Payment Canceled")
+                /* if(!TextUtils.isEmpty(paymentIntent.id)) {
+                     paymentIntentId = paymentIntent.id!!
+                     callSubmitDealUCDAPI(true)
+                 }else{
+                     Toast.makeText(this,"Requires Payment Method",Toast.LENGTH_LONG).show()
+                 }*/
+                AppGlobal.alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
 
             }
+            StripeIntent.Status.Canceled -> {
+                Log.e("Canceled", "Payment Canceled")
+//                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
+                AppGlobal.alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
+            }
             StripeIntent.Status.Processing -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "Processing",
                     "Payment Processing"
                 )
-
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealUCDAPI(true)
+                } else {
+                    Toast.makeText(this, "Payment Processing", Toast.LENGTH_LONG).show()
+                }
             }
             StripeIntent.Status.RequiresConfirmation -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresConfirmation",
                     "Payment Confirmation"
                 )
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealUCDAPI(true)
+                } else {
+                    Toast.makeText(this, "Requires Payment Confirmation", Toast.LENGTH_LONG).show()
+                }
 
             }
         }

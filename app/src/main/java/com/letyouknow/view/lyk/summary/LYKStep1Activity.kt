@@ -377,7 +377,9 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             if (isMatch) {
                 adapterRadius = RadiusSpinnerBlackDropAdapter(this, arData)
                 spRadius.adapter = adapterRadius
+                spRadius.setSelection(1)
                 spRadius.onItemSelectedListener = this
+
             } else {
                 adapterRadius = RadiusSpinnerBlackDropAdapter(this, arRadius)
                 spRadius.adapter = adapterRadius
@@ -533,7 +535,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 arJsonAccessories.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
 
-
             request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
@@ -656,6 +657,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
+        price = edtPrice.text.toString().replace(",", "").trim().toDouble()
         if (TextUtils.isEmpty(edtZipCode.text.toString().trim())) {
             setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
@@ -671,6 +673,12 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         }
         if (TextUtils.isEmpty(edtPrice.text.toString().trim())) {
             setErrorBorder(edtPrice, tvErrorPrice)
+            tvErrorPrice.text = getString(R.string.price_required)
+            return false
+        }
+        if (price < 799) {
+            setErrorBorder(edtPrice, tvErrorPrice)
+            tvErrorPrice.text = getString(R.string.price_must_be_799_00)
             return false
         }
         if (financingStr == "Financing Option*") {

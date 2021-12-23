@@ -282,7 +282,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
-                    callSubmitDealAPI()
+                    callSubmitDealAPI(false)
                 }
                 )
         } else {
@@ -290,15 +290,19 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callSubmitDealAPI() {
+    private fun callSubmitDealAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
-            map[ApiConstant.payment_method_id] = cardStripeData.id!!
-            map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
-            map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            if (isStripe)
+                map[ApiConstant.payment_intent_id] = paymentIntentId
+            else {
+                map[ApiConstant.payment_method_id] = cardStripeData.id!!
+                map[ApiConstant.card_last4] = cardStripeData.card?.last4!!
+                map[ApiConstant.card_brand] = cardStripeData.card?.brand!!
+            }
             map[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
@@ -329,9 +333,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
+                    Log.e("resp", Gson().toJson(data))
                     Constant.dismissLoader()
 
-                    if (data?.foundMatch!!) {
+                    if (data?.foundMatch!! && !data.isBadRequest!!) {
                         pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                         pref?.setSubmitPriceTime("")
                         data.successResult?.transactionInfo?.vehiclePromoCode =
@@ -355,7 +360,23 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 data.paymentResponse.errorMessage
                             )
                     } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                        initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                        if (data.paymentResponse.requires_action!!) {
+                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                        } else {
+                            startActivity<LYKNegativeActivity>(
+                                ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                                    yearModelMakeData
+                                ),
+                                ARG_IMAGE_ID to imageId,
+                                ARG_IMAGE_URL to Gson().toJson(arImage),
+                                ARG_SUBMIT_DEAL to Gson().toJson(
+                                    data
+                                ), ARG_UCD_DEAL_PENDING to Gson().toJson(
+                                    dataPendingDeal
+                                )
+                            )
+                            finish()
+                        }
                     } else if (data.foundMatch && data.isBadRequest!!) {
                         var msgStr = ""
                         var isFirst = true
@@ -397,7 +418,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private lateinit var cardStripeData: CardStripeData
-    private fun callPaymentMethodAPI() {
+    private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -419,6 +440,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 .observe(this, { data ->
                     Constant.dismissLoader()
                     cardStripeData = data
+                    if (isPayment)
+                        callBuyerAPI()
                 }
                 )
         } else {
@@ -594,7 +617,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     onBackPressed()
                 } else if (isValidCard()) {
                     if (isValid()) {
-                        callBuyerAPI()
+                        callPaymentMethodAPI(true)
                     }
                 }
             }
@@ -957,7 +980,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         inputLength == 5 -> {
                             tvErrorCardZip.visibility = View.GONE
                             if (isValidCard()) {
-                                callPaymentMethodAPI()
+                                callPaymentMethodAPI(false)
                             }
                         }
                         inputLength < 5 -> {
@@ -1031,54 +1054,79 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onError(e: Exception) {
-        Toast.makeText(
-            this,
-            "Payment failed", Toast.LENGTH_LONG
-        ).show()
+        /* Toast.makeText(
+             this,
+             e.message, Toast.LENGTH_LONG
+         ).show()*/
         Log.e("PaymentFailed", Gson().toJson(e).toString())
+        AppGlobal.alertError(
+            this,
+            "We are unable to authenticate your payment method. please choose a different payment method and try again"
+        )
     }
 
+    private var paymentIntentId = ""
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        Log.e("Status", Gson().toJson(status))
+        Log.e("Status", Gson().toJson(paymentIntent))
         when (status) {
             StripeIntent.Status.Succeeded -> {
                 // Payment completed successfully
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 Log.e("completed", gson.toJson(paymentIntent))
-//                callSubmitDealLCDAPI(true)
+                paymentIntentId = paymentIntent.id!!
+                callSubmitDealAPI(true)
             }
             StripeIntent.Status.RequiresPaymentMethod -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresPaymentMethod",
                     Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
                 )
+                /* if(!TextUtils.isEmpty(paymentIntent.id)) {
+                     paymentIntentId = paymentIntent.id!!
+                     callSubmitDealAPI(true)
+                 }else{
+                     Toast.makeText(this,"Requires Payment Method",Toast.LENGTH_LONG).show()
+                 }*/
+                AppGlobal.alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
             }
             StripeIntent.Status.Canceled -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e("Canceled", "Payment Canceled")
-
+//                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
+                AppGlobal.alertError(
+                    this,
+                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                )
             }
             StripeIntent.Status.Processing -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "Processing",
                     "Payment Processing"
                 )
-
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealAPI(true)
+                } else {
+                    Toast.makeText(this, "Payment Processing", Toast.LENGTH_LONG).show()
+                }
             }
             StripeIntent.Status.RequiresConfirmation -> {
-                // Payment failed – allow retrying using a different payment method
                 Log.e(
                     "RequiresConfirmation",
                     "Payment Confirmation"
                 )
+                if (!TextUtils.isEmpty(paymentIntent.id)) {
+                    paymentIntentId = paymentIntent.id!!
+                    callSubmitDealAPI(true)
+                } else {
+                    Toast.makeText(this, "Requires Payment Confirmation", Toast.LENGTH_LONG).show()
+                }
 
             }
         }
     }
-
-
 }
