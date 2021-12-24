@@ -178,27 +178,24 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 var isFirstAcce = true
                 val arAccId: ArrayList<String> = ArrayList()
                 for (i in 0 until arOptions?.size!!) {
-                    if (arOptions!![i].isSelect!!) {
                         arAccId.add(arOptions!![i].dealerAccessoryID!!)
                         if (isFirstAcce) {
                             isFirstAcce = false
                             accessoriesStr = arOptions!![i].accessory!!
                         } else
                             accessoriesStr += ",\n" + arOptions!![i].accessory!!
-                    }
+
                 }
                 var packageStr = ""
                 var isFirstPackage = true
 
                 for (i in 0 until arPackages?.size!!) {
-                    if (arPackages!![i].isSelect!!) {
                         if (isFirstPackage) {
                             isFirstPackage = false
                             packageStr = arPackages!![i].packageName!!
                         } else {
                             packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
                         }
-                    }
                 }
                 tvDialogPackage.text = packageStr
                 tvDialogOptions.text = accessoriesStr

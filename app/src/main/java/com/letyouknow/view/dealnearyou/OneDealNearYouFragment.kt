@@ -24,6 +24,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
@@ -832,6 +833,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                         } else {
                                             callVehiclePackagesAPI()
                                             setPackages(true)
+
                                         }
 
                                     }
@@ -980,7 +982,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 }
                 val jsonArray = JsonArray()
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect!!) {
+                    if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
                         jsonArray.add(adapterPackages.getItem(i).vehiclePackageID)
                     }
                 }
@@ -998,25 +1000,34 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 checkedPackageModel.checkedPackage(requireActivity(), request)!!
                     .observe(this, Observer { data ->
                         Constant.dismissLoader()
-                        if (!data.autoCheckList.isNullOrEmpty()) {
-                            for (i in 0 until data.autoCheckList.size) {
-                                for (j in 0 until adapterPackages.itemCount) {
-                                    if (adapterPackages.getItem(j).vehiclePackageID == data.autoCheckList[i]) {
-                                        val dataCheck = adapterPackages.getItem(j)
-                                        dataCheck.isGray = false
-                                        dataCheck.isOtherSelect = true
-                                        adapterPackages.update(j, dataCheck)
+                        if (data.status == 1) {
+                            prefOneDealNearYouData.packagesData = ArrayList()
+                            setPrefData()
+                            setPackages(true)
+                            alertError(requireActivity(), getString(R.string.market_hot_msg))
+                            if (::dialogOptions.isInitialized)
+                                dialogOptions.dismiss()
+                        } else {
+                            if (!data.autoCheckList.isNullOrEmpty()) {
+                                for (i in 0 until data.autoCheckList.size) {
+                                    for (j in 0 until adapterPackages.itemCount) {
+                                        if (adapterPackages.getItem(j).vehiclePackageID == data.autoCheckList[i]) {
+                                            val dataCheck = adapterPackages.getItem(j)
+                                            dataCheck.isGray = false
+                                            dataCheck.isOtherSelect = true
+                                            adapterPackages.update(j, dataCheck)
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if (!data.grayOutList.isNullOrEmpty()) {
-                            for (i in 0 until data.grayOutList.size) {
-                                for (j in 0 until adapterPackages.itemCount) {
-                                    if (adapterPackages.getItem(j).vehiclePackageID == data.grayOutList[i]) {
-                                        val dataGray = adapterPackages.getItem(j)
-                                        dataGray.isGray = true
-                                        adapterPackages.update(j, dataGray)
+                            if (!data.grayOutList.isNullOrEmpty()) {
+                                for (i in 0 until data.grayOutList.size) {
+                                    for (j in 0 until adapterPackages.itemCount) {
+                                        if (adapterPackages.getItem(j).vehiclePackageID == data.grayOutList[i]) {
+                                            val dataGray = adapterPackages.getItem(j)
+                                            dataGray.isGray = true
+                                            adapterPackages.update(j, dataGray)
+                                        }
                                     }
                                 }
                             }
@@ -1042,14 +1053,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 }
                 val jsonArray = JsonArray()
                 for (i in 0 until adapterOptions.itemCount) {
-                    if (adapterOptions.getItem(i).isSelect!!) {
+                    if (adapterOptions.getItem(i).isSelect!! || adapterOptions.getItem(i).isOtherSelect!!) {
                         jsonArray.add(adapterOptions.getItem(i).dealerAccessoryID)
                     }
                 }
                 val jsonArrayPackage = JsonArray()
 
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect!!) {
+                    if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
                         jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
                     }
                 }
@@ -1068,25 +1079,35 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!
                     .observe(this, Observer { data ->
                         Constant.dismissLoader()
-                        if (!data.autoCheckList.isNullOrEmpty()) {
-                            for (i in 0 until data.autoCheckList.size) {
-                                for (j in 0 until adapterOptions.itemCount) {
-                                    if (adapterOptions.getItem(j).dealerAccessoryID == data.autoCheckList[i]) {
-                                        val dataCheck = adapterOptions.getItem(j)
-                                        dataCheck.isGray = false
-                                        dataCheck.isOtherSelect = true
-                                        adapterOptions.update(j, dataCheck)
+                        if (data.status == 1) {
+                            prefOneDealNearYouData.optionsData = ArrayList()
+                            setPrefData()
+                            setOptions(true)
+                            alertError(requireActivity(), getString(R.string.market_hot_msg))
+                            if (::dialogOptions.isInitialized)
+                                dialogOptions.dismiss()
+
+                        } else {
+                            if (!data.autoCheckList.isNullOrEmpty()) {
+                                for (i in 0 until data.autoCheckList.size) {
+                                    for (j in 0 until adapterOptions.itemCount) {
+                                        if (adapterOptions.getItem(j).dealerAccessoryID == data.autoCheckList[i]) {
+                                            val dataCheck = adapterOptions.getItem(j)
+                                            dataCheck.isGray = false
+                                            dataCheck.isOtherSelect = true
+                                            adapterOptions.update(j, dataCheck)
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if (!data.grayOutList.isNullOrEmpty()) {
-                            for (i in 0 until data.grayOutList.size) {
-                                for (j in 0 until adapterOptions.itemCount) {
-                                    if (adapterOptions.getItem(j).dealerAccessoryID == data.grayOutList[i]) {
-                                        val dataGray = adapterOptions.getItem(j)
-                                        dataGray.isGray = true
-                                        adapterOptions.update(j, dataGray)
+                            if (!data.grayOutList.isNullOrEmpty()) {
+                                for (i in 0 until data.grayOutList.size) {
+                                    for (j in 0 until adapterOptions.itemCount) {
+                                        if (adapterOptions.getItem(j).dealerAccessoryID == data.grayOutList[i]) {
+                                            val dataGray = adapterOptions.getItem(j)
+                                            dataGray.isGray = true
+                                            adapterOptions.update(j, dataGray)
+                                        }
                                     }
                                 }
                             }
@@ -1111,7 +1132,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 var isFirstAcce = true
                 val arAccId: ArrayList<String> = ArrayList()
                 for (i in 0 until adapterOptions.itemCount) {
-                    if (adapterOptions.getItem(i).isSelect!!) {
+                    if (adapterOptions.getItem(i).isSelect!! || adapterOptions.getItem(i).isOtherSelect!!) {
                         jsonArrayAccessories.add(adapterOptions.getItem(i).dealerAccessoryID)
                         arAccId.add(adapterOptions.getItem(i).dealerAccessoryID!!)
                         if (isFirstAcce) {
@@ -1127,7 +1148,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 val arPackageId: ArrayList<String> = ArrayList()
 
                 for (i in 0 until adapterPackages.itemCount) {
-                    if (adapterPackages.getItem(i).isSelect!!) {
+                    if (adapterPackages.getItem(i).isSelect!! || adapterPackages.getItem(i).isOtherSelect!!) {
                         jsonArrayPackage.add(adapterPackages.getItem(i).vehiclePackageID)
                         arPackageId.add(adapterPackages.getItem(i).vehiclePackageID!!)
                         if (isFirstPackage) {
@@ -1245,14 +1266,18 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     tvErrorPackages.visibility = View.GONE
                     setOptions(true)
                     callOptionalAccessoriesAPI()
+                    dialogPackage.dismiss()
                 } else {
-                    tvPackages.text = "PACKAGES"
-                    setOptions(false)
+                    AppGlobal.alertError(
+                        requireActivity(),
+                        "Selection(s) must be added due to inventory availability"
+                    )
+//                    tvPackages.text = "PACKAGES"
+//                    setOptions(false)
                 }
                 prefOneDealNearYouData.packagesData = adapterPackages.getAll()
                 prefOneDealNearYouData.optionsData = ArrayList()
                 setPrefData()
-                dialogPackage.dismiss()
             }
             R.id.tvCancelPackage -> {
                 val gson = Gson()
@@ -1281,8 +1306,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 } else {
                     for (i in 1 until adapterPackages.itemCount) {
                         val dataPackage = adapterPackages.getItem(i)
-                        dataPackage.isOtherSelect = false
-                        dataPackage.isGray = false
+//                        dataPackage.isOtherSelect = false
+//                        dataPackage.isGray = false
                         adapterPackages.update(i, dataPackage)
                     }
                     val data0 = adapterPackages.getItem(0)
@@ -1321,12 +1346,16 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (!TextUtils.isEmpty(optionsStr)) {
                     tvErrorOptionsAccessories.visibility = View.GONE
                     tvOptionalAccessories.text = optionsStr
+                    dialogOptions.dismiss()
                 } else {
-                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
+                    AppGlobal.alertError(
+                        requireActivity(),
+                        "Selection(s) must be added due to inventory availability"
+                    )
+//                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
                 }
                 prefOneDealNearYouData.optionsData = adapterOptions.getAll()
                 setPrefData()
-                dialogOptions.dismiss()
             }
             R.id.tvResetOption -> {
                 for (i in 0 until adapterOptions.itemCount) {
@@ -1372,8 +1401,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 } else {
                     for (i in 1 until adapterOptions.itemCount) {
                         val dataOptions = adapterOptions.getItem(i)
-                        dataOptions.isOtherSelect = false
-                        dataOptions.isGray = false
+//                        dataOptions.isOtherSelect = false
+//                        dataOptions.isGray = false
                         adapterOptions.update(i, dataOptions)
                     }
                     val data0 = adapterOptions.getItem(0)
@@ -1382,7 +1411,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     if (!data0.isGray!!)
                         callCheckedAccessoriesAPI()
                 }
-                Log.e("clickupdate", selectPackageStr)
+                Log.e("clickupdate", selectOptionStr)
             }
         }
     }

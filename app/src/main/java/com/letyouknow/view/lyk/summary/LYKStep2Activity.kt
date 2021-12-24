@@ -353,30 +353,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         )
                         finish()
 
-                    } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
-                        if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
-                            AppGlobal.alertError(
-                                this,
-                                data.paymentResponse.errorMessage
-                            )
-                    } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
-                        if (data.paymentResponse.requires_action!!) {
-                            initStripe(data.paymentResponse.payment_intent_client_secret!!)
-                        } else {
-                            startActivity<LYKNegativeActivity>(
-                                ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                                    yearModelMakeData
-                                ),
-                                ARG_IMAGE_ID to imageId,
-                                ARG_IMAGE_URL to Gson().toJson(arImage),
-                                ARG_SUBMIT_DEAL to Gson().toJson(
-                                    data
-                                ), ARG_UCD_DEAL_PENDING to Gson().toJson(
-                                    dataPendingDeal
-                                )
-                            )
-                            finish()
-                        }
                     } else if (data.foundMatch && data.isBadRequest!!) {
                         var msgStr = ""
                         var isFirst = true
@@ -395,6 +371,32 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 this,
                                 msgStr
                             )
+                    } else if (data.paymentResponse != null) {
+                        if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
+                            if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
+                                AppGlobal.alertError(
+                                    this,
+                                    data.paymentResponse.errorMessage
+                                )
+                        } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+                            if (data.paymentResponse.requires_action!!) {
+                                initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                            } else {
+                                startActivity<LYKNegativeActivity>(
+                                ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                                    yearModelMakeData
+                                ),
+                                    ARG_IMAGE_ID to imageId,
+                                    ARG_IMAGE_URL to Gson().toJson(arImage),
+                                    ARG_SUBMIT_DEAL to Gson().toJson(
+                                        data
+                                    ), ARG_UCD_DEAL_PENDING to Gson().toJson(
+                                        dataPendingDeal
+                                    )
+                                )
+                                finish()
+                            }
+                        }
                     } else {
                         startActivity<LYKNegativeActivity>(
                             ARG_YEAR_MAKE_MODEL to Gson().toJson(
@@ -836,27 +838,25 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 var isFirstAcce = true
                 val arAccId: ArrayList<String> = ArrayList()
                 for (i in 0 until arOptions?.size!!) {
-                    if (arOptions!![i].isSelect!!) {
-                        arAccId.add(arOptions!![i].dealerAccessoryID!!)
+
+                    arAccId.add(arOptions!![i].dealerAccessoryID!!)
                         if (isFirstAcce) {
                             isFirstAcce = false
                             accessoriesStr = arOptions!![i].accessory!!
                         } else
                             accessoriesStr += ",\n" + arOptions!![i].accessory!!
-                    }
+
                 }
                 var packageStr = ""
                 var isFirstPackage = true
 
                 for (i in 0 until arPackages?.size!!) {
-                    if (arPackages!![i].isSelect!!) {
                         if (isFirstPackage) {
                             isFirstPackage = false
                             packageStr = arPackages!![i].packageName!!
                         } else {
                             packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
                         }
-                    }
                 }
                 tvDialogPackage.text = packageStr
                 tvDialogOptions.text = accessoriesStr

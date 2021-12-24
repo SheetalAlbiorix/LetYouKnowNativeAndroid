@@ -138,7 +138,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 //        setInfoLink()
         setPrivacyPolicyLink()
 
-
         btnProceedDeal.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
@@ -193,8 +192,12 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
                 }
-                pref?.setRadius("")
-                callRadiusAPI()
+                if (!TextUtils.isEmpty(pref?.getRadius())) {
+                    pref?.setRadius("")
+                    callRadiusAPI()
+                }
+
+
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -262,7 +265,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                             setErrorBorder(edtInitials, tvErrorInitials)
                         }
                         str.length == 1 -> {
-                            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
+                            tvErrorInitials.text =
+                                getString(R.string.initials_must_be_valid_2_or_3_letters)
                             setErrorBorder(edtInitials, tvErrorInitials)
                         }
                         else -> {
@@ -345,7 +349,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                              getString(R.string.invalid_zip_code),
                              Toast.LENGTH_SHORT
                          ).show()*/
-                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
+                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext_error)
                         tvErrorZipCode.visibility = View.VISIBLE
                         isValidZipCode = false
                     } else {
@@ -722,7 +726,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 var isFirstAcce = true
                 val arAccId: ArrayList<String> = ArrayList()
                 for (i in 0 until arOptions?.size!!) {
-                    if (arOptions!![i].isSelect!!) {
+                    if (arOptions!![i].isSelect!! || arOptions!![i].isOtherSelect!!) {
                         arAccId.add(arOptions!![i].dealerAccessoryID!!)
                         if (isFirstAcce) {
                             isFirstAcce = false
@@ -735,7 +739,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 var isFirstPackage = true
 
                 for (i in 0 until arPackages?.size!!) {
-                    if (arPackages!![i].isSelect!!) {
+                    if (arPackages!![i].isSelect!! || arPackages!![i].isOtherSelect!!) {
                         if (isFirstPackage) {
                             isFirstPackage = false
                             packageStr = arPackages!![i].packageName!!

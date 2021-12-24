@@ -80,7 +80,7 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             }
             var buyerInfo = ""
             buyerInfo =
-                buyerName + "\n" +
+                buyerName +
                         submitDealData.successResult?.transactionInfo?.buyerAddress1 + "\n" +
                         add2 +
                         submitDealData.successResult?.transactionInfo?.buyerCity + ", " +

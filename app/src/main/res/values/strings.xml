@@ -340,4 +340,6 @@
     <string name="your_letyouknow_price">Your LetYouKnow Price:</string>
     <string name="we_found_your_car">We found your car within a %1s-mile radius of %2s</string>
     <string name="the_car_is_no_longer_available">The car is no longer available</string>
+    <string name="initials_must_be_valid_2_or_3_letters">Initials must be valid - 2 or 3 Letters</string>
+    <string name="market_hot_msg">Market\'s hot! That car is already gone! \n Click OK to refresh.</string>
 </resources>
