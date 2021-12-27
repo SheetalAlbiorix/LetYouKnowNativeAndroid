@@ -158,6 +158,13 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                             .format(data.discount?.toFloat())
                     }
                     tvPromoCode.text = promoCode
+
+                    labelPrice.text = "Your " + data.product + " Price:"
+                    if (data.savings!! > 0.0f) {
+                        tvSavingsText.visibility = View.VISIBLE
+                    } else {
+                        tvSavingsText.visibility = View.GONE
+                    }
                     binding.data = data
                 }
                 )

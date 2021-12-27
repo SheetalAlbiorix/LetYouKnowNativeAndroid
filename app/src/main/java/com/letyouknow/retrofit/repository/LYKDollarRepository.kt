@@ -40,11 +40,12 @@ object LYKDollarRepository {
                 } else {
                     Log.v("LYKDollar Resp ", response.toString())
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    getDollarData.value = "0.0"
+                    /*response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(
                         context,
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    )
+                    )*/
                 }
             }
         })

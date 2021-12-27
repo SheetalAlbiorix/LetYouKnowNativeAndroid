@@ -53,6 +53,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_IS_SHOW_PER
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
@@ -122,13 +123,13 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun init() {
         checkVehicleStockViewModel =
-            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
-        promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
-        paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
-        buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
-        submitDealUCDViewModel = ViewModelProvider(this).get(SubmitDealUCDViewModel::class.java)
+            ViewModelProvider(this)[CheckVehicleStockViewModel::class.java]
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
+        lykDollarViewModel = ViewModelProvider(this)[LYKDollarViewModel::class.java]
+        promoCodeViewModel = ViewModelProvider(this)[PromoCodeViewModel::class.java]
+        paymentMethodViewModel = ViewModelProvider(this)[PaymentMethodViewModel::class.java]
+        buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
+        submitDealUCDViewModel = ViewModelProvider(this)[SubmitDealUCDViewModel::class.java]
         submitPendingUCDDealViewModel =
             ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
 
@@ -270,6 +271,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
             override fun onError(e: Throwable) {
                 Log.e("onError", "onError")
+                initHub()
             }
 
         })
@@ -365,6 +367,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun removeHubConnection() {
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            hubConnection?.invoke("StopTimer")
             hubConnection?.remove("UpdateDealTimer")
             hubConnection?.remove("UpdateVehicleState")
             hubConnection?.remove("CantSubscribeOnDeal")
@@ -390,6 +393,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     }
                     tvDollar.text =
                         NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
+                    binding.dollar = data.toFloat()
                 }
                 )
         } else {
@@ -497,7 +501,8 @@ Log.e("submitdealucd", Gson().toJson(map))
                             startActivity<SubmitDealSummaryActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
-                                )
+                                ),
+                                ARG_TYPE_PRODUCT to "UnlockedCarDeals"
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {

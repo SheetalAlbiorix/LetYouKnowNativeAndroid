@@ -846,6 +846,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    var hasMatchPackage = false
     private fun callCheckedPackageAPI() {
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
@@ -872,6 +873,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
             checkedPackageModel.checkedPackage(requireActivity(), request)!!
                 .observe(this, Observer { data ->
+                    hasMatchPackage = data.hasMatch!!
                     Constant.dismissLoader()
                     if (data.status == 1) {
                         if (::dialogPackage.isInitialized)
@@ -882,6 +884,9 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                         setCurrentTime()
                     } else {
+                        if (data.status == 0 || data.status == 3) {
+                            showHighlightedDialog()
+                        }
                         if (!data.autoCheckList.isNullOrEmpty()) {
                             for (i in 0 until data.autoCheckList.size) {
                                 for (j in 0 until adapterPackages.itemCount) {
@@ -914,6 +919,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
+    private var hasMatchOptions = false
     private fun callCheckedAccessoriesAPI() {
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
@@ -948,6 +954,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             checkedAccessoriesModel.checkedAccessories(requireActivity(), request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
+                    hasMatchOptions = data.hasMatch!!
                     if (data.status == 1) {
                         if (::dialogOptions.isInitialized)
                             dialogOptions.dismiss()
@@ -957,6 +964,9 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                         setCurrentTime()
                     } else {
+                        if (data.status == 0 || data.status == 3) {
+                            showHighlightedDialog()
+                        }
                         if (!data.autoCheckList.isNullOrEmpty()) {
                             for (i in 0 until data.autoCheckList.size) {
                                 for (j in 0 until adapterOptions.itemCount) {
@@ -1114,18 +1124,24 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     }
                 }
                 if (packagesStr.length > 0) {
-                    tvPackages.text = packagesStr
-                    tvErrorPackages.visibility = View.GONE
-                    setOptions(true)
-                    callOptionalAccessoriesAPI()
-                    dialogPackage.dismiss()
+                    val ignoreInventory = adapterPackages.getItem(0).isSelect == true
+                    if (!hasMatchPackage && !ignoreInventory) {
+                        showOtherInventoryEmptyDialog()
+                    } else {
+                        tvPackages.text = packagesStr
+                        tvErrorPackages.visibility = View.GONE
+                        setOptions(true)
+                        callOptionalAccessoriesAPI()
+                        dialogPackage.dismiss()
+                    }
                 } else {
-                    alertError(
-                        requireActivity(),
-                        "Selection(s) must be added due to inventory availability"
-                    )
+                    /* alertError(
+                         requireActivity(),
+                         "Selection(s) must be added due to inventory availability"
+                     )*/
 //                    tvPackages.text = "PACKAGES"
 //                    setOptions(false)
+                    showApplyEmptyDialog()
                 }
                 prefSubmitPriceData.packagesData = adapterPackages.getAll()
                 Constant.dismissLoader()
@@ -1200,14 +1216,16 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     }
                 }
                 if (!TextUtils.isEmpty(optionsStr)) {
-                    tvErrorOptionsAccessories.visibility = View.GONE
-                    tvOptionalAccessories.text = optionsStr
-                    dialogOptions.dismiss()
+                    val ignoreInventory = adapterOptions.getItem(0).isSelect == true
+                    if (!hasMatchOptions && !ignoreInventory) {
+                        showOtherInventoryEmptyDialog()
+                    } else {
+                        tvErrorOptionsAccessories.visibility = View.GONE
+                        tvOptionalAccessories.text = optionsStr
+                        dialogOptions.dismiss()
+                    }
                 } else {
-                    alertError(
-                        requireActivity(),
-                        "Selection(s) must be added due to inventory availability"
-                    )
+                    showApplyEmptyDialog()
 //                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
                 }
                 prefSubmitPriceData.optionsData = adapterOptions.getAll()
@@ -1617,5 +1635,48 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun setRadius() {
         pref?.setRadius("")
     }
+
+    private fun showApplyEmptyDialog() {
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_inventory_availability)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun showHighlightedDialog() {
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_highlight_inventory)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private fun showOtherInventoryEmptyDialog() {
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_other_inventory_availability)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
 
 }

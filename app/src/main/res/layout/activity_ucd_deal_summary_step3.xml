@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="dollar"
+            type="Float" />
+
+        <variable
             name="lightDealBindData"
             type="com.letyouknow.model.LightDealBindData" />
 
@@ -170,6 +174,7 @@
                 <include
                     layout="@layout/layout_ucd_deal_summary_step3"
                     app:lcdDealData="@{ucdData}"
+                    app:dollar="@{dollar}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />
 

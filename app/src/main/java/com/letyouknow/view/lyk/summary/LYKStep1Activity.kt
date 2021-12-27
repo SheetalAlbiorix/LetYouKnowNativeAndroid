@@ -490,6 +490,10 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     imageId = data
                     callImageUrlAPI(data)
+                    if (imageId == "0") {
+                        ll360.visibility = View.GONE
+                        llGallery.visibility = View.GONE
+                    }
                 }
                 )
 

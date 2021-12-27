@@ -29,6 +29,7 @@ import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
 import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
+import com.pionymessenger.utils.Constant.Companion.ARG_IS_LYK_SHOW
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_lyk_negative.*
@@ -100,6 +101,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
             binding.data = yearModelMakeData
             binding.dealData = submitDealData
+            if (imageId == "0") {
+                ll360.visibility = View.GONE
+                llGallery.visibility = View.GONE
+            }
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
@@ -385,7 +390,16 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                         }
                         finish()
                     } else {
-                        onBackPressed()
+                        if (data) {
+                            pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                            pref?.setSubmitPriceTime("")
+                            startActivity(
+                                intentFor<MainActivity>(ARG_IS_LYK_SHOW to true).clearTask()
+                                    .newTask()
+                            )
+                        } else {
+                            onBackPressed()
+                        }
                     }
                 }
                 )

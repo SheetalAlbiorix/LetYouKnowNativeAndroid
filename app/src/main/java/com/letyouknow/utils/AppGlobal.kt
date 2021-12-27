@@ -446,7 +446,9 @@ class AppGlobal {
             if (localTime.length == 5) {
                 val subTime = localTime.substring(1, 3)
                 val subMinutes = localTime.substring(3, 5)
-                min = "-" + ((subTime.toInt() * 60) + subMinutes.toInt())
+                val setPrefix = if (localTime.substring(0, 1) == "-") "+" else "-"
+                min = setPrefix + ((subTime.toInt() * 60) + subMinutes.toInt())
+                println("${min} ${localTime}  TimeZone1   ")
             }
 
             println("${min} ${localTime}  TimeZone   ")

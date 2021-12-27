@@ -42,14 +42,15 @@ object ImageIdRepository {
                 } else {
                     Log.v("imgID Resp ", response.toString())
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    if (response.errorBody()?.source()?.buffer?.snapshot()
-                            ?.utf8() != null
-                    )
-                        AppGlobal.alertError(
-                            context,
-                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                        )
+                    /*  response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                      if (response.errorBody()?.source()?.buffer?.snapshot()
+                              ?.utf8() != null
+                      )
+                          AppGlobal.alertError(
+                              context,
+                              response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                          )*/
+                    imageIdData.value = "0"
                 }
             }
         })

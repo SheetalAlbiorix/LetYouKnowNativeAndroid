@@ -81,7 +81,12 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
             }
             binding.ucdData = data
             tvViewOptions.setOnClickListener(this)
+            if (imageId == "0") {
+                llGallery.visibility = View.GONE
+                ll360.visibility = View.GONE
+            }
         }
+        ivBack.visibility = View.GONE
         ivBack.setOnClickListener(this)
         btnTryAgain.setOnClickListener(this)
         llGallery.setOnClickListener(this)

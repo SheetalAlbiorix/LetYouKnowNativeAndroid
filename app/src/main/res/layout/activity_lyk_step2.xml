@@ -11,6 +11,10 @@
         <import type="java.util.Locale" />
 
         <variable
+            name="dollar"
+            type="Float" />
+
+        <variable
             name="lightDealBindData"
             type="com.letyouknow.model.LightDealBindData" />
 
@@ -332,6 +336,7 @@
                 <include
                     layout="@layout/layout_lyk_step2"
                     app:data="@{data}"
+                    app:dollar="@{dollar}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />
 

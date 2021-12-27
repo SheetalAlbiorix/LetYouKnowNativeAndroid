@@ -254,6 +254,10 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     imageId = data
                     callImageUrlAPI(data)
+                    if (imageId == "0") {
+                        llGallery.visibility = View.GONE
+                        ll360.visibility = View.GONE
+                    }
                 }
                 )
 

@@ -45,6 +45,7 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="@{data.successResult.savings > 0.0 ? View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -267,6 +268,7 @@
                     <TableRow>
 
                         <TextView
+                            android:id="@+id/tvLabelPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/unlocked_cardeals_price"
@@ -514,6 +516,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
+                    android:id="@+id/tvSavingsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"

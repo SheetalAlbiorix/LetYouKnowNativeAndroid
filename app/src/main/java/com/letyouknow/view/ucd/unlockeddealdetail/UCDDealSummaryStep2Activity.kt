@@ -100,6 +100,11 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             imageId = intent.getStringExtra(ARG_IMAGE_ID)!!
             if (imageId?.length != 0)
                 callImageUrlAPI(imageId!!)
+
+            if (imageId == "0") {
+                ll360.visibility = View.GONE
+                llGallery.visibility = View.GONE
+            }
             binding.lcdDealData = dataUCDDeal
 
         }

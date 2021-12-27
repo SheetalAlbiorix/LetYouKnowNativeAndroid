@@ -23,6 +23,10 @@
             type="com.letyouknow.model.FindLCDDeaData" />
 
         <variable
+            name="dollar"
+            type="Float" />
+
+        <variable
             name="pendingUCDData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
     </data>
@@ -468,7 +472,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price - (799.0f+lcdDealData.discount))}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price - (799.0f+lcdDealData.discount+dollar))}"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>

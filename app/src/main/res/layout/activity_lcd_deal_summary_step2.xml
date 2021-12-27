@@ -18,6 +18,10 @@
             name="pendingUcdData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
+        <variable
+            name="dollar"
+            type="Float" />
+
 
     </data>
 
@@ -26,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
 
         <include
             android:id="@+id/toolbar"
@@ -178,6 +181,7 @@
 
                     layout="@layout/layout_lcd_deal_summary_step2"
                     app:lcdDealData="@{ucdData}"
+                    app:dollar="@{dollar}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />
 

@@ -55,6 +55,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_IS_SHOW_PER
 import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
@@ -171,6 +172,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 edtPhoneNumber.setText(formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
             else
                 edtPhoneNumber.setText(dataPendingDeal.buyer?.phoneNumber)
+
+            if (imageId == "0") {
+                llGallery.visibility = View.GONE
+                ll360.visibility = View.GONE
+            }
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber, tvErrorCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -264,6 +270,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
             override fun onError(e: Throwable) {
                 Log.e("onError", "onError")
+                initHub()
             }
 
         })
@@ -356,6 +363,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun removeHubConnection() {
         if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+            hubConnection?.invoke("StopTimer")
             hubConnection?.remove("UpdateDealTimer")
             hubConnection?.remove("UpdateVehicleState")
             hubConnection?.remove("CantSubscribeOnDeal")
@@ -421,7 +429,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         spState.onItemSelectedListener = this
     }
 
-
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             Constant.showLoader(this)
@@ -433,6 +440,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     }
                     tvDollar.text =
                         NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
+                    binding.dollar = data.toFloat()
                 }
                 )
         } else {
@@ -535,7 +543,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             startActivity<SubmitDealSummaryActivity>(
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
-                                )
+                                ),
+                                ARG_TYPE_PRODUCT to "LightingCarDeals"
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {

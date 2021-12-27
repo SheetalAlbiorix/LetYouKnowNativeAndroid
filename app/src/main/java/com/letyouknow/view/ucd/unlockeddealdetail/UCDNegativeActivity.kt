@@ -87,15 +87,20 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
                 YearModelMakeData::class.java
             )
             binding.ucdData = yearModelMakeData
+            ivBack.visibility = View.GONE
             ivBack.setOnClickListener(this)
             ll360.setOnClickListener(this)
             llGallery.setOnClickListener(this)
             tvViewOptions.setOnClickListener(this)
             btnTryAgain.setOnClickListener(this)
+            if (imageId == "0") {
+                ll360.visibility = View.GONE
+                llGallery.visibility = View.GONE
+            }
         }
     }
 
-    override fun getViewActivity(): Activity? {
+    override fun getViewActivity(): Activity {
         return this
     }
 

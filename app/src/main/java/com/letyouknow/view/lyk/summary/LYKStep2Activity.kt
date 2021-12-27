@@ -41,6 +41,7 @@ import com.pionymessenger.utils.Constant
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
 import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
@@ -56,6 +57,7 @@ import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.startActivity
+import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -140,6 +142,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 edtPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
             else
                 edtPhoneNumber.setText(dataPendingDeal.buyer?.phoneNumber)
+
+            if (imageId == "0") {
+                ll360.visibility = View.GONE
+                llGallery.visibility = View.GONE
+            }
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber, tvErrorCardNumber)
         edtCardNumber.addTextChangedListener(textWatcher)
@@ -253,7 +260,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     if (data == "0.00") {
                         llDollar.visibility = View.GONE
                     }
-                    tvDollar.text = "$$data"
+                    tvDollar.text =
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
+                    binding.dollar = data.toFloat()
                 }
                 )
         } else {
@@ -349,7 +358,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         startActivity<SubmitDealSummaryActivity>(
                             Constant.ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
-                            )
+                            ),
+                            ARG_TYPE_PRODUCT to "LetYouKnow"
                         )
                         finish()
 
