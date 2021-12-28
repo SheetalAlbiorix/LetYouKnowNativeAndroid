@@ -36,6 +36,8 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.RememberMeData
 import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.FacebookLoginViewModel
+import com.letyouknow.retrofit.viewmodel.GoogleLoginViewModel
 import com.letyouknow.retrofit.viewmodel.LoginViewModel
 import com.letyouknow.utils.AppGlobal.Companion.dialogWebView
 import com.letyouknow.view.dashboard.MainActivity
@@ -64,6 +66,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     lateinit var loginViewModel: LoginViewModel
+    lateinit var fbLoginViewModel: FacebookLoginViewModel
+    lateinit var googleLoginViewModel: GoogleLoginViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +78,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        fbLoginViewModel = ViewModelProvider(this)[FacebookLoginViewModel::class.java]
+        googleLoginViewModel = ViewModelProvider(this)[GoogleLoginViewModel::class.java]
         tvSignUp.setOnClickListener(this)
         txtForgotPassword.setOnClickListener(this)
         txtForgotUserId.setOnClickListener(this)
@@ -266,7 +272,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun callLoginAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, String>()
             request[ApiConstant.username] = edtEmailAddress.text.toString()
             request[ApiConstant.password] = edtPassword.text.toString()
@@ -292,7 +302,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun callLoginBioAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, String>()
             request[ApiConstant.username] = pref?.getUserData()?.userName!!
             request[ApiConstant.password] = pref?.getUserData()?.password!!
@@ -443,6 +457,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     Log.e("UserName : ", user?.displayName!!)
                     Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
                         .show()
+                    callGoogleLoginAPI(idToken)
                     // updateUI(user)
                     googleSignOut()
                 } else {
@@ -463,8 +478,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     Log.e("UserName FB : ", user?.displayName!!)
+                    Log.e("token : ", token.token)
                     Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
                         .show()
+                    callFBLoginAPI(token.token)
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -478,6 +495,61 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
         facebookSignOut()
     }
+
+    private fun callFBLoginAPI(accessToken: String) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.AccessToken] = accessToken
+
+            fbLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (data.buyerId != 0) {
+                    pref?.setLogin(true)
+                    pref?.setUserData(Gson().toJson(data))
+                    startActivity<MainActivity>()
+                    finish()
+                } else {
+                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callGoogleLoginAPI(accessToken: String) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.AccessToken] = accessToken
+
+            googleLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (data.buyerId != 0) {
+                    pref?.setLogin(true)
+                    pref?.setUserData(Gson().toJson(data))
+                    startActivity<MainActivity>()
+                    finish()
+                } else {
+                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun googleSignOut() {
         mGoogleSignInClient.signOut()

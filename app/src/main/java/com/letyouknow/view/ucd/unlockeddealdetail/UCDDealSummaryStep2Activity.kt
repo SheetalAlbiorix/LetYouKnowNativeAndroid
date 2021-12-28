@@ -3,10 +3,7 @@ package com.letyouknow.view.ucd.unlockeddealdetail
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.Html
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -130,6 +127,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match_search_deal))
         scrollTouchListener()
         onChangeInitials()
+        edtInitials.filters = arrayOf(letterFilter, InputFilter.LengthFilter(3))
     }
 
     private fun onChangeInitials() {
@@ -241,7 +239,11 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callImageUrlAPI(ImageId: String) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             val request = HashMap<String, Any>()
 
@@ -269,7 +271,11 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitPendingUCDDealAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
@@ -484,7 +490,11 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -514,4 +524,19 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             Constant.dismissLoader()
         super.onDestroy()
     }
+
+    var letterFilter =
+        InputFilter { source, start, end, dest, dstart, dend ->
+            var filtered = ""
+            for (i in start until end) {
+                val character = source[i]
+                if (!Character.isWhitespace(character) && character != 'π' && Character.isLetter(
+                        character
+                    )
+                ) {
+                    filtered += character
+                }
+            }
+            filtered
+        }
 }

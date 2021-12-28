@@ -134,11 +134,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setOnChange() {
-        onTextChange(this, edtFirstName, tvErrorFirstName)
-        onTextChange(this, edtLastName, tvErrorLastName)
+        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
+        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
         onTextChange(this, edtAddress1, tvErrorAddress1)
         onTextChange(this, edtAddress2, tvErrorAddress2)
-        onTextChange(this, edtCity, tvErrorCity)
+        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
         onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
         onTextChange(this, edtEmail, tvErrorEmailAddress)
         onTextChange(this, edtPassword, tvErrorPassword)
@@ -236,7 +236,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 setErrorVisible()
                 if (isValid()) {
                     if (Constant.isOnline(this)) {
-                        Constant.showLoader(this)
+                        if (!Constant.isInitProgress()) {
+                            Constant.showLoader(this)
+                        } else if (!Constant.progress.isShowing) {
+                            Constant.showLoader(this)
+                        }
                         val request = HashMap<String, String>()
                         request[ApiConstant.middleName] = ""
                         request[ApiConstant.firstName] = edtFirstName.text.toString().trim()
@@ -339,10 +343,22 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         when {
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.first_name_required)
+                return false
+            }
+            (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
+                tvErrorFirstName.text = getString(R.string.enter_valid_first_name)
                 return false
             }
             TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.last_name_required)
+                return false
+            }
+            (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtLastName, tvErrorLastName)
+                tvErrorLastName.text = getString(R.string.enter_valid_last_name)
                 return false
             }
             /* TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {

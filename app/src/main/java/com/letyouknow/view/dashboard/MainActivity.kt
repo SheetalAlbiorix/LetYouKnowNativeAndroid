@@ -95,7 +95,9 @@ class MainActivity : BaseActivity(),
         llLogout.setOnClickListener(this)
         setDrawerData()
         setNavDrawerData()
-
+        if (intent.hasExtra(Constant.ARG_IS_LYK_SHOW)) {
+            showWarningDialog()
+        }
         bottomNavigation.setOnNavigationItemSelectedListener(this)
         AppGlobal.getTimeZoneOffset()
         setPowerSaving()
@@ -224,9 +226,7 @@ class MainActivity : BaseActivity(),
                     loadFragment(LYKFragment(), getString(R.string.submit_your_price))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
                     item.isChecked = true
-                    if (intent.hasExtra(Constant.ARG_IS_LYK_SHOW)) {
-                        showWarningDialog()
-                    }
+
                 }
                 TYPE_ONE_DEAL_NEAR_YOU -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)

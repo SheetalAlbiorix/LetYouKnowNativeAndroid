@@ -102,7 +102,7 @@
                         android:paddingEnd="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_3sdp"
                         android:singleLine="true"
-                        android:text="Actual Model may vary"
+                        android:text="Actual model may vary"
                         android:textColor="@color/color808080"
                         android:textSize="@dimen/_8sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -431,7 +431,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
@@ -450,7 +454,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = dataPendingDeal.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
@@ -479,7 +487,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitDealLCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
@@ -516,8 +528,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 arJsonAccessories.add(dataLCDDeal.arAccessoriesId[i])
             }
 
-            map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
-            map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
+            map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
+            map[ApiConstant.vehiclePackageIDs] = arJsonPackage
 
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
@@ -612,7 +624,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             paymentMethodViewModel.callPayment(
                 this,
@@ -642,7 +658,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callPromoCodeAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             promoCodeViewModel.getPromoCode(
                 this,
                 edtGiftCard.text.toString().trim(),
@@ -915,6 +935,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val pkgList = JsonArray()
             for (i in 0 until dataLCDDeal.arPackageId.size) {
                 pkgList.add(dataLCDDeal.arPackageId[i])
@@ -923,7 +948,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             for (i in 0 until dataLCDDeal.arAccessoriesId.size) {
                 accList.add(dataLCDDeal.arAccessoriesId[i])
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = dataLCDDeal.yearId!!
@@ -1179,7 +1204,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!

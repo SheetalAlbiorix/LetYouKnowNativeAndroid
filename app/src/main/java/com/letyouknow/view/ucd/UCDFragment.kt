@@ -1050,21 +1050,25 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private var runnable = object : Runnable {
         override fun run() {
-            val date = Calendar.getInstance().time
-            val lastDate = AppGlobal.stringToDate(pref?.getSearchDealTime())
+            try {
+                val date = Calendar.getInstance().time
+                val lastDate = AppGlobal.stringToDate(pref?.getSearchDealTime())
 
-            val diff: Long = date.time - (lastDate?.time ?: 0)
-            print(diff)
+                val diff: Long = date.time - (lastDate?.time ?: 0)
+                print(diff)
 
-            val seconds = diff / 1000
-            val minutes = seconds / 60
-            if (minutes >= 30) {
-                handler.removeCallbacks(this)
-                pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
-                pref?.setSearchDealTime("")
-                setTimerPrefData()
-            } else {
-                handler.postDelayed(this, 1000)
+                val seconds = diff / 1000
+                val minutes = seconds / 60
+                if (minutes >= 30) {
+                    handler.removeCallbacks(this)
+                    pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+                    pref?.setSearchDealTime("")
+                    setTimerPrefData()
+                } else {
+                    handler.postDelayed(this, 1000)
+                }
+            } catch (e: Exception) {
+
             }
         }
 

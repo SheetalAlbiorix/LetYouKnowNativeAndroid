@@ -70,7 +70,11 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
 
     private fun callForgotPasswordAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, String>()
             request[ApiConstant.userName] = edtEmail.text.toString()
             request[ApiConstant.email] = edtEmail.text.toString()

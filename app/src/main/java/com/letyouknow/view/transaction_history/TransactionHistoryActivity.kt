@@ -109,7 +109,11 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
 
     private fun callTransactionHistoryAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             transactionHistoryViewModel.transactionHistoryApiCall(this)!!
                 .observe(this, Observer { data ->

@@ -87,6 +87,7 @@ class ApiConstant {
         var InteriorColorID = "InteriorColorID"
         var ZipCode1 = "ZipCode"
         var SearchRadius1 = "SearchRadius"
+        var AccessToken = "AccessToken"
 
     }
 }

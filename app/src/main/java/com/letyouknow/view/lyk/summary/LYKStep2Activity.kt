@@ -253,7 +253,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
@@ -272,7 +276,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = dataPendingDeal.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
@@ -301,7 +309,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitDealAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
@@ -337,8 +349,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 arJsonAccessories.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
 
-            map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
-            map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
+            map[ApiConstant.vehiclePackageIDs] = arJsonPackage
+            map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
             Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
@@ -433,7 +445,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             paymentMethodViewModel.callPayment(
                 this,
@@ -463,7 +479,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callPromoCodeAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             promoCodeViewModel.getPromoCode(
                 this,
                 edtGiftCard.text.toString().trim(),
@@ -891,7 +911,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!

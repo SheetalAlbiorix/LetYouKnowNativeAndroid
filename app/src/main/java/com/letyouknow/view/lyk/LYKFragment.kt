@@ -135,21 +135,25 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private var runnable = object : Runnable {
         override fun run() {
-            val date = Calendar.getInstance().time
-            val lastDate = stringToDate(pref?.getSubmitPriceTime())
+            try {
+                val date = Calendar.getInstance().time
+                val lastDate = stringToDate(pref?.getSubmitPriceTime())
 
-            val diff: Long = date.time - (lastDate?.time ?: 0)
-            print(diff)
+                val diff: Long = date.time - (lastDate?.time ?: 0)
+                print(diff)
 
-            val seconds = diff / 1000
-            val minutes = seconds / 60
-            if (minutes >= 30) {
-                handler.removeCallbacks(this)
-                pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                pref?.setSubmitPriceTime("")
-                setTimerPrefData()
-            } else {
-                handler.postDelayed(this, 1000)
+                val seconds = diff / 1000
+                val minutes = seconds / 60
+                if (minutes >= 30) {
+                    handler.removeCallbacks(this)
+                    pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                    pref?.setSubmitPriceTime("")
+                    setTimerPrefData()
+                } else {
+                    handler.postDelayed(this, 1000)
+                }
+            } catch (e: Exception) {
+
             }
         }
 

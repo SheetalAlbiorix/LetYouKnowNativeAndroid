@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Enter Promo Fall to Save $200.00 more!*"
+                    android:text="Enter Promo Fall to Save $500.00 more!*"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp" />
 
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="* Offer expires 9/30/21 and has no cash value"
+                    android:text="* Offer expires 12/31/21 and has no cash value"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_11sdp" />
 

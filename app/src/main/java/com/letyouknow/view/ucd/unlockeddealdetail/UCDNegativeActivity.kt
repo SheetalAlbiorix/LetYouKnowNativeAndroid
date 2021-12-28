@@ -62,7 +62,7 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
         ) {
             isShowPer = intent.getBooleanExtra(Constant.ARG_IS_SHOW_PER, false)
             if (isShowPer) {
-                tvMessage.text = "The Market is Hot and your Vehicle is Unavailable"
+                tvMessage.text = "Market's hot! The car is no longer available."
             } else {
                 tvMessage.text =
                     "Something went wrong, but don't worry your card hasn't been charged"

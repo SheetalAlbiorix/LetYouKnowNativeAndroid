@@ -230,5 +230,9 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     ): Call<Boolean>
 
     @POST("ExternalAuth/Facebook")
-    fun facebookLogin(@Body request: String): Call<Boolean>
+    fun facebookLogin(@Body request: HashMap<String, Any>): Call<LoginData>
+
+    @POST("ExternalAuth/Google")
+    fun googleLogin(@Body request: HashMap<String, Any>): Call<LoginData>
+
 }

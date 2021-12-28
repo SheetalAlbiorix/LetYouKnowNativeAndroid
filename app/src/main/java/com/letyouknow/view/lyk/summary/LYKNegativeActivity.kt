@@ -221,7 +221,11 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
 
     private fun callRefreshTokenApi(isLCD: Boolean, isRadius: Boolean) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -354,6 +358,11 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
 
     private fun callCheckVehicleStockAPI(isRadius: Boolean) {
         if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val pkgList = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
                 pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
@@ -362,7 +371,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             for (i in 0 until yearModelMakeData.arOptions?.size!!) {
                 accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 1
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
@@ -407,5 +416,4 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 }

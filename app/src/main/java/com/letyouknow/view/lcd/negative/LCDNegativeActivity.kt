@@ -60,7 +60,7 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
         ) {
             isShowPer = intent.getBooleanExtra(Constant.ARG_IS_SHOW_PER, false)
             if (isShowPer) {
-                tvMessage.text = "The Market is Hot and your Vehicle is Unavailable"
+                tvMessage.text = "Market's hot! The car is no longer available."
             } else {
                 tvMessage.text =
                     "Something went wrong, but don't worry your card hasn't been charged"
@@ -163,6 +163,11 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val pkgList = JsonArray()
             for (i in 0 until data.arPackageId.size) {
                 pkgList.add(data.arPackageId[i])
@@ -171,7 +176,7 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
             for (i in 0 until data.arAccessoriesId.size) {
                 accList.add(data.arAccessoriesId[i])
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = data.yearId!!

@@ -221,7 +221,11 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
 
     private fun callImageIdAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
                 request[ApiConstant.vehicleYearID] = vehicleYearID!!
@@ -245,7 +249,11 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
 
     private fun callImageUrlAPI(ImageId: String) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             val request = HashMap<String, Any>()
 
@@ -269,7 +277,11 @@ class UCDDealListStep1Activity : BaseActivity(), View.OnClickListener {
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!

@@ -384,7 +384,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             lykDollarViewModel.getDollar(this, pendingUCDData.dealID)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
@@ -403,7 +407,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = pendingUCDData.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
@@ -433,7 +441,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitDealUCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = pendingUCDData.dealID!!
             map[ApiConstant.buyerID] = pendingUCDData.buyer?.buyerId!!
@@ -474,9 +486,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 arJsonAccessories.add(ucdData.vehicleAccessories!![i].dealerAccessoryID)
             }*/
 
-            map[ApiConstant.dealerAccessoryIDs] = arJsonPackage
-            map[ApiConstant.vehiclePackageIDs] = arJsonAccessories
-Log.e("submitdealucd", Gson().toJson(map))
+            map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
+            map[ApiConstant.vehiclePackageIDs] = arJsonPackage
+            Log.e("submitdealucd", Gson().toJson(map))
             submitDealUCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
                     Constant.dismissLoader()
@@ -567,7 +579,11 @@ Log.e("submitdealucd", Gson().toJson(map))
     private fun callPaymentMethodAPI(isSubmit: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             paymentMethodViewModel.callPayment(
                 this,
@@ -598,7 +614,11 @@ Log.e("submitdealucd", Gson().toJson(map))
 
     private fun callPromoCodeAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             promoCodeViewModel.getPromoCode(
                 this,
                 edtGiftCard.text.toString().trim(),
@@ -928,6 +948,11 @@ Log.e("submitdealucd", Gson().toJson(map))
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val pkgList = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
                 pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
@@ -936,7 +961,7 @@ Log.e("submitdealucd", Gson().toJson(map))
             for (i in 0 until yearModelMakeData.arOptions!!.size) {
                 accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 3
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
@@ -1009,10 +1034,10 @@ Log.e("submitdealucd", Gson().toJson(map))
     }
 
     private fun isValid(): Boolean {
-        if (!::cardStripeData.isInitialized) {
-            Toast.makeText(this, "enter valid data", Toast.LENGTH_SHORT).show()
-            return false
-        }
+        /*  if (!::cardStripeData.isInitialized) {
+              Toast.makeText(this, "enter valid data", Toast.LENGTH_SHORT).show()
+              return false
+          }*/
         when {
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
@@ -1231,7 +1256,11 @@ Log.e("submitdealucd", Gson().toJson(map))
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!

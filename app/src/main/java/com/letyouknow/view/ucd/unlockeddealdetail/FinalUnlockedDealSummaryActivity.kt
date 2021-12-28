@@ -199,6 +199,11 @@ class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun callIsSoldAPI() {
         if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val pkgList = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
                 pkgList.add(yearModelMakeData.arPackages!![i].vehiclePackageID!!)
@@ -207,7 +212,7 @@ class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
             for (i in 0 until yearModelMakeData.arOptions!!.size) {
                 accList.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
             }
-            Constant.showLoader(this)
+
             val request = HashMap<String, Any>()
             request[ApiConstant.Product] = 2
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!

@@ -3,10 +3,7 @@ package com.letyouknow.view.lcd.summary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.Html
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -96,6 +93,9 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
                 FindLCDDeaData::class.java
             )
             binding.lcdDealData = dataLCDDeal
+            if (dataLCDDeal.dealID == "0") {
+                tvTitleTool.visibility = View.INVISIBLE
+            }
         }
 
         if (intent.hasExtra(ARG_IS_LCD)) {
@@ -129,6 +129,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         callImageIdAPI()
         onChangeInitials()
         setEmojiKeyBoard(edtInitials)
+        edtInitials.filters = arrayOf(letterFilter, InputFilter.LengthFilter(3))
     }
 
     private fun onChangeInitials() {
@@ -240,7 +241,11 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callImageIdAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             dataLCDDeal.run {
                 request[ApiConstant.vehicleYearID] = yearId!!
@@ -268,7 +273,11 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callImageUrlAPI(ImageId: String) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             val request = HashMap<String, Any>()
 
@@ -295,7 +304,11 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitPendingLCDDealAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val jsonPkg = JsonArray()
             for (i in 0 until dataLCDDeal.arPackageId.size) {
                 jsonPkg.add(dataLCDDeal.arPackageId[i])
@@ -498,7 +511,11 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -528,4 +545,19 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
             Constant.dismissLoader()
         super.onDestroy()
     }
+
+    var letterFilter =
+        InputFilter { source, start, end, dest, dstart, dend ->
+            var filtered = ""
+            for (i in start until end) {
+                val character = source[i]
+                if (!Character.isWhitespace(character) && character != 'π' && Character.isLetter(
+                        character
+                    )
+                ) {
+                    filtered += character
+                }
+            }
+            filtered
+        }
 }

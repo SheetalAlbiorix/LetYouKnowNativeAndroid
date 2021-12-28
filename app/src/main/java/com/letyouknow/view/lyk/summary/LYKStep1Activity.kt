@@ -3,10 +3,7 @@ package com.letyouknow.view.lyk.summary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.Html
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -50,6 +47,7 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+
 
 class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -156,6 +154,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         callRadiusAPI()
         if (isBid)
             setBidPreSelectionData()
+        edtInitials.filters = arrayOf<InputFilter>(letterFilter, InputFilter.LengthFilter(3))
     }
 
     private fun setBidPreSelectionData() {
@@ -224,11 +223,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 edtPrice.removeTextChangedListener(this)
                 try {
                     var originalString = s.toString()
-                    val longval: Long
+                    val longval: Double
                     if (originalString.contains(",")) {
                         originalString = originalString.replace(",".toRegex(), "")
                     }
-                    longval = originalString.toLong()
+                    longval = originalString.toDouble()
                     val formatter: DecimalFormat =
                         NumberFormat.getInstance(Locale.US) as DecimalFormat
                     formatter.applyPattern("#,###,###,###")
@@ -338,7 +337,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     private fun callVehicleZipCodeAPI(zipCode: String?) {
         if (Constant.isOnline(this)) {
             if (!Constant.progress.isShowing)
-                Constant.showLoader(this)
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(this)
+                } else if (!Constant.progress.isShowing) {
+                    Constant.showLoader(this)
+                }
             zipCodeModel.getZipCode(this, zipCode)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -476,7 +479,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callImageIdAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
                 request[ApiConstant.vehicleYearID] = vehicleYearID!!
@@ -504,7 +511,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callImageUrlAPI(ImageId: String) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             val request = HashMap<String, Any>()
 
@@ -531,7 +542,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callSubmitPendingDealAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = HashMap<String, Any>()
             val arJsonPackage = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
@@ -771,7 +786,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRefreshTokenApi() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val request = java.util.HashMap<String, Any>()
             request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
             request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
@@ -798,4 +817,19 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         tvErrorRadius.visibility = View.GONE
         tvErrorZipCode.visibility = View.GONE
     }
+
+    var letterFilter =
+        InputFilter { source, start, end, dest, dstart, dend ->
+            var filtered = ""
+            for (i in start until end) {
+                val character = source[i]
+                if (!Character.isWhitespace(character) && character != 'π' && Character.isLetter(
+                        character
+                    )
+                ) {
+                    filtered += character
+                }
+            }
+            filtered
+        }
 }

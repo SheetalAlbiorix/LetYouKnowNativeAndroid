@@ -113,7 +113,11 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
 
     private fun callNotificationOptionsAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.Email_NOTI] = adapterEditNotification.getItem(0).isSelect!!
             map[ApiConstant.SMS] = adapterEditNotification.getItem(1).isSelect!!

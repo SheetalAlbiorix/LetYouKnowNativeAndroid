@@ -118,7 +118,11 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
 
     private fun callBidHistoryAPI() {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             bidHistoryViewModel.bidHistoryApiCall(this)!!.observe(this, Observer { data ->
                 Constant.dismissLoader()
@@ -199,7 +203,11 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
 
     private fun callVehiclePackagesAPI(dataBid: BidPriceData) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
             packagesModel.getPackages(
                 this,
                 getProductType(dataBid.label!!).toString(),

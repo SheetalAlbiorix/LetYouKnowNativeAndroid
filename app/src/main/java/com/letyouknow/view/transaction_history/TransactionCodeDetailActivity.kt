@@ -77,7 +77,11 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun callTransactionCodeAPI(code: String?) {
         if (Constant.isOnline(this)) {
-            Constant.showLoader(this)
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (!Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
 
             transactionCodeViewModel.transactionCodeApiCall(this, code)!!
                 .observe(this, Observer { data ->

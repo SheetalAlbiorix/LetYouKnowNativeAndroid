@@ -236,6 +236,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private var runnable = object : Runnable {
         override fun run() {
             val date = Calendar.getInstance().time
+
             val lastDate = AppGlobal.stringToDate(pref?.getOneDealNearYou())
 
             val diff: Long = date.time - (lastDate?.time ?: 0)
@@ -251,6 +252,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             } else {
                 handler.postDelayed(this, 1000)
             }
+
         }
 
     }
