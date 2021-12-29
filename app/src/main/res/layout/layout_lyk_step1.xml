@@ -154,8 +154,8 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_edittext"
                                 android:digits="1234567890"
-                                android:hint="@string/zip_code"
                                 android:inputType="number"
+                                android:hint="@string/zip_code"
                                 android:maxLength="5"
                                 android:paddingTop="@dimen/_10sdp"
                                 android:paddingBottom="@dimen/_10sdp" />
@@ -165,7 +165,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
-                                android:digits="1234567890."
                                 android:text="@string/zip_code_required"
                                 android:textColor="@color/red"
                                 android:textSize="@dimen/_11sdp"
@@ -217,18 +216,28 @@
                                 android:layout_height="wrap_content">
 
 
-                                <androidx.appcompat.widget.AppCompatEditText
+                                <!-- <androidx.appcompat.widget.AppCompatEditText
+                                     android:id="@+id/edtPrice"
+                                     style="@style/medium"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:background="@drawable/bg_edittext"
+                                     android:hint="@string/price"
+                                     android:digits="0123456789"
+                                     android:inputType="numberDecimal"
+                                     android:paddingStart="@dimen/_25sdp"
+                                     android:paddingTop="@dimen/_10sdp"
+                                     android:paddingBottom="@dimen/_10sdp"
+                                     android:singleLine="true" />-->
+                                <com.cottacush.android.currencyedittext.CurrencyEditText
                                     android:id="@+id/edtPrice"
                                     style="@style/medium"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_edittext"
-                                    android:hint="@string/price"
-                                    android:inputType="numberDecimal"
                                     android:paddingStart="@dimen/_25sdp"
                                     android:paddingTop="@dimen/_10sdp"
-                                    android:paddingBottom="@dimen/_10sdp"
-                                    android:singleLine="true" />
+                                    android:paddingBottom="@dimen/_10sdp" />
 
                                 <TextView
                                     style="@style/medium"

@@ -147,14 +147,27 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
     }
 
     private CreditCardType showDetectedCreditCardImage(String creditCardNumber) {
-        CreditCardType type = CreditCardType.detect(creditCardNumber);
-        if (type != null) {
-            isValidCard = true;
-            Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), type.getImageResourceName());
-            this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-            this.errorText.setVisibility(View.GONE);
-        } else {
-            isValidCard = false;
+        try {
+            CreditCardType type = CreditCardType.detect(creditCardNumber);
+            if (type != null) {
+                isValidCard = true;
+                Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), type.getImageResourceName());
+                this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                this.errorText.setVisibility(View.GONE);
+            } else {
+                isValidCard = false;
+                Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), "ic_camera");
+                this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                this.errorText.setVisibility(View.VISIBLE);
+                if (TextUtils.isEmpty(this.editText.getText().toString().trim())) {
+                    this.errorText.setText("Card Number is Required");
+                } else {
+                    this.errorText.setText("Card Number is InValid");
+                }
+            }
+            return type;
+        } catch (Exception e) {
+            CreditCardType type = CreditCardType.detect(creditCardNumber);
             Drawable icon = ResourceUtils.getDrawableByName(this.editText.getContext(), "ic_camera");
             this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
             this.errorText.setVisibility(View.VISIBLE);
@@ -163,7 +176,8 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
             } else {
                 this.errorText.setText("Card Number is InValid");
             }
+            return type;
         }
-        return type;
+
     }
 }

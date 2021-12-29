@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
+import android.text.InputType
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -156,6 +157,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             ivClosePromo.setOnClickListener(this)
 
             setPrefOneDealNearYouData()
+            edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         } catch (e: Exception) {
 
         }

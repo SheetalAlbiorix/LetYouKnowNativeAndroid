@@ -36,6 +36,7 @@ import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
 import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.pionymessenger.utils.Constant.Companion.TYPE_SEARCH_DEAL
 import com.pionymessenger.utils.Constant.Companion.TYPE_SUBMIT_PRICE
+import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.Stripe
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_logout.*
@@ -431,44 +432,46 @@ class MainActivity : BaseActivity(),
         dialog.window?.attributes = layoutParams
     }
 
-    /*  private fun setupViewPager(viewPager: ViewPager) {
 
-
-
-          getString(R.string.account)
-          val adapter = MainViewPagerAdapter(supportFragmentManager)
-          accountFragment = AccountFragment()
-          homeFragment = HomeFragment()
-          submitYourPriceFragment = SubmitYourPriceFragment()
-          oneDealNearYouFragment = OneDealNearYouFragment()
-          adapter.addFragment(submitYourPriceFragment,getString(R.string.submit_your_price))
-          adapter.addFragment(oneDealNearYouFragment,getString(R.string.one_deal_near_you))
-          adapter.addFragment(homeFragment)
-          adapter.addFragment(accountFragment)
-          viewPager.adapter = adapter
-      }*/
-
-    private lateinit var stripe: Stripe
     private fun initStripe() {
-        /* val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
-             .setLabelCustomization(
-                 PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
-                     .setTextFontSize(12)
-                     .build()
-             )
-             .build()
-         PaymentAuthConfig.init(
-             PaymentAuthConfig.Builder()
-                 .set3ds2Config(
-                     PaymentAuthConfig.Stripe3ds2Config.Builder()
-                         .setTimeout(5)
-                         .setUiCustomization(uiCustomization)
-                         .build()
-                 )
-                 .build()
-         )*/
+        try {
+            val stripe = Stripe(this, getString(R.string.stripe_publishable_key))
+            val uiCustomization =
+                PaymentAuthConfig.Stripe3ds2UiCustomization.Builder.createWithAppTheme(this)
+                    .setToolbarCustomization(
+                        PaymentAuthConfig.Stripe3ds2ToolbarCustomization.Builder()
+                            .setBackgroundColor("#FFFFFF").setHeaderText("#0082cf").build()
+                    )
+                    .setLabelCustomization(
+                        PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                            .setTextFontSize(12)
+                            .setHeadingTextColor("#0082cf")
+                            .build()
+                    )
+                    .build()
+            PaymentAuthConfig.init(
+                PaymentAuthConfig.Builder()
+                    .set3ds2Config(
+                        PaymentAuthConfig.Stripe3ds2Config.Builder()
+                            .setTimeout(5)
+                            .setUiCustomization(uiCustomization)
+                            .build()
+                    )
+                    .build()
+            )
+            /*cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
+        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
+        cardInputWidget.setExpiryDate(1, 2022)
+        val params = cardInputWidget.paymentMethodCreateParams*/
 
+//        stripe.confirmPayment(this@LCDDealSummaryStep2Activity, ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params!!,key),authenticationContext: self)
+            stripe.handleNextActionForPayment(
+                this@MainActivity,
+                "sk_test_51HaDBECeSnBm0gpFYr32CeQF4lOudcFSXzt7XP4ZLw0dvLGS1yfkk9KEgjbtuq9rZNkp7hCUKEQDm32Qn8XdMlOh0056dBLbq7"
+            )
+        } catch (e: Exception) {
 
+        }
     }
 
 }

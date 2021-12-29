@@ -10,10 +10,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -211,6 +208,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         setEmojiOnEditText()
         setPowerSaving()
         broadcastIntent()
+        edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+        edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
     }
 
     private fun broadcastIntent() {
@@ -574,7 +573,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
-
+                            setClearCardData()
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
                             if (data.paymentResponse.requires_action!!)
                                 initStripe(data.paymentResponse.payment_intent_client_secret!!)
@@ -613,6 +612,13 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setClearCardData() {
+        edtCardNumber.setText("")
+        edtCVV.setText("")
+        edtCardZipCode.setText("")
+        edtExpiresDate.setText("")
     }
 
     private fun clearOneDealNearData() {
@@ -1371,13 +1377,14 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun initStripe(key: String) {
         stripe = Stripe(this, getString(R.string.stripe_publishable_key))
-        val uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
-            .setLabelCustomization(
-                PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
-                    .setTextFontSize(12)
-                    .build()
-            )
-            .build()
+        val uiCustomization =
+            PaymentAuthConfig.Stripe3ds2UiCustomization.Builder.createWithAppTheme(this)
+                .setLabelCustomization(
+                    PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                        .setTextFontSize(12)
+                        .build()
+                )
+                .build()
         PaymentAuthConfig.init(
             PaymentAuthConfig.Builder()
                 .set3ds2Config(
@@ -1394,7 +1401,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         val params = cardInputWidget.paymentMethodCreateParams*/
 
 //        stripe.confirmPayment(this@LCDDealSummaryStep2Activity, ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params!!,key),authenticationContext: self)
-        secretKey = key
         stripe.handleNextActionForPayment(this@LCDDealSummaryStep2Activity, key)
     }
 
@@ -1424,6 +1430,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             this,
             "We are unable to authenticate your payment method. please choose a different payment method and try again"
         )
+        setClearCardData()
     }
 
     private var paymentIntentId = ""
@@ -1454,6 +1461,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     this,
                     "We are unable to authenticate your payment method. please choose a different payment method and try again"
                 )
+                setClearCardData()
             }
             StripeIntent.Status.Canceled -> {
                 Log.e("Canceled", "Payment Canceled")
@@ -1462,6 +1470,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     this,
                     "We are unable to authenticate your payment method. please choose a different payment method and try again"
                 )
+                setClearCardData()
             }
             StripeIntent.Status.Processing -> {
                 Log.e(

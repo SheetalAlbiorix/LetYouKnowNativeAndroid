@@ -61,6 +61,8 @@ class View360Fragment : BaseFragment() {
             val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
             interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
 //            callRefreshTokenApi(imageId!!)
+            vrPanoramaView.setInfoButtonEnabled(false)
+            vrPanoramaView.setStereoModeButtonEnabled(false)
             getInteriorAPI(imageId)
         }
     }
@@ -85,7 +87,7 @@ class View360Fragment : BaseFragment() {
         }
     }
 
-    private fun View360(list: ArrayList<String>) {
+    private fun view360(list: ArrayList<String>) {
         var imagesTag360 = ""
         print(list.size)
         for (i in 0 until list.size) {
@@ -106,7 +108,6 @@ class View360Fragment : BaseFragment() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 // "option": Declared at the step 3
                 vrPanoramaView.loadImageFromBitmap(resource, option)
-
             }
         })
         getView360API(imageId)
@@ -129,7 +130,6 @@ class View360Fragment : BaseFragment() {
                 }
                 )
         }
-
     }
 
     private fun getView360API(imageId: String?) {
@@ -142,7 +142,7 @@ class View360Fragment : BaseFragment() {
                 .observe(this.requireActivity(), Observer { loginVo ->
                     Constant.dismissLoader()
                     print("data display " + loginVo.size.toString())
-                    View360(loginVo)
+                    view360(loginVo)
                 }
                 )
         }

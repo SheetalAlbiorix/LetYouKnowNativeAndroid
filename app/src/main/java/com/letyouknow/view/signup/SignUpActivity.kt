@@ -100,6 +100,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         googleInit()
         facebookInit()
         setState()
+        edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtPhoneNumber.filters = arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))
     }
 

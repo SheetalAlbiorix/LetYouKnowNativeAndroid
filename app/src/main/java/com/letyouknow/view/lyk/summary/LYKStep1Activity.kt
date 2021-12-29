@@ -9,6 +9,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -154,6 +155,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         callRadiusAPI()
         if (isBid)
             setBidPreSelectionData()
+        edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtInitials.filters = arrayOf<InputFilter>(letterFilter, InputFilter.LengthFilter(3))
     }
 
@@ -204,6 +206,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
 
         })
+//        edtPrice.currencyFormat()
+//        edtPrice.filters = arrayOf(CurrencyFormatInputFilter())
         edtPrice.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -220,26 +224,26 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
 
             override fun afterTextChanged(s: Editable?) {
-                edtPrice.removeTextChangedListener(this)
+                //   edtPrice.removeTextChangedListener(this)
                 try {
-                    var originalString = s.toString()
-                    val longval: Double
-                    if (originalString.contains(",")) {
-                        originalString = originalString.replace(",".toRegex(), "")
-                    }
-                    longval = originalString.toDouble()
-                    val formatter: DecimalFormat =
-                        NumberFormat.getInstance(Locale.US) as DecimalFormat
-                    formatter.applyPattern("#,###,###,###")
-                    val formattedString: String = formatter.format(longval)
+                    /*   var originalString = s.toString()
+                       val longval: Double
+                       if (originalString.contains(",")) {
+                           originalString = originalString.replace(",".toRegex(), "")
+                       }
+                       longval = originalString.toDouble()
+                       val formatter: DecimalFormat =
+                           NumberFormat.getInstance(Locale.US) as DecimalFormat
+                       formatter.applyPattern("#,###,###,###.##")
+                       val formattedString: String = formatter.format(longval)
 
-                    //setting text after format to EditText
-                    edtPrice.setText(formattedString)
-                    edtPrice.setSelection(edtPrice.text.toString().trim().length)
+                       //setting text after format to EditText
+                       edtPrice.setText(formattedString)*/
+//                     edtPrice.setSelection(edtPrice.text.toString().trim().length)
                 } catch (nfe: NumberFormatException) {
                     nfe.printStackTrace()
                 }
-                edtPrice.addTextChangedListener(this)
+                //   edtPrice.addTextChangedListener(this)
 
             }
 
@@ -285,6 +289,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     }
 
+
     private fun popupPrice(price: Double) {
         llViewPrice.visibility = View.VISIBLE
         tvErrorPrice.visibility = View.GONE
@@ -304,7 +309,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
         }
         ivPriceCorrect.setOnClickListener {
-            edtPrice.setText(edtPrice.text.toString().trim().replace(".00", "") + ".00")
+            // edtPrice.setText(edtPrice.text.toString().trim().replace(".00", "") + ".00")
             llViewPrice.visibility = View.GONE
             edtPrice.setSelection(edtPrice.text.toString().length)
             priceError(price)
@@ -680,7 +685,11 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun isValid(): Boolean {
-        price = edtPrice.text.toString().replace(",", "").trim().toDouble()
+        var price = 0.0
+        if (!TextUtils.isEmpty(edtPrice.text.toString().trim())) {
+            price = edtPrice.text.toString().replace(",", "").trim().toDouble()
+        }
+
         if (TextUtils.isEmpty(edtZipCode.text.toString().trim())) {
             setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
@@ -832,4 +841,42 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
             filtered
         }
+
+
+    fun EditText.addCurrencyFormatter() {
+
+        // Reference: https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext/29993290#29993290
+        this.addTextChangedListener(object : TextWatcher {
+
+            private var current = ""
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                if (s.toString() != current) {
+                    this@addCurrencyFormatter.removeTextChangedListener(this)
+                    // strip off the currency symbol
+
+                    // Reference for this replace regex: https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext/28005836#28005836
+                    val cleanString = s.toString().replace("\\D".toRegex(), "")
+                    val parsed = if (cleanString.isBlank()) 0.0 else cleanString.toDouble()
+                    // format the double into a currency format
+                    val formated = NumberFormat.getCurrencyInstance()
+                        .format(parsed / 10)
+
+                    current = formated
+                    this@addCurrencyFormatter.setText(formated)
+                    this@addCurrencyFormatter.setSelection(formated.length)
+
+                    this@addCurrencyFormatter.addTextChangedListener(this)
+                }
+            }
+        })
+
+    }
 }

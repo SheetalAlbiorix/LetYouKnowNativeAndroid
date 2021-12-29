@@ -3,6 +3,7 @@ package com.letyouknow.view.account
 import android.app.Dialog
 import android.os.Bundle
 import android.text.InputFilter
+import android.text.InputType
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
@@ -184,6 +185,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         dialogEditInfo.setCancelable(true)
         dialogEditInfo.setCanceledOnTouchOutside(true)
         dialogEditInfo.setContentView(R.layout.dialog_edit_info)
+        dialogEditInfo.edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         onStateChange()
         setEditInfoData()
         dialogEditInfo.run {

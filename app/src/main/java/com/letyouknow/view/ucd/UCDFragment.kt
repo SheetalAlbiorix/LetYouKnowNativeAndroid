@@ -3,6 +3,7 @@ package com.letyouknow.view.ucd
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
+import android.text.InputType
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -158,6 +159,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
             setTimerPrefData()
+            edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         } catch (e: Exception) {
 
         }

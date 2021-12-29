@@ -539,6 +539,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:padding="@dimen/_12sdp"
                     android:text="@string/go_back_home"
                     android:textColor="@color/white"

@@ -35,9 +35,10 @@ object InteriorRepository {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Log.v("interior Resp ", Gson().toJson(response.body()))
-                    Constant.dismissLoader()
+                  //  Constant.dismissLoader()
                     interiorData.value = data!!
                 } else if (response.code() == 401) {
+                    Constant.dismissLoader()
                     Log.v("interior Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
