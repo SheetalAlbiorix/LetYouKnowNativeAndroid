@@ -284,16 +284,20 @@
 
                             <TextView
                                 android:id="@+id/tvPackages"
-                                style="@style/medium"
+                                style="@style/bold"
+                                android:background="@drawable/bg_spinner_dark_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_24sdp"
-                                android:background="@drawable/bg_spinner_dark"
-                                android:padding="@dimen/_12sdp"
+                                android:paddingStart="@dimen/_12sdp"
+                                android:paddingTop="@dimen/_12sdp"
+                                android:paddingEnd="@dimen/_27sdp"
+                                android:paddingBottom="@dimen/_12sdp"
+                                android:textAllCaps="true"
                                 android:text="PACKAGES"
                                 android:textColor="@color/white"
                                 android:singleLine="true"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_11sdp" />
 
                             <TextView
                                 android:id="@+id/tvErrorPackages"
@@ -308,15 +312,19 @@
                             <TextView
                                 android:singleLine="true"
                                 android:id="@+id/tvOptionalAccessories"
-                                style="@style/medium"
+                                style="@style/bold"
+                                android:background="@drawable/bg_spinner_dark_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_12sdp"
-                                android:background="@drawable/bg_spinner_dark"
-                                android:padding="@dimen/_12sdp"
+                                android:paddingStart="@dimen/_12sdp"
+                                android:paddingTop="@dimen/_12sdp"
+                                android:paddingEnd="@dimen/_27sdp"
+                                android:paddingBottom="@dimen/_12sdp"
+                                android:textAllCaps="true"
                                 android:text="OPTIONS &amp; ACCESSORIES"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_11sdp" />
 
                             <TextView
                                 android:id="@+id/tvErrorOptionsAccessories"
@@ -359,7 +367,5 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -232,6 +232,7 @@
                                 <com.cottacush.android.currencyedittext.CurrencyEditText
                                     android:id="@+id/edtPrice"
                                     style="@style/medium"
+                                    android:hint="@string/price"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_edittext"

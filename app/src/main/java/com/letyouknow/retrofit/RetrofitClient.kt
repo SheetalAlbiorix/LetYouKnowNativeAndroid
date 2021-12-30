@@ -46,7 +46,7 @@ private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api
                 )
                 .build()
             chain.proceed(newRequest)
-        }).connectTimeout(20, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS).build()
+        }).connectTimeout(35, TimeUnit.SECONDS).readTimeout(35, TimeUnit.SECONDS).build()
 
         Log.e(
             "Header",

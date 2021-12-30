@@ -179,20 +179,22 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 if (str.length == 5) {
-                    prefOneDealNearYouData.yearId = ""
-                    prefOneDealNearYouData.makeId = ""
-                    prefOneDealNearYouData.modelId = ""
-                    prefOneDealNearYouData.trimId = ""
-                    prefOneDealNearYouData.extColorId = ""
-                    prefOneDealNearYouData.intColorId = ""
-                    prefOneDealNearYouData.yearStr = ""
-                    prefOneDealNearYouData.makeStr = ""
-                    prefOneDealNearYouData.modelStr = ""
-                    prefOneDealNearYouData.trimStr = ""
-                    prefOneDealNearYouData.extColorStr = ""
-                    prefOneDealNearYouData.intColorStr = ""
-                    prefOneDealNearYouData.packagesData = ArrayList()
-                    prefOneDealNearYouData.optionsData = ArrayList()
+                    if (prefOneDealNearYouData.zipCode != edtZipCode.text.toString().trim()) {
+                        prefOneDealNearYouData.yearId = ""
+                        prefOneDealNearYouData.makeId = ""
+                        prefOneDealNearYouData.modelId = ""
+                        prefOneDealNearYouData.trimId = ""
+                        prefOneDealNearYouData.extColorId = ""
+                        prefOneDealNearYouData.intColorId = ""
+                        prefOneDealNearYouData.yearStr = ""
+                        prefOneDealNearYouData.makeStr = ""
+                        prefOneDealNearYouData.modelStr = ""
+                        prefOneDealNearYouData.trimStr = ""
+                        prefOneDealNearYouData.extColorStr = ""
+                        prefOneDealNearYouData.intColorStr = ""
+                        prefOneDealNearYouData.packagesData = ArrayList()
+                        prefOneDealNearYouData.optionsData = ArrayList()
+                    }
                     callVehicleZipCodeAPI(str)
                 } else if (str.length < 5) {
                     isValidZipCode = false
@@ -1772,7 +1774,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (prefOneDealNearYouData.zipCode?.length!! >= 1) {
                 val str = prefOneDealNearYouData.zipCode.toString()
                 if (str.length == 5) {
-                    callVehicleZipCodeAPI(str)
+                    // callVehicleZipCodeAPI(str)
 
                 } else if (str.length < 5) {
                     isValidZipCode = false
@@ -1780,8 +1782,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
-                prefOneDealNearYouData.zipCode = edtZipCode.text.toString().trim()
-                setPrefData()
+//                prefOneDealNearYouData.zipCode = edtZipCode.text.toString().trim()
+//                setPrefData()
             } else {
                 edtZipCode.setText("")
             }

@@ -236,9 +236,7 @@ class AppGlobal {
                         Log.e("WebView Wrror", error.toString())
                     }
                 })
-
                 webView.loadUrl(url)
-
             }
             setLayoutParam(dialog)
             dialog.show()

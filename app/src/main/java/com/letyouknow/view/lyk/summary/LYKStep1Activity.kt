@@ -278,7 +278,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                         }
                     }
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -352,15 +351,13 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     Log.e("ZipCode Data", Gson().toJson(data))
                     if (!data) {
-                        /* Toast.makeText(
-                             requireActivity(),
-                             getString(R.string.invalid_zip_code),
-                             Toast.LENGTH_SHORT
-                         ).show()*/
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_error)
                         tvErrorZipCode.visibility = View.VISIBLE
+                        tvErrorZipCode.text = getString(R.string.invalid_zip_code)
                         isValidZipCode = false
                     } else {
+                        tvErrorZipCode.visibility = View.GONE
+                        edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
                         isValidZipCode = true
                     }
                 }
@@ -369,7 +366,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun callRadiusAPI() {
         if (!TextUtils.isEmpty(pref?.getRadius())) {
@@ -531,7 +527,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data.isNotEmpty()) {
-
                         arImageUrl = data
                         loadImageUrl(this, ivMain, arImageUrl[0])
                         loadImageUrl(this, ivBg360, arImageUrl[0])
@@ -639,12 +634,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             R.id.tvViewOptions -> {
                 popupOption()
             }
-            R.id.tvViewOptionsHot -> {
-                popupOption()
-            }
-            R.id.btnGoBack -> {
-                finish()
-            }
             R.id.ivBack -> {
                 onBackPressed()
             }
@@ -691,6 +680,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         }
 
         if (TextUtils.isEmpty(edtZipCode.text.toString().trim())) {
+            tvErrorZipCode.text = getString(R.string.zipcode_required)
             setErrorBorder(edtZipCode, tvErrorZipCode)
             return false
         }

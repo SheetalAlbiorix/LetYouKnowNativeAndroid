@@ -6,6 +6,12 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdk 31
 
@@ -23,11 +29,21 @@ android {
         dataBinding true
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             initWith debug
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -77,8 +93,8 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.squareup.okhttp3:okhttp:4.9.1"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
 
     implementation 'com.kaopiz:kprogresshud:1.2.0'
 
@@ -99,6 +115,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
     implementation "com.squareup.retrofit2:converter-scalars:2.9.0"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation  'com.cottacush:CurrencyEditText:0.0.3'
     implementation 'com.stripe:stripe-android:19.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -107,7 +124,6 @@ dependencies {
 
     // Add the Firebase Crashlytics SDK
     implementation 'com.google.firebase:firebase-crashlytics:18.2.5'
-    implementation  'com.cottacush:CurrencyEditText:0.0.3'
     // Recommended: Add the Google Analytics SDK
     implementation 'com.google.firebase:firebase-analytics:20.0.1'
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.5'

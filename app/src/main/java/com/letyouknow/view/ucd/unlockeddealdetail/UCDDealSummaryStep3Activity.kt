@@ -55,7 +55,6 @@ import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
 import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
-import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
 import com.stripe.android.model.PaymentIntent
@@ -1431,24 +1430,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private fun initStripe(key: String) {
         stripe = Stripe(this, getString(R.string.stripe_publishable_key))
-        val uiCustomization =
-            PaymentAuthConfig.Stripe3ds2UiCustomization.Builder.createWithAppTheme(this)
-                .setLabelCustomization(
-                    PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
-                        .setTextFontSize(12)
-                        .build()
-                )
-                .build()
-        PaymentAuthConfig.init(
-            PaymentAuthConfig.Builder()
-                .set3ds2Config(
-                    PaymentAuthConfig.Stripe3ds2Config.Builder()
-                        .setTimeout(5)
-                        .setUiCustomization(uiCustomization)
-                        .build()
-                )
-                .build()
-        )
+
         stripe.handleNextActionForPayment(this@UCDDealSummaryStep3Activity, key)
     }
 

@@ -34,13 +34,13 @@ object SubmitPendingDealRepository {
                 call: Call<SubmitPendingUcdData>,
                 response: Response<SubmitPendingUcdData>,
             ) {
-
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Log.v("PendingDeal Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     pendinLCDDealData.value = data!!
                 } else if (response.code() == 401) {
+                    Constant.dismissLoader()
                     Log.v("PendingDeal Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {

@@ -3,6 +3,7 @@ package com.letyouknow
 import android.app.Application
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.logispeed.data.prefs.AppPreferencesHelper
+import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentConfiguration
 
 class LetYouKnowApp : Application() {
@@ -31,6 +32,30 @@ class LetYouKnowApp : Application() {
         PaymentConfiguration.init(
             applicationContext,
             getString(R.string.stripe_publishable_key)
+        )
+        val uiCustomization =
+            PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
+                .setToolbarCustomization(
+                    PaymentAuthConfig.Stripe3ds2ToolbarCustomization.Builder()
+                        .setStatusBarColor("#0082cf").setBackgroundColor("#FFFFFF")
+                        .setHeaderText("#0082cf").build()
+                )
+                .setLabelCustomization(
+                    PaymentAuthConfig.Stripe3ds2LabelCustomization.Builder()
+                        .setTextFontSize(12)
+                        .setHeadingTextColor("#0082cf")
+                        .build()
+                )
+                .build()
+        PaymentAuthConfig.init(
+            PaymentAuthConfig.Builder()
+                .set3ds2Config(
+                    PaymentAuthConfig.Stripe3ds2Config.Builder()
+                        .setTimeout(5)
+                        .setUiCustomization(uiCustomization)
+                        .build()
+                )
+                .build()
         )
 //        FirebaseApp.initializeApp(this)
 
