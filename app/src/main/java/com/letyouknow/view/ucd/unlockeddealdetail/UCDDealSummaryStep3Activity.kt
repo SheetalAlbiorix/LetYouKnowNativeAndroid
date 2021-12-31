@@ -365,12 +365,16 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun removeHubConnection() {
-        if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
-            hubConnection?.invoke("StopTimer")
-            hubConnection?.remove("UpdateDealTimer")
-            hubConnection?.remove("UpdateVehicleState")
-            hubConnection?.remove("CantSubscribeOnDeal")
-            hubConnection?.close()
+        try {
+            if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
+                hubConnection?.invoke("StopTimer")
+                hubConnection?.remove("UpdateDealTimer")
+                hubConnection?.remove("UpdateVehicleState")
+                hubConnection?.remove("CantSubscribeOnDeal")
+                hubConnection?.close()
+            }
+        } catch (e: Exception) {
+
         }
     }
 

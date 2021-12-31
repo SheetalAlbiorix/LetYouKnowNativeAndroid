@@ -452,7 +452,7 @@
                     android:id="@+id/tvInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </ScrollView>
 
             <androidx.appcompat.widget.AppCompatTextView
