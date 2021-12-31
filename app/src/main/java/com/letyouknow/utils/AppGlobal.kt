@@ -32,6 +32,7 @@ import com.letyouknow.model.LoginData
 import com.letyouknow.view.login.LoginActivity
 import kotlinx.android.synthetic.main.dialog_authorization.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_error_close.*
 import kotlinx.android.synthetic.main.dialog_privacy_policy_terms_conditions.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -405,6 +406,22 @@ class AppGlobal {
             dialog.run {
                 tvErrorMessage.text = message
                 tvErrorOk.setOnClickListener {
+                    dismiss()
+                }
+            }
+            setLayoutParam(dialog)
+            dialog.show()
+        }
+
+        fun alertCardError(context: Context, message: String?) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_error_close)
+            dialog.run {
+                tvCardErrorMessage.text = message
+                tvCardClose.setOnClickListener {
                     dismiss()
                 }
             }

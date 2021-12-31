@@ -172,7 +172,7 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:maxLines="5"
-                            android:text="@{data.successResult.transactionInfo.vehicleModel}"
+                            android:text="@{data.successResult.transactionInfo.vehicleModel+' '+data.successResult.transactionInfo.vehicleTrim}"
                             tool:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -210,7 +210,10 @@
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
 
-                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp">
 
                         <TextView
                             android:layout_width="@dimen/_100sdp"
@@ -219,14 +222,19 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.vehicleExteriorColor}"
-                            tool:text="Oasis Blue"
+                            tool:text="Oasis Blue Oasis Blue Oasis Blue Oasis Blue Oasis Blue"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>
 
-                    <TableRow android:layout_marginBottom="@dimen/_10sdp">
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp">
 
                         <TextView
                             android:layout_width="@dimen/_100sdp"
@@ -235,9 +243,10 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.vehicleInteriorColor}"
-                            tool:text="Dark Galvanized/Sky Cool Gray"
+                            tool:text="Dark Galvanized/Sky Cool Gray Dark Galvanized/Sky Cool Gray"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
                     </TableRow>

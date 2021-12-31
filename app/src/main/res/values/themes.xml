@@ -3,7 +3,7 @@
     <style name="Theme.LetYouKnow" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorFAFAFA</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/gray</item>
         <!-- Secondary brand color. -->

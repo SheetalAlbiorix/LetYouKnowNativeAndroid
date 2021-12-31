@@ -308,7 +308,13 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
         }
         ivPriceCorrect.setOnClickListener {
-            // edtPrice.setText(edtPrice.text.toString().trim().replace(".00", "") + ".00")
+            /* if (!TextUtils.isEmpty(edtPrice.text.toString().trim()) && !edtPrice.text.toString()
+                     .trim().contains('.')
+             ){
+                 val p = price+0.00
+                 edtPrice.setText(p.toString())
+             }*/
+
             llViewPrice.visibility = View.GONE
             edtPrice.setSelection(edtPrice.text.toString().length)
             priceError(price)

@@ -31,7 +31,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.*
-import com.letyouknow.utils.AppGlobal.Companion.alertError
+import com.letyouknow.utils.AppGlobal.Companion.alertCardError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
@@ -569,7 +569,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             finish()
                         } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
                             if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
-                                AppGlobal.alertError(
+                                AppGlobal.alertCardError(
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
@@ -1426,9 +1426,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
              e.message, Toast.LENGTH_LONG
          ).show()*/
         Log.e("PaymentFailed", Gson().toJson(e).toString())
-        alertError(
+        alertCardError(
             this,
-            "We are unable to authenticate your payment method. please choose a different payment method and try again"
+            getString(R.string.we_are_unable_to_authenticate_your_payment)
         )
         setClearCardData()
     }
@@ -1457,18 +1457,18 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                  }else{
                      Toast.makeText(this,"Requires Payment Method",Toast.LENGTH_LONG).show()
                  }*/
-                AppGlobal.alertError(
+                AppGlobal.alertCardError(
                     this,
-                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                    getString(R.string.we_are_unable_to_authenticate_your_payment)
                 )
                 setClearCardData()
             }
             StripeIntent.Status.Canceled -> {
                 Log.e("Canceled", "Payment Canceled")
 //                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
-                alertError(
+                alertCardError(
                     this,
-                    "We are unable to authenticate your payment method. please choose a different payment method and try again"
+                    getString(R.string.we_are_unable_to_authenticate_your_payment)
                 )
                 setClearCardData()
             }

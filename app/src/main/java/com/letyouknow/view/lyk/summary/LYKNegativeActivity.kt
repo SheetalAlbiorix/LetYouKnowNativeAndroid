@@ -94,7 +94,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 AppGlobal.loadImageUrl(this, ivBg360, arImage[0])
             }
             submitDealData = Gson().fromJson(
-                intent.getStringExtra(Constant.ARG_SUBMIT_DEAL),
+                intent.getStringExtra(ARG_SUBMIT_DEAL),
                 SubmitDealLCDData::class.java
             )
 
@@ -399,7 +399,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                         }
                         finish()
                     } else {
-                        if (data) {
+                        if (isRadius) {
                             pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                             pref?.setSubmitPriceTime("")
                             startActivity(

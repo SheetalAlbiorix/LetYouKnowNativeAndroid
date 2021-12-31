@@ -44,6 +44,7 @@ object GoogleLoginRepository {
                     Log.v("Login Resp : ", Gson().toJson(response.body()))
                     loginVo.value = data!!
                 } else if (response.code() == 500) {
+                    Constant.dismissLoader()
                     AppGlobal.alertError(
                         context,
                         response.message()

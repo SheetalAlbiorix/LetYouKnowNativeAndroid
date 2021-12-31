@@ -10,8 +10,10 @@
     <string name="google_web_client_id">1041344513800-hh7o754v4ft0bk19l3t1233epltvsupg.apps.googleusercontent.com</string>
 
     <!--    FaceBook AppID-->
-    <string name="facebook_app_id">246218917393547</string>
-    <string name="fb_login_protocol_scheme">fb246218917393547</string>
+    <string name="facebook_app_id">2719149108369502</string>
+    <!--    <string name="facebook_app_id">246218917393547</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb246218917393547</string>-->
+    <string name="fb_login_protocol_scheme">fb2719149108369502</string>
 
     <string name="user_id">User Id</string>
     <string name="password">Password</string>
@@ -342,4 +344,5 @@
     <string name="the_car_is_no_longer_available">The car is no longer available</string>
     <string name="initials_must_be_valid_2_or_3_letters">Initials must be valid - 2 or 3 Letters</string>
     <string name="market_hot_msg">Market\'s hot! That car is already gone! \n Click OK to refresh.</string>
+    <string name="we_are_unable_to_authenticate_your_payment">We are unable to authenticate your payment method. please choose a different payment method and try again</string>
 </resources>
