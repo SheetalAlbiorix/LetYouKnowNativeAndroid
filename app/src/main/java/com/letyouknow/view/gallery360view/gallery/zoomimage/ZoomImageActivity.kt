@@ -8,7 +8,7 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityZoomImageBinding
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.activity_zoom_image.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*

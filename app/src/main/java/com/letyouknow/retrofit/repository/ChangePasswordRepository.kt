@@ -1,13 +1,13 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.ChangePasswordRequestData
+import com.letyouknow.model.SubmitPriceErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,7 +26,7 @@ object ChangePasswordRepository {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
@@ -36,13 +36,22 @@ object ChangePasswordRepository {
 
                 Constant.dismissLoader()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("changePass Resp ", response.toString())
+                    // Log.v("changePass Resp ", response.toString())
                     editUserProfileData.value = response.body()!!.string()
                 } else if (response.code() == 401) {
-                    Log.v("changePass Resp ", response.toString())
+                    // Log.v("changePass Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
+                } else if (response.code() == 400) {
+                    val dataError = Gson().fromJson(
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        SubmitPriceErrorData::class.java
+                    )
+                    AppGlobal.alertError(
+                        context,
+                        "Change password only for email login"
+                    )
                 } else {
-                    Log.v("changePass Resp ", response.toString())
+                    //  Log.v("changePass Resp ", response.toString())
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         AppGlobal.alertError(

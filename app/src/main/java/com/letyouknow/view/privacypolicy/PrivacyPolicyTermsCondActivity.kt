@@ -7,7 +7,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
-import com.pionymessenger.utils.Constant.Companion.ARG_POLICY
+import com.letyouknow.utils.Constant.Companion.ARG_POLICY
 import kotlinx.android.synthetic.main.activity_privacy_policy_terms_cond.*
 
 
@@ -21,8 +21,8 @@ class PrivacyPolicyTermsCondActivity : BaseActivity() {
     private fun init() {
         if (intent.hasExtra(ARG_POLICY)) {
             webView.webViewClient = MyBrowser()
-            webView.getSettings().loadsImagesAutomatically = true
-            webView.getSettings().javaScriptEnabled = true
+            webView.settings.loadsImagesAutomatically = true
+            webView.settings.javaScriptEnabled = true
             webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
             webView.loadUrl(intent.getStringExtra(ARG_POLICY)!!)
         }

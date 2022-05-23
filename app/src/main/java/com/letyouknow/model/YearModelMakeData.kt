@@ -22,6 +22,7 @@ data class YearModelMakeData(
     var price: Float? = 0.0f,
     var msrp: Float? = 0.0f,
     var discount: Float? = 0.0f,
+    var promotionId: String? = "",
     var initials: String? = "",
     var arPackages: ArrayList<VehiclePackagesData>? = ArrayList(),
     var arOptions: ArrayList<VehicleAccessoriesData>? = ArrayList()

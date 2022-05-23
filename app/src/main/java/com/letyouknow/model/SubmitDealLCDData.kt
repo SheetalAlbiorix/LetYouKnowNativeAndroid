@@ -8,6 +8,8 @@ data class SubmitDealLCDData(
     val isBadRequest: Boolean? = false,
     val somethingWentWrong: Boolean? = false,
     val isDisplayedPriceValid: Boolean? = false,
+    var miles: String? = "",
+    var conditions: String? = "",
     val matchedDealerInfo: MatchedDealerInfo? = MatchedDealerInfo(),
     val messageList: ArrayList<String>? = ArrayList(),
     val negativeResult: NegativeResult? = NegativeResult(),

@@ -1,6 +1,7 @@
 package com.letyouknow.view.gallery360view.gallery
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +15,10 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import com.letyouknow.view.gallery360view.gallery.zoomimage.ZoomImageActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -26,6 +27,7 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     lateinit var exteriorViewModel: ExteriorViewModel
     lateinit var interiorViewModel: InteriorViewModel
     private lateinit var tokenModel: RefreshTokenViewModel
+
     companion object {
         fun newInstance(id: String?): ExteriorFragment {
             val fragment = ExteriorFragment()
@@ -50,13 +52,19 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun init() {
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        if (arguments?.containsKey(ARG_IMAGE_ID) == true) {
-            val imageId = arguments?.getString(ARG_IMAGE_ID)
-            exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
-            interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
-            getExteriorAPI(imageId)
+        try {
+            if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                Constant.dismissLoader()
+            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            if (arguments?.containsKey(ARG_IMAGE_ID) == true) {
+                val imageId = arguments?.getString(ARG_IMAGE_ID)
+                exteriorViewModel = ViewModelProvider(this).get(ExteriorViewModel::class.java)
+                interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
+                getExteriorAPI(imageId)
 //            callRefreshTokenApi(imageId!!)
+            }
+        } catch (e: Exception) {
+
         }
     }
 
@@ -84,23 +92,28 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
     val arImages: ArrayList<String> = ArrayList()
 
     private fun getExteriorAPI(imageId: String?) {
-        if (Constant.isOnline(requireContext())) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(requireActivity())
-            }
-            val request = HashMap<String, Any>()
-            request[ApiConstant.ImageId] = imageId!!
-            request[ApiConstant.ImageProduct] = "Splash"
-
-            exteriorViewModel.getExterior(this.requireContext(), request)!!
-                .observe(this.requireActivity(), Observer { data ->
-                    arImages.addAll(data)
-                    getInteriorAPI(imageId)
-
+        try {
+            if (Constant.isOnline(requireContext())) {
+                if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                    Constant.dismissLoader()
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
                 }
-                )
+                val request = HashMap<String, Any>()
+                request[ApiConstant.ImageId] = imageId!!
+                request[ApiConstant.ImageProduct] = "Splash"
+
+                exteriorViewModel.getExterior(this.requireContext(), request)!!
+                    .observe(this.requireActivity(), Observer { data ->
+                        arImages.addAll(data)
+                        getInteriorAPI(imageId)
+                    }
+                    )
+            }
+        } catch (e: Exception) {
+
         }
     }
 
@@ -118,10 +131,20 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
                     else
                         arImages.addAll(data)
 
-                    adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
-                    rvGallery.adapter = adapterGallery
-                    adapterGallery.addAll(arImages)
-                    Constant.dismissLoader()
+                    if (arImages.size > 0) {
+                        adapterGallery = GalleryAdapter(R.layout.list_item_gallery, this)
+                        if (rvGallery != null) {
+                            rvGallery.adapter = adapterGallery
+                            adapterGallery.addAll(arImages)
+                        }
+                    } else {
+                        tvNotFound.visibility = View.VISIBLE
+                        rvGallery.visibility = View.GONE
+                    }
+                    Handler().postDelayed({
+                        Constant.dismissLoader()
+                    }, 1000)
+
                 }
                 )
         }
@@ -135,5 +158,11 @@ class ExteriorFragment : BaseFragment(), View.OnClickListener {
                 startActivity<ZoomImageActivity>(ARG_IMAGE_URL to data)
             }
         }
+    }
+
+    override fun onPause() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onPause()
     }
 }

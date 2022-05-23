@@ -7,15 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
-        android:hardwareAccelerated="true"
         android:name=".LetYouKnowApp"
         android:allowBackup="true"
-        android:fullBackupOnly="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -23,14 +20,23 @@
         android:theme="@style/Theme.LetYouKnow"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-
-
+        <activity
+            android:name=".GooglePaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ucd.UCDDealListStep1NewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.DealProgressBarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.referreferral.ReferReferralActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity"
             android:exported="false"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.ucd.unlockeddealdetail.FinalUnlockedDealSummaryActivity"
             android:exported="false"
@@ -75,6 +81,10 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
         <activity
             android:name=".view.account.viewDollar.ViewDollarActivity"
             android:exported="false"
@@ -84,15 +94,15 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.letyouknow.view.gallery360view.view360.View360Activty"
+            android:name=".view.gallery360view.view360.View360Activty"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.letyouknow.view.gallery360view.gallery.zoomimage.ZoomImageActivity"
+            android:name=".view.gallery360view.gallery.zoomimage.ZoomImageActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.letyouknow.view.gallery360view.Gallery360TabActivity"
+            android:name=".view.gallery360view.Gallery360TabActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -163,10 +173,12 @@
             android:name=".view.dashboard.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".view.dashboard.MainActivity" />
 
-
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".view.lcd.summary.LCDDealSummaryStep1Activity"
             android:exported="false"
@@ -179,7 +191,6 @@
             android:name=".view.ucd.unlockeddealdetail.UCDDealSummaryStep3Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.lyk.summary.LYKStep1Activity"
             android:exported="false"
@@ -190,6 +201,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.lyk.summary.LYKNegativeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.payment.GooglePaymentActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
@@ -231,6 +246,28 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".fcm.MyFirebaseMessageService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!--
+  <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_redraw" />
+        -->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="true" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="true" />
     </application>
 
 </manifest>

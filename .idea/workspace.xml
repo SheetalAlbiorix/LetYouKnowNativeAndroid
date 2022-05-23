@@ -14,31 +14,251 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d67a0397-bc62-4ee4-90da-56c8e26aed02" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/UserProfileData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/UserProfileData.kt" afterDir="false" />
+    <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="- final code commit">
+      <change afterPath="$PROJECT_DIR$/app/key.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/LYK.apk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/LYK_relese_v4.aab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/lyk-release_v3.aab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/output-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/fcm/MyFirebaseMessageService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/ActiveMatchingData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/CurrentReferralProgramData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/Deal.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/Deal.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/DevicePushTokenData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/MarketConditionsData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/NotificationData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/NotificationUcdDealData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PromotionData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/VehicleCriteria.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/VehicleCriteria.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/VehicleInStockCheckInput.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/AddDevicePushTokenRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CurrentReferralProgramPostRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CurrentReferralProgramRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromotionGeneralRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ReferralBalanceRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/RemoveDevicePushTokenRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SocialMobileRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/ActiveMatchingDealViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/AddPushTokenViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/CheckoutViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/CurrentReferralPostViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/CurrentReferralViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/MinMSRPRangeViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/PromotionViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/ReferralBalanceViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/RemovePushTokenViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SocialMobileViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/DecimalDigitsInputFilter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/OnLoadMoreListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/PaymentsUtil.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/RecyclerViewLoadMoreScroll.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/DealProgressBarActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/viewDollar/ViewActivityAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/payment/GooglePaymentActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/referreferral/ReferReferralActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/Items_LinearRVAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDDealListStep1NewActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-anydpi/ic_finance.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-anydpi/ic_geopoint.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-anydpi/ic_search_lyk.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/buy_with_googlepay_button_content.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_copy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_money_check_alt_solid.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_deal_progress_bar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_google_payment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_refer_referral.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_deal_progress_bar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_mobile_no.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_referral_info.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_dollar_activity.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/progress_loading.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/LetYouKnowApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/LetYouKnowApp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/base/BaseFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindLCDDeaData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindLCDDeaData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindUcdDealData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindUcdDealData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/LoginData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/LoginData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/Models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSubmitPriceData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSubmitPriceData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/RememberData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/RememberData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SignupData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SignupData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SubmitDealLCDData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SubmitDealLCDData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SubmitPriceErrorData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/SubmitPriceErrorData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/TransactionCodeData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/TransactionCodeData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/VehiclePackagesData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/VehiclePackagesData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/YearModelMakeData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/YearModelMakeData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiConstant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiConstant.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BidHistoryRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BidHistoryRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ChangePasswordRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ChangePasswordRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckedAccessoriesInventoryRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckedAccessoriesInventoryRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckedPackageInventoryRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckedPackageInventoryRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/EditUserProfileRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/EditUserProfileRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ExteriorColorRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ExteriorColorRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FacebookLoginRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FacebookLoginRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FindLCDDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FindLCDDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FindUCDDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/FindUCDDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ForgotPasswordRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ForgotPasswordRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/GoogleLoginRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/GoogleLoginRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageIdRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageIdRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageUrlRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ImageUrlRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/InteriorColorRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/InteriorColorRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/InteriorRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/InteriorRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/IsSoldRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/IsSoldRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/LYKDollarRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/LYKDollarRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/LoginRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/LoginRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/NotificationOptionUpdateRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/NotificationOptionUpdateRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/NotificationOptionsRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/NotificationOptionsRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/RefreshTokenRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/RefreshTokenRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SavingsToDateRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SavingsToDateRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SignUpRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SignUpRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealUCDRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealUCDRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingLCDDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingLCDDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/TransactionCodeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/TransactionCodeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/TransactionHistoryRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/TransactionHistoryRepository.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/UserProfileRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/UserProfileRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleMakeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleMakeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleModelRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleModelRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleOptionalAccessoriesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleOptionalAccessoriesRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehiclePackagesRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehiclePackagesRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleTrimRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleTrimRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleZipCodeRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleZipCodeRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SignUpViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/SignUpViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppGlobal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppGlobal.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppPreferencesHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/AppPreferencesHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/Constant.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/CreditCardNumberTextWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/CreditCardNumberTextWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/MyReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/MyReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/NetworkChangeReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/NetworkChangeReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/NetworkUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/utils/NetworkUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/AccountFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/AccountFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/SubmitYourPriceFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editnotification/EditNotification1Adapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editnotification/EditNotification1Adapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editnotification/EditNotificationActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editnotification/EditNotificationActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editrefer/EditReferActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editrefer/EditReferActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editrefer/referstep2/ReferStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/editrefer/referstep2/ReferStep2Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/viewDollar/ViewDollarActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/account/viewDollar/ViewDollarActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/forgotpassword/ForgotPasswordActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/forgotpassword/ForgotPasswordActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/Gallery360TabActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/Gallery360TabActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/ExteriorFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/ExteriorFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/InteriorFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/InteriorFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/zoomimage/ZoomImageActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/gallery/zoomimage/ZoomImageActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/view360/View360Activty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/view360/View360Activty.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/view360/View360Fragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/gallery360view/view360/View360Fragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/howitworkhelp/HowItWorkHelpWebViewActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/howitworkhelp/HowItWorkHelpWebViewActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/negative/LCDNegativeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/negative/LCDNegativeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep1Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep1Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/login/LoginActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/privacypolicy/PrivacyPolicyTermsCondActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/privacypolicy/PrivacyPolicyTermsCondActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/signup/SignUpActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/spinneradapter/RadiusSpinnerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/spinneradapter/RadiusSpinnerAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/splash/SplashActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/splash/SplashActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionHistoryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionHistoryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionHistoryAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionHistoryAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDDealListStep1Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDDealListStep1Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/FinalUnlockedDealSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/FinalUnlockedDealSummaryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep2Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep3Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep3Activity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDNegativeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDNegativeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/anim_slide_in_left.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/anim_slide_in_left.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/anim_slide_in_right.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/anim_slide_in_right.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/bg_spinner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/bg_spinner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_close.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_close.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_bid_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_bid_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_card_validation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_card_validation.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_information.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_information.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_forgot_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_forgot_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_gallery360_tab.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_gallery360_tab.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_lcd_deal_summary_step1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_lcd_deal_summary_step1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_lcd_deal_summary_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_lcd_deal_summary_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_lyk_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_lyk_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_refer_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_refer_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_submit_deal_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_submit_deal_summary.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_transaction_code_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_transaction_code_detail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_list_step1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_list_step1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_summary_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_summary_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_summary_step3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_deal_summary_step3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_negative.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucd_negative.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_view_dollar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_view_dollar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_zoom_image.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_zoom_image.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_bid_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_bid_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_change_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_change_password.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_edit_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_highlight_inventory.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_highlight_inventory.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_option_accessories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_option_accessories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_option_accessories_unlocked.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_option_accessories_unlocked.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_password_hint.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_password_hint.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_360_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_360_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_account.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_account.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_account1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_account1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_submit_your_price.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_submit_your_price.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summery.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summery.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_submit_price_deal_summery.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_submit_price_deal_summery.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_exterior.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_exterior.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_lyk.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_lyk.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_one_deal_near_you.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_one_deal_near_you.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_ucd.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_ucd.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_appbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_appbar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summary_hot_market.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_deal_summary_hot_market.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_final_one_deal_near_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_final_one_deal_near_summary.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_final_unlocked_deal_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_final_unlocked_deal_summary.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_lcd_deal_summary_step1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_lcd_deal_summary_step1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_lcd_deal_summary_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_lcd_deal_summary_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_negative.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_negative.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_step1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_step1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_lyk_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_nav_drawer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_nav_drawer.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar_blue.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar_blue.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar_timer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_toolbar_timer.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_unlocked_deal_summery.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_unlocked_deal_summery.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_ucd_deal_summary_step2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_ucd_deal_summary_step2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_ucd_deal_summary_step3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_ucd_deal_summary_step3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_bid_history1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_bid_history1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_edit_notification1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_edit_notification1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_options.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_options.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_spinner_no_button.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_spinner_no_button.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_transaction_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_transaction_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_transaction_history1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_transaction_history1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_unlocked_car.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_unlocked_car.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_bottom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_bottom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,50 +271,19 @@
       <ProjectState />
     </projectState>
   </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <task path="$PROJECT_DIR$/app">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="LetYouKnow" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="LetYouKnow" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="LetYouKnow" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="android" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="valueResourceFile" />
-        <option value="resourceFile" />
-        <option value="layoutResourceFile" />
-        <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="E:\Albiorix\AlbiorixApplication\LetYouKnow\keystore\lyk_keystore.jks" />
+    <option name="KEY_ALIAS" value="lyk_keystore" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="PUSH_TAGS">
@@ -113,122 +302,72 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProjectId" id="1xXGDbVdrOB84U49trCxR39LTjl" />
+  <component name="ProjectId" id="26V1ObUhxMoziF9D5uQQUSHmQV0" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ApkExportedModule" value="LetYouKnow.app" />
+    <property name="BundleExportedModule" value="LetYouKnow.app" />
     <property name="DEBUGGABLE_DEVICE" value="realme-rmx2030-11a294fb" />
     <property name="DEBUGGABLE_PROCESS" value="com.letyouknow" />
     <property name="DEBUGGER_ID" value="Auto" />
+    <property name="ExportApk.ApkPath" value="E:\Albiorix\AlbiorixApplication\LetYouKnow\app" />
+    <property name="ExportApk.BuildVariants" value="release" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.3.1/45a346a05e7ff27a01c59452379c5939cbb53c03/appcompat-1.3.1-sources.jar!/androidx/appcompat/widget/AppCompatButton.java_AppCompatButton_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.3.1/45a346a05e7ff27a01c59452379c5939cbb53c03/appcompat-1.3.1-sources.jar!/androidx/appcompat/widget/AppCompatButton.java_SELECTED" value="AppCompatButton" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.3.1/45a346a05e7ff27a01c59452379c5939cbb53c03/appcompat-1.3.1-sources.jar!/androidx/appcompat/widget/AppCompatEditText.java_AppCompatEditText_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.appcompat/appcompat/1.3.1/45a346a05e7ff27a01c59452379c5939cbb53c03/appcompat-1.3.1-sources.jar!/androidx/appcompat/widget/AppCompatEditText.java_SELECTED" value="AppCompatEditText" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.12.0/1616207ce490d57e2785b6018cb91ff30b9ef3c3/facebook-android-sdk-4.12.0-sources.jar!/com/facebook/FacebookButtonBase.java_FacebookButtonBase_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.12.0/1616207ce490d57e2785b6018cb91ff30b9ef3c3/facebook-android-sdk-4.12.0-sources.jar!/com/facebook/FacebookButtonBase.java_SELECTED" value="FacebookButtonBase" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.4.0/51035a8f6342c20d4d8f242d100e6f25e0c271ac/material-1.4.0-sources.jar!/com/google/android/material/navigation/NavigationBarView.java_NavigationBarView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.4.0/51035a8f6342c20d4d8f242d100e6f25e0c271ac/material-1.4.0-sources.jar!/com/google/android/material/navigation/NavigationBarView.java_SELECTED" value="NavigationBarView" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/payments-core/16.10.2/2867a52726f1364c495ad694f09d23f8095f118/payments-core-16.10.2-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_AddPaymentMethodCardView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/payments-core/16.10.2/2867a52726f1364c495ad694f09d23f8095f118/payments-core-16.10.2-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_SELECTED" value="AddPaymentMethodCardView" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_AddPaymentMethodCardView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/AddPaymentMethodCardView.kt_SELECTED" value="AddPaymentMethodCardView" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardInputWidget.kt_CardInputWidget_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardInputWidget.kt_SELECTED" value="CardInputWidget" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardMultilineWidget.kt_CardMultilineWidget_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/com.stripe/stripe-android/15.1.0/d6722b9c510335b44000388bebf8773f8619431b/stripe-android-15.1.0-sources.jar!/com/stripe/android/view/CardMultilineWidget.kt_SELECTED" value="CardMultilineWidget" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_SELECTED" value="View" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/view/View.java_View_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/widget/TextView.java_SELECTED" value="TextView" />
-    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-30/android/widget/TextView.java_TextView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_CreditCardEditText_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_SELECTED" value="CreditCardEditText" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/ProductShowCaseWebView.java_ProductShowCaseWebView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/ProductShowCaseWebView.java_SELECTED" value="ProductShowCaseWebView" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/TouchImageView.java_SELECTED" value="TouchImageView" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/TouchImageView.java_TouchImageView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/Zoom.java_SELECTED" value="TouchImageView" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow - Copy/app/src/main/java/com/letyouknow/utils/Zoom.java_TouchImageView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_CreditCardEditText_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_SELECTED" value="CreditCardEditText" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardView.java_CreditCardView_DIMENSIONS" value="1080&#10;1920" />
-    <property name="android-custom-viewD:/AlbiorixAndroid/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardView.java_SELECTED" value="CreditCardView" />
-    <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
+    <property name="ToolWindowEmulator.ShowToolbar" value="false" />
+    <property name="android-custom-viewC:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.cottacush/CurrencyEditText/0.0.3/9499052a1e52b868b03302a21e1d0308d55d696c/CurrencyEditText-0.0.3-sources.jar!/com/cottacush/android/currencyedittext/CurrencyEditText.kt_SELECTED" value="CurrencyEditText" />
+    <property name="android-custom-viewC:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.wajahatkarim3.EasyMoney-Widgets/EasyMoney-Widgets/1.0.0/2e801e476feffd481497a6b5ac0de0bfc8f63679/EasyMoney-Widgets-1.0.0-sources.jar!/com/wajahatkarim3/easymoneywidgets/EasyMoneyEditText.java_SELECTED" value="EasyMoneyEditText" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.2.1/f0f93e67af3f7417bdd560d5142f6dec4fe629c3/recyclerview-1.2.1-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_RecyclerView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.2.1/f0f93e67af3f7417bdd560d5142f6dec4fe629c3/recyclerview-1.2.1-sources.jar!/androidx/recyclerview/widget/RecyclerView.java_SELECTED" value="RecyclerView" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-31/android/view/View.java_SELECTED" value="View" />
+    <property name="android-custom-viewC:/Users/Albiorix Technology/AppData/Local/Android/Sdk/sources/android-31/android/view/View.java_View_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_CreditCardEditText_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/CreditCardEditText.java_SELECTED" value="CreditCardEditText" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ErrorEditText.java_ErrorEditText_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ErrorEditText.java_SELECTED" value="ErrorEditText" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ExpirationDateEditText.java_ExpirationDateEditText_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ExpirationDateEditText.java_SELECTED" value="ExpirationDateEditText" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ProductShowCaseWebView.java_ProductShowCaseWebView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/ProductShowCaseWebView.java_SELECTED" value="ProductShowCaseWebView" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/TouchImageView.java_SELECTED" value="TouchImageView" />
+    <property name="android-custom-viewE:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/java/com/letyouknow/utils/TouchImageView.java_TouchImageView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/layout" />
-    <property name="project.structure.last.edited" value="Suggestions" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable-anydpi" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LetYouKnowOld" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="com.microsoft.alm.plugin.idea.common.ui.settings.TeamServicesConfigurable" />
     <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
-  <component name="PsdUISettings">
-    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\AlbiorixAndroid\LetYouKnow - Copy\app\src\main\res\layout" />
-      <recent name="D:\AlbiorixAndroid\LetYouKnow - Copy\app\src\main\res\drawable" />
-      <recent name="D:\AlbiorixAndroid\LetYouKnow - Copy\app\src\main\java\com\letyouknow\model" />
-      <recent name="D:\AlbiorixAndroid\LetYouKnow - Copy\app\src\main\res" />
-      <recent name="D:\AlbiorixAndroid\LetYouKnow - Copy\app\src\main\res\drawable-xxxhdpi" />
-    </key>
-    <key name="android.template.-1012796739">
-      <recent name="com.letyouknow.view.splash" />
-      <recent name="com.letyouknow.view.resetpassword" />
-      <recent name="com.letyouknow.view.forgotpassword" />
-    </key>
-    <key name="android.template.560446026">
-      <recent name="com.letyouknow.view" />
-    </key>
-    <key name="android.template.-309399457">
-      <recent name="com.letyouknow.view.home.dealsummery.gallery360view.view360" />
-      <recent name="com.letyouknow.view.home.dealsummery.gallery360view.gallery.zoomimage" />
-      <recent name="com.letyouknow.view.home.dealsummery.gallery360view" />
-    </key>
-    <key name="android.template.2144259206">
-      <recent name="com.letyouknow.view.account.editrefer.referstep2" />
-      <recent name="com.letyouknow.view.account.editrefer" />
-      <recent name="com.letyouknow.view.account.editnotification" />
-    </key>
-    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="com.letyouknow.view.submitprice.summary" />
-      <recent name="com.letyouknow.view.home.dealsummery.gallery360view.gallery" />
-      <recent name="com.letyouknow.view.privacypolicy" />
-      <recent name="com.letyouknow.view.dashboard" />
-    </key>
-    <key name="android.template.-1700711452">
-      <recent name="com.letyouknow.view.unlockedcardeal.submitdealsummary" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\java\com\letyouknow\utils" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable-v24" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable-anydpi" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="com.letyouknow.utils" />
       <recent name="com.letyouknow.retrofit.viewmodel" />
       <recent name="com.letyouknow.retrofit.repository" />
       <recent name="com.letyouknow.model" />
-      <recent name="com.letyouknow.view.submitprice.summary" />
-      <recent name="com.letyouknow.view.spinneradapter" />
+      <recent name="com.letyouknow.view.ucd" />
     </key>
-    <key name="android.template.-91580739">
-      <recent name="com.letyouknow.view.account.editinfo" />
-      <recent name="com.letyouknow.view.savedsearches" />
-      <recent name="com.letyouknow.view.transaction_history" />
-      <recent name="com.letyouknow.view.account.editlogin" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.letyouknow.utils" />
+    <key name="android.template.87162493">
+      <recent name="com.letyouknow.view.payment" />
     </key>
   </component>
-  <component name="RunAnythingCache">
-    <option name="myCommands">
-      <command value="gradle signing report" />
-    </option>
-  </component>
-  <component name="RunManager" selected="Android App.app">
+  <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="LetYouKnow.app" />
       <option name="DEPLOY" value="true" />
@@ -243,8 +382,7 @@
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
       <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
@@ -275,7 +413,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
         <option name="STARTUP_PROFILING_ENABLED" value="false" />
         <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
         <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
         <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
       </Profilers>
@@ -287,415 +425,29 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LetYouKnow - Copy [signing report]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="signing" />
-            <option value="report" />
-          </list>
-        </option>
-        <option name="vmOptions" value="" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="LetYouKnow - Copy [signingReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="signingReport" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.LetYouKnow - Copy [signing report]" />
-        <item itemvalue="Gradle.LetYouKnow - Copy [signingReport]" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d67a0397-bc62-4ee4-90da-56c8e26aed02" name="Default Changelist" comment="" />
-      <created>1630493901897</created>
+      <changelist id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="" />
+      <created>1647493913849</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1630493901897</updated>
+      <updated>1647493913849</updated>
     </task>
-    <task id="LOCAL-00001" summary="--Signup">
-      <created>1630656799864</created>
+    <task id="LOCAL-00001" summary="- final code commit">
+      <created>1653291945991</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1630656799864</updated>
+      <updated>1653291945991</updated>
     </task>
-    <task id="LOCAL-00002" summary="--Signup">
-      <created>1630996189470</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1630996189470</updated>
-    </task>
-    <task id="LOCAL-00003" summary="--initial commit">
-      <created>1631016890250</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1631016890250</updated>
-    </task>
-    <task id="LOCAL-00004" summary="--initial commit">
-      <created>1631019187293</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1631019187293</updated>
-    </task>
-    <task id="LOCAL-00005" summary="--login register validation and api implementation">
-      <created>1631106506399</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1631106506400</updated>
-    </task>
-    <task id="LOCAL-00006" summary="-- Social Login and Biometric">
-      <created>1631192145226</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1631192145226</updated>
-    </task>
-    <task id="LOCAL-00007" summary="-- CardView TextView set on Signup Screen,Working in Lighting Car Deals">
-      <created>1631278518578</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1631278518578</updated>
-    </task>
-    <task id="LOCAL-00008" summary="-- Account Detail Screen">
-      <created>1631595510307</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1631595510307</updated>
-    </task>
-    <task id="LOCAL-00009" summary="-- UnlockedCarDealsScreen&#10;   BidHistoryScreen&#10;   TransactionHistoryScreen&#10;   FavouriteSearches Screen&#10;    Account Screen&#10;    EditLogin Screen">
-      <created>1631624892526</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1631624892526</updated>
-    </task>
-    <task id="LOCAL-00010" summary="-- 1. Search Deal&#10;   2. ReferYourFellowCarShopper&#10;   3.Edit information">
-      <created>1631710645433</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1631710645433</updated>
-    </task>
-    <task id="LOCAL-00011" summary="-- LightingCarDealsScreen =&gt; Done&#10;   OneDealNearYou =&gt; Done&#10;   SubmitYourPrice =&gt; Done">
-      <created>1631884319586</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1631884319586</updated>
-    </task>
-    <task id="LOCAL-00012" summary="-- api calling =&gt; Done">
-      <created>1632315675780</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1632315675780</updated>
-    </task>
-    <task id="LOCAL-00013" summary="-- api calling =&gt; Done">
-      <created>1632402277319</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1632402277319</updated>
-    </task>
-    <task id="LOCAL-00014" summary="-- Submit Your Price  -&gt; Commit api">
-      <created>1632748419120</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1632748419120</updated>
-    </task>
-    <task id="LOCAL-00015" summary="-- Submit Your Price  -&gt; Commit api">
-      <created>1632833687970</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1632833687970</updated>
-    </task>
-    <task id="LOCAL-00016" summary="-- Submit Your Price  -&gt; Commit api">
-      <created>1632920493049</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1632920493049</updated>
-    </task>
-    <task id="LOCAL-00017" summary="-- Submit Your Price  -&gt; Commit api">
-      <created>1633006638672</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1633006638672</updated>
-    </task>
-    <task id="LOCAL-00018" summary="--merge">
-      <created>1633320618979</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1633320618979</updated>
-    </task>
-    <task id="LOCAL-00019" summary="--Deal Summary">
-      <created>1633438509316</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1633438509316</updated>
-    </task>
-    <task id="LOCAL-00020" summary="--Deal Summary">
-      <created>1633524542429</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1633524542429</updated>
-    </task>
-    <task id="LOCAL-00021" summary="--DealSummary Detail">
-      <created>1633610524433</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1633610524433</updated>
-    </task>
-    <task id="LOCAL-00022" summary="--DealSummary Detail">
-      <created>1633696340850</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1633696340850</updated>
-    </task>
-    <task id="LOCAL-00023" summary="-- working on strip">
-      <created>1633943901318</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1633943901318</updated>
-    </task>
-    <task id="LOCAL-00024" summary="-- working on strip">
-      <created>1633952158226</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1633952158227</updated>
-    </task>
-    <task id="LOCAL-00025" summary="-- implement of paymentMethod api">
-      <created>1633956492113</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1633956492113</updated>
-    </task>
-    <task id="LOCAL-00026" summary="-- implement of paymentMethod api">
-      <created>1634018365164</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1634018365165</updated>
-    </task>
-    <task id="LOCAL-00027" summary="-- implement of paymentMethod api">
-      <created>1634030700751</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1634030700751</updated>
-    </task>
-    <task id="LOCAL-00028" summary="-- implement of paymentMethod api">
-      <created>1634042960267</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1634042960267</updated>
-    </task>
-    <task id="LOCAL-00029" summary="-- implement of paymentMethod api">
-      <created>1634097426050</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1634097426050</updated>
-    </task>
-    <task id="LOCAL-00030" summary="-- implement of paymentMethod api">
-      <created>1634113814803</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1634113814803</updated>
-    </task>
-    <task id="LOCAL-00031" summary="-- SubmitDealSummary">
-      <created>1634114897469</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1634114897469</updated>
-    </task>
-    <task id="LOCAL-00032" summary="-- SubmitDealSummary">
-      <created>1634121991575</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1634121991576</updated>
-    </task>
-    <task id="LOCAL-00033" summary="-- SubmitDealSummary">
-      <created>1634129387471</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1634129387471</updated>
-    </task>
-    <task id="LOCAL-00034" summary="-- SubmitDealSummary">
-      <created>1634191826988</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1634191826988</updated>
-    </task>
-    <task id="LOCAL-00035" summary="-- SubmitDealSummary">
-      <created>1634216685817</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1634216685817</updated>
-    </task>
-    <task id="LOCAL-00036" summary="-- SubmitPriceDealSummary">
-      <created>1634217979295</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1634217979295</updated>
-    </task>
-    <task id="LOCAL-00037" summary="-- SubmitPriceDealSummary">
-      <created>1634291979573</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1634291979573</updated>
-    </task>
-    <task id="LOCAL-00038" summary="-- SubmitPriceDealSummary">
-      <created>1634292129525</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1634292129525</updated>
-    </task>
-    <task id="LOCAL-00039" summary="-- SubmitPriceDealSummary">
-      <created>1634538185634</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1634538185634</updated>
-    </task>
-    <task id="LOCAL-00040" summary="-- SubmitPriceDealSummary">
-      <created>1634548965263</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1634548965263</updated>
-    </task>
-    <task id="LOCAL-00041" summary="-- SubmitPriceDealSummary">
-      <created>1634559325319</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1634559325319</updated>
-    </task>
-    <task id="LOCAL-00042" summary="-- SubmitPriceDealSummary">
-      <created>1634561715877</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1634561715877</updated>
-    </task>
-    <task id="LOCAL-00043" summary="-- SubmitPriceDealSummary">
-      <created>1634619831959</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1634619831959</updated>
-    </task>
-    <task id="LOCAL-00044" summary="-- SubmitPriceDealSummary">
-      <created>1634620545403</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1634620545403</updated>
-    </task>
-    <task id="LOCAL-00045" summary="-- SubmitPriceDealSummary">
-      <created>1634621664608</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1634621664608</updated>
-    </task>
-    <option name="localTasksCounter" value="46" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="--Signup" />
-    <MESSAGE value="--initial commit" />
-    <MESSAGE value="--login register validation and api implementation" />
-    <MESSAGE value="-- Social Login and Biometric" />
-    <MESSAGE value="-- CardView TextView set on Signup Screen,Working in Lighting Car Deals" />
-    <MESSAGE value="-- Account Detail Screen" />
-    <MESSAGE value="-- UnlockedCarDealsScreen&#10;   BidHistoryScreen&#10;   TransactionHistoryScreen&#10;   FavouriteSearches Screen&#10;    Account Screen&#10;    EditLogin Screen" />
-    <MESSAGE value="-- 1. Search Deal&#10;   2. ReferYourFellowCarShopper&#10;   3.Edit information" />
-    <MESSAGE value="-- LightingCarDealsScreen =&gt; Done&#10;   OneDealNearYou =&gt; Done&#10;   SubmitYourPrice =&gt; Done" />
-    <MESSAGE value="-- api calling =&gt; Done" />
-    <MESSAGE value="-- Submit Your Price  -&gt; Commit api" />
-    <MESSAGE value="--merge" />
-    <MESSAGE value="--Deal Summary" />
-    <MESSAGE value="--DealSummary Detail" />
-    <MESSAGE value="-- working on strip" />
-    <MESSAGE value="-- implement of paymentMethod api" />
-    <MESSAGE value="-- SubmitDealSummary" />
-    <MESSAGE value="-- SubmitPriceDealSummary" />
-    <option name="LAST_COMMIT_MESSAGE" value="-- SubmitPriceDealSummary" />
+    <MESSAGE value="- final code commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="- final code commit" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -703,660 +455,865 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint suspend="THREAD" type="kotlin-function">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/ForgotPasswordViewModel.kt</url>
-          <line>11</line>
-          <properties class="com.letyouknow.retrofit.viewmodel.ForgotPasswordViewModel" method="getForgotPassword">
-            <option name="EMULATED" value="true" />
-          </properties>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDDealListStep1Activity.kt</url>
+          <line>377</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>124</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>125</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt</url>
+          <line>118</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt</url>
+          <line>119</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt</url>
+          <line>143</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/submitdealsummary/SubmitDealSummaryActivity.kt</url>
+          <line>145</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>850</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>851</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>852</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>855</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>856</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>858</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionHistoryActivity.kt</url>
+          <line>121</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>86</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>146</line>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>299</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>297</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>26</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>28</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>42</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>44</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>45</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>48</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>50</line>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>54</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>61</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>62</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>29</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>31</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/ActiveMatchingDealRepository.kt</url>
+          <line>32</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>144</line>
+          <option name="timeStamp" value="104" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>146</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRepository.kt</url>
+          <line>39</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRepository.kt</url>
+          <line>37</line>
+          <option name="timeStamp" value="119" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRepository.kt</url>
+          <line>45</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>257</line>
+          <option name="timeStamp" value="123" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>261</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt</url>
+          <line>48</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt</url>
+          <line>21</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>186</line>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>187</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>204</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>205</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>206</line>
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>207</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>160</line>
+          <option name="timeStamp" value="141" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>1170</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>1171</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>1174</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>222</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>223</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>266</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>267</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>269</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt</url>
+          <line>39</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt</url>
+          <line>24</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/MinMSRPRangeRepository.kt</url>
+          <line>37</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
+          <line>1208</line>
+          <option name="timeStamp" value="156" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>189</line>
+          <option name="timeStamp" value="165" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>190</line>
+          <option name="timeStamp" value="166" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>42</line>
+          <option name="timeStamp" value="167" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>54</line>
+          <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>56</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>48</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UnlockedCarDealAdapter.kt</url>
+          <line>50</line>
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep3Activity.kt</url>
+          <line>454</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>353</line>
+          <option name="timeStamp" value="174" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>354</line>
+          <option name="timeStamp" value="175" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>355</line>
+          <option name="timeStamp" value="176" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>361</line>
+          <option name="timeStamp" value="183" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>421</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>413</line>
+          <option name="timeStamp" value="189" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>414</line>
+          <option name="timeStamp" value="190" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>416</line>
+          <option name="timeStamp" value="191" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>177</line>
+          <option name="timeStamp" value="192" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>178</line>
+          <option name="timeStamp" value="193" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>122</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>125</line>
+          <option name="timeStamp" value="198" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>357</line>
+          <option name="timeStamp" value="199" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>358</line>
+          <option name="timeStamp" value="200" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>32</line>
+          <option name="timeStamp" value="201" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>31</line>
+          <option name="timeStamp" value="202" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>37</line>
+          <option name="timeStamp" value="203" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>19</line>
+          <option name="timeStamp" value="204" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>20</line>
+          <option name="timeStamp" value="205" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>25</line>
+          <option name="timeStamp" value="206" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>27</line>
+          <option name="timeStamp" value="207" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>359</line>
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/bidhistory/BidHistoryActivity.kt</url>
+          <line>360</line>
+          <option name="timeStamp" value="209" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/CheckVehicleStockRepository.kt</url>
+          <line>28</line>
+          <option name="timeStamp" value="210" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>124</line>
+          <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>126</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>133</line>
+          <option name="timeStamp" value="214" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>134</line>
+          <option name="timeStamp" value="215" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>296</line>
+          <option name="timeStamp" value="216" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>811</line>
+          <option name="timeStamp" value="222" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>807</line>
+          <option name="timeStamp" value="223" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>554</line>
+          <option name="timeStamp" value="225" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>555</line>
+          <option name="timeStamp" value="226" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>580</line>
+          <option name="timeStamp" value="227" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>583</line>
+          <option name="timeStamp" value="228" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>584</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>593</line>
+          <option name="timeStamp" value="232" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1276</line>
+          <option name="timeStamp" value="241" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1277</line>
+          <option name="timeStamp" value="242" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1278</line>
+          <option name="timeStamp" value="243" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1279</line>
+          <option name="timeStamp" value="244" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1275</line>
+          <option name="timeStamp" value="245" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>180</line>
+          <option name="timeStamp" value="246" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>181</line>
+          <option name="timeStamp" value="247" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>183</line>
+          <option name="timeStamp" value="248" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>186</line>
+          <option name="timeStamp" value="249" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>187</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>189</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>198</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>204</line>
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>194</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>195</line>
+          <option name="timeStamp" value="255" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>196</line>
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/transaction_history/TransactionCodeDetailActivity.kt</url>
+          <line>202</line>
+          <option name="timeStamp" value="257" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1084</line>
+          <option name="timeStamp" value="258" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1085</line>
+          <option name="timeStamp" value="259" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1086</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>556</line>
+          <option name="timeStamp" value="261" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>568</line>
+          <option name="timeStamp" value="264" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>569</line>
+          <option name="timeStamp" value="265" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>575</line>
+          <option name="timeStamp" value="266" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>576</line>
+          <option name="timeStamp" value="267" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>570</line>
+          <option name="timeStamp" value="268" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>571</line>
+          <option name="timeStamp" value="269" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>572</line>
+          <option name="timeStamp" value="270" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>560</line>
+          <option name="timeStamp" value="271" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>561</line>
+          <option name="timeStamp" value="272" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>565</line>
+          <option name="timeStamp" value="273" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>564</line>
+          <option name="timeStamp" value="274" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>563</line>
+          <option name="timeStamp" value="275" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>641</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>313</line>
+          <option name="timeStamp" value="281" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>316</line>
+          <option name="timeStamp" value="282" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>317</line>
+          <option name="timeStamp" value="283" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>318</line>
+          <option name="timeStamp" value="284" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>320</line>
+          <option name="timeStamp" value="285" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>309</line>
+          <option name="timeStamp" value="286" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>181</line>
+          <option name="timeStamp" value="287" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>180</line>
+          <option name="timeStamp" value="288" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>183</line>
+          <option name="timeStamp" value="289" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep1Activity.kt</url>
+          <line>294</line>
+          <option name="timeStamp" value="292" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>379</line>
+          <option name="timeStamp" value="294" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>380</line>
+          <option name="timeStamp" value="295" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>381</line>
+          <option name="timeStamp" value="296" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>438</line>
+          <option name="timeStamp" value="300" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>439</line>
+          <option name="timeStamp" value="301" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>440</line>
+          <option name="timeStamp" value="302" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>441</line>
+          <option name="timeStamp" value="303" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>442</line>
+          <option name="timeStamp" value="304" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>443</line>
+          <option name="timeStamp" value="305" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>444</line>
+          <option name="timeStamp" value="306" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>446</line>
+          <option name="timeStamp" value="307" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>445</line>
+          <option name="timeStamp" value="308" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>77</line>
+          <option name="timeStamp" value="309" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt</url>
+          <line>78</line>
+          <option name="timeStamp" value="310" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1873</line>
+          <option name="timeStamp" value="313" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1872</line>
+          <option name="timeStamp" value="314" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1867</line>
+          <option name="timeStamp" value="315" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1870</line>
+          <option name="timeStamp" value="316" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>
+          <line>1892</line>
+          <option name="timeStamp" value="317" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/PromotionViewModel.kt</url>
+          <line>15</line>
+          <option name="timeStamp" value="318" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromotionGeneralRepository.kt</url>
+          <line>41</line>
           <option name="timeStamp" value="319" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>640</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromotionGeneralRepository.kt</url>
+          <line>42</line>
           <option name="timeStamp" value="320" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>639</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromotionGeneralRepository.kt</url>
+          <line>40</line>
           <option name="timeStamp" value="321" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>717</line>
-          <option name="timeStamp" value="322" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>718</line>
-          <option name="timeStamp" value="323" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>720</line>
-          <option name="timeStamp" value="324" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>719</line>
-          <option name="timeStamp" value="325" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>705</line>
-          <option name="timeStamp" value="326" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>706</line>
-          <option name="timeStamp" value="327" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>707</line>
-          <option name="timeStamp" value="328" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>708</line>
-          <option name="timeStamp" value="329" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>709</line>
-          <option name="timeStamp" value="330" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>714</line>
-          <option name="timeStamp" value="331" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>703</line>
-          <option name="timeStamp" value="332" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>698</line>
-          <option name="timeStamp" value="333" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>700</line>
-          <option name="timeStamp" value="334" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>32</line>
-          <option name="timeStamp" value="335" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>33</line>
-          <option name="timeStamp" value="336" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>34</line>
-          <option name="timeStamp" value="337" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>37</line>
-          <option name="timeStamp" value="343" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>38</line>
-          <option name="timeStamp" value="344" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="345" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PromoCodeRepository.kt</url>
-          <line>23</line>
-          <option name="timeStamp" value="346" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>336</line>
-          <option name="timeStamp" value="347" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>337</line>
-          <option name="timeStamp" value="348" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>339</line>
-          <option name="timeStamp" value="349" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>342</line>
-          <option name="timeStamp" value="350" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>58</line>
-          <option name="timeStamp" value="356" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>59</line>
-          <option name="timeStamp" value="357" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>60</line>
-          <option name="timeStamp" value="358" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>64</line>
-          <option name="timeStamp" value="359" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>70</line>
-          <option name="timeStamp" value="360" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/PaymentMethodRepository.kt</url>
-          <line>73</line>
-          <option name="timeStamp" value="361" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="370" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="371" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
-          <line>36</line>
-          <option name="timeStamp" value="372" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
-          <line>38</line>
-          <option name="timeStamp" value="373" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
-          <line>37</line>
-          <option name="timeStamp" value="374" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="375" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="376" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>38</line>
-          <option name="timeStamp" value="377" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>36</line>
-          <option name="timeStamp" value="378" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>35</line>
-          <option name="timeStamp" value="379" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealLCDRepository.kt</url>
-          <line>37</line>
-          <option name="timeStamp" value="380" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>264</line>
-          <option name="timeStamp" value="381" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>265</line>
-          <option name="timeStamp" value="382" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt</url>
-          <line>800</line>
-          <option name="timeStamp" value="384" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>85</line>
-          <option name="timeStamp" value="385" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>81</line>
-          <option name="timeStamp" value="386" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>266</line>
-          <option name="timeStamp" value="387" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>278</line>
-          <option name="timeStamp" value="388" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>267</line>
-          <option name="timeStamp" value="389" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/submitdealsummary/SubmitDealSummaryActivity.kt</url>
-          <line>32</line>
-          <option name="timeStamp" value="391" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/submitdealsummary/SubmitDealSummaryActivity.kt</url>
-          <line>36</line>
-          <option name="timeStamp" value="392" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/submitdealsummary/SubmitDealSummaryActivity.kt</url>
-          <line>33</line>
-          <option name="timeStamp" value="393" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/submitdealsummary/SubmitDealSummaryActivity.kt</url>
-          <line>34</line>
-          <option name="timeStamp" value="394" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>275</line>
-          <option name="timeStamp" value="395" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>276</line>
-          <option name="timeStamp" value="396" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>262</line>
-          <option name="timeStamp" value="397" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>242</line>
-          <option name="timeStamp" value="399" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>244</line>
-          <option name="timeStamp" value="400" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="401" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt</url>
-          <line>40</line>
-          <option name="timeStamp" value="402" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt</url>
-          <line>44</line>
-          <option name="timeStamp" value="403" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitPendingUCDDealRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="404" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="405" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/RetrofitClient.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="406" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>230</line>
-          <option name="timeStamp" value="407" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>231</line>
-          <option name="timeStamp" value="408" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt</url>
-          <line>293</line>
-          <option name="timeStamp" value="409" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt</url>
-          <line>295</line>
-          <option name="timeStamp" value="410" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt</url>
-          <line>296</line>
-          <option name="timeStamp" value="411" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/HomeFragment.kt</url>
-          <line>297</line>
-          <option name="timeStamp" value="412" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>70</line>
-          <option name="timeStamp" value="413" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>77</line>
-          <option name="timeStamp" value="414" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>71</line>
-          <option name="timeStamp" value="415" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>72</line>
-          <option name="timeStamp" value="416" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>74</line>
-          <option name="timeStamp" value="417" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/UnlockedCarDealActivity.kt</url>
-          <line>75</line>
-          <option name="timeStamp" value="418" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>246</line>
-          <option name="timeStamp" value="419" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>248</line>
-          <option name="timeStamp" value="420" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryActivity.kt</url>
-          <line>251</line>
-          <option name="timeStamp" value="421" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>256</line>
-          <option name="timeStamp" value="422" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>257</line>
-          <option name="timeStamp" value="423" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>259</line>
-          <option name="timeStamp" value="424" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>101</line>
-          <option name="timeStamp" value="425" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>102</line>
-          <option name="timeStamp" value="426" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>103</line>
-          <option name="timeStamp" value="427" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>116</line>
-          <option name="timeStamp" value="428" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>105</line>
-          <option name="timeStamp" value="429" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>106</line>
-          <option name="timeStamp" value="430" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>107</line>
-          <option name="timeStamp" value="431" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>239</line>
-          <option name="timeStamp" value="432" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>242</line>
-          <option name="timeStamp" value="433" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>290</line>
-          <option name="timeStamp" value="434" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>303</line>
-          <option name="timeStamp" value="435" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>300</line>
-          <option name="timeStamp" value="436" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>301</line>
-          <option name="timeStamp" value="437" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>78</line>
-          <option name="timeStamp" value="438" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/DealSummeryActivity.kt</url>
-          <line>79</line>
-          <option name="timeStamp" value="439" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt</url>
-          <line>406</line>
-          <option name="timeStamp" value="442" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryActivity.kt</url>
-          <line>404</line>
-          <option name="timeStamp" value="443" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>758</line>
-          <option name="timeStamp" value="444" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>759</line>
-          <option name="timeStamp" value="445" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>760</line>
-          <option name="timeStamp" value="446" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>761</line>
-          <option name="timeStamp" value="447" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>764</line>
-          <option name="timeStamp" value="448" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="452" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>41</line>
-          <option name="timeStamp" value="453" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>44</line>
-          <option name="timeStamp" value="454" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>62</line>
-          <option name="timeStamp" value="455" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>64</line>
-          <option name="timeStamp" value="456" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>291</line>
-          <option name="timeStamp" value="457" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>45</line>
-          <option name="timeStamp" value="463" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>46</line>
-          <option name="timeStamp" value="464" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealRepository.kt</url>
-          <line>47</line>
-          <option name="timeStamp" value="465" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>279</line>
-          <option name="timeStamp" value="466" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>280</line>
-          <option name="timeStamp" value="467" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>751</line>
-          <option name="timeStamp" value="468" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/home/dealsummery/delasummreystep2/DealSummeryStep2Activity.kt</url>
-          <line>752</line>
-          <option name="timeStamp" value="469" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>855</line>
-          <option name="timeStamp" value="470" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>857</line>
-          <option name="timeStamp" value="471" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/unlockedcardeal/unlockeddealdetail/UnlockedDealSummeryStep2Activity.kt</url>
-          <line>856</line>
-          <option name="timeStamp" value="472" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>779</line>
-          <option name="timeStamp" value="473" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/submitprice/summary/SubmitPriceDealSummaryStep2Activity.kt</url>
-          <line>780</line>
-          <option name="timeStamp" value="474" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealUCDRepository.kt</url>
-          <line>42</line>
-          <option name="timeStamp" value="475" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealUCDRepository.kt</url>
-          <line>43</line>
-          <option name="timeStamp" value="476" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/SubmitDealUCDRepository.kt</url>
-          <line>44</line>
-          <option name="timeStamp" value="477" />
-        </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint suspend="THREAD" type="dart-exception" />
+      </default-breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Remote">
-        <watch expression="errString" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

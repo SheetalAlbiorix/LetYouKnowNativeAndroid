@@ -114,7 +114,7 @@
 
                 <TextView
                     android:id="@+id/tvViewOptions"
-                    style="@style/medium"
+                    style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -152,9 +152,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)+ ` MSRP`}"
                         android:textColor="@color/navyBlue"
                         android:textSize="@dimen/_14sdp"
+                        android:visibility='@{lcdDealData.msrp != 0.0 ? View.VISIBLE : View.GONE}'
                         tool:text="$47000.00" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -232,7 +233,7 @@
                                 style="@style/bold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Option &amp; Accessories"
+                                android:text="Options &amp; Accessories"
                                 android:textColor="?textGreyColor"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -259,8 +260,8 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:text="@string/price_summary_colon"
-                android:textColor="?blackHeaderText"
+                android:text="@string/price_summary"
+                android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_16sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -276,7 +277,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/bold"
+                        style="@style/medium"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -364,8 +365,8 @@
                             android:layout_marginLeft="-15dp"
                             android:background="@drawable/bg_button"
                             android:backgroundTint="@color/color88898A"
-                            android:gravity="center"
                             android:enabled="false"
+                            android:gravity="center"
                             android:paddingStart="@dimen/_12sdp"
                             android:paddingEnd="@dimen/_12sdp"
                             android:text="@string/apply_promo"
@@ -382,6 +383,7 @@
                         android:textSize="@dimen/_11sdp"
                         android:visibility="gone" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/llDollar"
                     android:layout_width="match_parent"
@@ -502,7 +504,7 @@
                 style="@style/regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/for_non_refundable(799.00)}"
+                android:text="@{@string/for_non_refundable(NumberFormat.getCurrencyInstance(Locale.US).format(799.00))}"
                 android:textColor="@color/color545d64"
                 android:textSize="@dimen/_10sdp"
                 tool:text="799.00" />
@@ -757,11 +759,11 @@
 
             <com.stripe.android.view.CardInputWidget
                 android:id="@+id/cardInputWidget"
-                android:visibility="gone"
                 style="@style/Stripe.CardInputWidget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/llCardViewDetail"
@@ -771,17 +773,17 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtCardNumber"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_camera"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/bg_edittext"
                     android:digits="1234567890"
-                    android:maxLength="19"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_camera"
                     android:hint="@string/card_number"
-                    android:inputType="number" />
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="19"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/tvErrorCardNumber"
@@ -812,7 +814,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_edittext"
                             android:digits="1234567890"
-                            android:hint="@string/expire_date"
+                            android:hint="@string/mm_yy"
                             android:inputType="number"
                             android:maxLength="5" />
 
@@ -842,7 +844,7 @@
                             android:digits="1234567890"
                             android:hint="@string/cvv"
                             android:inputType="number"
-                            android:maxLength="3" />
+                            android:maxLength="4" />
 
                         <TextView
                             android:id="@+id/tvErrorCardCVV"
@@ -862,8 +864,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/bg_edittext"
-                    android:hint="@string/zip_code"
                     android:digits="1234567890"
+                    android:hint="@string/zip_code"
                     android:inputType="number"
                     android:maxLength="5" />
 
@@ -892,7 +894,6 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btnSave"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_12sdp"
@@ -903,7 +904,8 @@
             android:padding="@dimen/_12sdp"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone" />
 
         <TextView
             style="@style/bold"
@@ -979,9 +981,9 @@
                     android:layout_height="wrap_content" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_weight="0.5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -1013,7 +1015,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/last_name_required"
+                android:hint="@string/last_name_req"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.lastName}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1195,9 +1197,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/bg_button"
             android:paddingStart="@dimen/_18sdp"
             android:paddingTop="@dimen/_12sdp"

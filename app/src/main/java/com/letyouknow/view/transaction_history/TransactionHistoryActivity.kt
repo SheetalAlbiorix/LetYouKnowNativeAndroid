@@ -18,7 +18,8 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityTransactionHistoryBinding
 import com.letyouknow.model.TransactionHistoryData
 import com.letyouknow.retrofit.viewmodel.TransactionHistoryViewModel
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
 import kotlinx.android.synthetic.main.activity_transaction_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -111,7 +112,7 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
@@ -140,7 +141,7 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
             data.run {
                 var type = ""
                 when (label) {
-                    "LCD" -> type = "LightingCarDeals"
+                    "LCD" -> type = "LightningCarDeals"
                     "UCD" -> type = "UnlockedCarDeals"
                     "LYK" -> type = "LetYouKnow"
                 }
@@ -176,7 +177,23 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
                 tvDialogRadius.text = if (searchRadius == "6000") "All" else searchRadius
                 tvDialogPrice.text = NumberFormat.getCurrencyInstance(Locale.US).format(price)
                 tvDialogSubmittedDate.text = timeStampFormatted
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosure.text =
+                            context.getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosure.text = condition
+                        } else {
+                            tvDialogDisclosure.text =
+                                tvDialogDisclosure.text.toString().trim() + ", " + condition
+                        }
 
+                    }
+                    llDisc.visibility = View.VISIBLE
+                } else {
+                    llDisc.visibility = View.GONE
+                }
             }
         }
         setLayoutParam(dialog)

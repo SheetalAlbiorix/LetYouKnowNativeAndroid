@@ -14,7 +14,7 @@ data class FindLCDDeaData(
     var loanType: String? = "",
     var initial: String? = "",
     val dealTimeStamp: String? = "",
-    val promotionId: String? = "",
+    var promotionId: String? = "",
     val timeZoneOffset: String? = "",
     val ip: String? = "",
     val canSavePayment: String? = "",

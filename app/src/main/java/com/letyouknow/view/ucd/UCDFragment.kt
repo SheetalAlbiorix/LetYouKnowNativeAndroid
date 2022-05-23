@@ -1,15 +1,11 @@
 package com.letyouknow.view.ucd
 
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.text.Editable
-import android.text.InputType
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
@@ -27,18 +23,17 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_RADIUS
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.letyouknow.utils.Constant.Companion.ARG_ZIPCODE
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_RADIUS
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.pionymessenger.utils.Constant.Companion.ARG_ZIPCODE
+import kotlinx.android.synthetic.main.dialog_mobile_no.*
 import kotlinx.android.synthetic.main.fragment_ucd.*
 import org.jetbrains.anko.support.v4.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -63,6 +58,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private var isValidZipCode = false
 
+    private lateinit var promotionViewModel: PromotionViewModel
     private lateinit var vehicleYearModel: VehicleYearViewModel
     private lateinit var vehicleMakeModel: VehicleMakeViewModel
     private lateinit var vehicleModelModel: VehicleModelViewModel
@@ -71,6 +67,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private lateinit var interiorColorModel: InteriorColorViewModel
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
     private lateinit var findUCDDealGuestViewModel: FindUCDDealViewModel
+    private lateinit var socialMobileViewModel: SocialMobileViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -141,6 +138,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
             binding.upDownData = upDownData
 
+            promotionViewModel = ViewModelProvider(this)[PromotionViewModel::class.java]
             vehicleYearModel = ViewModelProvider(this)[VehicleYearViewModel::class.java]
             vehicleMakeModel = ViewModelProvider(this)[VehicleMakeViewModel::class.java]
             vehicleModelModel = ViewModelProvider(this)[VehicleModelViewModel::class.java]
@@ -151,8 +149,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             findUCDDealGuestViewModel =
                 ViewModelProvider(this)[FindUCDDealViewModel::class.java]
             tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
+            socialMobileViewModel = ViewModelProvider(this)[SocialMobileViewModel::class.java]
 
 
+            tvYear.setOnClickListener(this)
             btnProceedDeal.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
             ivClosePromo.setOnClickListener(this)
@@ -160,6 +160,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             MainActivity.getInstance().setVisibleLogoutImg(false)
             setTimerPrefData()
             edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+            callPromotionAPI()
         } catch (e: Exception) {
 
         }
@@ -299,61 +300,99 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
      }
  */
     private fun callSearchFindDealAPI() {
-        if (Constant.isOnline(requireActivity())) {
-            Constant.showLoader(requireActivity())
-            val request = HashMap<String, Any>()
-            request[ApiConstant.vehicleYearID] = yearId
-            request[ApiConstant.vehicleMakeID] = makeId
-            request[ApiConstant.vehicleModelID] = modelId
-            request[ApiConstant.vehicleTrimID] = trimId
-            request[ApiConstant.vehicleExteriorColorID] = extColorId
-            request[ApiConstant.vehicleInteriorColorID] = intColorId
-            request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
-            request[ApiConstant.searchRadius] =
-                if (radiusId == "ALL") "6000" else radiusId.replace("mi", "").trim()
-            Log.e("Request Find Deal", Gson().toJson(request))
-            findUCDDealGuestViewModel.findDeal(requireActivity(), request)!!
-                .observe(this, Observer { data ->
-                    Constant.dismissLoader()
-                    Log.e("Response", Gson().toJson(data))
-                    val dataYear = YearModelMakeData()
-                    dataYear.vehicleYearID = yearId
-                    dataYear.vehicleMakeID = makeId
-                    dataYear.vehicleModelID = modelId
-                    dataYear.vehicleTrimID = trimId
-                    dataYear.vehicleExtColorID = extColorId
-                    dataYear.vehicleIntColorID = intColorId
-                    dataYear.vehicleYearStr = yearStr
-                    dataYear.vehicleMakeStr = makeStr
-                    dataYear.vehicleModelStr = modelStr
-                    dataYear.vehicleTrimStr = trimStr
-                    dataYear.vehicleExtColorStr = extColorStr
-                    dataYear.vehicleIntColorStr = intColorStr
-                    dataYear.radius = radiusId
-                    dataYear.zipCode = edtZipCode.text.toString().trim()
-                    startActivity<UCDDealListStep1Activity>(
-                        Constant.ARG_UCD_DEAL to Gson().toJson(
-                            data
-                        ),
-                        ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
-                        ARG_RADIUS to radiusId,
-                        ARG_ZIPCODE to edtZipCode.text.toString().trim()
-                    )
-                }
-                )
+        val dataYear = YearModelMakeData()
+        dataYear.vehicleYearID = yearId
+        dataYear.vehicleMakeID = makeId
+        dataYear.vehicleModelID = modelId
+        dataYear.vehicleTrimID = trimId
+        dataYear.vehicleExtColorID = extColorId
+        dataYear.vehicleIntColorID = intColorId
+        dataYear.vehicleYearStr = yearStr
+        dataYear.vehicleMakeStr = makeStr
+        dataYear.vehicleModelStr = modelStr
+        dataYear.vehicleTrimStr = trimStr
+        dataYear.vehicleExtColorStr = extColorStr
+        dataYear.vehicleIntColorStr = intColorStr
+        dataYear.radius = radiusId
+        dataYear.zipCode = edtZipCode.text.toString().trim()
+//                    Log.e("Find UCD",Gson().toJson(data))
+        startActivity<UCDDealListStep1NewActivity>(
+            ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
+            ARG_RADIUS to radiusId,
+            ARG_ZIPCODE to edtZipCode.text.toString().trim()
+        )
+        /*  if (Constant.isOnline(requireActivity())) {
+              if(!Constant.isInitProgress()){
+                  Constant.showLoader(requireActivity())
+              } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                  Constant.showLoader(requireActivity())
+              }
+              val request = HashMap<String, Any>()
+              request[ApiConstant.vehicleYearID] = yearId
+              request[ApiConstant.vehicleMakeID] = makeId
+              request[ApiConstant.vehicleModelID] = modelId
+              request[ApiConstant.vehicleTrimID] = trimId
+              request[ApiConstant.vehicleExteriorColorID] = extColorId
+              request[ApiConstant.vehicleInteriorColorID] = intColorId
+              request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+              request[ApiConstant.searchRadius] =
+                  if (radiusId == "ALL") "6000" else radiusId.replace("mi", "").trim()
+              Log.e("Request Find Deal", Gson().toJson(request))
+              findUCDDealGuestViewModel.findDeal(requireActivity(), request)!!
+                  .observe(this, Observer { data ->
+                      Constant.dismissLoader()
+  //                    Log.e("Response", Gson().toJson(data))
+                      val dataYear = YearModelMakeData()
+                      dataYear.vehicleYearID = yearId
+                      dataYear.vehicleMakeID = makeId
+                      dataYear.vehicleModelID = modelId
+                      dataYear.vehicleTrimID = trimId
+                      dataYear.vehicleExtColorID = extColorId
+                      dataYear.vehicleIntColorID = intColorId
+                      dataYear.vehicleYearStr = yearStr
+                      dataYear.vehicleMakeStr = makeStr
+                      dataYear.vehicleModelStr = modelStr
+                      dataYear.vehicleTrimStr = trimStr
+                      dataYear.vehicleExtColorStr = extColorStr
+                      dataYear.vehicleIntColorStr = intColorStr
+                      dataYear.radius = radiusId
+                      dataYear.zipCode = edtZipCode.text.toString().trim()
+  //                    Log.e("Find UCD",Gson().toJson(data))
+                      startActivity<UCDDealListStep1Activity>(
+                          ARG_UCD_DEAL to Gson().toJson(data),
+                          ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
+                          ARG_RADIUS to radiusId,
+                          ARG_ZIPCODE to edtZipCode.text.toString().trim()
+                      )
+                  }
+                  )
 
-        } else {
-            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
+          } else {
+              Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+          }*/
     }
-
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvYear -> {
+                tvYear.visibility = View.GONE
+                spYear.visibility = View.VISIBLE
+                callVehicleYearAPI()
+                spYear.performClick()
+            }
             R.id.btnProceedDeal -> {
                 if (isValid()) {
-                    callSearchFindDealAPI()
+                    if (pref?.getUserData()?.isSocial!!) {
+                        if (!pref?.isUpdateSocialMobile()!!) {
+                            dialogPhoneNo(true)
+                        } else {
+                            callSearchFindDealAPI()
+                        }
+                    } else {
+                        callSearchFindDealAPI()
+                    }
+
 //                    callRefreshTokenApi()
                 }
             }
@@ -364,9 +403,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 llPromoOffer.startAnimation(animSlideRightToLeft)
             }
             R.id.ivClosePromo -> {
-                tvPromo.startAnimation(animBlink)
-                tvPromo.visibility = View.VISIBLE
-                llPromoOffer.visibility = View.GONE
+                llPromoOffer.startAnimation(animSlideLeftToRight)
+                Handler().postDelayed({
+                    tvPromo.startAnimation(animBlink)
+                    tvPromo.visibility = View.VISIBLE
+                    llPromoOffer.visibility = View.GONE
+                }, 400)
             }
         }
     }
@@ -409,9 +451,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
+                if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.dismissLoader()
+                }
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 vehicleYearModel.getYear(requireActivity(), productId, "")!!
@@ -464,7 +509,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (isEmpty(prefSearchDealData.makeId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -517,7 +562,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (isEmpty(prefSearchDealData.modelId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -570,7 +615,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (isEmpty(prefSearchDealData.trimId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -630,7 +675,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (isEmpty(prefSearchDealData.extColorId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -702,7 +747,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (isEmpty(prefSearchDealData.intColorId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -1019,6 +1064,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         super.onDestroy()
     }
 
+    override fun onPause() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onPause()
+    }
+
     private lateinit var prefSearchDealData: PrefSearchDealData
     private lateinit var handler: Handler
     override fun onResume() {
@@ -1046,6 +1097,18 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 //            Log.e("DAte Time", AppGlobal.stringToDate(pref?.getSearchDealTime())?.toString()!!)
             handler = Handler()
             handler.postDelayed(runnable, 1000)
+        } else {
+            if (tvYear.visibility == View.GONE) {
+                yearStr = "YEAR - NEW CARS"
+                makeStr = "MAKE"
+                modelStr = "MODEL"
+                trimStr = "TRIM"
+                extColorStr = "EXTERIOR COLOR"
+                intColorStr = "INTERIOR COLOR"
+                radiusId = "SEARCH RADIUS"
+                tvYear.visibility = View.VISIBLE
+                spYear.visibility = View.GONE
+            }
         }
 
     }
@@ -1066,6 +1129,17 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
                     pref?.setSearchDealTime("")
                     setTimerPrefData()
+                    if (tvYear.visibility == View.GONE) {
+                        yearStr = "YEAR - NEW CARS"
+                        makeStr = "MAKE"
+                        modelStr = "MODEL"
+                        trimStr = "TRIM"
+                        extColorStr = "EXTERIOR COLOR"
+                        intColorStr = "INTERIOR COLOR"
+                        radiusId = "SEARCH RADIUS"
+                        tvYear.visibility = View.VISIBLE
+                        spYear.visibility = View.GONE
+                    }
                 } else {
                     handler.postDelayed(this, 1000)
                 }
@@ -1085,7 +1159,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             setTrim()
             setExteriorColor()
             setInteriorColor()
-            callRadiusAPI()
+
             onChangeZipCode()
 
             yearId = prefSearchDealData.yearId!!
@@ -1101,9 +1175,22 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             trimStr = prefSearchDealData.trimStr!!
             extColorStr = prefSearchDealData.extColorStr!!
             intColorStr = prefSearchDealData.intColorStr!!
-
-            if (!isCallingYear)
-                callVehicleYearAPI()
+            if (TextUtils.isEmpty(yearId)) {
+                yearStr = "YEAR - NEW CARS"
+                makeStr = "MAKE"
+                modelStr = "MODEL"
+                trimStr = "TRIM"
+                extColorStr = "EXTERIOR COLOR"
+                intColorStr = "INTERIOR COLOR"
+                radiusId = "SEARCH RADIUS"
+                tvYear.visibility = View.VISIBLE
+                spYear.visibility = View.GONE
+            } else {
+                tvYear.visibility = View.GONE
+                spYear.visibility = View.VISIBLE
+                if (!isCallingYear)
+                    callVehicleYearAPI()
+            }
             edtZipCode.setText(prefSearchDealData.zipCode)
             if (prefSearchDealData.zipCode?.length!! >= 1) {
                 val str = prefSearchDealData.zipCode.toString()
@@ -1118,8 +1205,173 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
                 setPrefData()
             }
+
+            callRadiusAPI()
         } catch (e: Exception) {
 
+        }
+    }
+
+    private lateinit var dialogMobileNo: Dialog
+    private fun dialogPhoneNo(isCancel: Boolean) {
+        dialogMobileNo = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogMobileNo.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogMobileNo.setCancelable(true)
+        dialogMobileNo.setContentView(R.layout.dialog_mobile_no)
+        Constant.onTextChange(
+            requireActivity(),
+            dialogMobileNo.edtPhoneNumber,
+            dialogMobileNo.tvErrorPhoneNo
+        )
+        dialogMobileNo.edtPhoneNumber.filters =
+            arrayOf<InputFilter>(filterSocMob, InputFilter.LengthFilter(13))
+        if (isCancel) {
+            dialogMobileNo.ivSocClose.visibility = View.VISIBLE
+        }
+        dialogMobileNo.run {
+            btnDialogSave.setOnClickListener {
+                if (TextUtils.isEmpty(edtPhoneNumber.text.toString().trim())) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                } else if (edtPhoneNumber.text.toString().trim().length != 13) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                } else {
+                    tvErrorPhoneNo.visibility = View.GONE
+                    callSocialMobileAPI(edtPhoneNumber.text.toString().trim())
+                    dismiss()
+                }
+            }
+            ivSocClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogMobileNo)
+        dialogMobileNo.show()
+    }
+
+    private fun callSocialMobileAPI(phoneNo: String) {
+        val data: LoginData = pref?.getUserData()!!
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.FirstNameSoc] = data.firstName!!
+            request[ApiConstant.LastNameSoc] = data.lastName!!
+            request[ApiConstant.UserNameSoc] = data.userName!!
+            request[ApiConstant.EmailSoc] = data.userName!!
+            request[ApiConstant.PhoneNumberSoc] = phoneNo
+
+            socialMobileViewModel.getSocialMobile(requireActivity(), request)!!
+                .observe(this, Observer { dataSocial ->
+                    Constant.dismissLoader()
+//                    data.authToken = dataSocial.authToken
+//                    data.refreshToken = dataSocial.refreshToken
+                    data.message = dataSocial.message
+                    if (data.buyerId != 0) {
+                        pref?.setLogin(true)
+                        data.isSocial = true
+                        pref?.setUserData(Gson().toJson(data))
+                        pref?.updateSocialMobile(true)
+                        callSearchFindDealAPI()
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            resources.getString(R.string.login_failed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private var filterSocMob = InputFilter { source, start, end, dest, dstart, dend ->
+        dialogMobileNo.run {
+            var source = source
+            if (source.length > 0) {
+                if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                    if (source.toString().length > 1) {
+                        val number = source.toString()
+                        val digits1 = number.toCharArray()
+                        val digits2 = number.split("(?<=.)").toTypedArray()
+                        source = digits2[digits2.size - 1]
+                    }
+                    if (edtPhoneNumber.text.toString().isEmpty()) {
+                        return@InputFilter "($source"
+                    } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                            .length <= 3
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                            .length <= 5
+                    ) {
+                        val isContain = dest.toString().contains(")")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            ")$source"
+                        }
+                    } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                            .length <= 7
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 7) {
+                        val isContain = dest.toString().contains("-")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            "-$source"
+                        }
+                    }
+                }
+            } else {
+            }
+            source
+        }
+    }
+
+    private fun setLayoutParam(dialog: Dialog) {
+        val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.attributes = layoutParams
+    }
+
+    private fun callPromotionAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            promotionViewModel.getPromoCode(requireActivity())!!
+                .observe(requireActivity(), Observer { data ->
+                    try {
+                        if (TextUtils.isEmpty(data.promotionCode) || data.discount == 0.0 || TextUtils.isEmpty(
+                                data.endDate
+                            )
+                        ) {
+                            tvPromo.visibility = View.GONE
+                            llPromoOffer.visibility = View.GONE
+                        } else {
+                            tvPromo.visibility = View.VISIBLE
+                            binding.promoData = data
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 }

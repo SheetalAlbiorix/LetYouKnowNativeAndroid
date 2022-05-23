@@ -21,9 +21,6 @@
             name="lcdDealData"
             type="com.letyouknow.model.FindLCDDeaData" />
 
-        <variable
-            name="appGlobalData"
-            type="com.letyouknow.utils.AppGlobalBindData" />
 
     </data>
 
@@ -189,7 +186,7 @@
                             style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Option &amp; Accessories"
+                            android:text="Options &amp; Accessories"
                             android:textColor="?textGreyColor"
                             android:textSize="@dimen/_12sdp" />
 

@@ -1,4 +1,4 @@
-package com.pionymessenger.utils
+package com.letyouknow.utils
 
 import android.app.Activity
 import android.content.Context
@@ -8,20 +8,45 @@ import android.os.Build
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
+import com.google.android.gms.wallet.WalletConstants
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.letyouknow.R
 import java.util.regex.Pattern
 
-
 class Constant {
     companion object {
+        //google payment
+        private const val PAYMENT_GATEWAY_TOKENIZATION_NAME = "example"
+        val PAYMENT_GATEWAY_TOKENIZATION_PARAMETERS = mapOf(
+            "gateway" to PAYMENT_GATEWAY_TOKENIZATION_NAME,
+            "gatewayMerchantId" to "exampleGatewayMerchantId"
+        )
+
+        val SUPPORTED_NETWORKS = listOf(
+            "AMEX",
+            "DISCOVER",
+            "JCB",
+            "MASTERCARD",
+            "VISA"
+        )
+
+        val SUPPORTED_METHODS = listOf(
+            "PAN_ONLY",
+            "CRYPTOGRAM_3DS"
+        )
+
+        const val PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST
+        const val COUNTRY_CODE = "US"
+        const val CURRENCY_CODE = "USD"
+
+        const val VIEW_TYPE_ITEM = 0
+        const val VIEW_TYPE_LOADING = 1
 
         //String
         var noInternet = "No internet connection"
@@ -36,9 +61,19 @@ class Constant {
         var PRIVACY_POLICY_LINK = "https://demo.letyouknow.com/privacypolicy"
 
         //        var PRIVACY_POLICY_LINK = "https://letyouknow.com/privacypolicy"
+        /* var HUB_CONNECTION_URL =
+             "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"*/
         var HUB_CONNECTION_URL =
-            "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"
-//            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
+            "https://lyksignalrapi.azurewebsites.net/buyerhub"
+
+        //            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
+        var REFERRAL_LINK = "https://www.lyk.com/user1/referral"
+
+        var ClientSecretId =
+            "sk_test_51HaDBECeSnBm0gpFYr32CeQF4lOudcFSXzt7XP4ZLw0dvLGS1yfkk9KEgjbtuq9rZNkp7hCUKEQDm32Qn8XdMlOh0056dBLbq7"
+
+        var DEMO_PANORAMA_LINK = "http://reznik.lt/wp-content/uploads/2017/09/preview3000.jpg"
+
 
         //blank error
         var emailBlank = "email can not be blank"
@@ -65,6 +100,8 @@ class Constant {
         var ARG_IMAGE_URL = "ARG_IMAGE_URL"
         var ARG_SUBMIT_DEAL = "ARG_SUBMIT_DEAL"
         var ARG_TRANSACTION_CODE = "ARG_TRANSACTION_CODE"
+        var ARG_UCD_DATA = "ARG_UCD_DATA"
+        var ARG_IS_NOTIFICATION = "ARG_IS_NOTIFICATION"
         var ARG_NOTIFICATIONS = "ARG_NOTIFICATIONS"
         var ARG_SEL_TAB = "ARG_SEL_TAB"
         var ARG_IS_SHOW_PER = "ARG_IS_SHOW_PER"
@@ -72,6 +109,8 @@ class Constant {
         var ARG_IS_LCD = "ARG_IS_LCD"
         var ARG_TYPE_PRODUCT = "ARG_TYPE_PRODUCT"
         var ARG_IS_LYK_SHOW = "ARG_IS_LYK_SHOW"
+        var ARG_MSRP_RANGE = "ARG_MSRP_RANGE"
+        var ARG_DEAL_ID = "ARG_DEAL_ID"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
@@ -79,6 +118,20 @@ class Constant {
         var TYPE_SUBMIT_PRICE = 0
         var TYPE_ONE_DEAL_NEAR_YOU = 1
         var TYPE_SEARCH_DEAL = 2
+        var LYK100Dollars = "LYK100Dollars"
+        var CHANNEL_ID = "CHANNEL_ID"
+
+
+        var KEY_NOTIFICATION_TYPE = "type"
+        var TransactionCode = "TransactionCode"
+        var Data = "data"
+        var PROMO_CODE = "PromoCode"
+        var MARKET_CONDITION = "MarketCondition"
+        var HOT_PRICE = "HotPrice"
+        var LYK_DEAL = "LYKDeal"
+        var LCD_DEAL = "LCDDeal"
+        var UCD_DEAL = "UCDDeal"
+
 
         lateinit var progress: KProgressHUD
 
@@ -89,8 +142,12 @@ class Constant {
         val patternPassword =
             Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~_`#?{}()+!@\$%^&*-]).{8,16}\$")
 
+
+        val patternEmail =
+            Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,3})$")
+
         fun emailValidator(strEmail: String): Boolean {
-            return Patterns.EMAIL_ADDRESS.matcher(strEmail).matches()
+            return patternEmail.matcher(strEmail).matches()
         }
 
 
@@ -366,6 +423,48 @@ class Constant {
                         }
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
                     } else {
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                    }
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+        }
+
+        fun onTextChangeAddress1(context: Context, edtText: EditText, errorText: TextView) {
+            edtText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val str = s?.toString()
+                    if (str?.length!! > 0) {
+                        if (str.length == 0) {
+                            setErrorBorder(edtText, errorText)
+                            errorText.text = context.getString(R.string.enter_addressline1)
+                        } else if (str.length > 1 && str.length < 3) {
+                            setErrorBorder(edtText, errorText)
+                            errorText.text =
+                                context.getString(R.string.address1_must_be_minimum_three_characters)
+                            errorText.visibility = View.VISIBLE
+                        } else {
+                            edtText.setBackgroundResource(R.drawable.bg_edittext)
+                            errorText.visibility = View.GONE
+                        }
+                        //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                    } else {
+                        setErrorBorder(edtText, errorText)
+                        errorText.text = context.getString(R.string.enter_addressline1)
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
                     }
 

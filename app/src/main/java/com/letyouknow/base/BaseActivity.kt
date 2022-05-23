@@ -16,7 +16,7 @@ import com.letyouknow.R
 import com.letyouknow.utils.AppGlobal
 
 public abstract class BaseActivity : AppCompatActivity(), BaseView {
-//    private lateinit var myReceiver: MyReceiver
+    //    private lateinit var myReceiver: MyReceiver
     protected val TAG = this.javaClass.simpleName
     var progressDialog: ProgressDialog? = null
     var receiver: BroadcastReceiver? = null
@@ -40,7 +40,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
 
         //overridePendingTransition(R.anim.animation_enter, R.anim.animation_leave);
         progressDialog = ProgressDialog(this@BaseActivity)
-        progressDialog!!.setMessage("loading...")
+        progressDialog!!.setMessage(resources.getString(R.string.loading))
         progressDialog!!.setCancelable(false)
 
         receiver = object : BroadcastReceiver() {
@@ -84,7 +84,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .setConfirmClickListener(clickListener)
             .show()
     }
@@ -93,7 +93,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .setConfirmClickListener { sweetAlertDialog -> sweetAlertDialog?.dismiss() }.show()
     }
 
@@ -101,7 +101,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.ERROR_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .show()
     }
 

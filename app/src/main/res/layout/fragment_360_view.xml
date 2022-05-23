@@ -4,18 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.letyouknow.utils.ProductShowCaseWebView
-        android:id="@+id/web_view"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll360View"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:fadeScrollbars="false"
-        android:visibility="visible" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <com.google.vr.sdk.widgets.pano.VrPanoramaView
-        android:id="@+id/vrPanoramaView"
+        <com.letyouknow.utils.ProductShowCaseWebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:fadeScrollbars="false"
+            android:visibility="visible" />
+
+        <com.google.vr.sdk.widgets.pano.VrPanoramaView
+            android:id="@+id/vrPanoramaView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginTop="@dimen/_15sdp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:id="@+id/tvNotFound"
+        style="@style/bold"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_marginTop="@dimen/_15sdp" />
-
-
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/not_available_this_time"
+        android:textColor="@color/color545d64"
+        android:textSize="@dimen/_15sdp"
+        android:visibility="gone" />
 </androidx.appcompat.widget.LinearLayoutCompat>

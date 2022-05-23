@@ -56,10 +56,10 @@
                     android:layout_gravity="center">
 
                     <ImageView
-                        android:padding="@dimen/_8sdp"
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_80sdp"
                         android:layout_gravity="center"
+                        android:padding="@dimen/_8sdp"
                         android:src="@drawable/ic_car" />
                 </FrameLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>

@@ -3,6 +3,7 @@ package com.letyouknow.view.lcd.negative
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -22,10 +23,11 @@ import com.letyouknow.model.PrefOneDealNearYouData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
-import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_lcd_negative.*
+import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
@@ -60,10 +62,10 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
         ) {
             isShowPer = intent.getBooleanExtra(Constant.ARG_IS_SHOW_PER, false)
             if (isShowPer) {
-                tvMessage.text = "Market's hot! The car is no longer available."
+                tvMessage.text = resources.getString(R.string.market_is_hot)
             } else {
                 tvMessage.text =
-                    "Something went wrong, but don't worry your card hasn't been charged"
+                    resources.getString(R.string.something_went_wrong)
             }
             data = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_SUBMIT_DEAL),
@@ -91,6 +93,41 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
         btnTryAgain.setOnClickListener(this)
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
+//        showProgressDialog()
+    }
+
+    private var a = 0
+    private val handlerDealPro: Handler = Handler()
+    private fun showProgressDialog() {
+        val dialogProgress = Dialog(this, R.style.FullScreenDialog)
+        dialogProgress.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogProgress.setCancelable(false)
+        dialogProgress.setContentView(R.layout.dialog_deal_progress_bar)
+        setProgressData(dialogProgress)
+        setLayoutParam(dialogProgress)
+        dialogProgress.show()
+    }
+
+    private fun setProgressData(dialogProgress: Dialog) {
+        a = dialogProgress.proBar.progress
+        Thread {
+            while (a < 100) {
+                a += 1
+                handlerDealPro.post(Runnable {
+                    dialogProgress.proBar.progress = a
+                    dialogProgress.tvProgressPr.text = a.toString() + "%"
+                    if (a == 100) {
+                        dialogProgress.dismiss()
+                    }
+                })
+                try {
+                    // Sleep for 50 ms to show progress you can change it as well.
+                    Thread.sleep(50)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
     }
 
     override fun getViewActivity(): Activity? {
@@ -165,7 +202,7 @@ class LCDNegativeActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val pkgList = JsonArray()

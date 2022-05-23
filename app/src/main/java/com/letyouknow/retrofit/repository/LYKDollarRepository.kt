@@ -1,12 +1,10 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +23,7 @@ object LYKDollarRepository {
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
@@ -35,10 +33,10 @@ object LYKDollarRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("LYKDollar Resp ", Gson().toJson(response.body()))
+                    // Log.v("LYKDollar Resp ", Gson().toJson(response.body()))
                     getDollarData.value = data!!
                 } else {
-                    Log.v("LYKDollar Resp ", response.toString())
+                    //  Log.v("LYKDollar Resp ", response.toString())
                     Constant.dismissLoader()
                     getDollarData.value = "0.0"
                     /*response.errorBody()?.source()?.buffer?.snapshot()?.utf8()

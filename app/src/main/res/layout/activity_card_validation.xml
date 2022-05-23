@@ -13,12 +13,12 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtCardNumber"
-            android:drawableLeft="@drawable/ic_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/bg_edittext"
             android:digits="1234567890"
+            android:drawableLeft="@drawable/ic_camera"
             android:hint="@string/card_holder"
             android:inputType="number" />
 
@@ -101,8 +101,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:background="@drawable/bg_edittext"
-            android:hint="@string/zip_code"
             android:digits="1234567890"
+            android:hint="@string/zip_code"
             android:inputType="number"
             android:maxLength="5" />
 

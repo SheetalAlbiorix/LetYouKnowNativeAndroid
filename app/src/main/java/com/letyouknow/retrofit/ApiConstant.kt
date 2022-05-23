@@ -88,6 +88,18 @@ class ApiConstant {
         var ZipCode1 = "ZipCode"
         var SearchRadius1 = "SearchRadius"
         var AccessToken = "AccessToken"
+        var AppType = "AppType"
+        var Token = "Token"
+        var ReferralRewardType = "ReferralRewardType"
+        var FirstNameSoc = "FirstName"
+        var LastNameSoc = "LastName"
+        var UserNameSoc = "UserName"
+        var EmailSoc = "Email"
+        var PhoneNumberSoc = "PhoneNumber"
+        var UserId = "UserId"
+        var DeviceType = "DeviceType"
+        var promotionID = "promotionID"
+        var UserProfileId = "UserProfileId"
 
     }
 }

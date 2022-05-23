@@ -89,10 +89,10 @@
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_4sdp"
                     android:background="@drawable/bg_shadow_round_rectangle"
                     android:backgroundTint="@color/navyBlue"
                     android:padding="@dimen/_6sdp"
-                    android:layout_marginRight="@dimen/_4sdp"
                     android:text="Deal Success Rate"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8sdp" />
@@ -113,8 +113,8 @@
                 android:gravity="center"
                 android:padding="@dimen/_6sdp"
                 android:text="Add 2 Min"
-                android:textSize="@dimen/_8sdp"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_8sdp"
                 android:visibility="invisible" />
 
             <TextView

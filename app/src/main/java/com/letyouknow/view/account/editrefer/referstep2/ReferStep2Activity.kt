@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.ClipboardManager
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -19,9 +18,9 @@ import com.facebook.share.widget.ShareDialog
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityReferStep2Binding
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.makeLinks
 import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.makeLinks
 import kotlinx.android.synthetic.main.activity_refer_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.startActivity
@@ -83,7 +82,11 @@ class ReferStep2Activity : BaseActivity(), View.OnClickListener {
                 val clipboardManager =
                     getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 clipboardManager.text = tvLink.text
-                Toast.makeText(this, "Copied to Clipboard", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.copied_to_clipboard),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             R.id.llFBShareLink -> {
                 shareLinkShare()
@@ -148,11 +151,11 @@ class ReferStep2Activity : BaseActivity(), View.OnClickListener {
     private fun shareLinkShare() {
         fb_share_button.performClick()
         val content = ShareLinkContent.Builder()
-            .setContentTitle("Tutorialwing - Free programming tutorials")
+            .setContentTitle(resources.getString(R.string.tutorialwing))
 //            .setImageUrl(Uri.parse("https://scontent-sin6-1.xx.fbcdn.net/t31.0-8/13403381_247495578953089_8113745370016563192_o.png"))
 //            .setContentDescription("Tutorialwing is an online platform for free programming tutorials. These tutorials are designed for beginners as well as experienced programmers.")
-            .setContentUrl(Uri.parse("https://www.lyk.com/user1/referral"))
-            .setQuote("Learn and share your knowledge")
+            .setContentUrl(Uri.parse(Constant.REFERRAL_LINK))
+            .setQuote(resources.getString(R.string.learn_share))
             .build()
         fb_share_button.shareContent = content
     }
@@ -163,16 +166,17 @@ class ReferStep2Activity : BaseActivity(), View.OnClickListener {
     }
 
     private val callback = object : FacebookCallback<Sharer.Result> {
-        override fun onSuccess(result: Sharer.Result?) {
-            Log.v(TAG, "Successfully posted")
-        }
-
         override fun onCancel() {
-            Log.v(TAG, "Sharing cancelled")
+            //  Log.v(TAG, "Sharing cancelled")
         }
 
-        override fun onError(error: FacebookException?) {
-            Log.v(TAG, error?.message!!)
+
+        override fun onError(error: FacebookException) {
+            //  Log.v(TAG, error?.message!!)
+        }
+
+        override fun onSuccess(result: Sharer.Result) {
+            // Log.v(TAG, "Successfully posted")
         }
 
     }

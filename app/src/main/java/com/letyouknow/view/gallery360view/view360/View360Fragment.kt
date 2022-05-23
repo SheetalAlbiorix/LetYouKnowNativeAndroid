@@ -3,6 +3,8 @@ package com.letyouknow.view.gallery360view.view360
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +21,12 @@ import com.letyouknow.base.BaseFragment
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import kotlinx.android.synthetic.main.fragment_360_view.*
 
 class View360Fragment : BaseFragment() {
     private lateinit var tokenModel: RefreshTokenViewModel
+
     companion object {
         fun newInstance(id: String?): View360Fragment {
             val fragment = View360Fragment()
@@ -56,14 +59,22 @@ class View360Fragment : BaseFragment() {
     }
 
     private fun init() {
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
-            val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
-            interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
+        try {
+            if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                Constant.dismissLoader()
+            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            if (arguments?.containsKey(Constant.ARG_IMAGE_ID) == true) {
+                val imageId = arguments?.getString(Constant.ARG_IMAGE_ID)
+                interiorViewModel = ViewModelProvider(this).get(InteriorViewModel::class.java)
 //            callRefreshTokenApi(imageId!!)
-            vrPanoramaView.setInfoButtonEnabled(false)
-            vrPanoramaView.setStereoModeButtonEnabled(false)
-            getInteriorAPI(imageId)
+                vrPanoramaView.setInfoButtonEnabled(false)
+                vrPanoramaView.setStereoModeButtonEnabled(false)
+                getInteriorAPI(imageId)
+
+
+            }
+        } catch (e: Exception) {
+
         }
     }
 
@@ -91,15 +102,17 @@ class View360Fragment : BaseFragment() {
         var imagesTag360 = ""
         print(list.size)
         for (i in 0 until list.size) {
-            imagesTag360 = imagesTag360 + "<img src=\"" + list[i] + "\"/>"
+            if (!TextUtils.isEmpty(list[i]))
+                imagesTag360 = imagesTag360 + "<img src=\"" + list[i] + "\"/>"
         }
-
-        web_view.loadDataWithBaseURL(
-            "",
-            imagesTag360, "text/html", "UTF-8", null
-        )
-        web_view.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        web_view.isScrollbarFadingEnabled = true
+        if (!TextUtils.isEmpty(imagesTag360) && web_view != null) {
+            web_view.loadDataWithBaseURL(
+                "",
+                imagesTag360, "text/html", "UTF-8", null
+            )
+            web_view.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+            web_view.isScrollbarFadingEnabled = true
+        }
     }
 
     private fun interiorView(url: String, imageId: String?) {
@@ -107,7 +120,8 @@ class View360Fragment : BaseFragment() {
             override fun onLoadCleared(placeholder: Drawable?) {}
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 // "option": Declared at the step 3
-                vrPanoramaView.loadImageFromBitmap(resource, option)
+                if (vrPanoramaView != null)
+                    vrPanoramaView.loadImageFromBitmap(resource, option)
             }
         })
         getView360API(imageId)
@@ -115,9 +129,11 @@ class View360Fragment : BaseFragment() {
 
     private fun getInteriorAPI(imageId: String?) {
         if (Constant.isOnline(requireContext())) {
+            if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                Constant.dismissLoader()
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val request = HashMap<String, Any>()
@@ -126,7 +142,24 @@ class View360Fragment : BaseFragment() {
 
             interiorViewModel.getInterior(this.requireContext(), request)!!
                 .observe(this.requireActivity(), Observer { loginVo ->
-                    interiorView(loginVo[0], imageId)
+
+                    if (!loginVo.isNullOrEmpty()) {
+                        if (!TextUtils.isEmpty(loginVo[0]))
+                            interiorView(loginVo[0], imageId)
+                        else {
+                            if (tvNotFound != null) {
+                                Constant.dismissLoader()
+                                ll360View.visibility = View.GONE
+                                tvNotFound.visibility = View.VISIBLE
+                            }
+                        }
+                    } else {
+                        if (tvNotFound != null) {
+                            Constant.dismissLoader()
+                            ll360View.visibility = View.GONE
+                            tvNotFound.visibility = View.VISIBLE
+                        }
+                    }
                 }
                 )
         }
@@ -140,11 +173,22 @@ class View360Fragment : BaseFragment() {
 
             interiorViewModel.getInterior(this.requireContext(), request)!!
                 .observe(this.requireActivity(), Observer { loginVo ->
-                    Constant.dismissLoader()
+
                     print("data display " + loginVo.size.toString())
-                    view360(loginVo)
+                    if (!loginVo.isNullOrEmpty()) {
+                        view360(loginVo)
+                    }
+                    Handler().postDelayed({
+                        Constant.dismissLoader()
+                    }, 1000)
                 }
                 )
         }
+    }
+
+    override fun onPause() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
+        super.onPause()
     }
 }

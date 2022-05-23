@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1041344513800-2m2e0p4bdblrjncnrdb1pdm391gqtare.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.letyouknow",
+            "certificate_hash": "0a61d41ccc5e815d65bec308545e7b131f91dbf5"
+          }
+        },
+        {
+          "client_id": "1041344513800-k60n09jaqpa5nrnp4i3eht7u16aaue2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.letyouknow",
+            "certificate_hash": "e2375f67cdb56d6a78b127121a5a8adf5bafd0fe"
+          }
+        },
+        {
           "client_id": "1041344513800-hh7o754v4ft0bk19l3t1233epltvsupg.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "1041344513800-0vpjta95n0sqcu7algdb1fupcmbeihjq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1041344513800-bc94l7vpmis34h6dv79raaei36vsggbu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.LetYouKnow.buyer"
+              }
             }
           ]
         }

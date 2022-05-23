@@ -1,13 +1,14 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.LoginData
+import com.letyouknow.model.LoginErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,7 +33,7 @@ object GoogleLoginRepository {
                         "Socket Time out. Please try again."
                     )
                 }
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
@@ -41,8 +42,13 @@ object GoogleLoginRepository {
             ) {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("Login Resp : ", Gson().toJson(response.body()))
+                    // Log.v("Login Resp : ", Gson().toJson(response.body()))
                     loginVo.value = data!!
+                } else if (response.code() == 401) {
+                    Constant.dismissLoader()
+                    AppGlobal.isAuthorizationFailed(
+                        context
+                    )
                 } else if (response.code() == 500) {
                     Constant.dismissLoader()
                     AppGlobal.alertError(
@@ -50,13 +56,44 @@ object GoogleLoginRepository {
                         response.message()
                     )
                 } else {
-                    Log.v("Login Resp : ", response.toString())
+                    //   Log.v("Login Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    AppGlobal.alertError(
-                        context,
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                    )
+                    if (!TextUtils.isEmpty(
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
+                    ) {
+                        if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                                ?.contains('{')!!
+                        ) {
+                            val dataError = Gson().fromJson(
+                                response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                                LoginErrorData::class.java
+                            )
+                            if (dataError != null) {
+
+                                if (!dataError.DuplicateUserName.isNullOrEmpty()) {
+                                    val msg = dataError.DuplicateUserName[0]
+                                    AppGlobal.alertError(
+                                        context,
+                                        msg
+                                    )
+                                } else if (!dataError.login_failure.isNullOrEmpty()) {
+                                    val msg = dataError.login_failure[0]
+                                    AppGlobal.alertError(
+                                        context,
+                                        msg
+                                    )
+                                }
+                            }
+                        } else {
+                            AppGlobal.alertError(
+                                context,
+                                response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                            )
+                        }
+                    }
+
                 }
             }
         })

@@ -22,12 +22,12 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_final_unlocked_deal_summary.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_final_unlocked_deal_summary.*
@@ -201,7 +201,7 @@ class FinalUnlockedDealSummaryActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val pkgList = JsonArray()

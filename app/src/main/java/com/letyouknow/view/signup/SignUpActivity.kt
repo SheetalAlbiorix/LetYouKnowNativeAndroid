@@ -36,16 +36,18 @@ import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivitySignUpBinding
 import com.letyouknow.model.CardListData
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.SignUpViewModel
+import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.makeLinks
+import com.letyouknow.utils.Constant.Companion.onTextChange
 import com.letyouknow.utils.CreditCardType
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.makeLinks
-import com.pionymessenger.utils.Constant.Companion.onTextChange
+import com.letyouknow.view.dashboard.MainActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.dialog_password_hint.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
+import org.jetbrains.anko.startActivity
 
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
@@ -55,7 +57,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var arCardList: ArrayList<CardListData> = ArrayList()
     lateinit var binding: ActivitySignUpBinding
     lateinit var signupViewModel: SignUpViewModel
+    lateinit var socialMobileViewModel: SocialMobileViewModel
 
+    lateinit var fbLoginViewModel: FacebookLoginViewModel
+    lateinit var googleLoginViewModel: GoogleLoginViewModel
+    lateinit var pushTokenViewModel: AddPushTokenViewModel
     private var arState = arrayListOf("State")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,11 +83,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
-       /* val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
-        edtCardNumber.addTextChangedListener(textWatcher)
-*/
-        signupViewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
-
+        /* val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber)
+         edtCardNumber.addTextChangedListener(textWatcher)
+ */
+        pushTokenViewModel = ViewModelProvider(this)[AddPushTokenViewModel::class.java]
+        signupViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
+        fbLoginViewModel = ViewModelProvider(this)[FacebookLoginViewModel::class.java]
+        googleLoginViewModel = ViewModelProvider(this)[GoogleLoginViewModel::class.java]
+        socialMobileViewModel = ViewModelProvider(this)[SocialMobileViewModel::class.java]
         llDebitCreditCard.setOnClickListener(this)
         llPayPal.setOnClickListener(this)
         llBankAccount.setOnClickListener(this)
@@ -239,7 +248,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     if (Constant.isOnline(this)) {
                         if (!Constant.isInitProgress()) {
                             Constant.showLoader(this)
-                        } else if (!Constant.progress.isShowing) {
+                        } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                             Constant.showLoader(this)
                         }
                         val request = HashMap<String, String>()
@@ -502,9 +511,10 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     Log.e("UserName : ", user?.displayName!!)
-                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
-                        .show()
+                    /*Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+                        .show()*/
                     // updateUI(user)
+                    callGoogleLoginAPI(idToken)
                     googleSignOut()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -524,8 +534,10 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     Log.e("UserName FB : ", user?.displayName!!)
-                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+//                        .show()
+                    callFBLoginAPI(token.token)
+                    facebookSignOut()
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -534,10 +546,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                         baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
+                    facebookSignOut()
                     //updateUI(null)
                 }
             }
-        facebookSignOut()
+
     }
 
     private fun googleSignOut() {
@@ -594,5 +607,90 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         source
     }
 
+    private fun callFBLoginAPI(accessToken: String) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.AccessToken] = accessToken
+
+            fbLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (data.buyerId != 0) {
+                    pref?.setLogin(true)
+                    data.isSocial = true
+                    pref?.setUserData(Gson().toJson(data))
+                    callPushTokenAPI()
+                } else {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callGoogleLoginAPI(accessToken: String) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.Token] = accessToken
+
+            googleLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                if (data.buyerId != 0) {
+                    pref?.setLogin(true)
+                    data.isSocial = true
+                    pref?.setUserData(Gson().toJson(data))
+                    callPushTokenAPI()
+                } else {
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callPushTokenAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.Token] = pref?.getFirebaseToken()!!
+            request[ApiConstant.UserProfileId] = pref?.getUserData()?.buyerId!!.toString()
+            request[ApiConstant.DeviceType] = "Android"
+
+            pushTokenViewModel.pushToken(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                Log.e("token Resp", data.message!!)
+                startActivity<MainActivity>()
+                finish()
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

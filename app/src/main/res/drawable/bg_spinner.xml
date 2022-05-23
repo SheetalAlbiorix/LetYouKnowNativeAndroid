@@ -19,8 +19,7 @@
                 android:drawable="@drawable/ic_arrow_drop_down_black"
                 android:gravity="center"
                 android:left="@dimen/_8sdp"
-                android:top="@dimen/_14sdp">
-            </item>
+                android:top="@dimen/_14sdp"></item>
 
         </layer-list>
     </item>

@@ -26,7 +26,7 @@ open class BaseFragment : Fragment(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .setConfirmClickListener(clickListener)
             .show()
         // Utility.showSnackBar(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG, false);
@@ -36,7 +36,7 @@ open class BaseFragment : Fragment(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.SUCCESS_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .setConfirmClickListener(object : SweetAlertDialog.OnSweetClickListener {
                 override fun onClick(sDialog: SweetAlertDialog?) {
                     sDialog?.dismiss()
@@ -49,7 +49,7 @@ open class BaseFragment : Fragment(), BaseView {
         SweetAlertDialog(getViewActivity(), SweetAlertDialog.ERROR_TYPE)
             .setTitleText(resources.getString(R.string.app_name))
             .setContentText(message)
-            .setConfirmText("ok")
+            .setConfirmText(resources.getString(R.string.ok))
             .show()
     }
 

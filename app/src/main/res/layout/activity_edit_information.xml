@@ -250,6 +250,7 @@
                             </androidx.appcompat.widget.LinearLayoutCompat>
                         </LinearLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtPhoneNumber"
                         android:layout_width="match_parent"

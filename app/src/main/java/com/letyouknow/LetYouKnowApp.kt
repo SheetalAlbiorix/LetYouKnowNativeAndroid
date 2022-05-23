@@ -2,6 +2,8 @@ package com.letyouknow
 
 import android.app.Application
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
 import com.logispeed.data.prefs.AppPreferencesHelper
 import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentConfiguration
@@ -9,18 +11,27 @@ import com.stripe.android.PaymentConfiguration
 class LetYouKnowApp : Application() {
     private var appPreferencesHelper: AppPreferencesHelper? = null
 
+    val ORGANIZATION = "mobile"
+    val APP_ID = 1
+    val SECRET =
+        "dHmWbGQDlZw/o1TV169JtSlFyrK3/rKrQ45MTdJll2EjaF/vh7OVF3Yms1bI6j9kai26Sr7Ft9OfTGC8aoaIWQ=="
+
+
     companion object {
         private var mInstance: LetYouKnowApp? = null
 
         @Synchronized
         fun getInstance(): LetYouKnowApp? {
             return mInstance
-
         }
     }
 
     override fun onCreate() {
         super.onCreate()
+
+//        initialize(ORGANIZATION,APP_ID,SECRET)
+        Firebase.initialize(applicationContext)
+
         FirebaseCrashlytics.getInstance().log("Crash")
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
 //        FacebookSdk.sdkInitialize(this)

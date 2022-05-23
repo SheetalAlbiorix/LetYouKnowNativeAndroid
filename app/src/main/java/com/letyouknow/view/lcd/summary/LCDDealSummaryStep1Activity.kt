@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.text.*
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -30,16 +29,16 @@ import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
+import com.letyouknow.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_VIEW
+import com.letyouknow.utils.Constant.Companion.makeLinks
+import com.letyouknow.utils.Constant.Companion.setErrorBorder
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
-import com.pionymessenger.utils.Constant.Companion.makeLinks
-import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_lcd_deal_summary_step1.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_deal_summary_hot_market.*
@@ -153,7 +152,8 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
                             setErrorBorder(edtInitials, tvErrorInitials)
                         }
                         str.length == 1 -> {
-                            tvErrorInitials.text = "Initials must be valid - 2 or 3 Letters"
+                            tvErrorInitials.text =
+                                getString(R.string.initials_must_be_valid_2_or_3_letters)
                             setErrorBorder(edtInitials, tvErrorInitials)
                         }
                         else -> {
@@ -193,9 +193,9 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
                     isScrollable = true
                     tvErrorFullDisclouser.visibility = View.GONE
                     edtInitials.isEnabled = true
-                    Log.e("bottom", "scroll view is at bottom")
+                    //  Log.e("bottom", "scroll view is at bottom")
                 } else {
-                    Log.e("Top", "scroll view is not at bottom")
+                    //   Log.e("Top", "scroll view is not at bottom")
                 }
             }
     }
@@ -243,7 +243,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -275,14 +275,19 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
             val request = HashMap<String, Any>()
 
             request[ApiConstant.ImageId] = ImageId!!
-            request[ApiConstant.ImageProduct] = "Splash"
+            if (dataLCDDeal.exteriorColorId!! == "0") {
+                request[ApiConstant.ImageProduct] = "Splash"
+            } else {
+                request[ApiConstant.ImageProduct] = "MultiAngle"
+                request[ApiConstant.ExteriorColor] = dataLCDDeal.exteriorColorStr!!
+            }
 
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->
@@ -306,7 +311,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val jsonPkg = JsonArray()
@@ -335,7 +340,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.guestID] = dataLCDDeal.guestID!!
             request[ApiConstant.dealerAccessoryIDs] = jsonAcc
             request[ApiConstant.vehiclePackageIDs] = jsonPkg
-            Log.e("requestsubmitpending ", Gson().toJson(request))
+            //  Log.e("requestsubmitpending ", Gson().toJson(request))
             submitPendingLCDDealViewModel.pendingDeal(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -513,7 +518,7 @@ class LCDDealSummaryStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = java.util.HashMap<String, Any>()

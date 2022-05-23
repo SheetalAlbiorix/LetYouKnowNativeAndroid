@@ -14,6 +14,8 @@
 
         <import type="android.text.TextUtils" />
 
+        <import type="com.letyouknow.utils.AppGlobal" />
+
         <variable
             name="dollar"
             type="Float" />
@@ -97,7 +99,7 @@
                         style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/interior_color"
+                        android:text="@string/interior_color_colon"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp" />
 
@@ -113,11 +115,11 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llDisc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:orientation="horizontal"
-                    android:visibility="@{TextUtils.isEmpty(lcdDealData.miles)? View.GONE : View.VISIBLE}">
+                    android:orientation="horizontal">
 
                     <TextView
                         style="@style/bold"
@@ -128,11 +130,11 @@
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
+                        android:id="@+id/tvDisclosure"
                         style="@style/regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{@string/miles_approximate_odometer_reading(lcdDealData.miles)}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_12sdp"
                         tool:text="Super Black Metalic" />
@@ -140,7 +142,7 @@
 
                 <TextView
                     android:id="@+id/tvViewOptions"
-                    style="@style/medium"
+                    style="@style/bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
@@ -178,9 +180,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
-                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)+ ` MSRP`}"
                         android:textColor="@color/navyBlue"
                         android:textSize="@dimen/_14sdp"
+                        android:visibility='@{lcdDealData.msrp != 0.0 ? View.VISIBLE : View.GONE}'
                         tool:text="$47000.00" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -258,7 +261,7 @@
                                 style="@style/bold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Option &amp; Accessories"
+                                android:text="Options &amp; Accessories"
                                 android:textColor="?textGreyColor"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -286,7 +289,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:text="@string/price_summary"
-                android:textColor="?blackHeaderText"
+                android:textColor="@color/color3e5365"
                 android:textSize="@dimen/_16sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -302,7 +305,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/bold"
+                        style="@style/medium"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -384,13 +387,13 @@
 
 
                         <TextView
-                            android:enabled="false"
                             android:id="@+id/tvApplyPromo"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="-15dp"
                             android:background="@drawable/bg_button"
                             android:backgroundTint="@color/color88898A"
+                            android:enabled="false"
                             android:gravity="center"
                             android:paddingStart="@dimen/_12sdp"
                             android:paddingEnd="@dimen/_12sdp"
@@ -408,6 +411,7 @@
                         android:textSize="@dimen/_11sdp"
                         android:visibility="gone" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/llDollar"
                     android:layout_width="match_parent"
@@ -529,7 +533,7 @@
                 style="@style/regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/for_non_refundable(799.00)}"
+                android:text="@{@string/for_non_refundable(NumberFormat.getCurrencyInstance(Locale.US).format(799.00))}"
                 android:textColor="@color/color545d64"
                 android:textSize="@dimen/_10sdp"
                 tool:text="799.00" />
@@ -574,199 +578,199 @@
                         android:src="@{lightDealBindData.selectPaymentType==1 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@color/dividerColor" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llCardDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/_25sdp"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_15sdp"
-                android:visibility="@{lightDealBindData.selectPaymentType==1 ? View.VISIBLE : View.GONE}">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/dividerColor" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/llCardList"
+                    android:id="@+id/llCardDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/_25sdp"
+                    android:paddingTop="@dimen/_15sdp"
+                    android:paddingEnd="@dimen/_25sdp"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:visibility="@{lightDealBindData.selectPaymentType==1 ? View.VISIBLE : View.GONE}">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/select_cards_for_payment"
-                        android:textColor="?textDarkColor"
-                        android:textStyle="bold" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvCard"
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/llCardList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/list_item_card" />
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/select_cards_for_payment"
+                            android:textColor="?textDarkColor"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="2"
+                            tools:listitem="@layout/list_item_card" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvAddMore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="@dimen/_8sdp"
+                            android:text="@string/add_more"
+                            android:textColor="?textDarkColor"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!-- <LinearLayout
+                         android:id="@+id/llCardViewDetail"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical">
+
+                         <androidx.appcompat.widget.AppCompatEditText
+                             android:id="@+id/edtCardNumber"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_15sdp"
+                             android:background="@drawable/bg_edittext"
+                             android:digits="1234567890"
+                             android:drawableRight="@drawable/ic_camera"
+                             android:hint="@string/card_holder"
+                             android:inputType="number" />
+
+                         <androidx.appcompat.widget.AppCompatEditText
+                             android:id="@+id/edtCardHolder"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_15sdp"
+                             android:background="@drawable/bg_edittext"
+                             android:hint="@string/card_holder"
+                             android:inputType="text" />
+
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_15sdp"
+                             android:orientation="horizontal">
+
+                             <androidx.appcompat.widget.AppCompatEditText
+                                 android:id="@+id/edtExpiresDate"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1"
+                                 android:background="@drawable/bg_edittext"
+                                 android:digits="1234567890"
+                                 android:hint="@string/expire_date"
+                                 android:inputType="number"
+                                 android:maxLength="5" />
+
+                             <androidx.appcompat.widget.AppCompatEditText
+                                 android:id="@+id/edtCVV"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1"
+                                 android:background="@drawable/bg_edittext"
+                                 android:hint="@string/cvv"
+                                 android:inputType="number"
+                                 android:maxLength="3" />
+                         </LinearLayout>
+
+                         <androidx.appcompat.widget.AppCompatTextView
+                             android:id="@+id/btnSave"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_20sdp"
+                             android:background="@drawable/bg_button"
+                             android:gravity="center_horizontal"
+                             android:padding="@dimen/_12sdp"
+                             android:text="@string/save"
+                             android:textColor="@color/white"
+                             android:textSize="@dimen/_14sdp" />
+
+                     </LinearLayout>-->
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llPayPal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_25sdp"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingRight="@dimen/_25sdp"
+                    android:paddingBottom="@dimen/_12sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/ic_paypal" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvAddMore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="@dimen/_8sdp"
-                        android:text="@string/add_more"
+                        android:paddingLeft="@dimen/_8sdp"
+                        android:paddingRight="@dimen/_20sdp"
+                        android:text="PayPal"
                         android:textColor="?textDarkColor"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivNextPayPal"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@{lightDealBindData.selectPaymentType==2 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                    />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <!-- <LinearLayout
-                     android:id="@+id/llCardViewDetail"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/dividerColor" />
 
-                     <androidx.appcompat.widget.AppCompatEditText
-                         android:id="@+id/edtCardNumber"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="@dimen/_15sdp"
-                         android:background="@drawable/bg_edittext"
-                         android:digits="1234567890"
-                         android:drawableRight="@drawable/ic_camera"
-                         android:hint="@string/card_holder"
-                         android:inputType="number" />
 
-                     <androidx.appcompat.widget.AppCompatEditText
-                         android:id="@+id/edtCardHolder"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="@dimen/_15sdp"
-                         android:background="@drawable/bg_edittext"
-                         android:hint="@string/card_holder"
-                         android:inputType="text" />
-
-                     <LinearLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="@dimen/_15sdp"
-                         android:orientation="horizontal">
-
-                         <androidx.appcompat.widget.AppCompatEditText
-                             android:id="@+id/edtExpiresDate"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1"
-                             android:background="@drawable/bg_edittext"
-                             android:digits="1234567890"
-                             android:hint="@string/expire_date"
-                             android:inputType="number"
-                             android:maxLength="5" />
-
-                         <androidx.appcompat.widget.AppCompatEditText
-                             android:id="@+id/edtCVV"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1"
-                             android:background="@drawable/bg_edittext"
-                             android:hint="@string/cvv"
-                             android:inputType="number"
-                             android:maxLength="3" />
-                     </LinearLayout>
-
-                     <androidx.appcompat.widget.AppCompatTextView
-                         android:id="@+id/btnSave"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="@dimen/_20sdp"
-                         android:background="@drawable/bg_button"
-                         android:gravity="center_horizontal"
-                         android:padding="@dimen/_12sdp"
-                         android:text="@string/save"
-                         android:textColor="@color/white"
-                         android:textSize="@dimen/_14sdp" />
-
-                 </LinearLayout>-->
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llPayPal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/_25sdp"
-                android:paddingTop="@dimen/_12sdp"
-                android:paddingRight="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_12sdp">
-
-                <ImageView
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:src="@drawable/ic_paypal" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llBankAccount"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:paddingRight="@dimen/_20sdp"
-                    android:text="PayPal"
-                    android:textColor="?textDarkColor"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_25sdp"
+                    android:paddingTop="@dimen/_12sdp"
+                    android:paddingRight="@dimen/_25sdp"
+                    android:paddingBottom="@dimen/_12sdp"
+                    android:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/ivNextPayPal"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:src="@{lightDealBindData.selectPaymentType==2 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
-                />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/ic_bank" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@color/dividerColor" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/_8sdp"
+                        android:paddingRight="@dimen/_20sdp"
+                        android:text="Bank Account"
+                        android:textColor="?textDarkColor"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
 
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llBankAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/_25sdp"
-                android:paddingTop="@dimen/_12sdp"
-                android:paddingRight="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_12sdp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:src="@drawable/ic_bank" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:paddingRight="@dimen/_20sdp"
-                    android:text="Bank Account"
-                    android:textColor="?textDarkColor"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/ivNextBankAccount"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:src="@{lightDealBindData.selectPaymentType==3 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <ImageView
+                        android:id="@+id/ivNextBankAccount"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@{lightDealBindData.selectPaymentType==3 ? @drawable/ic_baseline_done_24 :@drawable/ic_next}" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <View
                     android:layout_width="match_parent"
@@ -861,11 +865,11 @@
 
             <com.stripe.android.view.CardInputWidget
                 android:id="@+id/cardInputWidget"
-                android:visibility="gone"
                 style="@style/Stripe.CardInputWidget.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/llCardViewDetail"
@@ -878,14 +882,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:maxLength="19"
                     android:background="@drawable/bg_edittext"
                     android:digits="1234567890"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
                     android:drawableLeft="@drawable/ic_camera"
                     android:hint="@string/card_number"
-                    android:inputType="number" />
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="19"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/tvErrorCardNumber"
@@ -916,7 +920,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_edittext"
                             android:digits="1234567890"
-                            android:hint="@string/expire_date"
+                            android:hint="@string/mm_yy"
                             android:inputType="number"
                             android:maxLength="5" />
 
@@ -946,7 +950,7 @@
                             android:digits="1234567890"
                             android:hint="@string/cvv"
                             android:inputType="number"
-                            android:maxLength="3" />
+                            android:maxLength="4" />
 
                         <TextView
                             android:id="@+id/tvErrorCardCVV"
@@ -994,19 +998,19 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginRight="@dimen/_12sdp"
             android:id="@+id/btnSave"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_12sdp"
             android:background="@drawable/bg_button"
             android:gravity="center_horizontal"
             android:padding="@dimen/_12sdp"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_14sdp"
+            android:visibility="gone" />
 
         <TextView
             style="@style/bold"
@@ -1081,9 +1085,9 @@
                     android:layout_height="wrap_content" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_weight="0.5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -1115,7 +1119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_edittext"
-                android:hint="@string/last_name_required"
+                android:hint="@string/last_name_req"
                 android:inputType="text"
                 android:text="@{pendingUCDData.buyer.lastName}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1297,9 +1301,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/bg_button"
             android:paddingStart="@dimen/_18sdp"
             android:paddingTop="@dimen/_12sdp"

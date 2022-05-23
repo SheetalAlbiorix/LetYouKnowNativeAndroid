@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-//    private const val MainServer = "https://lykbuyerapi.azurewebsites.net/api/"
-private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api/"
+    private const val MainServer = "https://lykbuyerapi.azurewebsites.net/api/"
+//private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api/"
 
     const val ImageMainServer = "http://api.drfriday.in/"
     const val paymentToken =
@@ -46,7 +46,7 @@ private const val MainServer = "https://lykbuyerwebapidemo.azurewebsites.net/api
                 )
                 .build()
             chain.proceed(newRequest)
-        }).connectTimeout(35, TimeUnit.SECONDS).readTimeout(35, TimeUnit.SECONDS).build()
+        }).connectTimeout(90, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS).build()
 
         Log.e(
             "Header",

@@ -28,12 +28,18 @@
             android:textColor="@color/color666666"
             android:textSize="@dimen/_13sdp" />
 
-        <ImageView
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch1"
+            style="@style/theme.switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end" />
+        <!--<ImageView
             android:id="@+id/ivOnOff"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="end"
-            android:src="@drawable/ic_toggle_off" />
+            android:src="@drawable/ic_toggle_off" />-->
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

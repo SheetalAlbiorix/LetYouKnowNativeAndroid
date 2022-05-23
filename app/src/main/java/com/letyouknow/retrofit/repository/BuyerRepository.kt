@@ -1,13 +1,13 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.BuyerInfoData
+import com.letyouknow.model.SubmitPriceErrorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,25 +26,35 @@ object BuyerRepository {
         call.enqueue(object : Callback<BuyerInfoData> {
             override fun onFailure(call: Call<BuyerInfoData>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
                 call: Call<BuyerInfoData>,
                 response: Response<BuyerInfoData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                // Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("buyer Resp ", Gson().toJson(response.body()))
+                    // Log.v("buyer Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     buyerData.value = data!!
                 } else if (response.code() == 401) {
-                    Log.v("buyer Resp ", response.toString())
+                    // Log.v("buyer Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
+                } else if (response.code() == 400) {
+                    // Log.v("buyer Resp ", response.toString())
+                    val dataError = Gson().fromJson(
+                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                        SubmitPriceErrorData::class.java
+                    )
+                    AppGlobal.alertError(
+                        context,
+                        dataError.title
+                    )
                 } else {
-                    Log.v("buyer Resp ", response.toString())
+                    // Log.v("buyer Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)

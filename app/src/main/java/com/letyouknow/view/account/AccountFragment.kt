@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
@@ -26,6 +25,15 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_NOTIFICATIONS
+import com.letyouknow.utils.Constant.Companion.middleNameValidator
+import com.letyouknow.utils.Constant.Companion.onTextChange
+import com.letyouknow.utils.Constant.Companion.onTextChangeAddress1
+import com.letyouknow.utils.Constant.Companion.onTextChangeCity
+import com.letyouknow.utils.Constant.Companion.onTextChangeFirstName
+import com.letyouknow.utils.Constant.Companion.onTextChangeLastName
+import com.letyouknow.utils.Constant.Companion.onTextChangeMiddleName
 import com.letyouknow.view.account.editinfo.EditInformationActivity
 import com.letyouknow.view.account.editlogin.EditLoginActivity
 import com.letyouknow.view.account.editnotification.EditNotificationActivity
@@ -34,25 +42,15 @@ import com.letyouknow.view.account.viewDollar.ViewDollarActivity
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_NOTIFICATIONS
-import com.pionymessenger.utils.Constant.Companion.middleNameValidator
-import com.pionymessenger.utils.Constant.Companion.onTextChange
-import com.pionymessenger.utils.Constant.Companion.onTextChangeCity
-import com.pionymessenger.utils.Constant.Companion.onTextChangeFirstName
-import com.pionymessenger.utils.Constant.Companion.onTextChangeLastName
-import com.pionymessenger.utils.Constant.Companion.onTextChangeMiddleName
 import kotlinx.android.synthetic.main.dialog_change_password.*
 import kotlinx.android.synthetic.main.dialog_edit_info.*
 import kotlinx.android.synthetic.main.fragment_account1.*
-import okhttp3.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.startActivity
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -62,6 +60,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     private lateinit var editUserProfileViewModel: EditUserProfileViewModel
     private lateinit var changePasswordViewModel: ChangePasswordViewModel
     private lateinit var tokenModel: RefreshTokenViewModel
+    private lateinit var referralBalanceViewModel: ReferralBalanceViewModel
     private lateinit var binding: FragmentAccount1Binding
     private var userData: UserProfileData? = UserProfileData()
     private var state = ""
@@ -88,15 +87,16 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun init() {
         try {
-            savingsToDateViewModel = ViewModelProvider(this).get(SavingsToDateViewModel::class.java)
+            savingsToDateViewModel = ViewModelProvider(this)[SavingsToDateViewModel::class.java]
+            referralBalanceViewModel = ViewModelProvider(this)[ReferralBalanceViewModel::class.java]
             notificationOptionsViewModel =
-                ViewModelProvider(this).get(NotificationOptionsViewModel::class.java)
-            userProfileViewModel = ViewModelProvider(this).get(UserProfileViewModel::class.java)
+                ViewModelProvider(this)[NotificationOptionsViewModel::class.java]
+            userProfileViewModel = ViewModelProvider(this)[UserProfileViewModel::class.java]
             editUserProfileViewModel =
-                ViewModelProvider(this).get(EditUserProfileViewModel::class.java)
+                ViewModelProvider(this)[EditUserProfileViewModel::class.java]
             changePasswordViewModel =
-                ViewModelProvider(this).get(ChangePasswordViewModel::class.java)
-            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+                ViewModelProvider(this)[ChangePasswordViewModel::class.java]
+            tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
 
             tvViewNotification.setOnClickListener(this)
             tvEditLogin.setOnClickListener(this)
@@ -104,6 +104,12 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             tvViewDollar.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(true)
+
+            if (pref?.getUserData()?.isSocial!!) {
+                llChangePassword.visibility = View.GONE
+            } else {
+                llChangePassword.visibility = View.VISIBLE
+            }
 //            callRefreshTokenApi()
             callUserProfileAPI()
         } catch (e: Exception) {
@@ -200,6 +206,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
             btnDialogSave.setOnClickListener {
                 if (isValid()) {
+                    btnDialogSave.isEnabled = false
                     callEditUserProfileAPI()
                 }
             }
@@ -217,11 +224,12 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             onTextChangeFirstName(requireActivity(), edtFirstName, tvErrorFirstName)
             onTextChangeMiddleName(requireActivity(), edtMiddleName)
             onTextChangeLastName(requireActivity(), edtLastName, tvErrorLastName)
+            onTextChangeAddress1(requireActivity(), edtAddress1, tvErrorAddress1)
 //            onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtConfirmEmail, tvErrorConfirmEmailAddress)
             onTextChange(requireActivity(), edtEmail, tvErrorEmailAddress)
             onTextChange(requireActivity(), edtPhoneNumber, tvErrorPhoneNo)
-            onTextChange(requireActivity(), edtAddress1, tvErrorAddress1)
+//            onTextChange(requireActivity(), edtAddress1, tvErrorAddress1)
             onTextChange(requireActivity(), edtAddress2, tvErrorAddress2)
             onTextChangeCity(requireActivity(), edtCity, tvErrorCity)
             onTextChange(requireActivity(), edtZipCode, tvErrorZipCode)
@@ -299,11 +307,29 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             if (Constant.isOnline(requireActivity())) {
                 savingsToDateViewModel.savingsToDateCall(requireActivity())!!
                     .observe(requireActivity(), Observer { data ->
-
                         try {
                             tvSavingsDate.text =
                                 NumberFormat.getCurrencyInstance(Locale.US).format(data)
+                            callCurrentBalAPI()
+                        } catch (e: Exception) {
+                        }
+                    }
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+        }
+    }
 
+    private fun callCurrentBalAPI() {
+        try {
+            if (Constant.isOnline(requireActivity())) {
+                referralBalanceViewModel.referralBalCall(requireActivity())!!
+                    .observe(requireActivity(), Observer { data ->
+                        try {
+                            tvBalance.text =
+                                NumberFormat.getCurrencyInstance(Locale.US).format(data)
                             Constant.dismissLoader()
                         } catch (e: Exception) {
 
@@ -324,7 +350,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             notificationOptionsViewModel.notificationCall(requireActivity())!!
@@ -346,9 +372,12 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
 
     private fun callEditUserProfileAPI() {
         if (Constant.isOnline(requireActivity())) {
+            if (Constant.isInitProgress() && Constant.progress.isShowing) {
+                Constant.dismissLoader()
+            }
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val map: HashMap<String, String> = HashMap()
@@ -364,7 +393,8 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             map[ApiConstant.city] = dialogEditInfo.edtCity.text.toString().trim()
             map[ApiConstant.state] = state
             map[ApiConstant.zipcode] = dialogEditInfo.edtZipCode.text.toString().trim()
-            Log.e("EditLoginReq", Gson().toJson(map))
+            dialogEditInfo.btnDialogSave.isEnabled = true
+            // Log.e("EditLoginReq", Gson().toJson(map))
             editUserProfileViewModel.editUserCall(requireActivity(), map)!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
@@ -401,7 +431,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val reqData = ChangePasswordRequestData()
@@ -424,7 +454,6 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     )
                 }
                 )
-
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -448,7 +477,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             when {
                 TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
-                    tvErrorFirstName.text = getString(R.string.first_name_required)
+                    tvErrorFirstName.text = getString(R.string.enter_firstname)
                     return false
                 }
                 (Constant.firstNameValidator(edtFirstName.text.toString().trim())) -> {
@@ -458,7 +487,7 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                 }
                 TextUtils.isEmpty(edtLastName.text.toString().trim()) -> {
                     Constant.setErrorBorder(edtLastName, tvErrorLastName)
-                    tvErrorLastName.text = getString(R.string.last_name_required)
+                    tvErrorLastName.text = getString(R.string.enter_lastname)
                     return false
                 }
                 (Constant.lastNameValidator(edtLastName.text.toString().trim())) -> {
@@ -506,6 +535,13 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
                     return false
                 }
                 TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                    tvErrorAddress1.text = getString(R.string.enter_addressline1)
+                    Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                    return false
+                }
+                edtAddress1.text.toString().trim().length < 3 -> {
+                    tvErrorAddress1.text =
+                        getString(R.string.address1_must_be_minimum_three_characters)
                     Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
                     return false
                 }
@@ -618,9 +654,10 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
+
                 userProfileViewModel.userProfileCall(requireActivity())!!
                     .observe(requireActivity(), Observer { data ->
                         setUserData(data)
@@ -734,13 +771,15 @@ class AccountFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItem
     }
 
 
-    /* override fun onPause() {
-         Constant.dismissLoader()
-         super.onPause()
-     }*/
-    override fun onDestroy() {
+    override fun onPause() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        /* if (Constant.isInitProgress() && Constant.progress.isShowing)
+             Constant.dismissLoader()*/
         super.onDestroy()
     }
 

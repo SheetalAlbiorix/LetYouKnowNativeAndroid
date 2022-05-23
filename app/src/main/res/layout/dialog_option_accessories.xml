@@ -23,44 +23,93 @@
             android:src="@drawable/ic_close"
             app:tint="@color/gray" />
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tvDialogTitle"
-            style="@style/medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.87"
-            android:text="abc"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-                android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDialogTitle"
+                    style="@style/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.87"
+                    android:text="abc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:text="@string/exterior_color_colon"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDialogExteriorColor"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:alpha="0.87"
+                        android:text="abc"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:text="@string/interior_color_colon"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDialogInteriorColor"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:alpha="0.87"
+                        android:text="abc"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
 
                 <TextView
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:alpha="0.87"
-                    android:text="@string/exterior_color_colon"
+                    android:text="@string/packages_colon"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:id="@+id/tvDialogExteriorColor"
+                    android:id="@+id/tvDialogPackage"
                     style="@style/regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,26 +117,19 @@
                     android:text="abc"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:orientation="horizontal">
 
                 <TextView
                     style="@style/medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:alpha="0.87"
-                    android:text="@string/interior_color_colon"
+                    android:text="@string/option_amp_accessories_colon"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:id="@+id/tvDialogInteriorColor"
+                    android:id="@+id/tvDialogOptions"
                     style="@style/regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,77 +137,36 @@
                     android:text="abc"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
 
-
-            <TextView
-                style="@style/medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:alpha="0.87"
-                android:text="@string/packages_colon"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
-
-            <TextView
-                android:id="@+id/tvDialogPackage"
-                style="@style/regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.87"
-                android:text="abc"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
-
-            <TextView
-                style="@style/medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:alpha="0.87"
-                android:text="@string/option_amp_accessories_colon"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
-
-            <TextView
-                android:id="@+id/tvDialogOptions"
-                style="@style/regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.87"
-                android:text="abc"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
-
-            <LinearLayout
-                android:id="@+id/llDialogDisclosure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/medium"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llDialogDisclosure"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:alpha="0.87"
-                    android:text="@string/disclosure"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tvDialogDisclosure"
-                    style="@style/regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.87"
-                    android:text="-"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.core.widget.NestedScrollView>
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:text="@string/disclosure"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDialogDisclosure"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:alpha="0.87"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

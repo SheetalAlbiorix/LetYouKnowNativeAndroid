@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.*
 import android.util.Log
 import android.view.View
@@ -28,19 +29,21 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
+import com.letyouknow.utils.Constant.Companion.ARG_MSRP_RANGE
+import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_PRODUCT
+import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.utils.CreditCardType
+import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
-import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_PRODUCT
-import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
@@ -50,14 +53,18 @@ import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
 import com.stripe.android.model.StripeIntent
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
+import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
+import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class LYKStep2Activity : BaseActivity(), View.OnClickListener,
@@ -110,6 +117,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             )
             && intent.hasExtra(
                 Constant.ARG_IMAGE_ID
+            ) && intent.hasExtra(
+                Constant.ARG_MSRP_RANGE
             )
         ) {
             imageId = intent.getStringExtra(Constant.ARG_IMAGE_ID)!!
@@ -144,6 +153,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             if (imageId == "0") {
                 ll360.visibility = View.GONE
                 llGallery.visibility = View.GONE
+            }
+
+            if (!TextUtils.isEmpty(intent.getStringExtra(ARG_MSRP_RANGE))) {
+                tvPriceMSRP.text = intent.getStringExtra(ARG_MSRP_RANGE)
+            } else {
+                tvPriceMSRP.visibility = View.GONE
             }
         }
         val textWatcher: TextWatcher = CreditCardNumberTextWatcher(edtCardNumber, tvErrorCardNumber)
@@ -200,9 +215,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
         Constant.onTextChangeMiddleName(this, edtMiddleName)
         Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
+        Constant.onTextChangeAddress1(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
         Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
-        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+//        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
         Constant.onTextChangeCity(this, edtCity, tvErrorCity)
         Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
@@ -254,7 +270,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
@@ -264,7 +280,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         llDollar.visibility = View.GONE
                     }
                     tvDollar.text =
-                        NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
+                        "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
                 }
                 )
@@ -275,11 +291,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = dataPendingDeal.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
@@ -297,8 +309,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
-                    Constant.dismissLoader()
-                    callSubmitDealAPI(false)
+//                    Constant.dismissLoader()
+                    if (TextUtils.isEmpty(data.buyerId)) {
+                        alertError("Something went wrong. Please try again later.")
+                    } else {
+                        callSubmitDealAPI(false)
+                    }
                 }
                 )
         } else {
@@ -306,13 +322,26 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    fun alertError(message: String?) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_error)
+        dialog.run {
+            tvErrorMessage.text = message
+            tvErrorOk.setOnClickListener {
+                startActivity(intentFor<MainActivity>().clearTask().newTask())
+            }
+        }
+        AppGlobal.setLayoutParam(dialog)
+        dialog.show()
+    }
+
     private fun callSubmitDealAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
+            showProgressDialog()
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
@@ -339,6 +368,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 )
             map[ApiConstant.loanType] = yearModelMakeData.loanType!!
             map[ApiConstant.initial] = yearModelMakeData.initials!!
+            map[ApiConstant.promotionID] = yearModelMakeData.promotionId!!
             val arJsonPackage = JsonArray()
             for (i in 0 until yearModelMakeData.arPackages?.size!!) {
                 arJsonPackage.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
@@ -350,11 +380,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
-            Log.e("Request Deal", Gson().toJson(map))
+            // Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(this, { data ->
-                    Log.e("resp", Gson().toJson(data))
-                    Constant.dismissLoader()
+                    //    Log.e("resp", Gson().toJson(data))
+//                    Constant.dismissLoader()
 
                     if (data?.foundMatch!! && !data.isBadRequest!!) {
                         pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
@@ -365,7 +395,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                             yearModelMakeData.price!!
                         data.successResult?.transactionInfo?.remainingBalance =
                             (yearModelMakeData.price!! - (799.0f + yearModelMakeData.discount!!))
-                        Log.e("SubmitStep2Response", Gson().toJson(data))
+                        //    Log.e("SubmitStep2Response", Gson().toJson(data))
                         startActivity<SubmitDealSummaryActivity>(
                             Constant.ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
@@ -385,7 +415,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                             } else {
                                 msgStr = msgStr + ",\n" + data?.messageList[i]!!
                             }
-
                         }
                         if (!TextUtils.isEmpty(msgStr))
                             AppGlobal.alertError(
@@ -405,16 +434,18 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 initStripe(data.paymentResponse.payment_intent_client_secret!!)
                             } else {
                                 startActivity<LYKNegativeActivity>(
-                                ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                                    yearModelMakeData
-                                ),
+                                    ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                                        yearModelMakeData
+                                    ),
                                     ARG_IMAGE_ID to imageId,
                                     ARG_IMAGE_URL to Gson().toJson(arImage),
                                     ARG_SUBMIT_DEAL to Gson().toJson(
                                         data
-                                    ), ARG_UCD_DEAL_PENDING to Gson().toJson(
+                                    ),
+                                    ARG_UCD_DEAL_PENDING to Gson().toJson(
                                         dataPendingDeal
-                                    )
+                                    ),
+                                    ARG_MSRP_RANGE to tvPriceMSRP.text.toString().trim(),
                                 )
                                 finish()
                             }
@@ -430,10 +461,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 data
                             ), ARG_UCD_DEAL_PENDING to Gson().toJson(
                                 dataPendingDeal
-                            )
+                            ),
+                            ARG_MSRP_RANGE to tvPriceMSRP.text.toString().trim()
                         )
                         finish()
                     }
+                    dialogProgress.dismiss()
                 }
                 )
         } else {
@@ -452,10 +485,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
+            if (!isPayment) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(this)
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.showLoader(this)
+                }
             }
 
             paymentMethodViewModel.callPayment(
@@ -473,10 +508,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
             )!!
                 .observe(this, { data ->
-                    Constant.dismissLoader()
                     cardStripeData = data
                     if (isPayment)
                         callBuyerAPI()
+                    else
+                        Constant.dismissLoader()
                 }
                 )
         } else {
@@ -488,7 +524,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             promoCodeViewModel.getPromoCode(
@@ -500,8 +536,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
-                        tvPromoData.text = "-$${data.discount}"
+                        tvPromoData.text =
+                            "-${NumberFormat.getCurrencyInstance(Locale.US).format(data.discount)}"
                         yearModelMakeData.discount = data.discount!!
+                        yearModelMakeData.promotionId = data.promotionID!!
                         binding.data = yearModelMakeData
                     } else {
                         tvPromoData.visibility = View.GONE
@@ -529,7 +567,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onNetworkStateChange(isConnect: Boolean) {
     }
-
 
 
     private fun cancelTimer() {
@@ -625,7 +662,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.btnSave -> {
                 val card = cardInputWidget.cardParams
                 if (card == null) {
-                    Toast.makeText(this, "Invalid card data", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.invalid_card_data),
+                        Toast.LENGTH_LONG
+                    ).show()
                     return
                 }
                 val cardSourceParams = SourceParams.createCardParams(card!!)
@@ -634,12 +675,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     cardSourceParams,
                     callback = object : ApiResultCallback<Source> {
                         override fun onSuccess(source: Source) {
-                            Log.e("Success", Gson().toJson(source))
+                            //  Log.e("Success", Gson().toJson(source))
 //                            callPaymentMethodAPI(card)
                         }
 
                         override fun onError(error: Exception) {
-                            Log.e("error", Gson().toJson(error))
+                            //   Log.e("error", Gson().toJson(error))
                         }
                     }
                 )
@@ -808,13 +849,17 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 return false
             }
             TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_addressline1)
                 Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
                 return false
             }
-            /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
-                  Constant.setErrorBorder(edtAddress2, tvErrorAddress2)
-                  return false
-              }*/
+            edtAddress1.text.toString().trim().length < 3 -> {
+                tvErrorEmailAddress.text =
+                    getString(R.string.address1_must_be_minimum_three_characters)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
+                return false
+            }
+
             TextUtils.isEmpty(edtCity.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtCity, tvErrorCity)
                 tvErrorCity.text = getString(R.string.city_required)
@@ -877,23 +922,23 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 for (i in 0 until arOptions?.size!!) {
 
                     arAccId.add(arOptions!![i].dealerAccessoryID!!)
-                        if (isFirstAcce) {
-                            isFirstAcce = false
-                            accessoriesStr = arOptions!![i].accessory!!
-                        } else
-                            accessoriesStr += ",\n" + arOptions!![i].accessory!!
+                    if (isFirstAcce) {
+                        isFirstAcce = false
+                        accessoriesStr = arOptions!![i].accessory!!
+                    } else
+                        accessoriesStr += ",\n" + arOptions!![i].accessory!!
 
                 }
                 var packageStr = ""
                 var isFirstPackage = true
 
                 for (i in 0 until arPackages?.size!!) {
-                        if (isFirstPackage) {
-                            isFirstPackage = false
-                            packageStr = arPackages!![i].packageName!!
-                        } else {
-                            packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
-                        }
+                    if (isFirstPackage) {
+                        isFirstPackage = false
+                        packageStr = arPackages!![i].packageName!!
+                    } else {
+                        packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
+                    }
                 }
                 tvDialogPackage.text = packageStr
                 tvDialogOptions.text = accessoriesStr
@@ -920,7 +965,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -1078,7 +1123,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 edtCardZipCode.requestFocus()
                 return false
             }
-
         }
         return true
     }
@@ -1108,16 +1152,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("Stripe", "requestCode" + requestCode)
+        // Log.e("Stripe", "requestCode" + requestCode)
         stripe.onPaymentResult(requestCode, data, this@LYKStep2Activity)
     }
 
     override fun onError(e: Exception) {
-        /* Toast.makeText(
-             this,
-             e.message, Toast.LENGTH_LONG
-         ).show()*/
-        Log.e("PaymentFailed", Gson().toJson(e).toString())
+        //  Log.e("PaymentFailed", Gson().toJson(e).toString())
         AppGlobal.alertCardError(
             this,
             getString(R.string.we_are_unable_to_authenticate_your_payment)
@@ -1129,26 +1169,14 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        Log.e("Status", Gson().toJson(paymentIntent))
         when (status) {
             StripeIntent.Status.Succeeded -> {
-                // Payment completed successfully
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 Log.e("completed", gson.toJson(paymentIntent))
                 paymentIntentId = paymentIntent.id!!
                 callSubmitDealAPI(true)
             }
             StripeIntent.Status.RequiresPaymentMethod -> {
-                Log.e(
-                    "RequiresPaymentMethod",
-                    Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
-                )
-                /* if(!TextUtils.isEmpty(paymentIntent.id)) {
-                     paymentIntentId = paymentIntent.id!!
-                     callSubmitDealAPI(true)
-                 }else{
-                     Toast.makeText(this,"Requires Payment Method",Toast.LENGTH_LONG).show()
-                 }*/
                 AppGlobal.alertCardError(
                     this,
                     getString(R.string.we_are_unable_to_authenticate_your_payment)
@@ -1156,8 +1184,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 setClearCardData()
             }
             StripeIntent.Status.Canceled -> {
-                Log.e("Canceled", "Payment Canceled")
-//                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
                 AppGlobal.alertCardError(
                     this,
                     getString(R.string.we_are_unable_to_authenticate_your_payment)
@@ -1165,10 +1191,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 setClearCardData()
             }
             StripeIntent.Status.Processing -> {
-                Log.e(
-                    "Processing",
-                    "Payment Processing"
-                )
                 if (!TextUtils.isEmpty(paymentIntent.id)) {
                     paymentIntentId = paymentIntent.id!!
                     callSubmitDealAPI(true)
@@ -1177,10 +1199,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             StripeIntent.Status.RequiresConfirmation -> {
-                Log.e(
-                    "RequiresConfirmation",
-                    "Payment Confirmation"
-                )
                 if (!TextUtils.isEmpty(paymentIntent.id)) {
                     paymentIntentId = paymentIntent.id!!
                     callSubmitDealAPI(true)
@@ -1190,5 +1208,40 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             }
         }
+    }
+
+    private var a = 0
+    private val handlerDealPro: Handler = Handler()
+    private lateinit var dialogProgress: Dialog
+    private fun showProgressDialog() {
+        dialogProgress = Dialog(this, R.style.FullScreenDialog)
+        dialogProgress.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogProgress.setCancelable(false)
+        dialogProgress.setContentView(R.layout.dialog_deal_progress_bar)
+        setProgressData(dialogProgress)
+        setLayoutParam(dialogProgress)
+        dialogProgress.show()
+    }
+
+    private fun setProgressData(dialogProgress: Dialog) {
+        a = dialogProgress.proBar.progress
+        Thread {
+            while (a < 100) {
+                a += 1
+                handlerDealPro.post(Runnable {
+                    dialogProgress.proBar.progress = a
+                    dialogProgress.tvProgressPr.text = a.toString() + "%"
+                    if (a == 100) {
+                        // responseDealSuccess(dialogProgress,data)
+                    }
+                })
+                try {
+                    // Sleep for 50 ms to show progress you can change it as well.
+                    Thread.sleep(100)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
     }
 }

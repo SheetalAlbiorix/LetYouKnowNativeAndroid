@@ -6,9 +6,10 @@
     <data>
 
         <import type="android.view.View" />
-<variable
-    name="upDownData"
-    type="com.letyouknow.model.UpDownData" />
+
+        <variable
+            name="upDownData"
+            type="com.letyouknow.model.UpDownData" />
 
     </data>
 

@@ -20,11 +20,6 @@
         <variable
             name="lcdDealData"
             type="com.letyouknow.model.FindUcdDealData" />
-
-        <variable
-            name="appGlobalData"
-            type="com.letyouknow.utils.AppGlobalBindData" />
-
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -102,11 +97,11 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llDisc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:orientation="horizontal"
-                android:visibility="@{TextUtils.isEmpty(lcdDealData.miles)? View.GONE : View.VISIBLE}">
+                android:orientation="horizontal">
 
                 <TextView
                     style="@style/bold"
@@ -117,11 +112,11 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
+                    android:id="@+id/tvDisclosure"
                     style="@style/regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="@{@string/miles_approximate_odometer_reading(lcdDealData.miles)}"
                     android:textColor="@color/color545d64"
                     android:textSize="@dimen/_12sdp"
                     tool:text="Super Black Metalic" />
@@ -129,7 +124,7 @@
 
             <TextView
                 android:id="@+id/tvViewOptions"
-                style="@style/medium"
+                style="@style/bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -155,9 +150,9 @@
                 <TextView
                     android:id="@+id/tvPrice"
                     style="@style/bold"
-                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.price)}"
                     android:textColor="@color/colorbf4848"
                     android:textSize="@dimen/_16sdp"
                     tool:text="$47000.00" />
@@ -168,9 +163,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
-                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)}"
+                    android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(lcdDealData.msrp)+ ` MSRP`}"
                     android:textColor="@color/navyBlue"
                     android:textSize="@dimen/_14sdp"
+                    android:visibility='@{lcdDealData.msrp != 0.0 ? View.VISIBLE : View.GONE}'
                     tool:text="$47000.00" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -186,7 +182,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
@@ -248,7 +243,7 @@
                             style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Option &amp; Accessories"
+                            android:text="Options &amp; Accessories"
                             android:textColor="?textGreyColor"
                             android:textSize="@dimen/_12sdp" />
 
@@ -263,8 +258,6 @@
                             android:textSize="@dimen/_12sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -408,10 +401,10 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:popupBackground="@drawable/bg_button3_white"
                     android:background="@drawable/bg_spinner_light_white"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
+                    android:popupBackground="@drawable/bg_button3_white"
                     android:spinnerMode="dropdown" />
 
                 <TextView
@@ -447,11 +440,11 @@
                 android:padding="@dimen/_15sdp">
 
                 <TextView
-                    style="@style/regular"
-                    android:textColor="@color/color545d64"
                     android:id="@+id/tvInfo"
+                    style="@style/regular"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="@color/color545d64"
                     android:textSize="@dimen/_10sdp" />
             </ScrollView>
 
@@ -472,7 +465,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Please Read Full Disclosure"
+                android:text="@string/please_read_the_full_disclosure"
                 android:textColor="@color/red"
                 android:textSize="@dimen/_11sdp"
                 android:visibility="gone" />
@@ -505,14 +498,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/initials"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:hint="@string/initials"
+                        android:imeOptions="actionDone"
                         android:inputType="text"
                         android:maxLength="3"
-                        android:imeOptions="actionDone"
-                        android:singleLine="true"
                         android:paddingTop="@dimen/_10sdp"
-                        android:paddingBottom="@dimen/_10sdp" />
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:singleLine="true" />
 
                     <TextView
                         android:id="@+id/tvErrorInitials"

@@ -29,18 +29,18 @@ import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
 import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_VIEW
+import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL
+import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.letyouknow.utils.Constant.Companion.makeLinks
+import com.letyouknow.utils.Constant.Companion.setErrorBorder
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep2Activity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
-import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.pionymessenger.utils.Constant.Companion.makeLinks
-import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_ucd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -83,7 +83,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
         submitPendingUCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
+            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
 
         if (intent.hasExtra(Constant.ARG_UCD_DEAL) && intent.hasExtra(Constant.ARG_YEAR_MAKE_MODEL)) {
             dataUCDDeal = Gson().fromJson(
@@ -104,6 +104,23 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             binding.lcdDealData = dataUCDDeal
 
+            if (AppGlobal.isNotEmpty(dataUCDDeal.miles) || AppGlobal.isNotEmpty(dataUCDDeal.condition)) {
+                if (AppGlobal.isNotEmpty(dataUCDDeal.miles))
+                    tvDisclosure.text =
+                        getString(R.string.miles_approximate_odometer_reading, dataUCDDeal.miles)
+
+                if (AppGlobal.isNotEmpty(dataUCDDeal.condition)) {
+                    if (AppGlobal.isEmpty(dataUCDDeal.miles)) {
+                        tvDisclosure.text = dataUCDDeal.condition
+                    } else {
+                        tvDisclosure.text =
+                            tvDisclosure.text.toString().trim() + ", " + dataUCDDeal.condition
+                    }
+                }
+                llDisc.visibility = View.VISIBLE
+            } else {
+                llDisc.visibility = View.GONE
+            }
         }
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))
@@ -111,8 +128,6 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         setLoan()
 //        setInfoLink()
         setPrivacyPolicyLink()
-
-
         btnProceedDeal.setOnClickListener(this)
         ivBackDeal.setOnClickListener(this)
         ivEdit.setOnClickListener(this)
@@ -241,12 +256,18 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
             val request = HashMap<String, Any>()
-
+            request[ApiConstant.ImageId] = ImageId!!
+            /*if(yearModelMakeData.vehicleExtColorID!! == "0"){
+                request[ApiConstant.ImageProduct] = "Splash"
+            }else {
+                request[ApiConstant.ImageProduct] = "MultiAngle"
+                request[ApiConstant.ExteriorColor] = dataUCDDeal.vehicleExteriorColor!!
+            }*/
             request[ApiConstant.ImageId] = ImageId!!
             request[ApiConstant.ImageProduct] = "MultiAngle"
             request[ApiConstant.ExteriorColor] = dataUCDDeal.vehicleExteriorColor!!
@@ -273,7 +294,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -466,13 +487,23 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
                 tvDialogPackage.text = packages
                 tvDialogOptions.text = accessories
-                if (AppGlobal.isNotEmpty(miles)) {
-                    tvDialogDisclosure.text =
-                        getString(R.string.miles_approximate_odometer_reading, miles)
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosure.text =
+                            getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosure.text = condition
+                        } else {
+                            tvDialogDisclosure.text =
+                                tvDialogDisclosure.text.toString().trim() + ", " + condition
+                        }
+                    }
                     llDialogDisclosure.visibility = View.VISIBLE
                 } else {
                     llDialogDisclosure.visibility = View.GONE
                 }
+
             }
         }
         setLayoutParam(dialog)

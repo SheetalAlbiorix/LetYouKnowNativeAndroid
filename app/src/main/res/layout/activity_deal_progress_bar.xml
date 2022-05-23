@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+    <!-- <TextView
+         android:gravity="center"
+         style="@style/bold"
+         android:textSize="@dimen/_20sdp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Hold tight!\nDeal in progress!"/>
+
+     <ProgressBar
+         android:id="@+id/proBar"
+         style="?android:attr/progressBarStyleHorizontal"
+         android:layout_width="match_parent"
+         android:layout_height="@dimen/_50sdp"
+         android:layout_marginLeft="@dimen/_50sdp"
+         android:layout_marginRight="@dimen/_50sdp"
+         android:max="100"
+         android:progress="0"
+         android:scaleY="8"
+         android:progressBackgroundTint="@color/navyBlue" />
+     <TextView
+         android:id="@+id/tvProgressPr"
+         android:gravity="center"
+         style="@style/bold"
+         android:textSize="@dimen/_20sdp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="0%"/>-->
+</androidx.appcompat.widget.LinearLayoutCompat>

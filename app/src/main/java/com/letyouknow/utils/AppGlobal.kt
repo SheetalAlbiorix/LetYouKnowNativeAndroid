@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -52,7 +53,6 @@ class AppGlobal {
 
         fun printRequestAuth(key: String, request: String) {
             Log.e("Auth", getAuthToken())
-            Log.e(key, request)
         }
 
         fun isNotEmpty(str: String?): Boolean {
@@ -224,7 +224,19 @@ class AppGlobal {
                 webView.settings.javaScriptEnabled = true
                 webView.webViewClient = (object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                        view?.loadUrl(url!!)
+                        if (url!!.startsWith("tel:")) {
+                            val tel = Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                            context.startActivity(tel);
+                            return true
+                        } else if (url.contains("mailto:")) {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            )
+                            return true
+
+                        } else {
+                            view?.loadUrl(url)
+                        }
                         return true
                     }
 
@@ -257,7 +269,7 @@ class AppGlobal {
             }
         }
 
-        private fun setLayoutParam(dialog: Dialog) {
+        fun setLayoutParam(dialog: Dialog) {
             val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
             dialog.window?.setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -438,8 +450,10 @@ class AppGlobal {
             dialog.run {
                 tvErrorMessage.text = message
                 tvErrorOk.setOnClickListener {
-                    dismiss()
-                    context.finish()
+                    dialog.dismiss()
+                    Handler().postDelayed({
+                        context.finish()
+                    }, 500)
                 }
             }
             setLayoutParam(dialog)

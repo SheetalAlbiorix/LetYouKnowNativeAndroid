@@ -13,4 +13,15 @@
         android:padding="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/list_item_gallery" />
+
+    <TextView
+        android:id="@+id/tvNotFound"
+        style="@style/bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/not_available_this_time"
+        android:textColor="@color/color545d64"
+        android:textSize="@dimen/_15sdp"
+        android:visibility="gone" />
 </androidx.appcompat.widget.LinearLayoutCompat>

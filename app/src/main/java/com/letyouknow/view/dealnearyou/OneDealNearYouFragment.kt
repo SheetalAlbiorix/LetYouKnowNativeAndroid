@@ -3,15 +3,13 @@ package com.letyouknow.view.dealnearyou
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.text.Editable
-import android.text.InputType
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,11 +25,13 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
 import com.letyouknow.view.spinneradapter.*
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import kotlinx.android.synthetic.main.dialog_highlight_inventory.*
+import kotlinx.android.synthetic.main.dialog_mobile_no.*
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_one_deal_near_you.*
@@ -39,13 +39,12 @@ import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
     private var isValidZipCode = false
 
+    private lateinit var promotionViewModel: PromotionViewModel
     private lateinit var vehicleYearModel: VehicleYearViewModel
     private lateinit var vehicleMakeModel: VehicleMakeViewModel
     private lateinit var vehicleModelModel: VehicleModelViewModel
@@ -95,6 +94,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private var upDownData = UpDownData()
 
     private lateinit var prefOneDealNearYouData: PrefOneDealNearYouData
+    private lateinit var socialMobileViewModel: SocialMobileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -132,32 +132,36 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             )
             tvPromo.startAnimation(animBlink)
             binding.upDownData = upDownData
-            vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
-            vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
-            vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
-            vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
-            exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
-            interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
-            zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
-            packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
-            packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
-            tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+            promotionViewModel = ViewModelProvider(this)[PromotionViewModel::class.java]
+            vehicleYearModel = ViewModelProvider(this)[VehicleYearViewModel::class.java]
+            vehicleMakeModel = ViewModelProvider(this)[VehicleMakeViewModel::class.java]
+            vehicleModelModel = ViewModelProvider(this)[VehicleModelViewModel::class.java]
+            vehicleTrimModel = ViewModelProvider(this)[VehicleTrimViewModel::class.java]
+            exteriorColorModel = ViewModelProvider(this)[ExteriorColorViewModel::class.java]
+            interiorColorModel = ViewModelProvider(this)[InteriorColorViewModel::class.java]
+            zipCodeModel = ViewModelProvider(this)[VehicleZipCodeViewModel::class.java]
+            packagesModel = ViewModelProvider(this)[VehiclePackagesViewModel::class.java]
+            packagesOptional = ViewModelProvider(this)[VehicleOptionalViewModel::class.java]
+            tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
             checkedPackageModel =
-                ViewModelProvider(this).get(CheckedPackageInventoryViewModel::class.java)
+                ViewModelProvider(this)[CheckedPackageInventoryViewModel::class.java]
             checkedAccessoriesModel =
-                ViewModelProvider(this).get(CheckedAccessoriesInventoryViewModel::class.java)
+                ViewModelProvider(this)[CheckedAccessoriesInventoryViewModel::class.java]
             findLCDDealGuestViewModel =
-                ViewModelProvider(this).get(FindLCDDealViewModel::class.java)
-
+                ViewModelProvider(this)[FindLCDDealViewModel::class.java]
+            socialMobileViewModel =
+                ViewModelProvider(this)[SocialMobileViewModel::class.java]
 
             btnSearch.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
             tvPromo.setOnClickListener(this)
             ivClosePromo.setOnClickListener(this)
+            tvYear.setOnClickListener(this)
 
             setPrefOneDealNearYouData()
             edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+            callPromotionAPI()
         } catch (e: Exception) {
 
         }
@@ -224,15 +228,15 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
         pref?.setOneDealNearYou(date)
-      //  Log.e("Submit Date", date)
+        //  Log.e("Submit Date", date)
         startHandler()
     }
 
     private fun startHandler() {
         if (!isEmpty(pref?.getOneDealNearYou())) {
             //  Log.e("Date Time", AppGlobal.stringToDate(pref?.getOneDealNearYou())?.toString()!!)
-                handler = Handler()
-                handler.postDelayed(runnable, 1000)
+            handler = Handler()
+            handler.postDelayed(runnable, 1000)
         }
 
     }
@@ -256,9 +260,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             } else {
                 handler.postDelayed(this, 1000)
             }
-
         }
-
     }
 
     private fun setYear() {
@@ -387,13 +389,13 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 zipCodeModel.getZipCode(requireActivity(), zipCode)!!
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
-                        Log.e("ZipCode Data", Gson().toJson(data))
+                        //Log.e("ZipCode Data", Gson().toJson(data))
                         try {
                             if (!data) {
                                 edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark_error)
@@ -426,11 +428,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private fun callVehicleYearAPI() {
         try {
-
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 vehicleYearModel.getYear(
@@ -438,13 +439,17 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     productId,
                     edtZipCode.text.toString().trim()
                 )!!
-                    .observe(requireActivity(), { data ->
+                    .observe(
+                        requireActivity()
+                    ) { data ->
                         if (isEmpty(prefOneDealNearYouData.makeId))
                             Constant.dismissLoader()
                         try {
-                            Log.e("Year Data", Gson().toJson(data))
-                            if (data != null || data?.size!! > 0) {
+                            // Log.e("Year Data", Gson().toJson(data))
+                            if (data != null && data.size > 0) {
                                 spYear.isEnabled = true
+                                tvYear.visibility = View.GONE
+                                spYear.visibility = View.VISIBLE
                                 val yearData = VehicleYearData()
                                 yearData.year = "YEAR - NEW CARS"
                                 data.add(0, yearData)
@@ -459,6 +464,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 }
                                 spYear.onItemSelectedListener = this
                             } else {
+                                tvYear.visibility = View.VISIBLE
+                                spYear.visibility = View.GONE
                                 val arData = ArrayList<VehicleYearData>()
                                 val yearData = VehicleYearData()
                                 yearData.year = "YEAR - NEW CARS"
@@ -470,7 +477,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         } catch (e: Exception) {
                         }
                     }
-                    )
             } else {
                 Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
             }
@@ -486,7 +492,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (isEmpty(prefOneDealNearYouData.makeId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -544,7 +550,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (isEmpty(prefOneDealNearYouData.modelId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -558,7 +564,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefOneDealNearYouData.trimId))
                             Constant.dismissLoader()
-                        Log.e("Make Data", Gson().toJson(data))
+                        //   Log.e("Make Data", Gson().toJson(data))
                         try {
                             if (data != null || data?.size!! > 0) {
                                 val modelData = VehicleModelData()
@@ -602,7 +608,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (isEmpty(prefOneDealNearYouData.trimId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -662,7 +668,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (isEmpty(prefOneDealNearYouData.extColorId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -680,7 +686,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         if (isEmpty(prefOneDealNearYouData.intColorId))
                             Constant.dismissLoader()
                         try {
-                            Log.e("Make Data", Gson().toJson(data))
+                            // Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val exteriorColorData = ExteriorColorData()
                                 exteriorColorData.exteriorColor = "EXTERIOR COLOR"
@@ -735,7 +741,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 if (isEmpty(prefOneDealNearYouData.intColorId)) {
                     if (!Constant.isInitProgress()) {
                         Constant.showLoader(requireActivity())
-                    } else if (!Constant.progress.isShowing) {
+                    } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                         Constant.showLoader(requireActivity())
                     }
                 }
@@ -752,7 +758,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
                         try {
-                            Log.e("Make Data", Gson().toJson(data))
+                            // Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val interiorColorData = InteriorColorData()
                                 interiorColorData.interiorColor = "INTERIOR COLOR"
@@ -875,7 +881,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 packagesModel.getPackages(
@@ -890,7 +896,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 )!!
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
-                        Log.e("Make Data", Gson().toJson(data))
+                        //Log.e("Make Data", Gson().toJson(data))
                         try {
                             if (data != null || data?.size!! > 0) {
                                 val packagesData = VehiclePackagesData()
@@ -924,7 +930,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 val jsonArray = JsonArray()
@@ -951,7 +957,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()
                         try {
-                            Log.e("Make Data", Gson().toJson(data))
+                            //  Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val accessoriesData = VehicleAccessoriesData()
                                 accessoriesData.dealerAccessoryID = "0"
@@ -984,7 +990,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 val jsonArray = JsonArray()
@@ -1061,7 +1067,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 val jsonArray = JsonArray()
@@ -1187,11 +1193,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
                 request[ApiConstant.dealerAccessoryIDs] = jsonArrayAccessories
                 request[ApiConstant.vehiclePackageIDs] = jsonArrayPackage
-                Log.e("Request LCDDeal", Gson().toJson(request))
+                // Log.e("Request LCDDeal", Gson().toJson(request))
                 findLCDDealGuestViewModel.findDeal(requireActivity(), request)!!
                     .observe(this, Observer { data ->
                         Constant.dismissLoader()
-                        Log.e("Response", Gson().toJson(data))
+                        // Log.e("Response", Gson().toJson(data))
                         data.productId = productId
                         data.yearId = yearId
                         data.makeId = makeId
@@ -1209,14 +1215,14 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                         data.arAccessories = accessoriesStr
                         data.arAccessoriesId = arAccId
                         data.arPackageId = arPackageId
-                       /* if (data.dealID == "0") {
-                            showWarningDialog()
-                        } else {*/
-                            startActivity<LCDDealSummaryStep1Activity>(
-                                ARG_LCD_DEAL_GUEST to Gson().toJson(
-                                    data
-                                )
+                        /* if (data.dealID == "0") {
+                             showWarningDialog()
+                         } else {*/
+                        startActivity<LCDDealSummaryStep1Activity>(
+                            ARG_LCD_DEAL_GUEST to Gson().toJson(
+                                data
                             )
+                        )
 //                        }
                     }
                     )
@@ -1227,7 +1233,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
         }
     }
-
 
 
     private var arSelectPackage: ArrayList<VehiclePackagesData> = ArrayList()
@@ -1246,23 +1251,50 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 llPromoOffer.startAnimation(animSlideRightToLeft)
             }
             R.id.ivClosePromo -> {
-                tvPromo.startAnimation(animBlink)
-                tvPromo.visibility = View.VISIBLE
-                llPromoOffer.visibility = View.GONE
+                llPromoOffer.startAnimation(animSlideLeftToRight)
+                Handler().postDelayed({
+                    tvPromo.startAnimation(animBlink)
+                    tvPromo.visibility = View.VISIBLE
+                    llPromoOffer.visibility = View.GONE
+                }, 400)
             }
             R.id.btnSearch -> {
                 // loadFragment(DealSummeryActivity(), getString(R.string.one_deal_near_you))
-                if (isValid())
-                    callSearchFindDealAPI()
+                if (isValid()) {
+                    if (pref?.getUserData()?.isSocial!!) {
+                        if (!pref?.isUpdateSocialMobile()!!) {
+                            dialogPhoneNo(true)
+                        } else {
+                            callSearchFindDealAPI()
+                        }
+                    } else {
+                        callSearchFindDealAPI()
+                    }
+                }
+
 //                    callRefreshTokenApi()
             }
             R.id.tvPackages -> {
-                arSelectPackage = ArrayList()
-                for (i in 0 until adapterPackages.itemCount) {
-                    arSelectPackage.add(adapterPackages.getItem(i))
+                if (::adapterPackages.isInitialized) {
+                    arSelectPackage = ArrayList()
+                    for (i in 0 until adapterPackages.itemCount) {
+                        arSelectPackage.add(adapterPackages.getItem(i))
+                    }
+                    selectPackageStr = Gson().toJson(arSelectPackage)
+                    dialogPackage.show()
+                } else {
+                    callVehiclePackagesAPI()
+                    try {
+                        arSelectPackage = ArrayList()
+                        for (i in 0 until adapterPackages.itemCount) {
+                            arSelectPackage.add(adapterPackages.getItem(i))
+                        }
+                        selectPackageStr = Gson().toJson(arSelectPackage)
+                        dialogPackage.show()
+                    } catch (e: Exception) {
+
+                    }
                 }
-                selectPackageStr = Gson().toJson(arSelectPackage)
-                dialogPackage.show()
             }
             R.id.tvApplyPackage -> {
                 var packagesStr = ""
@@ -1308,7 +1340,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 dialogPackage.dismiss()
             }
             R.id.llPackages -> {
-                Log.e("select1", selectPackageStr)
+                // Log.e("select1", selectPackageStr)
                 val pos = v.tag as Int
 
                 val data = adapterPackages.getItem(pos)
@@ -1337,7 +1369,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 }
 
 
-                Log.e("clickupdate", selectPackageStr)
+                //  Log.e("clickupdate", selectPackageStr)
             }
             R.id.tvResetPackage -> {
                 for (i in 0 until adapterPackages.itemCount) {
@@ -1396,15 +1428,37 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 dialogOptions.dismiss()
             }
             R.id.tvOptionalAccessories -> {
-                arSelectOption = ArrayList()
-                for (i in 0 until adapterOptions.itemCount) {
-                    arSelectOption.add(adapterOptions.getItem(i))
+                if (::adapterOptions.isInitialized) {
+                    try {
+                        arSelectOption = ArrayList()
+                        if (::adapterOptions.isInitialized) {
+                            for (i in 0 until adapterOptions.itemCount) {
+                                arSelectOption.add(adapterOptions.getItem(i))
+                            }
+                        }
+                        selectOptionStr = Gson().toJson(arSelectOption)
+                        dialogOptions.show()
+                    } catch (e: Exception) {
+
+                    }
+                } else {
+                    callOptionalAccessoriesAPI()
+                    try {
+                        arSelectOption = ArrayList()
+                        if (::adapterOptions.isInitialized) {
+                            for (i in 0 until adapterOptions.itemCount) {
+                                arSelectOption.add(adapterOptions.getItem(i))
+                            }
+                        }
+                        selectOptionStr = Gson().toJson(arSelectOption)
+                        dialogOptions.show()
+                    } catch (e: Exception) {
+
+                    }
                 }
-                selectOptionStr = Gson().toJson(arSelectOption)
-                dialogOptions.show()
             }
             R.id.llOptions -> {
-                Log.e("select1", selectOptionStr)
+                //   Log.e("select1", selectOptionStr)
                 val pos = v.tag as Int
 
                 val data = adapterOptions.getItem(pos)
@@ -1431,7 +1485,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     if (!data0.isGray!!)
                         callCheckedAccessoriesAPI()
                 }
-                Log.e("clickupdate", selectOptionStr)
+                //   Log.e("clickupdate", selectOptionStr)
+            }
+            R.id.tvYear -> {
+                noDealsFoundDialog()
             }
         }
     }
@@ -1688,6 +1745,10 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 tvErrorYear.visibility = View.VISIBLE
                 return false
             }
+            tvYear.visibility == View.VISIBLE -> {
+                tvErrorYear.visibility = View.VISIBLE
+                return false
+            }
             makeStr == "MAKE" -> {
                 tvErrorMake.visibility = View.VISIBLE
                 return false
@@ -1733,10 +1794,12 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         tvErrorOptionsAccessories.visibility = View.GONE
     }
 
-    /*override fun onPause() {
-        Constant.dismissLoader()
+    override fun onPause() {
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         super.onPause()
-    }*/
+    }
+
     override fun onDestroy() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
@@ -1856,4 +1919,174 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         setLayoutParam(dialog)
         dialog.show()
     }
+
+    private fun noDealsFoundDialog() {
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_highlight_inventory)
+        dialog.run {
+            tvMSG.text = getString(R.string.no_deals_found_in_your_area)
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private lateinit var dialogMobileNo: Dialog
+    private fun dialogPhoneNo(isCancel: Boolean) {
+        dialogMobileNo = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogMobileNo.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogMobileNo.setCancelable(true)
+        dialogMobileNo.setContentView(R.layout.dialog_mobile_no)
+        Constant.onTextChange(
+            requireActivity(),
+            dialogMobileNo.edtPhoneNumber,
+            dialogMobileNo.tvErrorPhoneNo
+        )
+        dialogMobileNo.edtPhoneNumber.filters =
+            arrayOf<InputFilter>(filterSocMob, InputFilter.LengthFilter(13))
+        if (isCancel) {
+            dialogMobileNo.ivSocClose.visibility = View.VISIBLE
+        }
+        dialogMobileNo.run {
+            btnDialogSave.setOnClickListener {
+                if (TextUtils.isEmpty(edtPhoneNumber.text.toString().trim())) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                } else if (edtPhoneNumber.text.toString().trim().length != 13) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                } else {
+                    tvErrorPhoneNo.visibility = View.GONE
+                    callSocialMobileAPI(edtPhoneNumber.text.toString().trim())
+                    dismiss()
+                }
+            }
+            ivSocClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogMobileNo)
+        dialogMobileNo.show()
+    }
+
+    private fun callSocialMobileAPI(phoneNo: String) {
+        val data: LoginData = pref?.getUserData()!!
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.FirstNameSoc] = data.firstName!!
+            request[ApiConstant.LastNameSoc] = data.lastName!!
+            request[ApiConstant.UserNameSoc] = data.userName!!
+            request[ApiConstant.EmailSoc] = data.userName!!
+            request[ApiConstant.PhoneNumberSoc] = phoneNo
+
+            socialMobileViewModel.getSocialMobile(requireActivity(), request)!!
+                .observe(this, Observer { dataSocial ->
+                    Constant.dismissLoader()
+//                    data.authToken = dataSocial.authToken
+//                    data.refreshToken = dataSocial.refreshToken
+                    data.message = dataSocial.message
+                    if (data.buyerId != 0) {
+                        pref?.setLogin(true)
+                        data.isSocial = true
+                        pref?.setUserData(Gson().toJson(data))
+                        pref?.updateSocialMobile(true)
+                        callSearchFindDealAPI()
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            resources.getString(R.string.login_failed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private var filterSocMob = InputFilter { source, start, end, dest, dstart, dend ->
+        dialogMobileNo.run {
+            var source = source
+            if (source.length > 0) {
+                if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                    if (source.toString().length > 1) {
+                        val number = source.toString()
+                        val digits1 = number.toCharArray()
+                        val digits2 = number.split("(?<=.)").toTypedArray()
+                        source = digits2[digits2.size - 1]
+                    }
+                    if (edtPhoneNumber.text.toString().isEmpty()) {
+                        return@InputFilter "($source"
+                    } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                            .length <= 3
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                            .length <= 5
+                    ) {
+                        val isContain = dest.toString().contains(")")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            ")$source"
+                        }
+                    } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                            .length <= 7
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 7) {
+                        val isContain = dest.toString().contains("-")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            "-$source"
+                        }
+                    }
+                }
+            } else {
+            }
+            source
+        }
+    }
+
+    private fun callPromotionAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            promotionViewModel.getPromoCode(requireActivity())!!
+                .observe(requireActivity(), Observer { data ->
+                    try {
+                        if (TextUtils.isEmpty(data.promotionCode) || data.discount == 0.0 || TextUtils.isEmpty(
+                                data.endDate
+                            )
+                        ) {
+                            tvPromo.visibility = View.GONE
+                            llPromoOffer.visibility = View.GONE
+                        } else {
+                            tvPromo.visibility = View.VISIBLE
+                            binding.promoData = data
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

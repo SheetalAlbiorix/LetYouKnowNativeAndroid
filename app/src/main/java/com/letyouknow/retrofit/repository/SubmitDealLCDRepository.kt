@@ -1,13 +1,12 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,25 +25,25 @@ object SubmitDealLCDRepository {
         call.enqueue(object : Callback<SubmitDealLCDData> {
             override fun onFailure(call: Call<SubmitDealLCDData>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                //   Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
                 call: Call<SubmitDealLCDData>,
                 response: Response<SubmitDealLCDData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                //    Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("submitLCD Resp ", Gson().toJson(response.body()))
+                    //  Log.v("submitLCD Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     submitDealLCDData.value = data!!
                 } else if (response.code() == 401) {
-                    Log.v("submitLCD Resp ", response.toString())
+                    //  Log.v("submitLCD Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
-                    Log.v("submitLCD Resp ", response.toString())
+                    //  Log.v("submitLCD Resp ", response.toString())
                     Constant.dismissLoader()
                     val dataError = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),

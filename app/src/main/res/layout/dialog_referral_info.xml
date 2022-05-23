@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/bg_button"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/_15sdp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/editReferralInfo"
+                android:textColor="@color/color545d64"
+                android:textSize="@dimen/_17sdp" />
+
+            <!--  <ImageView
+                  android:id="@+id/ivDialogReferClose"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="end|top"
+                  android:src="@drawable/ic_close"
+                  app:tint="@color/gray" />-->
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+
+                    <TextView
+                        android:id="@+id/edtFirstName"
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/full_name_required"
+                        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_firstname"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtAddress1"
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/address_line_1_required"
+                        android:inputType="text"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorAddress1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_addressline1"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtAddress2"
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/address_line_2"
+                        android:inputType="text"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorAddress2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_addressline2"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtCity"
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/city_required"
+                        android:inputType="text"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_city"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/bg_spinner_light_offwhite"
+                        android:padding="0dp"
+                        android:popupBackground="@drawable/bg_button3_white"
+                        android:spinnerMode="dropdown" />
+
+                    <TextView
+                        android:id="@+id/tvErrorState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_state"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtZipCode"
+                        style="@style/regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:digits="1234567890"
+                        android:hint="@string/zip_code_required"
+                        android:inputType="number"
+                        android:maxLength="5"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/color545d64"
+                        android:textColorHint="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tvErrorZipCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_zipcode"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvReferConfirm"
+                            style="@style/medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/_8sdp"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:text="@string/confirm"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tvReferCancel"
+                            style="@style/medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/orange"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/_8sdp"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:text="@string/cancel"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

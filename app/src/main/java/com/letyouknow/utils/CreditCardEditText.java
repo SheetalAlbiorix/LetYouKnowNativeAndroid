@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 
 import androidx.appcompat.widget.AppCompatEditText;
@@ -50,9 +49,9 @@ public class CreditCardEditText extends AppCompatEditText {
 
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        Log.e("start", start + "");
-        Log.e("lengthBefore", lengthBefore + "");
-        Log.e("lengthAfter", lengthAfter + "");
+        //Log.e("start", start + "");
+        // Log.e("lengthBefore", lengthBefore + "");
+        //Log.e("lengthAfter", lengthAfter + "");
         if (mCCPatterns == null) {
             init();
         }

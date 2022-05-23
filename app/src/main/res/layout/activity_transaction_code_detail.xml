@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="android.text.TextUtils" />
+
         <import type="java.text.NumberFormat" />
 
         <import type="java.util.Locale" />
@@ -14,6 +16,10 @@
         <variable
             name="data"
             type="com.letyouknow.model.TransactionCodeData" />
+
+        <variable
+            name="total"
+            type="Float" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -23,7 +29,7 @@
         tools:context=".view.transaction_history.TransactionCodeDetailActivity">
 
         <include
-            layout="@layout/layout_toolbar"
+            layout="@layout/layout_toolbar_blue"
             app:toolbarTitle="@{@string/transaction_details}" />
 
         <androidx.core.widget.NestedScrollView
@@ -43,7 +49,7 @@
                     android:visibility="@{data.savings > 0.0f ? View.VISIBLE : View.GONE}">
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
@@ -52,15 +58,16 @@
                         android:textSize="@dimen/_10sdp" />
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.savings)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.savings)+'!'}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_10sdp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <TextView
                     style="@style/regular"
                     android:layout_width="wrap_content"
@@ -210,7 +217,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{data.vehicleYear+' '+data.vehicleMake+' '+data.vehicleModel+' '+data.vehicleTrim}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -235,7 +241,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{data.vehicleYear}"
+                            android:text="@{data.vehicleExteriorColor}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -317,6 +323,32 @@
                             android:textSize="@dimen/_10sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/llDisc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/disclosure"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            android:id="@+id/tvDisclosure"
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -337,7 +369,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/price_summary"
-                        android:textColor="@color/color545d64"
+                        android:textColor="@color/color3e5365"
                         android:textSize="@dimen/_15sdp" />
 
                     <View
@@ -486,7 +518,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
-                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.remainingBalance)}"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(total)}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
 
@@ -517,17 +549,18 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
-                                android:text="@{@string/for_non_refundable_italic}"
+                                android:text="@{@string/for_nonrefundable_italic}"
                                 android:textColor="@color/color545d64"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:textStyle="italic" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <TextView
+                            android:id="@+id/tvPaymentMethod"
                             style="@style/regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
-                            android:text="@{data.paymentMethod+'\n'+@string/last_4_digits(data.paymentLast4)}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -551,7 +584,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/buyer_info_req"
-                        android:textColor="@color/color545d64"
+                        android:textColor="@color/color3e5365"
                         android:textSize="@dimen/_15sdp" />
 
                     <View
@@ -589,7 +622,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dealer_info"
-                        android:textColor="@color/color545d64"
+                        android:textColor="@color/color3e5365"
                         android:textSize="@dimen/_15sdp" />
 
                     <View
@@ -612,28 +645,19 @@
                         style="@style/regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@{@string/dealer_info_detail(data.dealerDto.addressInfo.address1,data.dealerDto.addressInfo.city,data.dealerDto.addressInfo.state,data.dealerDto.addressInfo.zipcode,data.dealerDto.email,data.dealerDto.phoneNumber)}"
+                        android:text="@{@string/dealer_info_detail(data.dealerDto.addressInfo.address1 +' '+data.dealerDto.addressInfo.address2,data.dealerDto.addressInfo.city,data.dealerDto.addressInfo.state,data.dealerDto.addressInfo.zipcode,data.dealerDto.email,data.dealerDto.phoneNumber)}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_10sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <TextView
-                    style="@style/regular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@string/if_you_have_any_questions"
-                    android:textColor="@color/color3e5365"
-                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tvCallNumber"
                     style="@style/regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/number"
-                    android:textColor="@color/lightBlue"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/if_you_have_any_questions"
+                    android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView

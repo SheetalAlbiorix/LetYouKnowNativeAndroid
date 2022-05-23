@@ -9,8 +9,8 @@
     android:layout_marginBottom="@dimen/_12sdp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/offWhite"
-    app:cardElevation="0dp"
-    app:cardCornerRadius="@dimen/_8sdp">
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="0dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -22,7 +22,6 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
 
             <TextView
@@ -155,7 +154,6 @@
                     tool:text="$47000.00" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-
             <TextView
                 android:id="@+id/tvSelectDeal"
                 style="@style/bold"
@@ -171,7 +169,9 @@
                 android:textAllCaps="true"
                 android:textColor="@color/offWhite"
                 android:textSize="@dimen/_12sdp" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </androidx.cardview.widget.CardView>

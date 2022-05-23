@@ -1,6 +1,8 @@
 package com.letyouknow.view.howitworkhelp
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityHowItWorkHelpWebViewBinding
-import com.pionymessenger.utils.Constant.Companion.ARG_TITLE
-import com.pionymessenger.utils.Constant.Companion.ARG_WEB_URL
+import com.letyouknow.utils.Constant.Companion.ARG_TITLE
+import com.letyouknow.utils.Constant.Companion.ARG_WEB_URL
 import kotlinx.android.synthetic.main.activity_how_it_work_help_web_view.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 
@@ -36,7 +38,19 @@ class HowItWorkHelpWebViewActivity : BaseActivity(), View.OnClickListener {
             webView.settings.javaScriptEnabled = true
             webView.webViewClient = (object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    view?.loadUrl(url!!)
+                    if (url!!.startsWith("tel:")) {
+                        val tel = Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                        startActivity(tel);
+                        return true
+                    } else if (url.contains("mailto:")) {
+                        startActivity(
+                            Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        )
+                        return true
+
+                    } else {
+                        view?.loadUrl(url)
+                    }
                     return true
                 }
 
@@ -48,6 +62,7 @@ class HowItWorkHelpWebViewActivity : BaseActivity(), View.OnClickListener {
                     super.onReceivedError(view, request, error)
                     Log.e("WebView Error", error.toString())
                 }
+
             })
 
             webView.loadUrl(url!!)
@@ -62,6 +77,7 @@ class HowItWorkHelpWebViewActivity : BaseActivity(), View.OnClickListener {
     override fun onNetworkStateChange(isConnect: Boolean) {
 
     }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {

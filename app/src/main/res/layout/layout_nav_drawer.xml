@@ -34,16 +34,16 @@
                 android:layout_weight="1" />
 
             <androidx.cardview.widget.CardView
-                android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:backgroundTint="@color/white"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:backgroundTint="@color/white"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="@dimen/_12sdp">
@@ -93,6 +93,7 @@
 
 
             </androidx.cardview.widget.CardView>
+
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -142,6 +143,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llRefer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_15sdp"

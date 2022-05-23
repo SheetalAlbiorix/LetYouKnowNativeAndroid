@@ -13,10 +13,10 @@
         android:id="@+id/itemBottom3"
         android:icon="@drawable/ic_bottom3"
         android:title="Home" />
-   <!-- <item
-        android:id="@+id/itemBottom4"
-        android:icon="@drawable/ic_bottom_menu4"
-        android:title="Home" />-->
+    <!-- <item
+         android:id="@+id/itemBottom4"
+         android:icon="@drawable/ic_bottom_menu4"
+         android:title="Home" />-->
     <item
         android:id="@+id/itemBottom4"
         android:icon="@drawable/ic_bottom4"

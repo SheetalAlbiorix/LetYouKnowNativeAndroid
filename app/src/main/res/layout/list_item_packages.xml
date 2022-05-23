@@ -3,15 +3,15 @@
     android:id="@+id/llPackages"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingTop="@dimen/_6sdp"
-    android:paddingBottom="@dimen/_6sdp"
-    android:orientation="horizontal">
+    android:paddingBottom="@dimen/_6sdp">
 
     <ImageView
-        android:layout_marginStart="@dimen/_4sdp"
         android:id="@+id/ivSelect"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_4sdp"
         android:src="@drawable/ic_checkbox_unchecked_border_gray" />
 
     <TextView

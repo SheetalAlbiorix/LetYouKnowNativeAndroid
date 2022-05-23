@@ -48,7 +48,7 @@
     </style>
 
     <style name="MyCustomTextInputStyle" parent="@android:style/Widget.EditText">
-<!--        <item name="android:background">@drawable/bg_edittext</item>-->
+        <!--        <item name="android:background">@drawable/bg_edittext</item>-->
         <item name="android:textColorHint">@color/gray98</item>
         <item name="android:paddingTop">@dimen/_16sdp</item>
         <item name="android:paddingBottom">@dimen/_16sdp</item>

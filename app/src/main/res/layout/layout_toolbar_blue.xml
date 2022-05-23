@@ -17,10 +17,10 @@
         android:background="@color/coloreaeaea"
         android:elevation="@dimen/_8sdp"
         android:gravity="center"
+        android:minHeight="?attr/actionBarSize"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp"
-        android:minHeight="?attr/actionBarSize"
         app:title=""
         app:titleTextAppearance="@style/Toolbar.TitleText">
 
@@ -45,14 +45,14 @@
 
             <TextView
                 android:id="@+id/tvTitleTool"
-                android:singleLine="true"
                 style="@style/medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:singleLine="true"
                 android:text="@{toolbarTitle}"
                 android:textColor="@color/color3e5365"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
 
             <!-- <View
                  android:layout_width="@dimen/_50sdp"

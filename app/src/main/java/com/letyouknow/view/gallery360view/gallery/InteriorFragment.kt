@@ -10,9 +10,9 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import com.letyouknow.view.gallery360view.gallery.zoomimage.ZoomImageActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
 import kotlinx.android.synthetic.main.fragment_exterior.*
 import org.jetbrains.anko.support.v4.startActivity
 

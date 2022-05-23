@@ -3,6 +3,7 @@ package com.letyouknow.view.lyk
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import android.view.*
@@ -26,11 +27,12 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
 import com.letyouknow.utils.AppGlobal.Companion.stringToDate
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.spinneradapter.*
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import kotlinx.android.synthetic.main.dialog_mobile_no.*
 import kotlinx.android.synthetic.main.dialog_vehicle_options.*
 import kotlinx.android.synthetic.main.dialog_vehicle_packages.*
 import kotlinx.android.synthetic.main.fragment_lyk.*
@@ -38,13 +40,12 @@ import org.jetbrains.anko.support.v4.startActivity
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class LYKFragment : BaseFragment(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
 
+    private lateinit var promotionViewModel: PromotionViewModel
     private lateinit var vehicleYearModel: VehicleYearViewModel
     private lateinit var vehicleMakeModel: VehicleMakeViewModel
     private lateinit var vehicleModelModel: VehicleModelViewModel
@@ -57,6 +58,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private lateinit var packagesOptional: VehicleOptionalViewModel
     private lateinit var checkedAccessoriesModel: CheckedAccessoriesInventoryViewModel
     private lateinit var minMSRPViewModel: MinMSRPViewModel
+    private lateinit var socialMobileViewModel: SocialMobileViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -115,13 +117,10 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun onResume() {
-        super.onResume()
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
-        /* if (!isEmpty(pref?.getSubmitPriceTime())) {
-             setTimerPrefData()
-         }*/
         startHandler()
+        super.onResume()
     }
 
     private fun startHandler() {
@@ -129,6 +128,17 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 //            Log.e("DAte Time", stringToDate(pref?.getSubmitPriceTime())?.toString()!!)
             handler = Handler()
             handler.postDelayed(runnable, 1000)
+        } else {
+            if (tvYear.visibility == View.GONE) {
+                yearStr = "YEAR - NEW CARS"
+                makeStr = "MAKE"
+                modelStr = "MODEL"
+                trimStr = "TRIM"
+                extColorStr = "EXTERIOR COLOR"
+                intColorStr = "INTERIOR COLOR"
+                tvYear.visibility = View.VISIBLE
+                spYear.visibility = View.GONE
+            }
         }
 
     }
@@ -149,14 +159,16 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
                     pref?.setSubmitPriceTime("")
                     setTimerPrefData()
+                    if (tvYear.visibility == View.GONE) {
+                        tvYear.visibility = View.VISIBLE
+                        spYear.visibility = View.GONE
+                    }
                 } else {
                     handler.postDelayed(this, 1000)
                 }
             } catch (e: Exception) {
-
             }
         }
-
     }
 
     private fun init() {
@@ -175,28 +187,32 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             )
             tvPromo.startAnimation(animBlink)
             binding.upDownData = upDownData
-            vehicleYearModel = ViewModelProvider(this).get(VehicleYearViewModel::class.java)
-            vehicleMakeModel = ViewModelProvider(this).get(VehicleMakeViewModel::class.java)
-            vehicleModelModel = ViewModelProvider(this).get(VehicleModelViewModel::class.java)
-            vehicleTrimModel = ViewModelProvider(this).get(VehicleTrimViewModel::class.java)
-            exteriorColorModel = ViewModelProvider(this).get(ExteriorColorViewModel::class.java)
-            interiorColorModel = ViewModelProvider(this).get(InteriorColorViewModel::class.java)
-            zipCodeModel = ViewModelProvider(this).get(VehicleZipCodeViewModel::class.java)
-            packagesModel = ViewModelProvider(this).get(VehiclePackagesViewModel::class.java)
-            packagesOptional = ViewModelProvider(this).get(VehicleOptionalViewModel::class.java)
+            promotionViewModel = ViewModelProvider(this)[PromotionViewModel::class.java]
+            vehicleYearModel = ViewModelProvider(this)[VehicleYearViewModel::class.java]
+            vehicleMakeModel = ViewModelProvider(this)[VehicleMakeViewModel::class.java]
+            vehicleModelModel = ViewModelProvider(this)[VehicleModelViewModel::class.java]
+            vehicleTrimModel = ViewModelProvider(this)[VehicleTrimViewModel::class.java]
+            exteriorColorModel = ViewModelProvider(this)[ExteriorColorViewModel::class.java]
+            interiorColorModel = ViewModelProvider(this)[InteriorColorViewModel::class.java]
+            zipCodeModel = ViewModelProvider(this)[VehicleZipCodeViewModel::class.java]
+            packagesModel = ViewModelProvider(this)[VehiclePackagesViewModel::class.java]
+            packagesOptional = ViewModelProvider(this)[VehicleOptionalViewModel::class.java]
             checkedPackageModel =
                 ViewModelProvider(this)[CheckedPackageInventoryViewModel::class.java]
             checkedAccessoriesModel =
                 ViewModelProvider(this)[CheckedAccessoriesInventoryViewModel::class.java]
             minMSRPViewModel =
                 ViewModelProvider(this)[MinMSRPViewModel::class.java]
+            socialMobileViewModel = ViewModelProvider(this)[SocialMobileViewModel::class.java]
             setTimerPrefData()
 
+            tvYear.setOnClickListener(this)
             btnSearch.setOnClickListener(this)
             MainActivity.getInstance().setVisibleEditImg(false)
             MainActivity.getInstance().setVisibleLogoutImg(false)
             ivClosePromo.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
+            callPromotionAPI()
         } catch (e: Exception) {
         }
     }
@@ -326,10 +342,12 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleYearAPI() {
         try {
             isCallingYear = true
+            if (Constant.progress.isShowing)
+                Constant.dismissLoader()
             if (Constant.isOnline(requireActivity())) {
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
                 vehicleYearModel.getYear(
@@ -349,7 +367,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                                 data.add(0, yearData)
                                 adapterYear = YearSpinnerAdapter(requireActivity(), data)
                                 spYear.adapter = adapterYear
-
                                 for (i in 0 until data.size) {
                                     if (!isEmpty(prefSubmitPriceData.yearId) && prefSubmitPriceData.yearId == data[i].vehicleYearID) {
                                         spYear.setSelection(i, true)
@@ -366,7 +383,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                                 adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                                 spYear.adapter = adapterYear
                                 spYear.onItemSelectedListener = this
-
                             }
                         } catch (e: Exception) {
                         }
@@ -384,13 +400,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleMakeAPI() {
         spMake.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.makeId!!)) {
-                if (!Constant.isInitProgress()) {
-                    Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
-                    Constant.showLoader(requireActivity())
-                }
+//            if (isEmpty(prefSubmitPriceData.makeId!!)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
             }
+//            }
             vehicleMakeModel.getMake(
                 requireActivity(),
                 productId,
@@ -400,7 +416,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     if (isEmpty(prefSubmitPriceData.modelId!!))
                         Constant.dismissLoader()
-                    Log.e("Make Data", Gson().toJson(data))
+                    //   Log.e("Make Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val makeData = VehicleMakeData()
@@ -438,13 +454,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleModelAPI() {
         spModel.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.modelId!!)) {
-                if (!Constant.isInitProgress()) {
-                    Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
-                    Constant.showLoader(requireActivity())
-                }
+//            if (isEmpty(prefSubmitPriceData.modelId!!)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
             }
+//            }
             vehicleModelModel.getModel(
                 requireActivity(),
                 productId,
@@ -455,7 +471,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     if (isEmpty(prefSubmitPriceData.trimId!!))
                         Constant.dismissLoader()
-                    Log.e("MODEL Data", Gson().toJson(data))
+                    //  Log.e("MODEL Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val modelData = VehicleModelData()
@@ -492,13 +508,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callVehicleTrimAPI() {
         spTrim.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.trimId!!)) {
-                if (!Constant.isInitProgress()) {
-                    Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
-                    Constant.showLoader(requireActivity())
-                }
+//            if (isEmpty(prefSubmitPriceData.trimId!!)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
             }
+//            }
             vehicleTrimModel.getTrim(
                 requireActivity(),
                 productId,
@@ -510,7 +526,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     if (isEmpty(prefSubmitPriceData.extColorId!!))
                         Constant.dismissLoader()
-                    Log.e("TRIM Data", Gson().toJson(data))
+                    // Log.e("TRIM Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val trimData = VehicleTrimData()
@@ -547,13 +563,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callExteriorColorAPI() {
         spExteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.extColorId!!)) {
-                if (!Constant.isInitProgress()) {
-                    Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
-                    Constant.showLoader(requireActivity())
-                }
+//            if (isEmpty(prefSubmitPriceData.extColorId!!)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
             }
+//            }
             exteriorColorModel.getExteriorColor(
                 requireActivity(),
                 productId,
@@ -566,7 +582,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 .observe(requireActivity(), Observer { data ->
                     if (isEmpty(prefSubmitPriceData.intColorId!!))
                         Constant.dismissLoader()
-                    Log.e("EXTERIOR COLOR Data", Gson().toJson(data))
+                    //  Log.e("EXTERIOR COLOR Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val exteriorColorData = ExteriorColorData()
@@ -615,13 +631,13 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     private fun callInteriorColorAPI() {
         spInteriorColor.isEnabled = true
         if (Constant.isOnline(requireActivity())) {
-            if (isEmpty(prefSubmitPriceData.intColorId!!)) {
-                if (!Constant.isInitProgress()) {
-                    Constant.showLoader(requireActivity())
-                } else if (!Constant.progress.isShowing) {
-                    Constant.showLoader(requireActivity())
-                }
+//            if (isEmpty(prefSubmitPriceData.intColorId!!)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
             }
+//            }
             interiorColorModel.getInteriorColor(
                 requireActivity(),
                 productId,
@@ -634,7 +650,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("INTERIOR Data", Gson().toJson(data))
+                    //  Log.e("INTERIOR Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val interiorColorData = InteriorColorData()
@@ -754,7 +770,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             packagesModel.getPackages(
@@ -769,7 +785,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Packages Data", Gson().toJson(data))
+                    // Log.e("Packages Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val packagesData = VehiclePackagesData()
@@ -799,7 +815,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val jsonArray = JsonArray()
@@ -825,7 +841,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             )!!
                 .observe(requireActivity(), Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Options Data", Gson().toJson(data))
+                    //   Log.e("Options Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val accessoriesData = VehicleAccessoriesData()
@@ -855,7 +871,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val jsonArray = JsonArray()
@@ -884,6 +900,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                             dialogPackage.dismiss()
                         alertError(requireActivity(), getString(R.string.market_hot_msg))
                         setPackages(true)
+                        prefSubmitPriceData = pref?.getSubmitPriceData()!!
                         prefSubmitPriceData.packagesData = ArrayList()
                         pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                         setCurrentTime()
@@ -928,7 +945,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         if (Constant.isOnline(requireActivity())) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(requireActivity())
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(requireActivity())
             }
             val jsonArray = JsonArray()
@@ -964,6 +981,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                             dialogOptions.dismiss()
                         alertError(requireActivity(), getString(R.string.market_hot_msg))
                         setOptions(true)
+                        prefSubmitPriceData = pref?.getSubmitPriceData()!!
                         prefSubmitPriceData.optionsData = ArrayList()
                         pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                         setCurrentTime()
@@ -1022,7 +1040,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             val request = HashMap<String, Any>()
             request[ApiConstant.packageList] = jsonArrayPackage
             request[ApiConstant.checkedList] = jsonArray
-            request[ApiConstant.productId] = productId
             request[ApiConstant.yearId] = yearId
             request[ApiConstant.makeId] = makeId
             request[ApiConstant.modelId] = modelId
@@ -1030,7 +1047,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             request[ApiConstant.exteriorColorId] = extColorId
             request[ApiConstant.interiorColorId] = intColorId
 
-            Log.e("RequestMin", Gson().toJson(request))
+            //  Log.e("RequestMin", Gson().toJson(request))
 
             minMSRPViewModel.minMSRPCall(requireActivity(), request)!!
                 .observe(this, Observer { dataMSRP ->
@@ -1064,7 +1081,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     data.arPackages = arPackage
                     data.arOptions = arOptions
                     data.msrp = dataMSRP.toFloat()
-
+                    pref?.setSubmitPriceData(Gson().toJson(pref?.getSubmitPriceData()))
                     startActivity<LYKStep1Activity>(
                         ARG_YEAR_MAKE_MODEL to Gson().toJson(
                             data
@@ -1072,12 +1089,10 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     )
                 }
                 )
-
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private var arSelectPackage: ArrayList<VehiclePackagesData> = ArrayList()
     private var selectPackageStr = ""
@@ -1088,6 +1103,12 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvYear -> {
+                tvYear.visibility = View.GONE
+                spYear.visibility = View.VISIBLE
+                callVehicleYearAPI()
+                spYear.performClick()
+            }
             R.id.tvPromo -> {
                 tvPromo.clearAnimation()
                 tvPromo.visibility = View.GONE
@@ -1095,23 +1116,47 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 llPromoOffer.startAnimation(animSlideRightToLeft)
             }
             R.id.ivClosePromo -> {
-                tvPromo.startAnimation(animBlink)
-                tvPromo.visibility = View.VISIBLE
-                llPromoOffer.visibility = View.GONE
+                llPromoOffer.startAnimation(animSlideLeftToRight)
+                Handler().postDelayed({
+                    llPromoOffer.visibility = View.GONE
+                    tvPromo.startAnimation(animBlink)
+                    tvPromo.visibility = View.VISIBLE
+                }, 400)
             }
             R.id.btnSearch -> {
                 if (isValid()) {
-
-                    callMinMSRPAPI()
+                    if (pref?.getUserData()?.isSocial!!) {
+                        if (!pref?.isUpdateSocialMobile()!!) {
+                            dialogPhoneNo(true)
+                        } else {
+                            callMinMSRPAPI()
+                        }
+                    } else {
+                        callMinMSRPAPI()
+                    }
                 }
             }
             R.id.tvPackages -> {
-                arSelectPackage = ArrayList()
-                for (i in 0 until adapterPackages.itemCount) {
-                    arSelectPackage.add(adapterPackages.getItem(i))
+                if (::adapterPackages.isInitialized) {
+                    arSelectPackage = ArrayList()
+                    for (i in 0 until adapterPackages.itemCount) {
+                        arSelectPackage.add(adapterPackages.getItem(i))
+                    }
+                    selectPackageStr = Gson().toJson(arSelectPackage)
+                    dialogPackage.show()
+                } else {
+                    callVehiclePackagesAPI()
+                    try {
+                        arSelectPackage = ArrayList()
+                        for (i in 0 until adapterPackages.itemCount) {
+                            arSelectPackage.add(adapterPackages.getItem(i))
+                        }
+                        selectPackageStr = Gson().toJson(arSelectPackage)
+                        dialogPackage.show()
+                    } catch (e: Exception) {
+
+                    }
                 }
-                selectPackageStr = Gson().toJson(arSelectPackage)
-                dialogPackage.show()
             }
             R.id.tvApplyPackage -> {
                 var packagesStr = ""
@@ -1139,14 +1184,10 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         dialogPackage.dismiss()
                     }
                 } else {
-                    /* alertError(
-                         requireActivity(),
-                         "Selection(s) must be added due to inventory availability"
-                     )*/
-//                    tvPackages.text = "PACKAGES"
-//                    setOptions(false)
+
                     showApplyEmptyDialog()
                 }
+                prefSubmitPriceData = pref?.getSubmitPriceData()!!
                 prefSubmitPriceData.packagesData = adapterPackages.getAll()
                 Constant.dismissLoader()
                 prefSubmitPriceData.optionsData = ArrayList()
@@ -1165,7 +1206,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 dialogPackage.dismiss()
             }
             R.id.llPackages -> {
-                Log.e("select1", selectPackageStr)
+                //  Log.e("select1", selectPackageStr)
                 val pos = v.tag as Int
 
                 val data = adapterPackages.getItem(pos)
@@ -1193,7 +1234,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         callCheckedPackageAPI()
                 }
 
-                Log.e("clickupdate", selectPackageStr)
+                //Log.e("clickupdate", selectPackageStr)
 
             }
             R.id.tvResetPackage -> {
@@ -1232,11 +1273,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     showApplyEmptyDialog()
 //                    tvOptionalAccessories.text = "OPTIONS & ACCESSORIES"
                 }
+                prefSubmitPriceData = pref?.getSubmitPriceData()!!
                 prefSubmitPriceData.optionsData = adapterOptions.getAll()
                 pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
                 setCurrentTime()
                 setRadius()
-
             }
             R.id.tvResetOption -> {
                 for (i in 0 until adapterOptions.itemCount) {
@@ -1257,21 +1298,34 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 dialogOptions.dismiss()
             }
             R.id.tvOptionalAccessories -> {
-                try {
-                    arSelectOption = ArrayList()
-                    for (i in 0 until adapterOptions.itemCount) {
-                        arSelectOption.add(adapterOptions.getItem(i))
-                    }
-                    selectOptionStr = Gson().toJson(arSelectOption)
-                    dialogOptions.show()
-                } catch (e: Exception) {
+                if (::adapterOptions.isInitialized) {
+                    try {
+                        arSelectOption = ArrayList()
+                        for (i in 0 until adapterOptions.itemCount) {
+                            arSelectOption.add(adapterOptions.getItem(i))
+                        }
+                        selectOptionStr = Gson().toJson(arSelectOption)
+                        dialogOptions.show()
+                    } catch (e: Exception) {
 
+                    }
+                } else {
+                    callOptionalAccessoriesAPI()
+                    try {
+                        arSelectOption = ArrayList()
+                        for (i in 0 until adapterOptions.itemCount) {
+                            arSelectOption.add(adapterOptions.getItem(i))
+                        }
+                        selectOptionStr = Gson().toJson(arSelectOption)
+                        dialogOptions.show()
+                    } catch (e: Exception) {
+
+                    }
                 }
             }
             R.id.llOptions -> {
-                Log.e("select1", selectOptionStr)
+                // Log.e("select1", selectOptionStr)
                 val pos = v.tag as Int
-
                 val data = adapterOptions.getItem(pos)
                 data.isSelect = !data.isSelect!!
                 adapterOptions.update(pos, data)
@@ -1318,7 +1372,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
                 if (data.year != "YEAR - NEW CARS") {
-                    prefSubmitPriceData.yearId = data.vehicleYearID!!
+                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
+                    prefSubmitPriceData.yearId = data.vehicleYearID
                     prefSubmitPriceData.yearStr = data.year!!
                     prefSubmitPriceData.makeId = ""
                     prefSubmitPriceData.modelId = ""
@@ -1352,6 +1407,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 makeStr = data.make!!
                 AppGlobal.setSpinnerLayoutPos(position, spMake, requireActivity())
                 if (data.make != "MAKE") {
+                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
                     prefSubmitPriceData.makeId = data.vehicleMakeID!!
                     prefSubmitPriceData.makeStr = data.make!!
                     prefSubmitPriceData.modelId = ""
@@ -1412,6 +1468,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 trimStr = data.trim!!
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
+                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
                     prefSubmitPriceData.trimId = data.vehicleTrimID!!
                     prefSubmitPriceData.trimStr = data.trim!!
                     prefSubmitPriceData.extColorId = ""
@@ -1439,6 +1496,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 extColorStr = data.exteriorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spExteriorColor, requireActivity())
                 if (data.exteriorColor != "EXTERIOR COLOR") {
+                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
                     prefSubmitPriceData.extColorId = data.vehicleExteriorColorID!!
                     prefSubmitPriceData.extColorStr = data.exteriorColor!!
                     prefSubmitPriceData.intColorId = ""
@@ -1454,7 +1512,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     setOptions(false)
                     setRadius()
                 }
-
             }
             R.id.spInteriorColor -> {
                 val data = adapterInterior.getItem(position) as InteriorColorData
@@ -1462,6 +1519,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 intColorStr = data.interiorColor!!
                 AppGlobal.setSpinnerLayoutPos(position, spInteriorColor, requireActivity())
                 if (data.interiorColor != "INTERIOR COLOR") {
+                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
                     prefSubmitPriceData.intColorId = data.vehicleInteriorColorID!!
                     prefSubmitPriceData.intColorStr = data.interiorColor!!
                     prefSubmitPriceData.packagesData = ArrayList()
@@ -1502,25 +1560,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             tvApplyPackage.setOnClickListener(this@LYKFragment)
         }
         setLayoutParam(dialogPackage)
-
-        /*dialogPackage = LayoutInflater.from(requireActivity())
-            .inflate(R.layout.dialog_vehicle_packages, null, false)
-        popUpPackage = PopupWindow(
-            dialogPackage,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            false
-        )
-        popUpPackage.isTouchable = true
-        popUpPackage.isFocusable = true
-        popUpPackage.isOutsideTouchable = true
-//        dialogPackage.run {
-        adapterPackages =
-            PackagesAdapter(R.layout.list_item_packages, this@OneDealNearYouFragment)
-        dialogPackage.rvPackages.adapter = adapterPackages
-        adapterPackages.addAll(data)
-//        }*/
-
     }
 
     private lateinit var dialogOptions: Dialog
@@ -1603,9 +1642,15 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
     }
 
     override fun onDestroy() {
+        /* if (Constant.isInitProgress() && Constant.progress.isShowing)
+             Constant.dismissLoader()*/
+        super.onDestroy()
+    }
+
+    override fun onPause() {
         if (Constant.isInitProgress() && Constant.progress.isShowing)
             Constant.dismissLoader()
-        super.onDestroy()
+        super.onPause()
     }
 
     private fun setTimerPrefData() {
@@ -1631,10 +1676,22 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         extColorStr = prefSubmitPriceData.extColorStr!!
         intColorStr = prefSubmitPriceData.intColorStr!!
 
-        if (!isCallingYear)
-            callVehicleYearAPI()
+        if (TextUtils.isEmpty(yearId)) {
+            yearStr = "YEAR - NEW CARS"
+            makeStr = "MAKE"
+            modelStr = "MODEL"
+            trimStr = "TRIM"
+            extColorStr = "EXTERIOR COLOR"
+            intColorStr = "INTERIOR COLOR"
+            tvYear.visibility = View.VISIBLE
+            spYear.visibility = View.GONE
+        } else {
+            tvYear.visibility = View.GONE
+            spYear.visibility = View.VISIBLE
+            if (!isCallingYear)
+                callVehicleYearAPI()
+        }
     }
-
 
     private fun setRadius() {
         pref?.setRadius("")
@@ -1682,5 +1739,158 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         dialog.show()
     }
 
+    private lateinit var dialogMobileNo: Dialog
+    private fun dialogPhoneNo(isCancel: Boolean) {
+        dialogMobileNo = Dialog(requireActivity(), R.style.FullScreenDialog)
+        dialogMobileNo.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogMobileNo.setCancelable(true)
+        dialogMobileNo.setContentView(R.layout.dialog_mobile_no)
+        Constant.onTextChange(
+            requireActivity(),
+            dialogMobileNo.edtPhoneNumber,
+            dialogMobileNo.tvErrorPhoneNo
+        )
+        dialogMobileNo.edtPhoneNumber.filters =
+            arrayOf<InputFilter>(filterSocMob, InputFilter.LengthFilter(13))
+        if (isCancel) {
+            dialogMobileNo.ivSocClose.visibility = View.VISIBLE
+        }
+        dialogMobileNo.run {
+            btnDialogSave.setOnClickListener {
+                if (TextUtils.isEmpty(edtPhoneNumber.text.toString().trim())) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                } else if (edtPhoneNumber.text.toString().trim().length != 13) {
+                    Constant.setErrorBorder(edtPhoneNumber, tvErrorPhoneNo)
+                    tvErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                } else {
+                    tvErrorPhoneNo.visibility = View.GONE
+                    callSocialMobileAPI(edtPhoneNumber.text.toString().trim())
+                    dismiss()
+                }
+            }
+            ivSocClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogMobileNo)
+        dialogMobileNo.show()
+    }
 
+    private fun callSocialMobileAPI(phoneNo: String) {
+        val data: LoginData = pref?.getUserData()!!
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.FirstNameSoc] = data.firstName!!
+            request[ApiConstant.LastNameSoc] = data.lastName!!
+            request[ApiConstant.UserNameSoc] = data.userName!!
+            request[ApiConstant.EmailSoc] = data.userName!!
+            request[ApiConstant.PhoneNumberSoc] = phoneNo
+
+            socialMobileViewModel.getSocialMobile(requireActivity(), request)!!
+                .observe(this, Observer { dataSocial ->
+                    Constant.dismissLoader()
+//                    data.authToken = dataSocial.authToken
+//                    data.refreshToken = dataSocial.refreshToken
+                    data.message = dataSocial.message
+                    if (data.buyerId != 0) {
+                        pref?.setLogin(true)
+                        data.isSocial = true
+                        pref?.setUserData(Gson().toJson(data))
+                        pref?.updateSocialMobile(true)
+                        callMinMSRPAPI()
+                    } else {
+                        Toast.makeText(
+                            requireActivity(),
+                            resources.getString(R.string.login_failed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private var filterSocMob = InputFilter { source, start, end, dest, dstart, dend ->
+        dialogMobileNo.run {
+            var source = source
+            if (source.length > 0) {
+                if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                    if (source.toString().length > 1) {
+                        val number = source.toString()
+                        val digits1 = number.toCharArray()
+                        val digits2 = number.split("(?<=.)").toTypedArray()
+                        source = digits2[digits2.size - 1]
+                    }
+                    if (edtPhoneNumber.text.toString().isEmpty()) {
+                        return@InputFilter "($source"
+                    } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                            .length <= 3
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                            .length <= 5
+                    ) {
+                        val isContain = dest.toString().contains(")")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            ")$source"
+                        }
+                    } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                            .length <= 7
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 7) {
+                        val isContain = dest.toString().contains("-")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            "-$source"
+                        }
+                    }
+                }
+            } else {
+            }
+            source
+        }
+    }
+
+    private fun callPromotionAPI() {
+        if (Constant.isOnline(requireActivity())) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(requireActivity())
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(requireActivity())
+            }
+            promotionViewModel.getPromoCode(requireActivity())!!
+                .observe(
+                    requireActivity()
+                ) { data ->
+                    try {
+                        if (TextUtils.isEmpty(data.promotionCode) || data.discount == 0.0 || TextUtils.isEmpty(
+                                data.endDate
+                            )
+                        ) {
+                            tvPromo.visibility = View.GONE
+                            llPromoOffer.visibility = View.GONE
+                        } else {
+                            tvPromo.visibility = View.VISIBLE
+                            binding.promoData = data
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+        } else {
+            Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 }

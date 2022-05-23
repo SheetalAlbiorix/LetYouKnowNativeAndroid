@@ -9,13 +9,14 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.letyouknow.R
+import com.letyouknow.utils.Constant.Companion.DEMO_PANORAMA_LINK
 import kotlinx.android.synthetic.main.activity_view360_activty.*
 
 class View360Activty : AppCompatActivity() {
     val option = VrPanoramaView.Options().also {
         it.inputType = VrPanoramaView.Options.TYPE_MONO
     }
-    val DEMO_PANORAMA_LINK = "http://reznik.lt/wp-content/uploads/2017/09/preview3000.jpg"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view360_activty)

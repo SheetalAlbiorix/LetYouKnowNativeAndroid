@@ -63,8 +63,8 @@
                     android:textSize="@dimen/_8sdp" />
 
                 <FrameLayout
-                    android:layout_height="@dimen/_250sdp"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/_250sdp"
                     android:background="@color/white"
                     android:orientation="vertical">
 
@@ -78,7 +78,6 @@
                         android:src="@drawable/ic_image_car">
 
                     </androidx.appcompat.widget.AppCompatImageView>
-
 
 
                     <FrameLayout
@@ -111,8 +110,8 @@
                                     android:id="@+id/ivBgGallery"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:scaleType="fitXY"
                                     android:alpha="0.4"
+                                    android:scaleType="fitXY"
                                     android:src="@drawable/ic_image_car"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
@@ -147,8 +146,8 @@
                                     android:id="@+id/ivBg360"
                                     android:layout_width="@dimen/_35sdp"
                                     android:layout_height="@dimen/_35sdp"
-                                    android:scaleType="fitXY"
                                     android:alpha="0.4"
+                                    android:scaleType="fitXY"
                                     android:src="@drawable/ic_image_car"
                                     app:riv_border_color="@color/black"
                                     app:riv_corner_radius="@dimen/_5sdp" />
@@ -180,8 +179,8 @@
                 <include
 
                     layout="@layout/layout_lcd_deal_summary_step2"
-                    app:lcdDealData="@{ucdData}"
                     app:dollar="@{dollar}"
+                    app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />
 

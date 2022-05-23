@@ -3,6 +3,7 @@ package com.letyouknow.view.bidhistory
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -20,12 +21,12 @@ import com.letyouknow.databinding.ActivityBidHistoryBinding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IS_BID
+import com.letyouknow.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_BID
-import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -36,7 +37,6 @@ import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BidHistoryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var adapterBidHistory: BidHistoryAdapter
@@ -120,7 +120,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
@@ -205,7 +205,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             packagesModel.getPackages(
@@ -219,7 +219,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 dataBid.vehicleInStockCheckInput?.interiorColorId, ""
             )!!
                 .observe(this, Observer { data ->
-                    Log.e("Packages Data", Gson().toJson(data))
+                    // Log.e("Packages Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val packagesData = VehiclePackagesData()
@@ -256,7 +256,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-        Log.e("selectData", Gson().toJson(arSelectPackages))
+        // Log.e("selectData", Gson().toJson(arSelectPackages))
         callOptionalAccessoriesAPI(dataBid)
     }
 
@@ -284,7 +284,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 request
             )!!
                 .observe(this, Observer { data ->
-                    Log.e("Options Data", Gson().toJson(data))
+                    //  Log.e("Options Data", Gson().toJson(data))
                     try {
                         if (data != null || data?.size!! > 0) {
                             val accessoriesData = VehicleAccessoriesData()
@@ -324,7 +324,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-        Log.e("selectAccData", Gson().toJson(arSelectAccessories))
+        // Log.e("selectAccData", Gson().toJson(arSelectAccessories))
     }
 
     private fun callCheckVehicleStockAPI(data: BidPriceData) {
@@ -354,7 +354,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.SearchRadius1] = data.vehicleInStockCheckInput.searchRadius!!
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
+            // Log.e("RequestStock", Gson().toJson(request))
             checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
                 .observe(this, Observer { dataStock ->
                     Constant.dismissLoader()
@@ -419,15 +419,18 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         yearMakeData.arOptions = arSelectAccessories
         yearMakeData.price = data.price
         yearMakeData.radius = data.searchRadius
-        yearMakeData.zipCode = data.vehicleInStockCheckInput.zipcode
+        yearMakeData.zipCode = data.zipCode
 
-        startActivity<LYKStep1Activity>(
-            Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                yearMakeData
-            ),
-            ARG_IS_BID to true
-        )
-        finish()
+        Handler().postDelayed({
+            startActivity<LYKStep1Activity>(
+                Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                    yearMakeData
+                ),
+                ARG_IS_BID to true
+            )
+            finish()
+        }, 1000)
+
     }
 
     private fun getProductType(data: String): Int {

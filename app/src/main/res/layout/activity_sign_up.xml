@@ -60,7 +60,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:background="@drawable/bg_edittext"
-                                android:hint="@string/first_name"
+                                android:hint="@string/first_name_required"
                                 android:inputType="text"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -92,7 +92,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:background="@drawable/bg_edittext"
-                                android:hint="@string/last_name"
+                                android:hint="@string/last_name_req"
                                 android:inputType="text"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,137 +109,137 @@
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </LinearLayout>
 
-<androidx.appcompat.widget.LinearLayoutCompat
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone">
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edtAddress1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:background="@drawable/bg_edittext"
-        android:hint="@string/address_line_1"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvErrorAddress1"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/enter_addressline1"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/_11sdp"
-                        android:visibility="gone" />
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtAddress2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@drawable/bg_edittext"
-                        android:hint="@string/address_line_2"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtAddress1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/bg_edittext"
+                            android:hint="@string/address_line_1"
+                            android:inputType="text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/tvErrorAddress2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/enter_addressline2"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/_11sdp"
-                        android:visibility="gone" />
+                        <TextView
+                            android:id="@+id/tvErrorAddress1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@string/enter_addressline1"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtCity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@drawable/bg_edittext"
-                        android:hint="@string/city"
-                        android:inputType="text"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtAddress2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/bg_edittext"
+                            android:hint="@string/address_line_2"
+                            android:inputType="text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/tvErrorCity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/enter_city"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/_11sdp"
-                        android:visibility="gone" />
+                        <TextView
+                            android:id="@+id/tvErrorAddress2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@string/enter_addressline2"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
 
-                    <LinearLayout
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/bg_edittext"
+                            android:hint="@string/city"
+                            android:inputType="text"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvErrorCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@string/enter_city"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="horizontal">
 
-                            <androidx.appcompat.widget.AppCompatSpinner
-                                android:id="@+id/spState"
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/bg_spinner" />
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/tvErrorState"
-                                android:layout_width="match_parent"
+                                <androidx.appcompat.widget.AppCompatSpinner
+                                    android:id="@+id/spState"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_spinner" />
+
+                                <TextView
+                                    android:id="@+id/tvErrorState"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:text="@string/enter_state"
+                                    android:textColor="@color/red"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="wrap_content" />
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:text="@string/enter_state"
-                                android:textColor="@color/red"
-                                android:textSize="@dimen/_11sdp"
-                                android:visibility="gone" />
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/edtZipCode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+
+                                    android:background="@drawable/bg_edittext"
+                                    android:digits="1234567890"
+                                    android:hint="@string/zip_code"
+                                    android:inputType="number"
+                                    android:maxLength="5" />
+
+                                <TextView
+                                    android:id="@+id/tvErrorZipCode"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:text="@string/enter_zipcode"
+                                    android:textColor="@color/red"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:visibility="gone" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
                         </LinearLayout>
-
-                        <Space
-                            android:layout_width="@dimen/_10sdp"
-                            android:layout_height="wrap_content" />
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edtZipCode"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-
-                                android:background="@drawable/bg_edittext"
-                                android:digits="1234567890"
-                                android:hint="@string/zip_code"
-                                android:inputType="number"
-                                android:maxLength="5" />
-
-                            <TextView
-                                android:id="@+id/tvErrorZipCode"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:text="@string/enter_zipcode"
-                                android:textColor="@color/red"
-                                android:textSize="@dimen/_11sdp"
-                                android:visibility="gone" />
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-                    </LinearLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtPhoneNumber"
@@ -247,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/phone_number"
+                        android:hint="@string/phone_number_required"
                         android:inputType="phone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -268,7 +268,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/email_address"
+                        android:hint="@string/email_address_required"
                         android:inputType="textEmailAddress"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -329,7 +329,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_edittext"
-                            android:hint="@string/password"
+                            android:hint="@string/password_required"
                             android:inputType="textPassword"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -349,11 +349,11 @@
                                 app:tint="@color/gray" />
 
                             <ImageView
-                                android:visibility="gone"
                                 android:id="@+id/ivFingerPrint"
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                android:src="@drawable/ic_fingerprint" />
+                                android:src="@drawable/ic_fingerprint"
+                                android:visibility="gone" />
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </FrameLayout>
 
@@ -373,7 +373,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/confirm_password"
+                        android:hint="@string/confirm_password_required"
                         android:inputType="textPassword"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -389,7 +389,6 @@
                         android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatCheckBox
-                        android:visibility="gone"
                         android:id="@+id/chkIsPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -397,16 +396,17 @@
                         android:drawableLeft="@drawable/bg_checkbox"
                         android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/add_payment"
-                        android:textColor="?blackText" />
+                        android:textColor="?blackText"
+                        android:visibility="gone" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
                     android:id="@+id/llPaymentOptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -530,8 +530,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:hint="@string/card_holder"
                                 android:background="@drawable/bg_edittext"
+                                android:hint="@string/card_holder"
                                 android:inputType="text" />
 
                             <LinearLayout
@@ -545,9 +545,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:background="@drawable/bg_edittext"
                                     android:digits="1234567890"
                                     android:hint="@string/expire_date"
-                                    android:background="@drawable/bg_edittext"
                                     android:inputType="number"
                                     android:maxLength="5" />
 
@@ -556,8 +556,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:hint="@string/cvv"
                                     android:background="@drawable/bg_edittext"
+                                    android:hint="@string/cvv"
                                     android:inputType="number"
                                     android:maxLength="3" />
                             </LinearLayout>
@@ -665,7 +665,6 @@
                     android:padding="@dimen/_20sdp">
 
                     <CheckBox
-                        android:visibility="gone"
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -674,10 +673,10 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/yes_send_me_promotinal_emails_from_letyouknow"
                         android:textColor="?blackText"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
 
                     <CheckBox
-                        android:visibility="gone"
                         style="@style/medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -687,7 +686,8 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:text="@string/yes_text_me_promo"
                         android:textColor="?blackText"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtTerms"
@@ -696,7 +696,7 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
-                        android:text="@string/by_registering"
+                        android:text="@string/by_signing_up"
                         android:textColor="?blackText"
                         android:textColorHighlight="@android:color/transparent"
                         android:textColorLink="@color/colorPrimary"
@@ -748,9 +748,9 @@
 
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 

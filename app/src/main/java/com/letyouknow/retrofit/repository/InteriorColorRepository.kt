@@ -1,13 +1,11 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.letyouknow.model.InteriorColorData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,21 +41,21 @@ object InteriorColorRepository {
         call.enqueue(object : Callback<ArrayList<InteriorColorData>> {
             override fun onFailure(call: Call<ArrayList<InteriorColorData>>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                //  Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
                 call: Call<ArrayList<InteriorColorData>>,
                 response: Response<ArrayList<InteriorColorData>>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                //Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("interiorColor Resp ", Gson().toJson(response.body()))
+                    // Log.v("interiorColor Resp ", Gson().toJson(response.body()))
                     getInteriorColorData.value = data!!
                 } else {
-                    Log.v("interiorColor Resp ", response.toString())
+                    // Log.v("interiorColor Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

@@ -62,9 +62,9 @@
                     android:textSize="@dimen/_8sdp" />
 
                 <FrameLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_250sdp"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
 
@@ -171,10 +171,11 @@
 
                     </FrameLayout>
                 </FrameLayout>
+
                 <include
                     layout="@layout/layout_ucd_deal_summary_step3"
-                    app:lcdDealData="@{ucdData}"
                     app:dollar="@{dollar}"
+                    app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}" />
 

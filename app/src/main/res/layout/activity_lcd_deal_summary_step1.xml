@@ -132,87 +132,87 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_gravity="bottom"
-                            android:backgroundTint="@color/offWhite"
-                            android:background="@drawable/bg_half_round" />
+                            android:background="@drawable/bg_half_round"
+                            android:backgroundTint="@color/offWhite" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_20sdp"
-                android:orientation="horizontal">
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/_20sdp">
 
-                <FrameLayout
-                    android:id="@+id/llGallery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_8sdp">
+                            <FrameLayout
+                                android:id="@+id/llGallery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/ivBgGallery"
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:alpha="0.4"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_image_car"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBgGallery"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:scaleType="fitXY"
-                        android:src="@color/colorTransparent3"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <ImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:padding="@dimen/_8sdp"
-                        android:src="@drawable/ic_gallery"
-                        android:text="Gallery"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-                </FrameLayout>
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_8sdp"
+                                    android:src="@drawable/ic_gallery"
+                                    android:text="Gallery"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/ll360"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_8sdp">
+                            <FrameLayout
+                                android:id="@+id/ll360"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_8sdp">
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/ivBg360"
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:alpha="0.4"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_image_car"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:id="@+id/ivBg360"
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:alpha="0.4"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_image_car"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:scaleType="fitXY"
-                        android:src="@color/colorTransparent3"
-                        app:riv_border_color="@color/black"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                                <com.makeramen.roundedimageview.RoundedImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:scaleType="fitXY"
+                                    android:src="@color/colorTransparent3"
+                                    app:riv_border_color="@color/black"
+                                    app:riv_corner_radius="@dimen/_5sdp" />
 
-                    <ImageView
-                        android:layout_width="@dimen/_35sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:padding="@dimen/_6sdp"
-                        android:src="@drawable/ic_360"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-                </FrameLayout>
+                                <ImageView
+                                    android:layout_width="@dimen/_35sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:padding="@dimen/_6sdp"
+                                    android:src="@drawable/ic_360"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </FrameLayout>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </FrameLayout>
                 </FrameLayout>

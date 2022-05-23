@@ -22,11 +22,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/my_information"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
@@ -35,8 +35,8 @@
                     android:id="@+id/ivEditInfo"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
-                    android:src="@drawable/ic_edit_white"
                     android:paddingRight="@dimen/_8sdp"
+                    android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -66,11 +66,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/login"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
@@ -79,8 +79,8 @@
                     android:id="@+id/ivEditLogin"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
-                    android:src="@drawable/ic_edit_white"
                     android:paddingRight="@dimen/_8sdp"
+                    android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -89,9 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_2sdp"
                 android:elevation="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
                 android:orientation="vertical"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -153,19 +153,19 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/payment_method"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
-                    android:paddingRight="@dimen/_8sdp"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
+                    android:paddingRight="@dimen/_8sdp"
                     android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -176,8 +176,8 @@
                 android:layout_margin="@dimen/_2sdp"
                 android:elevation="@dimen/_8sdp"
                 android:orientation="vertical"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp">
 
                 <TextView
                     style="@style/medium"
@@ -196,20 +196,20 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/notification_setting"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
-                    android:paddingRight="@dimen/_8sdp"
-
                     android:layout_width="@dimen/_24sdp"
+
                     android:layout_height="@dimen/_24sdp"
+                    android:paddingRight="@dimen/_8sdp"
                     android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -220,8 +220,8 @@
                 android:layout_margin="@dimen/_3sdp"
                 android:elevation="@dimen/_8sdp"
                 android:orientation="vertical"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -263,21 +263,21 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/push_notification"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
-                    android:paddingRight="@dimen/_8sdp"
-
                     android:id="@+id/ivEditNotification"
+
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
+                    android:paddingRight="@dimen/_8sdp"
                     android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -287,8 +287,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_3sdp"
                 android:orientation="vertical"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -324,20 +324,20 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:paddingLeft="@dimen/_8sdp"
                     style="@style/bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="@string/refer"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
                 <ImageView
-                    android:paddingRight="@dimen/_8sdp"
                     android:id="@+id/ivRefer"
                     android:layout_width="@dimen/_24sdp"
                     android:layout_height="@dimen/_24sdp"
+                    android:paddingRight="@dimen/_8sdp"
                     android:src="@drawable/ic_edit_white"
                     app:tint="@color/colorPrimary" />
             </androidx.appcompat.widget.LinearLayoutCompat>

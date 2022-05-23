@@ -21,9 +21,6 @@
             name="data"
             type="com.letyouknow.model.YearModelMakeData" />
 
-        <variable
-            name="appGlobalData"
-            type="com.letyouknow.utils.AppGlobalBindData" />
 
     </data>
 
@@ -114,7 +111,22 @@
                 android:textColor="@color/color4f6375"
                 android:textSize="@dimen/_11sdp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/lightGray" />
 
+            <TextView
+                android:id="@+id/tvPrice"
+                style="@style/regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/color545d64"
+                android:textSize="@dimen/_14sdp"
+                tool:text="$47000.00" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -154,8 +166,8 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_edittext"
                                 android:digits="1234567890"
-                                android:inputType="number"
                                 android:hint="@string/zip_code"
+                                android:inputType="number"
                                 android:maxLength="5"
                                 android:paddingTop="@dimen/_10sdp"
                                 android:paddingBottom="@dimen/_10sdp" />
@@ -215,30 +227,32 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-
-                                <!-- <androidx.appcompat.widget.AppCompatEditText
+                                <!-- <com.cottacush.android.currencyedittext.CurrencyEditText
                                      android:id="@+id/edtPrice"
                                      style="@style/medium"
+                                     android:hint="@string/price"
                                      android:layout_width="match_parent"
                                      android:layout_height="wrap_content"
                                      android:background="@drawable/bg_edittext"
-                                     android:hint="@string/price"
-                                     android:digits="0123456789"
-                                     android:inputType="numberDecimal"
                                      android:paddingStart="@dimen/_25sdp"
                                      android:paddingTop="@dimen/_10sdp"
-                                     android:paddingBottom="@dimen/_10sdp"
-                                     android:singleLine="true" />-->
-                                <com.cottacush.android.currencyedittext.CurrencyEditText
+                                     android:paddingBottom="@dimen/_10sdp" />-->
+                                <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
                                     android:id="@+id/edtPrice"
-                                    style="@style/medium"
-                                    android:hint="@string/price"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/bg_edittext"
+                                    android:hint="@string/price"
+                                    android:inputType="numberDecimal"
                                     android:paddingStart="@dimen/_25sdp"
                                     android:paddingTop="@dimen/_10sdp"
-                                    android:paddingBottom="@dimen/_10sdp" />
+                                    android:paddingBottom="@dimen/_10sdp"
+                                    android:text=""
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textStyle="bold"
+                                    app:currency_symbol="$"
+                                    app:show_commas="true"
+                                    app:show_currency="false" />
 
                                 <TextView
                                     style="@style/medium"
@@ -277,6 +291,7 @@
                                 android:padding="0dp"
                                 android:popupBackground="@drawable/bg_button3_white"
                                 android:spinnerMode="dropdown" />
+
                             <TextView
                                 android:id="@+id/tvErrorFinancingOption"
                                 android:layout_width="match_parent"
@@ -314,8 +329,8 @@
                 android:padding="@dimen/_15sdp">
 
                 <TextView
-                    style="@style/regular"
                     android:id="@+id/tvInfo"
+                    style="@style/regular"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/color545d64"
@@ -339,7 +354,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Please Read Full Disclosure"
+                android:text="@string/please_read_the_full_disclosure"
                 android:textColor="@color/red"
                 android:textSize="@dimen/_11sdp"
                 android:visibility="gone" />
@@ -356,7 +371,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/initial_here_to_accept"
-                    android:textColor="?blackHeaderText"
+                    android:textColor="@color/color545d64"
                     android:textColorHighlight="@android:color/transparent"
                     android:textColorLink="@color/orange"
                     android:textSize="@dimen/_11sdp" />
@@ -372,13 +387,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_edittext"
-                        android:hint="@string/initials"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:maxLength="3"
+                        android:hint="@string/initials"
                         android:imeOptions="actionDone"
-                        android:singleLine="true"
+                        android:maxLength="3"
                         android:paddingTop="@dimen/_10sdp"
-                        android:paddingBottom="@dimen/_10sdp" />
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:singleLine="true" />
 
                     <TextView
                         android:id="@+id/tvErrorInitials"

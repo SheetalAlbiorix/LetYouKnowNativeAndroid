@@ -1,12 +1,12 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.letyouknow.R
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +25,7 @@ object ForgotPasswordRepository {
         call.enqueue(object : Callback<Void> {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
@@ -35,7 +35,7 @@ object ForgotPasswordRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("forgot Resp ", Gson().toJson(response.body()))
+                    //  Log.v("forgot Resp ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     /* Toast.makeText(
                          context,
@@ -44,7 +44,7 @@ object ForgotPasswordRepository {
                      ).show()*/
                     AppGlobal.alertError(
                         context,
-                        "You will Receive an email with resetting instruction shortly. For security reasons, this link will only remain active for the next hour"
+                        context.getString(R.string.forgot_password_email)
                     )
                     /* Handler().postDelayed({
                          context.startActivity(
@@ -53,7 +53,7 @@ object ForgotPasswordRepository {
                      }, 3000)*/
 //                    forgotPasswordVo.value = ""
                 } else {
-                    Log.v("forgot Resp ", response.toString())
+                    // Log.v("forgot Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

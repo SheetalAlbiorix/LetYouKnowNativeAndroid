@@ -1,14 +1,12 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.letyouknow.model.TransactionHistoryData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.alertError
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +24,7 @@ object TransactionHistoryRepository {
         call.enqueue(object : Callback<ArrayList<TransactionHistoryData>> {
             override fun onFailure(call: Call<ArrayList<TransactionHistoryData>>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
@@ -36,14 +34,14 @@ object TransactionHistoryRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("TransHist Resp : ", Gson().toJson(response.body()))
+                    //  Log.v("TransHist Resp : ", Gson().toJson(response.body()))
                     Constant.dismissLoader()
                     findUCDDealData.value = data!!
                 } else if (response.code() == 401) {
-                    Log.v("TransHist Resp : ", response.toString())
+                    // Log.v("TransHist Resp : ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
-                    Log.v("TransHist Resp : ", response.toString())
+                    //   Log.v("TransHist Resp : ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     /* Toast.makeText(

@@ -125,6 +125,7 @@
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:src="@drawable/ic_fingerprint"
+                            android:visibility="gone"
                             app:tint="@color/colorPrimary" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </FrameLayout>
@@ -178,14 +179,14 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtForgotUserId"
                         style="@style/medium"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:text="@string/forgot_user_name"
                         android:textColor="?blackText"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
 
 
                     <!-- <Space
@@ -196,9 +197,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtForgotPassword"
                         style="@style/medium"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:paddingTop="@dimen/_2sdp"
                         android:paddingBottom="@dimen/_2sdp"
                         android:text="@string/forgot_password"

@@ -115,8 +115,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_edittext"
                     android:hint="@string/email_address"
-                    android:text="@{loginData.userName}"
                     android:inputType="textEmailAddress"
+                    android:text="@{loginData.userName}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,13 +1,12 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.FindLCDDeaData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,25 +25,25 @@ object FindLCDDealRepository {
         call.enqueue(object : Callback<FindLCDDeaData> {
             override fun onFailure(call: Call<FindLCDDeaData>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
                 call: Call<FindLCDDeaData>,
                 response: Response<FindLCDDeaData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                //Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     Constant.dismissLoader()
-                    Log.v("findLCD Resp ", Gson().toJson(response.body()))
+                    // Log.v("findLCD Resp ", Gson().toJson(response.body()))
                     findLCDDealData.value = data!!
                 } else if (response.code() == 401) {
-                    Log.v("findLCD Resp ", response.toString())
+                    //  Log.v("findLCD Resp ", response.toString())
                     AppGlobal.isAuthorizationFailed(context)
                 } else {
-                    Log.v("findLCD Resp ", response.toString())
+                    // Log.v("findLCD Resp ", response.toString())
                     Constant.dismissLoader()
                     response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     AppGlobal.alertError(

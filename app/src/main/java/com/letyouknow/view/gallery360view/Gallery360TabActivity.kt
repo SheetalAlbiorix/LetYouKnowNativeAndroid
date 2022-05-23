@@ -15,12 +15,12 @@ import com.letyouknow.databinding.ActivityGallery360TabBinding
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ExteriorViewModel
 import com.letyouknow.retrofit.viewmodel.InteriorViewModel
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.letyouknow.view.gallery360view.gallery.ExteriorFragment
 import com.letyouknow.view.gallery360view.gallery.InteriorFragment
 import com.letyouknow.view.gallery360view.view360.View360Fragment
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
 import kotlinx.android.synthetic.main.activity_gallery360_tab.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 

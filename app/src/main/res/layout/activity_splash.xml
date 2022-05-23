@@ -25,27 +25,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
-<FrameLayout
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_7sdp"
-    android:layout_gravity="center"
-    android:layout_marginBottom="@dimen/_30sdp">
 
-    <ImageView
-        android:layout_height="match_parent"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="@dimen/_1sdp"
-        android:paddingBottom="@dimen/_1sdp"
-        android:src="@drawable/bg_button"
-        app:tint="@color/white" />
-
-    <ImageView
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_4sdp"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_7sdp"
         android:layout_gravity="center"
-        android:src="@drawable/bg_button" />
-</FrameLayout>
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:src="@drawable/bg_button"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_4sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/bg_button" />
+    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

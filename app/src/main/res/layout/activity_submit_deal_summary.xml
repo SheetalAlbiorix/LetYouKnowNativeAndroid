@@ -16,6 +16,10 @@
             type="com.letyouknow.model.SubmitDealLCDData" />
 
         <variable
+            name="total"
+            type="Float" />
+
+        <variable
             name="userName"
             type="String" />
 
@@ -45,28 +49,28 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="@{data.successResult.savings > 0.0 ? View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="@{data.successResult.savings > 0.0 ? View.VISIBLE : View.GONE}">
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
                         android:text="@string/great_deal"
                         android:textColor="@color/color545d64"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <TextView
-                        style="@style/medium"
+                        style="@style/bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.savings)}"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.savings)+'!'}"
                         android:textColor="@color/color545d64"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -137,9 +141,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.vehicleYear}"
-                            tool:text="2011"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
                     </TableRow>
 
                     <TableRow android:layout_marginBottom="@dimen/_10sdp">
@@ -153,9 +157,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.vehicleMake}"
-                            tool:text="Jeep"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Jeep" />
                     </TableRow>
 
                     <TableRow
@@ -173,9 +177,9 @@
                             android:layout_weight="1"
                             android:maxLines="5"
                             android:text="@{data.successResult.transactionInfo.vehicleModel+' '+data.successResult.transactionInfo.vehicleTrim}"
-                            tool:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Bolt EV LT Station Wagon FWD 1-Speed ElectricDrive Unit I" />
                     </TableRow>
 
                     <TableRow android:layout_marginBottom="@dimen/_10sdp">
@@ -189,9 +193,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.transactionCode}"
-                            tool:text="JO31747183"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="JO31747183" />
                     </TableRow>
 
                     <TableRow android:layout_marginBottom="@dimen/_10sdp">
@@ -205,9 +209,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.financingOptions}"
-                            tool:text="2011"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
                     </TableRow>
 
                     <TableRow
@@ -222,13 +226,13 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_width="wrap_content"
                             android:text="@{data.successResult.transactionInfo.vehicleExteriorColor}"
-                            tool:text="Oasis Blue Oasis Blue Oasis Blue Oasis Blue Oasis Blue"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Oasis Blue Oasis Blue Oasis Blue Oasis Blue Oasis Blue" />
                     </TableRow>
 
                     <TableRow
@@ -243,12 +247,34 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
+                            android:layout_weight="1"
                             android:text="@{data.successResult.transactionInfo.vehicleInteriorColor}"
-                            tool:text="Dark Galvanized/Sky Cool Gray Dark Galvanized/Sky Cool Gray"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Dark Galvanized/Sky Cool Gray Dark Galvanized/Sky Cool Gray" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRowDis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="@dimen/_100sdp"
+                            android:text="@string/disclosure"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tvDisclosure"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="Dark Galvanized/Sky Cool Gray Dark Galvanized/Sky Cool Gray" />
                     </TableRow>
                 </TableLayout>
 
@@ -280,17 +306,20 @@
                             android:id="@+id/tvLabelPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/unlocked_cardeals_price"
                             android:textColor="@color/color3e5365"
-                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            style="@style/bold"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
                             android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePrice)}"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="1000.00" />
 
                     </TableRow>
 
@@ -299,18 +328,20 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/nonrefundable_service"
                             android:textColor="@color/color3e5365"
-                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tool:text="2011"
+                            android:gravity="end"
                             android:text="-$799.00"
                             android:textColor="@color/color3e5365"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
 
                     </TableRow>
 
@@ -319,14 +350,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/promo_code_colon"
                             android:textColor="@color/color3e5365"
-                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
                             android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.vehiclePromoCode)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -338,14 +371,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/lyk_dollars_colon"
                             android:textColor="@color/color3e5365"
-                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
                             android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.lykDollar)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
@@ -357,15 +392,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="@string/remaining_balance"
                             android:textColor="@color/color3e5365"
-                            android:layout_weight="1"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:id="@+id/tvTotalPrice"
+                            style="@style/bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.successResult.transactionInfo.remainingBalance)}"
+                            android:gravity="end"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(total)}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp" />
 
@@ -496,11 +534,21 @@
                     android:background="@color/lightGray" />
 
                 <TextView
+                    style="@style/bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chapman Chevrolet\n1511 3rd Avenue Suite 601\nSeattle, WA 98101\naaron@letyouknow.com\n(888)888-9999 "
+                    android:text="@{data.matchedDealerInfo.name}"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:id="@+id/tvDealerInfo"
+                    style="@style/regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_12sdp"
+                    tool:text="Chapman Chevrolet\n1511 3rd Avenue Suite 601\nSeattle, WA 98101\naaron@letyouknow.com\n(888)888-9999 " />
 
                 <View
                     android:layout_width="match_parent"
@@ -510,20 +558,20 @@
                     android:background="@color/lightGray" />
 
                 <TextView
+                    android:id="@+id/tvCallNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/if_you_have_any_questions"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
 
-                <TextView
-                    android:id="@+id/tvCallNumber"
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/number"
                     android:textColor="@color/lightBlue"
                     android:textSize="@dimen/_12sdp" />
-
+-->
                 <TextView
                     android:id="@+id/tvSavingsText"
                     android:layout_width="match_parent"
@@ -546,9 +594,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/bg_button"
                     android:gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:padding="@dimen/_12sdp"
                     android:text="@string/go_back_home"
                     android:textColor="@color/white"

@@ -2,14 +2,13 @@ package com.letyouknow.retrofit.repository
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.letyouknow.model.SignupData
+import com.letyouknow.model.SignupDataError
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
-import com.pionymessenger.model.SignupData
-import com.pionymessenger.model.SignupDataError
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,21 +26,21 @@ object SignUpRepository {
         call.enqueue(object : Callback<SignupData> {
             override fun onFailure(call: Call<SignupData>, t: Throwable) {
                 Constant.dismissLoader()
-                Log.v("DEBUG : ", t.message.toString())
+                // Log.v("DEBUG : ", t.message.toString())
             }
 
             override fun onResponse(
                 call: Call<SignupData>,
                 response: Response<SignupData>,
             ) {
-                Log.v("DEBUG : ", response.body().toString())
+                //  Log.v("DEBUG : ", response.body().toString())
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    Log.v("signUp Resp ", Gson().toJson(response.body()))
+                    //  Log.v("signUp Resp ", Gson().toJson(response.body()))
                     signupVo.value = data!!
                 } else {
-                    Log.v("signUp Resp ", response.toString())
+                    //  Log.v("signUp Resp ", response.toString())
                     Constant.dismissLoader()
                     val data = response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     var signupVoError = SignupDataError()
@@ -56,8 +55,8 @@ object SignUpRepository {
                     if (signupVoError.DuplicateUserName?.size != 0) {
                         userName = signupVoError?.DuplicateUserName!![0]
                     }
-                    errorMSG = email + "\n" + userName
-
+//                    errorMSG = email + "\n" + userName
+                    errorMSG = email
                     if (!TextUtils.isEmpty(errorMSG))
                         AppGlobal.alertError(
                             context,

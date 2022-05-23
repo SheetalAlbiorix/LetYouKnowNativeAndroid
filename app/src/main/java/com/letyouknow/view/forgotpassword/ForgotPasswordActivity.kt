@@ -14,7 +14,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.ForgotPasswordViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.setEmojiKeyBoard
-import com.pionymessenger.utils.Constant
+import com.letyouknow.utils.Constant
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 
@@ -72,7 +72,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, String>()
@@ -82,22 +82,12 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
             forgotPasswordViewModel.getForgotPassword(this, request)!!
                 .observe(this, Observer { forgotVo ->
                     Constant.dismissLoader()
-                    /*   Toast.makeText(
-                           this,
-                           "You will Receive an email with resetting instruction shortly.\nFor security reasons, this link will only remain\nactive for the next hour",
-                           Toast.LENGTH_SHORT
-                       ).show()*/
                     AppGlobal.alertError(
                         this,
-                        "You will Receive an email with resetting instruction shortly.\nFor security reasons, this link will only remain\nactive for the next hour"
+                        getString(R.string.forgot_password_email)
                     )
-                    /* Handler().postDelayed({
-                         finish()
-                     }, 5000)*/
                 }
-
                 )
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

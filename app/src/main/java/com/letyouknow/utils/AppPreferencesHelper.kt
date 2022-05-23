@@ -14,6 +14,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_USER_DATA = "KEY_USER_DATA"
         val KEY_REMEMBER_DATA = "KEY_REMEMBER_DATA"
         val KEY_CARD_LIST = "KEY_CARD_LIST"
+        val KEY_IS_SOCIAL_MOBILE = "KEY_IS_SOCIAL_MOBILE"
         val KEY_IS_PAYMENT = "KEY_IS_PAYMENT"
         val KEY_IS_BIOMATRIC = "KEY_IS_BIOMATRIC"
         val KEY_IS_BID = "KEY_IS_BID"
@@ -26,6 +27,7 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         val KEY_SEARCH_DEAL_TIME = "KEY_SEARCH_DEAL_TIME"
         val KEY_RADIUS = "KEY_RADIUS"
         val KEY_PAYMENT_URL = "KEY_PAYMENT_URL"
+        val KEY_FIREBASE_TOKEN = "KEY_FIREBASE_TOKEN"
     }
 
     private var sharedpreferences: SharedPreferences =
@@ -41,8 +43,10 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
         setLogin(false)
         val remData = isRememberData()
         val loginData = getUserData()
+        val firebaseToken = getFirebaseToken()
         prefs.clear().apply()
         setBioMetric(true)
+        setFirebaseToken(firebaseToken)
         setUserData(Gson().toJson(loginData))
         setRememberData(Gson().toJson(remData))
     }
@@ -262,5 +266,22 @@ class AppPreferencesHelper(context: Context, prefFileName: String) {
     fun getPaymentUrl(): String {
         return sharedpreferences.getString(KEY_PAYMENT_URL, "")!!
     }
+
+    fun updateSocialMobile(isPayment: Boolean) {
+        prefs.putBoolean(KEY_IS_SOCIAL_MOBILE, isPayment).apply()
+    }
+
+    fun isUpdateSocialMobile(): Boolean {
+        return sharedpreferences.getBoolean(KEY_IS_SOCIAL_MOBILE, false)
+    }
+
+    fun setFirebaseToken(url: String?) {
+        prefs.putString(KEY_FIREBASE_TOKEN, url).apply()
+    }
+
+    fun getFirebaseToken(): String? {
+        return sharedpreferences.getString(KEY_FIREBASE_TOKEN, "")!!
+    }
+
 
 }

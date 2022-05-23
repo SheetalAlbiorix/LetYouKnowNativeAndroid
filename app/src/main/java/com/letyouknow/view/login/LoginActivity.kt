@@ -7,7 +7,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -36,21 +38,19 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.model.RememberMeData
 import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.FacebookLoginViewModel
-import com.letyouknow.retrofit.viewmodel.GoogleLoginViewModel
-import com.letyouknow.retrofit.viewmodel.LoginViewModel
+import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal.Companion.dialogWebView
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.PRIVACY_POLICY_LINK
+import com.letyouknow.utils.Constant.Companion.TERMS_CONDITIONS_LINK
+import com.letyouknow.utils.Constant.Companion.emailValidator
+import com.letyouknow.utils.Constant.Companion.makeLinks
+import com.letyouknow.utils.Constant.Companion.onTextChange
+import com.letyouknow.utils.Constant.Companion.passwordValidator
+import com.letyouknow.utils.Constant.Companion.setErrorBorder
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.forgotpassword.ForgotPasswordActivity
 import com.letyouknow.view.signup.SignUpActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.PRIVACY_POLICY_LINK
-import com.pionymessenger.utils.Constant.Companion.TERMS_CONDITIONS_LINK
-import com.pionymessenger.utils.Constant.Companion.emailValidator
-import com.pionymessenger.utils.Constant.Companion.makeLinks
-import com.pionymessenger.utils.Constant.Companion.onTextChange
-import com.pionymessenger.utils.Constant.Companion.passwordValidator
-import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.startActivity
@@ -65,9 +65,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    lateinit var pushTokenViewModel: AddPushTokenViewModel
     lateinit var loginViewModel: LoginViewModel
     lateinit var fbLoginViewModel: FacebookLoginViewModel
     lateinit var googleLoginViewModel: GoogleLoginViewModel
+    lateinit var socialMobileViewModel: SocialMobileViewModel
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,9 +80,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun init() {
+        pushTokenViewModel = ViewModelProvider(this)[AddPushTokenViewModel::class.java]
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         fbLoginViewModel = ViewModelProvider(this)[FacebookLoginViewModel::class.java]
         googleLoginViewModel = ViewModelProvider(this)[GoogleLoginViewModel::class.java]
+
         tvSignUp.setOnClickListener(this)
         txtForgotPassword.setOnClickListener(this)
         txtForgotUserId.setOnClickListener(this)
@@ -88,6 +92,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         ivFingerPrint.setOnClickListener(this)
         ivPasswordInfo.setOnClickListener(this)
         ivGoogle.setOnClickListener(this)
+        setRememberData()
 
         initBiometric()
         setTermsLink()
@@ -96,23 +101,69 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         firebaseAuth()
         googleInit()
         facebookInit()
-        onTextChange(this, edtEmailAddress, tvErrorEmailAddress)
+        onTextChangeEmail()
+//        onTextChange(this, edtEmailAddress, tvErrorEmailAddress)
         onTextChange(this, edtPassword, tvErrorPassword)
         hashKey()
-        setRememberData()
-        if (pref?.isBioMetric()!!) {
-            ivFingerPrint.visibility = View.VISIBLE
-        } else {
-            ivFingerPrint.visibility = View.GONE
+        if (!pref?.getUserData()?.isSocial!!) {
+            if (pref?.isBioMetric()!!) {
+                ivFingerPrint.visibility = View.VISIBLE
+            } else {
+                ivFingerPrint.visibility = View.GONE
+            }
         }
     }
 
+    private fun onTextChangeEmail() {
+        edtEmailAddress.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! >= 0) {
+                    edtEmailAddress.setBackgroundResource(R.drawable.bg_edittext)
+                    tvErrorEmailAddress.visibility = View.GONE
+                    if (!pref?.getUserData()?.isSocial!!) {
+                        if (!TextUtils.isEmpty(remData?.email)) {
+                            if (edtEmailAddress.text.toString().trim() == remData?.email) {
+                                ivFingerPrint.visibility = View.VISIBLE
+                            } else {
+                                ivFingerPrint.visibility = View.GONE
+                            }
+                        }
+                    }
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                } else {
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private var remData: RememberMeData? = RememberMeData()
     private fun setRememberData() {
-        val remData = pref?.isRememberData()
+        remData = pref?.isRememberData()
         if (remData?.isChecked!!) {
-            edtEmailAddress.setText(remData.email)
-            edtPassword.setText(remData.password)
-            chkRememberMe.isChecked = remData.isChecked!!
+            edtEmailAddress.setText(remData?.email)
+            edtPassword.setText(remData?.password)
+            chkRememberMe.isChecked = remData?.isChecked!!
+        } else {
+            if (!TextUtils.isEmpty(remData?.email)) {
+                edtEmailAddress.setText(remData?.email)
+            }
         }
         chkRememberMe.onCheckedChange { buttonView, isChecked ->
             val data = RememberMeData()
@@ -122,7 +173,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 data.password = edtPassword.text.toString().trim()
 
             } else {
-                data.email = ""
+                data.email = edtEmailAddress.text.toString().trim()
                 data.password = ""
             }
             data.isChecked = isChecked
@@ -169,23 +220,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     result: BiometricPrompt.AuthenticationResult
                 ) {
                     super.onAuthenticationSucceeded(result)
-                    Log.e("Result", Gson().toJson(result.cryptoObject))
-                    Log.e("Result", result.authenticationType.toString())
+                    //  Log.e("Result", Gson().toJson(result.cryptoObject))
+                    //   Log.e("Result", result.authenticationType.toString())
                     callLoginBioAPI()
-//                    Toast.makeText(
-//                        applicationContext,
-//                        "Authentication succeeded!", Toast.LENGTH_SHORT
-//                    )
-//                        .show()
+
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                   /* Toast.makeText(
-                        applicationContext, "Authentication failed",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()*/
+
                 }
             })
 
@@ -200,11 +243,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun setTermsLink() {
         txtTerms.makeLinks(
             Pair("Terms and Conditions", View.OnClickListener {
-//                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to TERMS_CONDITIONS_LINK)
                 dialogWebView(this, TERMS_CONDITIONS_LINK)
             }),
             Pair("Privacy Policy", View.OnClickListener {
-//                startActivity<PrivacyPolicyTermsCondActivity>(ARG_POLICY to PRIVACY_POLICY_LINK)
                 dialogWebView(this, PRIVACY_POLICY_LINK)
             })
         )
@@ -237,7 +278,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     data.password = edtPassword.text.toString().trim()
 
                 } else {
-                    data.email = ""
+                    data.email = edtEmailAddress.text.toString().trim()
                     data.password = ""
                 }
                 data.isChecked = chkRememberMe.isChecked
@@ -252,17 +293,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.ivFingerPrint -> {
-                /*  val secretKey = getKey()
-                  val initializationVector = getInitializationVector()
-                  if (secretKey != null && initializationVector != null) {
-                      val cipher = getDecryptCipher(secretKey, initializationVector)
-                  }*/
                 biometricPrompt.authenticate(promptInfo)
-
             }
+
             R.id.ivPasswordInfo -> {
                 popupPassword()
             }
+
             R.id.ivGoogle -> {
                 googleSignIn()
             }
@@ -274,9 +311,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
+
             val request = HashMap<String, String>()
             request[ApiConstant.username] = edtEmailAddress.text.toString()
             request[ApiConstant.password] = edtPassword.text.toString()
@@ -285,14 +323,41 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 Constant.dismissLoader()
                 if (data.buyerId != 0) {
                     pref?.setLogin(true)
-
                     data.password = edtPassword.text.toString()
                     pref?.setUserData(Gson().toJson(data))
-                    startActivity<MainActivity>()
-                    finish()
+                    callPushTokenAPI()
+
                 } else {
-                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
+            )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callPushTokenAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.Token] = pref?.getFirebaseToken()!!
+            request[ApiConstant.UserProfileId] = pref?.getUserData()?.buyerId!!.toString()
+            request[ApiConstant.DeviceType] = "Android"
+
+            pushTokenViewModel.pushToken(this, request)!!.observe(this, Observer { data ->
+                Constant.dismissLoader()
+                // Log.e("token Resp",data.message!!)
+                startActivity<MainActivity>()
+                finish()
             }
             )
         } else {
@@ -304,7 +369,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, String>()
@@ -318,10 +383,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     val dataUser = pref?.getUserData()
                     data.password = dataUser?.password!!
                     pref?.setUserData(Gson().toJson(data))
-                    startActivity<MainActivity>()
-                    finish()
+                    callPushTokenAPI()
                 } else {
-                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             )
@@ -389,7 +457,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun googleInit() {
         firebaseAuth()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.google_web_client_id)).requestEmail()
+            .requestIdToken(getString(R.string.google_web_client_id)).requestEmail().requestId()
+            .requestIdToken(getString(R.string.google_web_client_id))
+            .requestServerAuthCode(getString(R.string.google_web_client_id))
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
@@ -409,16 +479,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         ivFacebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + Gson().toJson(loginResult))
+                // Log.d(TAG, "facebook:onSuccess:" + Gson().toJson(loginResult))
                 handleFacebookAccessToken(loginResult.accessToken)
             }
 
             override fun onCancel() {
-                Log.d(TAG, "facebook:onCancel")
+                // Log.d(TAG, "facebook:onCancel")
             }
 
             override fun onError(error: FacebookException) {
-                Log.d(TAG, "facebook:onError", error)
+                // Log.d(TAG, "facebook:onError", error)
             }
         })
     }
@@ -441,9 +511,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
-
         callbackManager.onActivityResult(requestCode, resultCode, data)
-
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -455,8 +523,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     Log.e("UserName : ", user?.displayName!!)
-                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
-                        .show()
+                    /*Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+                        .show()*/
                     callGoogleLoginAPI(idToken)
                     // updateUI(user)
                     googleSignOut()
@@ -479,9 +547,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     val user = auth.currentUser
                     Log.e("UserName FB : ", user?.displayName!!)
                     Log.e("token : ", token.token)
-                    Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
-                        .show()
+                    /* Toast.makeText(applicationContext, "Login Successfully", Toast.LENGTH_SHORT)
+                         .show()*/
                     callFBLoginAPI(token.token)
+                    facebookSignOut()
                     //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -490,31 +559,37 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
+                    facebookSignOut()
                     //updateUI(null)
                 }
             }
-        facebookSignOut()
+
     }
 
     private fun callFBLoginAPI(accessToken: String) {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
             request[ApiConstant.AccessToken] = accessToken
+            request[ApiConstant.AppType] = "android"
 
             fbLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
                 Constant.dismissLoader()
                 if (data.buyerId != 0) {
                     pref?.setLogin(true)
+                    data.isSocial = true
                     pref?.setUserData(Gson().toJson(data))
-                    startActivity<MainActivity>()
-                    finish()
+                    callPushTokenAPI()
                 } else {
-                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             )
@@ -527,21 +602,26 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
-            request[ApiConstant.AccessToken] = accessToken
+            request[ApiConstant.Token] = accessToken
+            request[ApiConstant.AppType] = "web"
 
             googleLoginViewModel.getLogin(this, request)!!.observe(this, Observer { data ->
                 Constant.dismissLoader()
                 if (data.buyerId != 0) {
                     pref?.setLogin(true)
+                    data.isSocial = true
                     pref?.setUserData(Gson().toJson(data))
-                    startActivity<MainActivity>()
-                    finish()
+                    callPushTokenAPI()
                 } else {
-                    Toast.makeText(this, "login failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.login_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             )

@@ -3,7 +3,7 @@ package com.letyouknow.view.lyk.summary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -23,15 +23,15 @@ import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.retrofit.viewmodel.IsSoldViewModel
 import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
+import com.letyouknow.utils.Constant.Companion.ARG_IS_LYK_SHOW
+import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_LCD
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_LYK_SHOW
-import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import kotlinx.android.synthetic.main.activity_lyk_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lyk_negative.*
@@ -40,6 +40,8 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
 
@@ -71,7 +73,9 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_IMAGE_ID) && intent.hasExtra(
                 ARG_SUBMIT_DEAL
-            ) && intent.hasExtra(Constant.ARG_UCD_DEAL_PENDING)
+            ) && intent.hasExtra(Constant.ARG_UCD_DEAL_PENDING) && intent.hasExtra(
+                Constant.ARG_MSRP_RANGE
+            )
         ) {
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
@@ -105,6 +109,12 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 ll360.visibility = View.GONE
                 llGallery.visibility = View.GONE
             }
+
+            if (!TextUtils.isEmpty(intent.getStringExtra(Constant.ARG_MSRP_RANGE))) {
+                tvPriceMSRP.text = intent.getStringExtra(Constant.ARG_MSRP_RANGE)
+            } else {
+                tvPriceMSRP.visibility = View.GONE
+            }
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
@@ -127,7 +137,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvLightingCar -> {
-                    callIsSoldAPI()
+                callIsSoldAPI()
             }
             R.id.tvStep2 -> {
                 callCheckVehicleStockAPI(true)
@@ -183,24 +193,23 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 var isFirstAcce = true
                 val arAccId: ArrayList<String> = ArrayList()
                 for (i in 0 until arOptions?.size!!) {
-                        arAccId.add(arOptions!![i].dealerAccessoryID!!)
-                        if (isFirstAcce) {
-                            isFirstAcce = false
-                            accessoriesStr = arOptions!![i].accessory!!
-                        } else
-                            accessoriesStr += ",\n" + arOptions!![i].accessory!!
-
+                    arAccId.add(arOptions!![i].dealerAccessoryID!!)
+                    if (isFirstAcce) {
+                        isFirstAcce = false
+                        accessoriesStr = arOptions!![i].accessory!!
+                    } else
+                        accessoriesStr += ",\n" + arOptions!![i].accessory!!
                 }
                 var packageStr = ""
                 var isFirstPackage = true
 
                 for (i in 0 until arPackages?.size!!) {
-                        if (isFirstPackage) {
-                            isFirstPackage = false
-                            packageStr = arPackages!![i].packageName!!
-                        } else {
-                            packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
-                        }
+                    if (isFirstPackage) {
+                        isFirstPackage = false
+                        packageStr = arPackages!![i].packageName!!
+                    } else {
+                        packageStr = packageStr + ",\n" + arPackages!![i].packageName!!
+                    }
                 }
                 tvDialogPackage.text = packageStr
                 tvDialogOptions.text = accessoriesStr
@@ -223,7 +232,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = java.util.HashMap<String, Any>()
@@ -235,7 +244,6 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                 userData?.authToken = data.auth_token!!
                 userData?.refreshToken = data.refresh_token!!
                 pref?.setUserData(Gson().toJson(userData))
-
             }
             )
         } else {
@@ -259,9 +267,8 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                         )
 
                     } else {
-                            setLCDPrefData()
+                        setLCDPrefData()
                     }
-
                 }
                 )
         } else {
@@ -360,7 +367,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val pkgList = JsonArray()
@@ -387,13 +394,20 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             }
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
+            //Log.e("RequestStock", Gson().toJson(request))
             checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
                     if (data) {
                         if (isRadius) {
                             if (submitDealData.negativeResult?.secondLabel == "1") {
+                                val prefSubmitPriceData = pref?.getSubmitPriceData()
+                                prefSubmitPriceData?.radius =
+                                    submitDealData.negativeResult?.minimalDistance!! + " mi"
+                                pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+                                val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+                                val date = df.format(Calendar.getInstance().time)
+                                pref?.setSubmitPriceTime(date)
                                 pref?.setRadius(submitDealData.negativeResult?.minimalDistance!!)
                             }
                         }

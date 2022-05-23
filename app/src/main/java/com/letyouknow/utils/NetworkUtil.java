@@ -3,6 +3,9 @@ package com.letyouknow.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.letyouknow.R;
+
 class NetworkUtil {
 
     public static String getConnectivityStatusString(Context context) {
@@ -11,14 +14,14 @@ class NetworkUtil {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-                status = "Wifi enabled";
+                status = context.getString(R.string.wifi_enabled);
                 return status;
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                status = "Mobile data enabled";
+                status = context.getString(R.string.mobile_data_enabled);
                 return status;
             }
         } else {
-            status = "No internet is available";
+            status = context.getString(R.string.no_internet_is_available);
             return status;
         }
         return status;

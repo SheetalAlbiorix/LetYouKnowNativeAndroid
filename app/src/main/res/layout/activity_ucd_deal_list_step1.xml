@@ -39,22 +39,22 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:gravity="center"
-                    android:padding="@dimen/_12sdp">
+                    android:padding="@dimen/_12sdp"
+                    android:visibility="gone">
 
-            <TextView
-                style="@style/light"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/your_search_results"
-                android:textColor="@color/textGray"
-                android:textSize="@dimen/_10sdp" />
+                    <TextView
+                        style="@style/light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/your_search_results"
+                        android:textColor="@color/textGray"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         style="@style/medium"
@@ -87,11 +87,11 @@
 
                             <TextView
                                 style="@style/regular"
-                                android:textFontWeight="100"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/unlockedcardeals"
                                 android:textColor="@color/navyBlue"
+                                android:textFontWeight="100"
                                 android:textSize="@dimen/_16sdp" />
 
                             <TextView

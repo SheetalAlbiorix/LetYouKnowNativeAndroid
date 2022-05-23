@@ -1,0 +1,43 @@
+package com.letyouknow.model
+
+import java.io.Serializable
+
+data class Deal(
+    val buyerID: String? = "",
+    val canSavePayment: Boolean? = false,
+    val card_brand: String? = "",
+    val card_last4: String? = "",
+    val dealID: Int? = 0,
+    val dealTimeStamp: String? = "",
+    val dealUcdDTOs: ArrayList<Any>? = ArrayList(),
+    val dealerAccessoryIDs: Any? = Any(),
+    val guestId: Int? = 0,
+    val initial: String? = "",
+    val ip: String? = "",
+    val isPackageNone: Boolean? = false,
+    val lastSubmissionTimeStamp: String? = "",
+    val loanType: String? = "",
+    val paymentLast4: String? = "",
+    val paymentMethod: String? = "",
+    val payment_intent_id: String? = "",
+    val payment_method_id: String? = "",
+    val price: Float? = 0.0f,
+    val productID: Int? = 0,
+    val promotionId: String? = "",
+    val reservedTimeStamp: String? = "",
+    val searchRadius: Int? = 0,
+    val seed: Int? = 0,
+    val submissionCount: Int? = 0,
+    val timeZoneOffset: Int? = 0,
+    val userID: Int? = 0,
+    val userProfileID: Int? = 0,
+    val vehicleExteriorColorID: String? = "",
+    val vehicleInteriorColorID: String? = "",
+    val vehicleInventoryId: Any? = Any(),
+    val vehicleMakeID: String? = "0",
+    val vehicleModelID: String? = "0",
+    val vehiclePackageIDs: Any? = Any(),
+    val vehicleTrimID: String? = "0",
+    val vehicleYearID: String? = "0",
+    val zipCode: String? = ""
+) : Serializable

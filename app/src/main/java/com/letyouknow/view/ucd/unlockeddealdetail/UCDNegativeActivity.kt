@@ -23,9 +23,9 @@ import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.Constant
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
-import com.pionymessenger.utils.Constant
 import kotlinx.android.synthetic.main.activity_ucd_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -53,7 +53,7 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_ucd_negative)
         binding.title = ""
         checkVehicleStockViewModel =
-            ViewModelProvider(this).get(CheckVehicleStockViewModel::class.java)
+            ViewModelProvider(this)[CheckVehicleStockViewModel::class.java]
         if (intent.hasExtra(
                 Constant.ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -65,7 +65,7 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
                 tvMessage.text = "Market's hot! The car is no longer available."
             } else {
                 tvMessage.text =
-                    "Something went wrong, but don't worry your card hasn't been charged"
+                    "Something went wrong, but don't worry your card hasn't been charged."
             }
             imageId = intent.getStringExtra(Constant.ARG_IMAGE_ID)!!
             arImage = Gson().fromJson(
@@ -96,6 +96,24 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
             if (imageId == "0") {
                 ll360.visibility = View.GONE
                 llGallery.visibility = View.GONE
+            }
+
+            if (AppGlobal.isNotEmpty(ucdData.miles) || AppGlobal.isNotEmpty(ucdData.condition)) {
+                if (AppGlobal.isNotEmpty(ucdData.miles))
+                    tvDisclosure.text =
+                        getString(R.string.miles_approximate_odometer_reading, ucdData.miles)
+
+                if (AppGlobal.isNotEmpty(ucdData.condition)) {
+                    if (AppGlobal.isEmpty(ucdData.miles)) {
+                        tvDisclosure.text = ucdData.condition
+                    } else {
+                        tvDisclosure.text =
+                            tvDisclosure.text.toString().trim() + ", " + ucdData.condition
+                    }
+                }
+                llDisc.visibility = View.VISIBLE
+            } else {
+                llDisc.visibility = View.GONE
             }
         }
     }
@@ -177,9 +195,18 @@ class UCDNegativeActivity : BaseActivity(), View.OnClickListener {
 
                 tvDialogPackage.text = packages
                 tvDialogOptions.text = accessories
-                if (AppGlobal.isNotEmpty(miles)) {
-                    tvDialogDisclosure.text =
-                        getString(R.string.miles_approximate_odometer_reading, miles)
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosure.text =
+                            getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosure.text = condition
+                        } else {
+                            tvDialogDisclosure.text =
+                                tvDialogDisclosure.text.toString().trim() + ", " + condition
+                        }
+                    }
                     llDialogDisclosure.visibility = View.VISIBLE
                 } else {
                     llDialogDisclosure.visibility = View.GONE

@@ -3,6 +3,7 @@ package com.letyouknow.view.lyk.summary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.text.*
 import android.util.Log
 import android.view.View
@@ -19,6 +20,7 @@ import com.google.gson.JsonArray
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityLykStep1Binding
+import com.letyouknow.model.PrefSubmitPriceData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
@@ -26,16 +28,17 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.AppGlobal.Companion.loadImageUrl
 import com.letyouknow.utils.AppGlobal.Companion.setWhiteSpinnerLayoutPos
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IS_BID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_VIEW
+import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
+import com.letyouknow.utils.Constant.Companion.makeLinks
+import com.letyouknow.utils.Constant.Companion.setErrorBorder
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep2Activity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
 import com.letyouknow.view.spinneradapter.RadiusSpinnerBlackDropAdapter
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_BID
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_VIEW
-import com.pionymessenger.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.pionymessenger.utils.Constant.Companion.makeLinks
-import com.pionymessenger.utils.Constant.Companion.setErrorBorder
 import kotlinx.android.synthetic.main.activity_lyk_step1.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_price_validation.*
@@ -45,10 +48,8 @@ import kotlinx.android.synthetic.main.layout_toolbar_blue.toolbar
 import org.jetbrains.anko.startActivity
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-
 
 class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener {
@@ -67,8 +68,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         "1000 mi",
         "ALL"
     )
-    private var arLoan = arrayListOf("Financing Option*", "Loan", "Cash")
-    private var financingStr = "Financing Option*"
+    private var arLoan = arrayListOf("Financing Option", "Loan", "Cash")
+    private var financingStr = "Financing Option"
     private var radiusId = "Search Radius"
 
     private var arImageUrl: ArrayList<String> = ArrayList()
@@ -83,11 +84,15 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     private lateinit var adapterRadius: RadiusSpinnerBlackDropAdapter
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
     private lateinit var submitPendingDealViewModel: SubmitPendingDealViewModel
+    private lateinit var minMSRPRangeViewModel: MinMSRPRangeViewModel
+    private lateinit var minMSRPViewModel: MinMSRPViewModel
 
     private var isValidZipCode = false
     private var isBid = false
     private var price = 0.0
     private var imageId = "0"
+    private var msrpRange = ""
+    private lateinit var prefSubmitPriceData: PrefSubmitPriceData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,7 +105,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
         if (!TextUtils.isEmpty(pref?.getRadius())) {
-            Log.e("Data", pref?.getRadius()!!)
+            // Log.e("Data", pref?.getRadius()!!)
             callRadiusAPI()
         }
     }
@@ -109,28 +114,44 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (isBid) {
             pref?.setBid(true)
         }
+        if (Constant.isInitProgress() && Constant.progress.isShowing)
+            Constant.dismissLoader()
         super.onBackPressed()
     }
 
     private fun init() {
+        prefSubmitPriceData = pref?.getSubmitPriceData()!!
+
         tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
+        minMSRPRangeViewModel = ViewModelProvider(this)[MinMSRPRangeViewModel::class.java]
+        minMSRPViewModel = ViewModelProvider(this)[MinMSRPViewModel::class.java]
         imageIdViewModel = ViewModelProvider(this)[ImageIdViewModel::class.java]
         imageUrlViewModel = ViewModelProvider(this)[ImageUrlViewModel::class.java]
         zipCodeModel = ViewModelProvider(this)[VehicleZipCodeViewModel::class.java]
         submitPendingDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingDealViewModel::class.java)
+            ViewModelProvider(this)[SubmitPendingDealViewModel::class.java]
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL)) {
             yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
-            callImageIdAPI()
+
             binding.data = yearModelMakeData
+
+            if (intent.hasExtra(ARG_IS_NOTIFICATION)) {
+                edtZipCode.setText(yearModelMakeData.zipCode)
+                edtPrice.setText(yearModelMakeData.price.toString())
+                callMinMSRPAPI()
+            } else {
+                callMinMSRPRangeAPI()
+            }
         }
         if (intent.hasExtra(ARG_IS_BID)) {
             isBid = intent.getBooleanExtra(ARG_IS_BID, false)
         }
+
+
         txtTerms.text =
             getString(R.string.i_certify_that, getString(R.string.app_name))
         setLoan()
@@ -151,25 +172,157 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 //        backButton()
         tvInfo.text = Html.fromHtml(getString(R.string.if_there_is_match_submit_price))
         scrollTouchListener()
-        onChangeZipCodePrice()
-        callRadiusAPI()
-        if (isBid)
-            setBidPreSelectionData()
+
+
+
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtInitials.filters = arrayOf<InputFilter>(letterFilter, InputFilter.LengthFilter(3))
+        onChangePrice()
+        if (isBid)
+            setBidPreSelectionData()
+        else
+            setPrefSelectionData()
+
+        onChangeZipCodePrice()
+        callRadiusAPI()
+    }
+
+    private fun callMinMSRPAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val jsonArrayPackage = JsonArray()
+
+            for (i in 0 until yearModelMakeData.arPackages!!.size) {
+                if (yearModelMakeData.arPackages!![i].isSelect!! || yearModelMakeData.arPackages!![i].isOtherSelect!!) {
+                    jsonArrayPackage.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
+                }
+            }
+            val jsonArray = JsonArray()
+
+            for (i in 0 until yearModelMakeData.arOptions!!.size) {
+                if (yearModelMakeData.arOptions!![i].isSelect!! || yearModelMakeData.arOptions!![i].isOtherSelect!!) {
+                    jsonArray.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArrayPackage
+            request[ApiConstant.checkedList] = jsonArray
+//            request[ApiConstant.productId] = "1"
+            request[ApiConstant.yearId] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.makeId] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.modelId] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.trimId] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.exteriorColorId] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.interiorColorId] = yearModelMakeData.vehicleIntColorID!!
+
+            //Log.e("RequestMin", Gson().toJson(request))
+
+            minMSRPViewModel.minMSRPCall(this, request)!!
+                .observe(this, Observer { dataMSRP ->
+                    Constant.dismissLoader()
+                    yearModelMakeData.msrp = dataMSRP.toFloat()
+                    callMinMSRPRangeAPI()
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun callMinMSRPRangeAPI() {
+        if (Constant.isOnline(this)) {
+            Constant.showLoader(this)
+            val jsonArrayPackage = JsonArray()
+
+            for (i in 0 until yearModelMakeData.arPackages!!.size) {
+                if (yearModelMakeData.arPackages!![i].isSelect!! || yearModelMakeData.arPackages!![i].isOtherSelect!!) {
+                    jsonArrayPackage.add(yearModelMakeData.arPackages!![i].vehiclePackageID)
+                }
+            }
+            val jsonArray = JsonArray()
+
+            for (i in 0 until yearModelMakeData.arOptions!!.size) {
+                if (yearModelMakeData.arOptions!![i].isSelect!! || yearModelMakeData.arOptions!![i].isOtherSelect!!) {
+                    jsonArray.add(yearModelMakeData.arOptions!![i].dealerAccessoryID)
+                }
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.packageList] = jsonArrayPackage
+            request[ApiConstant.checkedList] = jsonArray
+            request[ApiConstant.yearId] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.makeId] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.modelId] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.trimId] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.exteriorColorId] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.interiorColorId] = yearModelMakeData.vehicleIntColorID!!
+
+            //Log.e("RequestMin", Gson().toJson(request))
+
+            minMSRPRangeViewModel.minMSRPCall(this, request)!!
+                .observe(this, Observer { dataMSRP ->
+                    Constant.dismissLoader()
+                    //   Log.e("dataMSRP", Gson().toJson(dataMSRP))
+                    if (dataMSRP.size > 0) {
+                        msrpRange = dataMSRP[0]
+                        tvPrice.text = dataMSRP[0]
+                    } else {
+                        tvPrice.visibility = View.GONE
+                    }
+                    callImageIdAPI()
+                }
+                )
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun setBidPreSelectionData() {
-        edtZipCode.setText(yearModelMakeData.zipCode)
-        val formatter: DecimalFormat =
-            NumberFormat.getInstance(Locale.US) as DecimalFormat
-        formatter.applyPattern("#,###,###,###")
-        val formattedString: String = formatter.format(yearModelMakeData.price)
 
-        //setting text after format to EditText
-        edtPrice.setText(formattedString)
-        edtPrice.setSelection(edtPrice.text.toString().trim().length)
-        llViewPrice.visibility = View.GONE
+
+        Handler().postDelayed({
+            if (yearModelMakeData.price!! > 0.0f) {
+                val formatter: DecimalFormat =
+                    NumberFormat.getInstance(Locale.US) as DecimalFormat
+                formatter.applyPattern("#,###,###,###.##")
+                val formattedString: String = formatter.format(yearModelMakeData.price)
+                edtPrice.setText(formattedString)
+                edtPrice.setSelection(edtPrice.text.toString().trim().length)
+                llViewPrice.visibility = View.GONE
+            } else {
+                edtPrice.setText("0.0")
+            }
+            edtZipCode.setText(yearModelMakeData.zipCode)
+            if (!TextUtils.isEmpty(yearModelMakeData.zipCode))
+                callVehicleZipCodeAPI(yearModelMakeData.zipCode)
+            prefSubmitPriceData.zipCode = yearModelMakeData.zipCode
+            prefSubmitPriceData.loanType = yearModelMakeData.loanType
+            prefSubmitPriceData.price = yearModelMakeData.price?.toDouble()
+            prefSubmitPriceData.radius = yearModelMakeData.radius + " mi"
+            setPrefSubmitPriceData()
+        }, 500)
+
+    }
+
+    private fun setPrefSelectionData() {
+        if (prefSubmitPriceData.price!! > 0.0) {
+            val formatter: DecimalFormat =
+                NumberFormat.getInstance(Locale.US) as DecimalFormat
+            formatter.applyPattern("#,###,###,###.##")
+            val formattedString: String = formatter.format(prefSubmitPriceData.price)
+
+            //setting text after format to EditText
+            edtPrice.setText(formattedString)
+            edtPrice.setSelection(edtPrice.text.toString().trim().length)
+            llViewPrice.visibility = View.GONE
+        } else {
+            edtPrice.setText("0")
+        }
+        edtZipCode.setText(prefSubmitPriceData.zipCode)
+        if (!TextUtils.isEmpty(prefSubmitPriceData.zipCode))
+            callVehicleZipCodeAPI(prefSubmitPriceData.zipCode)
     }
 
     override fun onDestroy() {
@@ -193,12 +346,13 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     tvErrorZipCode.visibility = View.GONE
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext)
                 }
-                if (!TextUtils.isEmpty(pref?.getRadius())) {
-                    pref?.setRadius("")
-                    callRadiusAPI()
+                if (prefSubmitPriceData.zipCode != edtZipCode.text.toString().trim()) {
+                    if (!TextUtils.isEmpty(pref?.getRadius())) {
+                        pref?.setRadius("")
+                        yearModelMakeData.radius = ""
+                        callRadiusAPI()
+                    }
                 }
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -208,6 +362,9 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         })
 //        edtPrice.currencyFormat()
 //        edtPrice.filters = arrayOf(CurrencyFormatInputFilter())
+    }
+
+    private fun onChangePrice() {
         edtPrice.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -217,40 +374,69 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 val str = s.toString()
 
                 if (str.isNotEmpty()) {
-                    price = edtPrice.text.toString().replace(",", "").trim().toDouble()
-                    popupPrice(price)
+                    if (str.length == 1) {
+                        if (edtPrice.text.toString().trim() == "0.0" && str == "0") {
+                            edtPrice.setText("")
+                        } else if (edtPrice.text.toString().trim() == "0") {
+                            edtPrice.setText("")
+                        }
+                        if (str == ".") {
+                            edtPrice.setText("0.")
+                            edtPrice.setSelection(edtPrice.length())
+                        }
+                    }
+                    if (edtPrice.text.toString().length > 0) {
+                        price = edtPrice.text.toString().replace(",", "").trim().toDouble()
+                        val spanPrice = edtPrice.text.toString().trim().split(".")
+                        if (spanPrice.size == 2) {
+                            if (spanPrice[1].length > 2) {
+                                edtPrice.setText(
+                                    spanPrice[0] + "." + spanPrice[1].subSequence(
+                                        0,
+                                        2
+                                    )
+                                )
+                            }
+                        }
+                        if (price > yearModelMakeData.msrp!!.toDouble()) {
+                            popupPrice(price)
+                            if (price < 799) {
+                                tvErrorPrice.text = getString(R.string.price_must_be_799_00)
+                                setErrorBorder(edtPrice, tvErrorPrice)
+                                tvErrorPrice.visibility = View.GONE
+                            } else {
+                                edtPrice.setBackgroundResource(R.drawable.bg_edittext)
+                                tvErrorPrice.visibility = View.GONE
+                            }
+                        } else {
+                            llViewPrice.visibility = View.GONE
+                            if (price < 799) {
+                                tvErrorPrice.text = getString(R.string.price_must_be_799_00)
+                                setErrorBorder(edtPrice, tvErrorPrice)
+                            } else {
+                                edtPrice.setBackgroundResource(R.drawable.bg_edittext)
+                                tvErrorPrice.visibility = View.GONE
+                            }
+                        }
+                    }
+                } else {
+
+                    edtPrice.setBackgroundResource(R.drawable.bg_edittext)
+                    tvErrorPrice.visibility = View.GONE
                 }
 
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //   edtPrice.removeTextChangedListener(this)
                 try {
-                    /*   var originalString = s.toString()
-                       val longval: Double
-                       if (originalString.contains(",")) {
-                           originalString = originalString.replace(",".toRegex(), "")
-                       }
-                       longval = originalString.toDouble()
-                       val formatter: DecimalFormat =
-                           NumberFormat.getInstance(Locale.US) as DecimalFormat
-                       formatter.applyPattern("#,###,###,###.##")
-                       val formattedString: String = formatter.format(longval)
 
-                       //setting text after format to EditText
-                       edtPrice.setText(formattedString)*/
-//                     edtPrice.setSelection(edtPrice.text.toString().trim().length)
                 } catch (nfe: NumberFormatException) {
                     nfe.printStackTrace()
                 }
-                //   edtPrice.addTextChangedListener(this)
-
             }
-
         })
         edtInitials.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -308,17 +494,9 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
         }
         ivPriceCorrect.setOnClickListener {
-            /* if (!TextUtils.isEmpty(edtPrice.text.toString().trim()) && !edtPrice.text.toString()
-                     .trim().contains('.')
-             ){
-                 val p = price+0.00
-                 edtPrice.setText(p.toString())
-             }*/
-
             llViewPrice.visibility = View.GONE
             edtPrice.setSelection(edtPrice.text.toString().length)
             priceError(price)
-
         }
         ivPriceClose.setOnClickListener {
             edtPrice.hint = "0"
@@ -349,13 +527,13 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             if (!Constant.progress.isShowing)
                 if (!Constant.isInitProgress()) {
                     Constant.showLoader(this)
-                } else if (!Constant.progress.isShowing) {
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(this)
                 }
             zipCodeModel.getZipCode(this, zipCode)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("ZipCode Data", Gson().toJson(data))
+                    //  Log.e("ZipCode Data", Gson().toJson(data))
                     if (!data) {
                         edtZipCode.setBackgroundResource(R.drawable.bg_edittext_error)
                         tvErrorZipCode.visibility = View.VISIBLE
@@ -410,6 +588,12 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                         spRadius.setSelection(i)
                     }
                 }
+            } else if (!TextUtils.isEmpty(prefSubmitPriceData.radius)) {
+                for (i in 0 until arRadius.size) {
+                    if (prefSubmitPriceData.radius == arRadius[i]) {
+                        spRadius.setSelection(i)
+                    }
+                }
             }
         }
     }
@@ -433,9 +617,9 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     isScrollable = true
                     tvErrorFullDisclouser.visibility = View.GONE
                     edtInitials.isEnabled = true
-                    Log.e("bottom", "scroll view is at bottom")
+                    //  Log.e("bottom", "scroll view is at bottom")
                 } else {
-                    Log.e("Top", "scroll view is not at bottom")
+                    //  Log.e("Top", "scroll view is not at bottom")
                 }
             }
     }
@@ -452,7 +636,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    override fun getViewActivity(): Activity? {
+    override fun getViewActivity(): Activity {
         return this
     }
 
@@ -466,6 +650,10 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         for (i in 0 until arLoan.size) {
             if (isBid) {
                 if (arLoan[i] == yearModelMakeData.loanType) {
+                    spLoan.setSelection(i)
+                }
+            } else if (!TextUtils.isEmpty(prefSubmitPriceData.loanType)) {
+                if (arLoan[i] == prefSubmitPriceData.loanType) {
                     spLoan.setSelection(i)
                 }
             }
@@ -488,7 +676,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -520,14 +708,19 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
             val request = HashMap<String, Any>()
 
             request[ApiConstant.ImageId] = ImageId!!
-            request[ApiConstant.ImageProduct] = "Splash"
+            if (yearModelMakeData.vehicleExtColorID!! == "0") {
+                request[ApiConstant.ImageProduct] = "Splash"
+            } else {
+                request[ApiConstant.ImageProduct] = "MultiAngle"
+                request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
+            }
 
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->
@@ -550,7 +743,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -594,7 +787,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                         Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                         Constant.ARG_UCD_DEAL_PENDING to Gson().toJson(data),
                         Constant.ARG_IMAGE_URL to Gson().toJson(arImageUrl),
-                        Constant.ARG_IMAGE_ID to imageId
+                        Constant.ARG_IMAGE_ID to imageId,
+                        Constant.ARG_MSRP_RANGE to msrpRange
                     )
                 }
                 )
@@ -609,8 +803,14 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         when (v?.id) {
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                    pref?.setRadius("")
+//                pref?.setRadius("")
                 if (isValid()) {
+                    prefSubmitPriceData.price =
+                        edtPrice.text.toString().replace(",", "").trim().toDouble()
+                    prefSubmitPriceData.zipCode = edtZipCode.text.toString().trim()
+                    prefSubmitPriceData.loanType = financingStr
+                    prefSubmitPriceData.radius = radiusId
+                    setPrefSubmitPriceData()
 //                    callRefreshTokenApi()
                     callSubmitPendingDealAPI()
                 }
@@ -651,7 +851,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             R.id.spLoan -> {
                 val data = adapterLoan.getItem(position) as String
                 financingStr = data
-                if (financingStr != "Financing Option*") {
+                if (financingStr != "Financing Option") {
                     tvErrorFinancingOption.visibility = View.GONE
                 }
                 setWhiteSpinnerLayoutPos(position, spLoan, this)
@@ -659,18 +859,15 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             R.id.spRadius -> {
                 val data = adapterRadius.getItem(position) as String
                 radiusId = data
-                AppGlobal.setWhiteSpinnerLayoutPos(position, spRadius, this)
+                setWhiteSpinnerLayoutPos(position, spRadius, this)
                 if (data != "Search Radius") {
                     tvErrorRadius.visibility = View.GONE
                 }
-
-
             }
         }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
     }
 
 
@@ -709,7 +906,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             tvErrorPrice.text = getString(R.string.price_must_be_799_00)
             return false
         }
-        if (financingStr == "Financing Option*") {
+        if (financingStr == "Financing Option") {
             tvErrorFinancingOption.visibility = View.VISIBLE
             return false
         }
@@ -793,7 +990,7 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = java.util.HashMap<String, Any>()
@@ -874,5 +1071,12 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             }
         })
 
+    }
+
+    fun setPrefSubmitPriceData() {
+        pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
     }
 }

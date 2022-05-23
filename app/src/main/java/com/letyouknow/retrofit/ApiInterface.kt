@@ -1,7 +1,6 @@
 package com.letyouknow.retrofit
 
 import com.letyouknow.model.*
-import com.pionymessenger.model.SignupData
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -9,10 +8,10 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
-//    @POST("auth/login")
+    //    @POST("auth/login")
 //    fun login(@Body request: HashMap<String, String>): Call<LoginData>
-@POST("auth/loginmobile")
-fun login(@Body request: HashMap<String, String>): Call<LoginData>
+    @POST("auth/loginmobile")
+    fun login(@Body request: HashMap<String, String>): Call<LoginData>
 
     @POST("userprofile")
     fun signUp(@Body request: HashMap<String, String>): Call<SignupData>
@@ -175,6 +174,9 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     @POST("msrp/GetMinMSRP")
     fun getMinMSRP(@Body request: HashMap<String, Any>): Call<Double>
 
+    @POST("msrp/GetMSRPRange")
+    fun getMSRPRange(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
+
     @GET("userprofile")
     fun getUserProfile(): Call<UserProfileData>
 
@@ -232,7 +234,33 @@ fun login(@Body request: HashMap<String, String>): Call<LoginData>
     @POST("ExternalAuth/Facebook")
     fun facebookLogin(@Body request: HashMap<String, Any>): Call<LoginData>
 
-    @POST("ExternalAuth/Google")
+    @POST("ExternalAuth/google")
     fun googleLogin(@Body request: HashMap<String, Any>): Call<LoginData>
 
+    @PUT("userprofile/socialmobile")
+    fun socialMobile(@Body request: HashMap<String, Any>): Call<LoginData>
+
+    @GET("referralprogram/current/balance")
+    fun referralProgramCurrentBalance(): Call<Double>
+
+    //    @HTTP(method = "get", path = "referralprogram/current", hasBody = true)
+//    fun referralProgramCurrent(@Body request: HashMap<String, Any>): Call<CurrentReferralProgramData>
+//  @HTTP(method = "get", path = "referralprogram/current", hasBody = true)
+    @GET("referralprogram/current")
+    fun referralProgramCurrent(): Call<CurrentReferralProgramData>
+
+    @POST("referralprogram/current")
+    fun referralProgramCurrentPost(@Body request: HashMap<String, Any>): Call<CurrentReferralProgramData>
+
+    @POST("userprofile/devicepushtoken")
+    fun devicePushToken(@Body request: HashMap<String, Any>): Call<DevicePushTokenData>
+
+    @DELETE("userprofile/devicepushtoken/{token}")
+    fun devicePushTokenDelete(@Path(value = "token") token: String?): Call<DevicePushTokenData>
+
+    @GET("promotion/public")
+    fun promotionPublic(): Call<PromotionData>
+
+    @GET("activematching/deal/{dealId}")
+    fun activeMatchingDeal(@Path(value = "dealId") token: String?): Call<ActiveMatchingData>
 }

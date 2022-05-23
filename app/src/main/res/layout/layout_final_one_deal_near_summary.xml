@@ -181,7 +181,7 @@
                     android:backgroundTint="@color/white"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/_12sdp"
-                    android:text="LightingCarDeals"
+                    android:text="LightningCarDeals"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_14sdp" />
 

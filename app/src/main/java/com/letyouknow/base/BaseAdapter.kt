@@ -51,6 +51,7 @@ abstract class BaseAdapter<T>(val layout: Int = 0) :
     }
 
     fun addAll(dataList: ArrayList<T>) {
+
         list.clear()
         list.addAll(dataList)
         notifyDataSetChanged()

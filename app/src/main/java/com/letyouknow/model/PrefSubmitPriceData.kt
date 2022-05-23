@@ -17,5 +17,10 @@ data class PrefSubmitPriceData(
     var extColorStr: String? = "",
     var intColorStr: String? = "",
     var packagesData: ArrayList<VehiclePackagesData>? = ArrayList(),
-    var optionsData: ArrayList<VehicleAccessoriesData>? = ArrayList()
+    var optionsData: ArrayList<VehicleAccessoriesData>? = ArrayList(),
+    var price: Double? = 0.0,
+    var radius: String? = "",
+    var loanType: String? = "",
+    var zipCode: String? = "",
+    var isChange: Boolean? = false
 ) : Serializable

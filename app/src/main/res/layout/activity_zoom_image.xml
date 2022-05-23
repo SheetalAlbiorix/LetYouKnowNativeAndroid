@@ -5,9 +5,10 @@
     <data>
 
         <import type="android.view.View" />
-<variable
-    name="title"
-    type="String" />
+
+        <variable
+            name="title"
+            type="String" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
@@ -29,8 +30,8 @@
                 android:id="@+id/imViewedImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
                 android:layout_gravity="center"
+                android:clickable="true"
                 android:focusable="true"
                 android:src="@drawable/ic_image_car" />
         </FrameLayout>

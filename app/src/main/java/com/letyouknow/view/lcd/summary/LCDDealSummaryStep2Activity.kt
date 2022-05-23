@@ -35,6 +35,15 @@ import com.letyouknow.utils.AppGlobal.Companion.alertCardError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
+import com.letyouknow.utils.Constant.Companion.ARG_IS_SHOW_PER
+import com.letyouknow.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
+import com.letyouknow.utils.Constant.Companion.ARG_SEL_TAB
+import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
+import com.letyouknow.utils.Constant.Companion.ARG_TYPE_PRODUCT
+import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
+import com.letyouknow.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.negative.LCDNegativeActivity
@@ -45,38 +54,30 @@ import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
 import com.microsoft.signalr.TransportEnum
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_ID
-import com.pionymessenger.utils.Constant.Companion.ARG_IMAGE_URL
-import com.pionymessenger.utils.Constant.Companion.ARG_IS_SHOW_PER
-import com.pionymessenger.utils.Constant.Companion.ARG_LCD_DEAL_GUEST
-import com.pionymessenger.utils.Constant.Companion.ARG_SEL_TAB
-import com.pionymessenger.utils.Constant.Companion.ARG_SUBMIT_DEAL
-import com.pionymessenger.utils.Constant.Companion.ARG_TYPE_PRODUCT
-import com.pionymessenger.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
-import com.pionymessenger.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
-import com.stripe.android.model.*
+import com.stripe.android.model.PaymentIntent
+import com.stripe.android.model.Source
+import com.stripe.android.model.SourceParams
+import com.stripe.android.model.StripeIntent
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lcd_deal_summary_step2.*
+import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
+import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
-import okhttp3.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
@@ -226,11 +227,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             val intent = Intent()
             val packageName = packageName
             val pm = getSystemService(POWER_SERVICE) as PowerManager
-                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                    intent.data = Uri.parse("package:$packageName")
-                    startActivity(intent)
-                }
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
 //            }
         }
     }
@@ -257,18 +258,18 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
         hubConnection?.start()?.subscribe(object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
-                Log.e("onSubscribe", "onSubscribe")
+                // Log.e("onSubscribe", "onSubscribe")
             }
 
             override fun onComplete() {
-                Log.e("onComplete", "onComplete")
+                // Log.e("onComplete", "onComplete")
                 if (hubConnection?.connectionState == HubConnectionState.CONNECTED) {
                     handleHub()
                 }
             }
 
             override fun onError(e: Throwable) {
-                Log.e("onError", "onError")
+                //  Log.e("onError", "onError")
                 initHub()
             }
 
@@ -276,8 +277,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun handleHub() {
-        Log.e("dealId", dataLCDDeal.dealID!!)
-        Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
+        //  Log.e("dealId", dataLCDDeal.dealID!!)
+        //   Log.e("buyerId", pref?.getUserData()?.buyerId.toString())
 
         hubConnection?.invoke("SubscribeOnDeal", dataLCDDeal.dealID!!.toInt())!!
 
@@ -285,9 +286,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             "CantSubscribeOnDeal",
             { vehicleId, message ->  // OK
                 try {
-                    Log.e("data", "$vehicleId: $message")
+                    // Log.e("data", "$vehicleId: $message")
                 } catch (e: Exception) {
-                    Log.e("CantSubscribeOnDeal", e.message.toString())
+                    //  Log.e("CantSubscribeOnDeal", e.message.toString())
                 }
             },
             Any::class.java, Any::class.java
@@ -303,7 +304,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 // OK
                 this@LCDDealSummaryStep2Activity.runOnUiThread {
                     try {
-                        Log.e("data", "$dealId: $timer")
+                        //  Log.e("data", "$dealId: $timer")
                         /* val time = timer.toString()
                          seconds = time.toInt()*/
 //                    timerVisible(timer.toInt())
@@ -340,7 +341,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             //  return
                         }
                     } catch (e: Exception) {
-                        Log.e("UpdateDealTimer", e.message.toString())
+                        //  Log.e("UpdateDealTimer", e.message.toString())
                     }
                 }
             },
@@ -385,9 +386,10 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
         Constant.onTextChangeMiddleName(this, edtMiddleName)
         Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
+        Constant.onTextChangeAddress1(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
         Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
-        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+//        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
         Constant.onTextChangeCity(this, edtCity, tvErrorCity)
         Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
@@ -436,7 +438,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
@@ -446,7 +448,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         llDollar.visibility = View.GONE
                     }
                     tvDollar.text =
-                        NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
+                        "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
                 }
                 )
@@ -457,15 +459,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.buyerId] = dataPendingDeal.buyer?.buyerId!!
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
-            map[ApiConstant.middleName] = edtFirstName.text.toString().trim()
+            map[ApiConstant.middleName] = edtMiddleName.text.toString().trim()
             map[ApiConstant.lastName] = edtLastName.text.toString().trim()
             map[ApiConstant.phoneNumber] = dataPendingDeal.buyer?.phoneNumber!!
             map[ApiConstant.email] = edtEmail.text.toString().trim()
@@ -479,8 +477,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
             buyerViewModel.buyerCall(this, map)!!
                 .observe(this, { data ->
-                    Constant.dismissLoader()
-                    callSubmitDealLCDAPI(false)
+//                    Constant.dismissLoader()
+                    if (TextUtils.isEmpty(data.buyerId)) {
+                        alertError("Something went wrong. Please try again later.")
+                    } else {
+                        callSubmitDealLCDAPI(false)
+                    }
                 }
                 )
         } else {
@@ -488,13 +490,27 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    fun alertError(message: String?) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_error)
+        dialog.run {
+            tvErrorMessage.text = message
+            tvErrorOk.setOnClickListener {
+                startActivity(intentFor<MainActivity>().clearTask().newTask())
+            }
+        }
+        AppGlobal.setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    private var lcdSuccResponseData: SubmitDealLCDData = SubmitDealLCDData()
     private fun callSubmitDealLCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
+            showProgressDialog()
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
             map[ApiConstant.buyerID] = dataPendingDeal.buyer?.buyerId!!
@@ -516,6 +532,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
             map[ApiConstant.searchRadius] = "100"
             map[ApiConstant.loanType] = dataLCDDeal.loanType!!
+            map[ApiConstant.promotionID] = dataLCDDeal.promotionId!!
             map[ApiConstant.initial] = dataLCDDeal.initial!!
 //            map[ApiConstant.timeZoneOffset] = pendingUCDData.buyer?.buyerId!!
             map[ApiConstant.vehicleInventoryID] = dataLCDDeal.vehicleInventoryID!!
@@ -536,12 +553,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
                 .observe(this, { data ->
-                    Constant.dismissLoader()
+//                    Constant.dismissLoader()
                     data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
                     data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
                     data.successResult?.transactionInfo?.remainingBalance =
                         (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
-                    Log.e("data Deal", Gson().toJson(data))
+                    //Log.e("data Deal", Gson().toJson(data))
                     if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
                         removeHubConnection()
                         startActivity<LCDNegativeActivity>(
@@ -559,7 +576,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
                                 ),
-                                ARG_TYPE_PRODUCT to "LightingCarDeals"
+                                ARG_TYPE_PRODUCT to "LightningCarDeals"
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
@@ -593,24 +610,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-
-
-                    /*if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
-                        startActivity<LCDNegativeActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
-                            ARG_IMAGE_ID to imageId,
-                            ARG_IMAGE_URL to Gson().toJson(arImage),
-                            ARG_IS_SHOW_PER to isPercentShow
-                        )
-                    } else {
-                        clearOneDealNearData()
-                        startActivity<SubmitDealSummaryActivity>(
-                            ARG_SUBMIT_DEAL to Gson().toJson(
-                                data
-                            )
-                        )
-
-                    }*/
+                    dialogProgress?.dismiss()
                 }
                 )
         } else {
@@ -634,10 +634,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private fun callPaymentMethodAPI(isPayment: Boolean) {
         pref?.setPaymentToken(true)
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
-                Constant.showLoader(this)
+            if (!isPayment) {
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(this)
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.showLoader(this)
+                }
             }
 
             paymentMethodViewModel.callPayment(
@@ -655,10 +657,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
             )!!
                 .observe(this, { data ->
-                    Constant.dismissLoader()
+
                     cardStripeData = data
                     if (isPayment)
                         callBuyerAPI()
+                    else
+                        Constant.dismissLoader()
                 }
                 )
         } else {
@@ -670,7 +674,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             promoCodeViewModel.getPromoCode(
@@ -682,8 +686,10 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
-                        tvPromoData.text = "-$${data.discount}"
+                        tvPromoData.text =
+                            "-${NumberFormat.getCurrencyInstance(Locale.US).format(data.discount)}"
                         dataLCDDeal.discount = data.discount!!
+                        dataLCDDeal.promotionId = data.promotionID!!
                         binding.ucdData = dataLCDDeal
                     } else {
                         tvPromoData.visibility = View.GONE
@@ -817,6 +823,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onBackPressed() {
         if (isTimeOver) {
+            removeHubConnection()
             super.onBackPressed()
         } else {
             popupLeaveDeal()
@@ -834,7 +841,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.ivBack -> {
 //                if (isTimeOver) {
-                    onBackPressed()
+                onBackPressed()
                 /*} else {
                     popupLeaveDeal()
                 }*/
@@ -887,12 +894,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     cardSourceParams,
                     callback = object : ApiResultCallback<Source> {
                         override fun onSuccess(source: Source) {
-                            Log.e("Success", Gson().toJson(source))
+                            //    Log.e("Success", Gson().toJson(source))
 //                            callPaymentMethodAPI(card)
                         }
 
                         override fun onError(error: Exception) {
-                            Log.e("error", Gson().toJson(error))
+                            //   Log.e("error", Gson().toJson(error))
                         }
                     }
                 )
@@ -947,7 +954,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val pkgList = JsonArray()
@@ -971,7 +978,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             request[ApiConstant.SearchRadius1] = "6000"
             request[ApiConstant.AccessoryList] = accList
             request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
+            // Log.e("RequestStock", Gson().toJson(request))
             checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -986,7 +993,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             intentFor<MainActivity>(ARG_SEL_TAB to TYPE_ONE_DEAL_NEAR_YOU).clearTask()
                                 .newTask()
                         )
-
                     }
                 }
                 )
@@ -1127,8 +1133,16 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                 return false
             }
+
             TextUtils.isEmpty(edtAddress1.text.toString().trim()) -> {
+                tvErrorEmailAddress.text = getString(R.string.enter_addressline1)
                 Constant.setErrorBorder(edtAddress1, tvErrorAddress1)
+                return false
+            }
+            edtAddress1.text.toString().trim().length < 3 -> {
+                tvErrorEmailAddress.text =
+                    getString(R.string.address1_must_be_minimum_three_characters)
+                Constant.setErrorBorder(edtEmail, tvErrorEmailAddress)
                 return false
             }
             /*  TextUtils.isEmpty(edtAddress2.text.toString().trim()) -> {
@@ -1216,7 +1230,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val request = HashMap<String, Any>()
@@ -1412,7 +1426,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("Stripe", "requestCode " + requestCode)
+        // Log.e("Stripe", "requestCode " + requestCode)
         cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
         cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
         cardInputWidget.setExpiryDate(1, 2022)
@@ -1423,13 +1437,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-
     override fun onError(e: Exception) {
-        /* Toast.makeText(
-             this,
-             e.message, Toast.LENGTH_LONG
-         ).show()*/
-        Log.e("PaymentFailed", Gson().toJson(e).toString())
+
+        // Log.e("PaymentFailed", Gson().toJson(e).toString())
         alertCardError(
             this,
             getString(R.string.we_are_unable_to_authenticate_your_payment)
@@ -1441,20 +1451,17 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
         val status: StripeIntent.Status? = paymentIntent.status
-        Log.e("Status", Gson().toJson(paymentIntent))
+        //Log.e("Status", Gson().toJson(paymentIntent))
         when (status) {
             StripeIntent.Status.Succeeded -> {
                 // Payment completed successfully
                 val gson = GsonBuilder().setPrettyPrinting().create()
-                Log.e("completed", gson.toJson(paymentIntent))
+                //  Log.e("completed", gson.toJson(paymentIntent))
                 paymentIntentId = paymentIntent.id!!
                 callSubmitDealLCDAPI(true)
             }
             StripeIntent.Status.RequiresPaymentMethod -> {
-                Log.e(
-                    "RequiresPaymentMethod",
-                    Objects.requireNonNull(paymentIntent.lastPaymentError).toString()
-                )
+                //Log.e("RequiresPaymentMethod", Objects.requireNonNull(paymentIntent.lastPaymentError).toString())
                 /* if(!TextUtils.isEmpty(paymentIntent.id)) {
                      paymentIntentId = paymentIntent.id!!
                      callSubmitDealLCDAPI(true)
@@ -1468,7 +1475,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 setClearCardData()
             }
             StripeIntent.Status.Canceled -> {
-                Log.e("Canceled", "Payment Canceled")
+                // Log.e("Canceled", "Payment Canceled")
 //                Toast.makeText(this,"Payment Canceled",Toast.LENGTH_LONG).show()
                 alertCardError(
                     this,
@@ -1477,10 +1484,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 setClearCardData()
             }
             StripeIntent.Status.Processing -> {
-                Log.e(
-                    "Processing",
-                    "Payment Processing"
-                )
+                //   Log.e("Processing", "Payment Processing")
                 if (!TextUtils.isEmpty(paymentIntent.id)) {
                     paymentIntentId = paymentIntent.id!!
                     callSubmitDealLCDAPI(true)
@@ -1489,10 +1493,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             StripeIntent.Status.RequiresConfirmation -> {
-                Log.e(
-                    "RequiresConfirmation",
-                    "Payment Confirmation"
-                )
+                //   Log.e("RequiresConfirmation", "Payment Confirmation")
                 if (!TextUtils.isEmpty(paymentIntent.id)) {
                     paymentIntentId = paymentIntent.id!!
                     callSubmitDealLCDAPI(true)
@@ -1504,5 +1505,100 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    private var a = 0
+    private val handlerDealPro: Handler = Handler()
+    private lateinit var dialogProgress: Dialog
+    private fun showProgressDialog() {
+        dialogProgress = Dialog(this, R.style.FullScreenDialog)
+        dialogProgress.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogProgress.setCancelable(false)
+        dialogProgress.setContentView(R.layout.dialog_deal_progress_bar)
+        setProgressData(dialogProgress)
+        setLayoutParam(dialogProgress)
+        dialogProgress.show()
+    }
+
+    private fun setProgressData(dialogProgress: Dialog) {
+        a = dialogProgress.proBar.progress
+        Thread {
+            while (a < 100) {
+                a += 1
+                handlerDealPro.post(Runnable {
+                    dialogProgress.proBar.progress = a
+                    dialogProgress.tvProgressPr.text = a.toString() + "%"
+                    if (a == 100) {
+                        // responseDealSuccess(dialogProgress,data)
+                    }
+                })
+                try {
+                    // Sleep for 50 ms to show progress you can change it as well.
+                    Thread.sleep(100)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
+    }
+
+    private fun responseDealSuccess(dialogProgress: Dialog, data: SubmitDealLCDData) {
+        data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
+        data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
+        data.successResult?.transactionInfo?.remainingBalance =
+            (dataLCDDeal.price!! - (799.0f + dataLCDDeal.discount!!))
+        //  Log.e("data Deal", Gson().toJson(data))
+        if (!data.isDisplayedPriceValid!! && data.somethingWentWrong!!) {
+            removeHubConnection()
+            startActivity<LCDNegativeActivity>(
+                ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                ARG_IMAGE_ID to imageId,
+                ARG_IMAGE_URL to Gson().toJson(arImage),
+                ARG_IS_SHOW_PER to isPercentShow
+            )
+            finish()
+        } else if (data.isDisplayedPriceValid && !data.somethingWentWrong!!) {
+            if (data.foundMatch!!) {
+                removeHubConnection()
+                clearOneDealNearData()
+                startActivity<SubmitDealSummaryActivity>(
+                    ARG_SUBMIT_DEAL to Gson().toJson(
+                        data
+                    ),
+                    ARG_TYPE_PRODUCT to "LightningCarDeals"
+                )
+                finish()
+            } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
+                removeHubConnection()
+                startActivity<LCDNegativeActivity>(
+                    ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                    ARG_IMAGE_ID to imageId,
+                    ARG_IMAGE_URL to Gson().toJson(arImage),
+                    ARG_IS_SHOW_PER to isPercentShow
+                )
+                finish()
+            } else if (!data.foundMatch && !data.isBadRequest!! && data.paymentResponse?.hasError!!) {
+                if (!TextUtils.isEmpty(data.paymentResponse.errorMessage))
+                    AppGlobal.alertCardError(
+                        this,
+                        data.paymentResponse.errorMessage
+                    )
+                setClearCardData()
+            } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
+                if (data.paymentResponse.requires_action!!)
+                    initStripe(data.paymentResponse.payment_intent_client_secret!!)
+                else {
+                    removeHubConnection()
+                    startActivity<LCDNegativeActivity>(
+                        ARG_SUBMIT_DEAL to Gson().toJson(dataLCDDeal),
+                        ARG_IMAGE_ID to imageId,
+                        ARG_IMAGE_URL to Gson().toJson(arImage),
+                        ARG_IS_SHOW_PER to isPercentShow
+                    )
+                    finish()
+                }
+            }
+        }
+
+//        dialogProgress.dismiss()
+    }
 
 }

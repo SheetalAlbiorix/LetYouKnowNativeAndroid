@@ -4,34 +4,37 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.letyouknow.R;
 
 public class CreditCardNumberTextWatcher implements TextWatcher {
 
     public static final char SEPARATOR = ' ';
     private static final String LOG_TAG = "AndroidExample";
-    private EditText editText;
     Boolean isValidCard = false;
-
+    private EditText editText;
     private int after;
     private String beforeString;
     private TextView errorText;
+
+    public CreditCardNumberTextWatcher(EditText editText, TextView errorText) {
+        this.editText = editText;
+        this.errorText = errorText;
+    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         this.after = after;
         this.beforeString = s.toString();
-        Log.e(LOG_TAG, "@@beforeTextChanged s=" + s
-                + " . start=" + start + " . after=" + after + " . count=" + count);
+        //  Log.e(LOG_TAG, "@@beforeTextChanged s=" + s + " . start=" + start + " . after=" + after + " . count=" + count);
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        Log.e(LOG_TAG, "@@onTextChanged s=" + s
-                + " . start=" + start + " . before=" + before + " . count=" + count);
+        //Log.e(LOG_TAG, "@@onTextChanged s=" + s + " . start=" + start + " . before=" + before + " . count=" + count);
         String newText = s.toString();
 
         String textPrefix = newText.substring(0, start);
@@ -68,7 +71,7 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
             minLength = creditCardType.getMinLength();
             maxLength = creditCardType.getMaxLength();
         }
-        Log.i(LOG_TAG, "newTextClean= " + newTextClean);
+        //Log.i(LOG_TAG, "newTextClean= " + newTextClean);
 
 
         int[] separatorIndexs = new int[blockLengths.length];
@@ -79,8 +82,8 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
                 separatorIndexs[i] = blockLengths[i] + separatorIndexs[i - 1];
             }
         }
-        Log.i(LOG_TAG, "blockLengths= " + this.toString(blockLengths));
-        Log.i(LOG_TAG, "separatorIndexs= " + this.toString(separatorIndexs));
+        // Log.i(LOG_TAG, "blockLengths= " + this.toString(blockLengths));
+        //  Log.i(LOG_TAG, "separatorIndexs= " + this.toString(separatorIndexs));
 
         int cursorPosition = start + this.after - textBeforeCursor.length() + textBeforeCursorClean.length();
 
@@ -140,12 +143,6 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
         return false;
     }
 
-
-    public CreditCardNumberTextWatcher(EditText editText, TextView errorText) {
-        this.editText = editText;
-        this.errorText = errorText;
-    }
-
     private CreditCardType showDetectedCreditCardImage(String creditCardNumber) {
         try {
             CreditCardType type = CreditCardType.detect(creditCardNumber);
@@ -160,9 +157,9 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
                 this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 this.errorText.setVisibility(View.VISIBLE);
                 if (TextUtils.isEmpty(this.editText.getText().toString().trim())) {
-                    this.errorText.setText("Card Number is Required");
+                    this.errorText.setText(this.editText.getContext().getString(R.string.enter_card_number));
                 } else {
-                    this.errorText.setText("Card Number is InValid");
+                    this.errorText.setText(this.editText.getContext().getString(R.string.enter_valid_card_number));
                 }
             }
             return type;
@@ -172,9 +169,9 @@ public class CreditCardNumberTextWatcher implements TextWatcher {
             this.editText.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
             this.errorText.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(this.editText.getText().toString().trim())) {
-                this.errorText.setText("Card Number is Required");
+                this.errorText.setText(this.editText.getContext().getString(R.string.enter_card_number));
             } else {
-                this.errorText.setText("Card Number is InValid");
+                this.errorText.setText(this.editText.getContext().getString(R.string.enter_valid_card_number));
             }
             return type;
         }

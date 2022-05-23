@@ -2,7 +2,6 @@ package com.letyouknow.view.account.editnotification
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -15,8 +14,8 @@ import com.letyouknow.model.NotificationOptionsData
 import com.letyouknow.model.NotificationsData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.NotificationOptionsUpdateViewModel
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_NOTIFICATIONS
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_NOTIFICATIONS
 import kotlinx.android.synthetic.main.activity_edit_notification.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -61,17 +60,23 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun setNotificationData(data: NotificationOptionsData) {
-        arNotification.add(NotificationsData("Email", R.color.orange, data.Email))
         arNotification.add(
             NotificationsData(
-                "SMS",
+                resources.getString(R.string.email_address),
+                R.color.orange,
+                data.Email
+            )
+        )
+        arNotification.add(
+            NotificationsData(
+                resources.getString(R.string.sms),
                 R.color.color36c050,
                 data.SMS
             )
         )
         arNotification.add(
             NotificationsData(
-                "Push Notification",
+                resources.getString(R.string.push_notification),
                 R.color.colorPrimary,
                 data.PushNotification
             )
@@ -96,7 +101,7 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
             R.id.ivBack -> {
                 onBackPressed()
             }
-            R.id.ivOnOff -> {
+            R.id.switch1 -> {
                 val pos = v.tag as Int
                 val data = adapterEditNotification.getItem(pos)
                 data.isSelect = !data.isSelect!!
@@ -115,14 +120,14 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.Email_NOTI] = adapterEditNotification.getItem(0).isSelect!!
             map[ApiConstant.SMS] = adapterEditNotification.getItem(1).isSelect!!
             map[ApiConstant.PushNotification] = adapterEditNotification.getItem(2).isSelect!!
-            Log.e("request", Gson().toJson(map))
+            //Log.e("request", Gson().toJson(map))
             notificationOptionsUpdateViewModel.notificationOptionUpdateApiCall(this, map)!!
                 .observe(this, {
                     Constant.dismissLoader()

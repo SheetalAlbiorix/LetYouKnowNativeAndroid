@@ -8,10 +8,10 @@ import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityEditReferBinding
 import com.letyouknow.model.ReferStepData
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.makeLinks
 import com.letyouknow.view.account.editrefer.referstep2.ReferStep2Activity
 import com.letyouknow.view.privacypolicy.PrivacyPolicyTermsCondActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.makeLinks
 import kotlinx.android.synthetic.main.activity_edit_refer.*
 import kotlinx.android.synthetic.main.layout_toolbar.toolbar
 import org.jetbrains.anko.startActivity
@@ -42,25 +42,24 @@ class EditReferActivity : BaseActivity(), View.OnClickListener {
             )
     }
 
-
     private val arRefer: ArrayList<ReferStepData> = ArrayList()
     private fun setReferStepAdapter() {
         arRefer.add(
             ReferStepData(
-                "Click On the button below and enter the required basic information.",
-                "Introduce your friends and family to wonderful services provided by LetYouKnow"
+                resources.getString(R.string.click_on_button_below),
+                resources.getString(R.string.introduce_your_friends)
             )
         )
         arRefer.add(
             ReferStepData(
-                "They join LetYouKnow!",
-                "They like it and complete a transaction with us!"
+                resources.getString(R.string.they_join_letYouKnow),
+                resources.getString(R.string.they_like_it_complete)
             )
         )
         arRefer.add(
             ReferStepData(
-                "We Pay you!",
-                "you can choose between a $100 LetYouKnow credit(to be used on future LetYouKnow purchases), or we will send you a $25 check."
+                resources.getString(R.string.we_pay_you),
+                resources.getString(R.string.you_can_choose_between)
             )
         )
         adapterReferStep = ReferStepAdapter(R.layout.list_item_refer_step, this)

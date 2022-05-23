@@ -2,25 +2,26 @@ package com.letyouknow.view.transaction_history
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.Html
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityTransactionCodeDetailBinding
 import com.letyouknow.retrofit.viewmodel.TransactionCodeViewModel
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.callDialerOpen
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
+import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
+import com.letyouknow.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import com.letyouknow.view.dashboard.MainActivity
-import com.pionymessenger.utils.Constant
-import com.pionymessenger.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import kotlinx.android.synthetic.main.activity_transaction_code_detail.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -31,6 +32,7 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityTransactionCodeDetailBinding
 
     private lateinit var transactionCodeViewModel: TransactionCodeViewModel
+    private var isNotification = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +44,19 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
     private fun init() {
         transactionCodeViewModel =
             ViewModelProvider(this)[TransactionCodeViewModel::class.java]
-        backButton()
+//        backButton()
         if (intent.hasExtra(ARG_TRANSACTION_CODE)) {
             val code = intent.getStringExtra(ARG_TRANSACTION_CODE)
             callTransactionCodeAPI(code)
         }
+        if (intent.hasExtra(ARG_IS_NOTIFICATION)) {
+            isNotification = true
+        }
         btnFindYourCar.setOnClickListener(this)
         tvCallNumber.setOnClickListener(this)
+        ivBack.setOnClickListener(this)
+
+        tvCallNumber.text = Html.fromHtml(getString(R.string.if_you_have_any_questions))
     }
 
     private fun backButton() {
@@ -79,14 +87,20 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
                 Constant.showLoader(this)
-            } else if (!Constant.progress.isShowing) {
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                 Constant.showLoader(this)
             }
 
             transactionCodeViewModel.transactionCodeApiCall(this, code)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
-                    Log.e("Transaction Code Data", Gson().toJson(data))
+                    //  Log.e("Transaction Code Data", Gson().toJson(data))
+                    tvVehicle.text =
+                        data.vehicleYear + " " + data.vehicleMake + " " + data.vehicleModel + " " + data.vehicleTrim
+                    tvPaymentMethod.text = data.paymentMethod + "\n" + getString(
+                        R.string.last_4_digits,
+                        data.paymentLast4
+                    )
                     var accessories = ""
                     for (i in 0 until data.vehicleAccessories?.size!!) {
                         accessories = if (i == 0) {
@@ -169,7 +183,35 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         tvSavingsText.visibility = View.GONE
                     }
+
+                    if (AppGlobal.isNotEmpty(data.vehicleMiles) || AppGlobal.isNotEmpty(data.vehicleCondition)) {
+                        if (AppGlobal.isNotEmpty(data.vehicleMiles))
+                            tvDisclosure.text =
+                                getString(
+                                    R.string.miles_approximate_odometer_reading,
+                                    data.vehicleMiles
+                                )
+
+                        if (AppGlobal.isNotEmpty(data.vehicleCondition)) {
+                            if (AppGlobal.isEmpty(data.vehicleMiles)) {
+                                tvDisclosure.text = data.vehicleCondition
+                            } else {
+                                tvDisclosure.text = tvDisclosure.text.toString()
+                                    .trim() + ", " + data.vehicleCondition
+                            }
+                        }
+                        llDisc.visibility = View.VISIBLE
+                    } else {
+                        llDisc.visibility = View.GONE
+                    }
+                    if (TextUtils.isEmpty(data.dealerDto.addressInfo?.address2)) {
+                        data.dealerDto.addressInfo?.address2 = ""
+                    }
                     binding.data = data
+
+//                    var total = data.remainingBalance!! - data.lykDollar!!
+                    var total = data.remainingBalance!!
+                    binding.total = total
                 }
                 )
         } else {
@@ -180,17 +222,32 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnFindYourCar -> {
-                onBackPressed()
+                startActivity(
+                    intentFor<MainActivity>().clearTask().newTask()
+                )
             }
             R.id.tvCallNumber -> {
-                callDialerOpen(this, tvCallNumber.text.toString().trim())
+                callDialerOpen(this, getString(R.string.number))
+            }
+            R.id.ivBack -> {
+//                if (isNotification) {
+                onBackPressed()
+//                } else {
+//                    finish()
+//                }
             }
         }
     }
 
     override fun onBackPressed() {
-        startActivity(
-            intentFor<MainActivity>().clearTask().newTask()
-        )
+        if (isNotification) {
+            startActivity(
+                intentFor<MainActivity>().clearTask().newTask()
+            )
+        } else {
+            finish()
+        }
+//       super.onBackPressed()
+
     }
 }
