@@ -51,7 +51,6 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         }
         intentFilter = IntentFilter()
         intentFilter?.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-//        broadcastIntent()
     }
 
     /*  private fun broadcastIntent(){
