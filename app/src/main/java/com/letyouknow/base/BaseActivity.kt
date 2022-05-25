@@ -66,9 +66,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
     }
 
     override fun onPause() {
-//        unregisterReceiver(receiver)
         super.onPause()
-//        unregisterReceiver(myReceiver)
     }
 
     override fun hideProgress() {
