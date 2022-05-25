@@ -51,7 +51,6 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
         }
         intentFilter = IntentFilter()
         intentFilter?.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-//        broadcastIntent()
     }
 
 
@@ -62,9 +61,7 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
     }
 
     override fun onPause() {
-//        unregisterReceiver(receiver)
         super.onPause()
-//        unregisterReceiver(myReceiver)
     }
 
     override fun hideProgress() {
