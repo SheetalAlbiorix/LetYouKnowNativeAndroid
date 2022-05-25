@@ -55,7 +55,6 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
 
 
     override fun onResume() {
-//        this.registerReceiver(receiver, intentFilter)
         super.onResume()
         CurrentActivity = this
     }

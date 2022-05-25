@@ -47,10 +47,13 @@ import com.stripe.android.ApiResultCallback
 import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment
+import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher
 import com.stripe.android.model.PaymentIntent
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
 import com.stripe.android.model.StripeIntent
+import kotlinx.android.synthetic.main.activity_google_payment.*
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
@@ -192,7 +195,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         setEmojiOnEditText()
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
-
+        initLiveGoogle()
     }
 
     private fun setEmojiOnEditText() {
@@ -1214,6 +1217,56 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
         }.start()
+    }
+
+
+    private lateinit var googlePayLauncher: GooglePayPaymentMethodLauncher
+    private fun initLiveGoogle() {
+        googlePayLauncher = GooglePayPaymentMethodLauncher(
+            activity = this,
+            config = GooglePayPaymentMethodLauncher.Config(
+                environment = GooglePayEnvironment.Test,
+                merchantCountryCode = "US",
+                merchantName = "Widget Store",
+                isEmailRequired = false,
+                existingPaymentMethodRequired = false
+            ),
+            readyCallback = ::onGooglePayReady,
+            resultCallback = ::onGooglePayResult
+        )
+    }
+
+    private fun clickGoogle() {
+        googlePayLauncher.present(
+            currencyCode = "USD",
+            amount = 2500
+        )
+    }
+
+    private fun onGooglePayReady(isReady: Boolean) {
+        llGooglePay.isEnabled = isReady
+    }
+
+    private fun onGooglePayResult(
+        result: GooglePayPaymentMethodLauncher.Result
+    ) {
+        when (result) {
+            is GooglePayPaymentMethodLauncher.Result.Completed -> {
+                // Payment details successfully captured.
+                // Send the paymentMethodId to your server to finalize payment.
+                val paymentMethodId = result.paymentMethod.id
+
+                paymentMethodId?.let { Log.e("PaymentId", it) }
+            }
+            GooglePayPaymentMethodLauncher.Result.Canceled -> {
+                // User canceled the operation
+                Log.e("Canceled", "Canceled")
+            }
+            is GooglePayPaymentMethodLauncher.Result.Failed -> {
+                result.error.message?.let { Log.e("Failed", it) }
+                // Operation failed; inspect `result.error` for the exception
+            }
+        }
     }
 
 }
