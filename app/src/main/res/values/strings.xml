@@ -137,7 +137,7 @@
     <string name="submit_my_deal">Submit My Deal</string>
     <string name="try_again">TRY AGAIN</string>
     <string name="start_over">Start Over</string>
-    <string name="bid_price">Bid Price:</string>
+    <string name="bid_price">Price Bid:</string>
     <string name="price_summary">Price Summary</string>
     <string name="price_summary_colon">Price Summary:</string>
     <string name="balance_preview">Balance Preview:</string>
@@ -246,7 +246,8 @@
     <string name="actual_model_may_vary">Actual model may vary</string>
     <string name="enter_promo_code_is_not_valid">Entered Promo Code is not valid</string>
     <string name="promo_code_cannot_be_applied_due_to_negative_balance">Promo code cannot be applied due to negative balance</string>
-    <string name="stripe_publishable_key">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
+    <string name="stripe_publishable_key">pk_live_51HaDBECeSnBm0gpFXIVn3xUrbHswZmXzrNL4fs5dwsSgaYnuRZ5zRNnqcYv4dANIFQUOEcVvGNCKaVrJ8o9MiVf000fDh9su8E</string>
+    <string name="stripe_publishable_key_test">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
     <string name="no_results_for_your_zip_code"><![CDATA[No Results for your Zip Code & Search Radius, but we\'re working on bringing deals to your area \nTip: Try expending your Search Radius]]></string>
     <string name="you_have_10days">You have 10 days from the timestamp below to complete your vehicle transaction. Your contact information has been forwarded to the dealer listed below. A copy of this information has been sent to the email associated with your account. </string>
     <string name="great_deal">What a great deal! You saved* </string>
@@ -322,7 +323,8 @@
     <string name="press_leave_my_deal">Press LEAVE MY DEAL to continue or press CANCEL to remain on this page and keep your Reserved Deal Active. </string>
     <string name="do_you_want_logout">Do you want to logout the LetYouKnow App?</string>
     <string name="packages_colon">Packages:</string>
-    <string name="password_must_be_new">Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1 lowercase letter\n1 number\n1 special character (@$!%*?#&amp;^~)</string>
+    <string name="password_must_be_new1">Password must be 8-16 characters in length and contain at least:\n1 uppercase letter\n1 lowercase letter\n1 number\n1 special character (@$!%*?#&amp;^~)</string>
+    <string name="password_must_be_new"><i>Password must be 8-16 characters in length and contain at least:\n<li>1 uppercase letter</li>\n<li>1 lowercase letter</li>\n<li>1 number</li>\n<li>1 special character (@$!%*?#&amp;^~)</li></i></string>
     <string name="are_you_sure_price">Are you sure the price is correct?</string>
     <string name="view_options_accessories">VIEW OPTIONS &amp; ACCESSORIES</string>
     <string name="click_on_button">Click On the button below and enter the required basic information.</string>
@@ -399,5 +401,8 @@
     <string name="only_modifying_price_will_not_qualify_as_different_search_criteria"><i>*only modifying price will not qualify as different search criteria</i></string>
     <string name="payments_show_name" translatable="false">Successfully received payment data for %s!</string>
     <string name="add_google_wallet_success" translatable="false">The pass was added successfully!</string>
+    <string name="android_pay">Android Pay</string>
+    <string name="samsung_pay">Samsung Pay</string>
+    <string name="debit_credit_card">Debit/Credit Card</string>
 
 </resources>

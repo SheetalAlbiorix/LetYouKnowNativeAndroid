@@ -68,15 +68,9 @@ class LetYouKnowApp : Application() {
                 )
                 .build()
         )
-//        FirebaseApp.initializeApp(this)
-
-        //Generate 11 digit key for sms retrive
-//        Log.i("AppApplication","appSignatures = ${AppSignatureHelper(this).getAppSignatures()}")
     }
 
     fun getAppPreferencesHelper(): AppPreferencesHelper? {
         return appPreferencesHelper
     }
-
-
 }

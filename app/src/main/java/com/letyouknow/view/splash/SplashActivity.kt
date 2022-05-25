@@ -36,7 +36,13 @@ class SplashActivity : BaseActivity() {
     /*10007
     30031
     98125
-    21117 (may need to go 100 or 150 mi)*/
+    21117 (may need to go 100 or 150 mi)
+    {
+    "Username": "e36328is98@gmail.com",
+     "password": "WH&ry9MegCbw3FPG"
+     }
+
+    */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

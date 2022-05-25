@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.stripe:stripe-android:19.0.0@aar">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/755bd18ac297ecd992fbd83ded5b4787/transformed/jetified-stripe-android-19.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/755bd18ac297ecd992fbd83ded5b4787/transformed/jetified-stripe-android-19.0.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/a5c20859c5e3b4e74d7e7ea4d002853f/transformed/jetified-stripe-android-19.0.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/d70f9311ae0fd4b58596caf385389040/transformed/jetified-stripe-android-19.0.0/res" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/d70f9311ae0fd4b58596caf385389040/transformed/jetified-stripe-android-19.0.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/d70f9311ae0fd4b58596caf385389040/transformed/jetified-stripe-android-19.0.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.stripe/stripe-android/19.0.0/13a57ba5c270b33e777df484addedbe89e918992/stripe-android-19.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -60,7 +60,7 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun setNotificationData(data: NotificationOptionsData) {
-        arNotification.add(
+       /* arNotification.add(
             NotificationsData(
                 resources.getString(R.string.email_address),
                 R.color.orange,
@@ -73,7 +73,7 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
                 R.color.color36c050,
                 data.SMS
             )
-        )
+        )*/
         arNotification.add(
             NotificationsData(
                 resources.getString(R.string.push_notification),

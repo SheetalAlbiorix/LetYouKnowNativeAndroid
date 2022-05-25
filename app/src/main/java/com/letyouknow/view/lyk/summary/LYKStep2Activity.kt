@@ -38,7 +38,6 @@ import com.letyouknow.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.utils.CreditCardNumberTextWatcher
-import com.letyouknow.utils.CreditCardType
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
@@ -55,7 +54,6 @@ import com.stripe.android.model.StripeIntent
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
-import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -137,6 +135,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             binding.data = yearModelMakeData
             binding.pendingUcdData = dataPendingDeal
             binding.lightDealBindData = lightBindData
+
+
+            binding.isStripe = true
             if (arImage.size != 0) {
                 AppGlobal.loadImageUrl(this, ivMain, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
@@ -180,7 +181,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         ll360.setOnClickListener(this)
         llGallery.setOnClickListener(this)
 
-//        startTimer()
         setState()
 
         edtPhoneNumber.filters =
@@ -192,6 +192,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         setEmojiOnEditText()
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+
     }
 
     private fun setEmojiOnEditText() {
@@ -308,7 +309,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.country] = "US"
 
             buyerViewModel.buyerCall(this, map)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
 //                    Constant.dismissLoader()
                     if (TextUtils.isEmpty(data.buyerId)) {
                         alertError("Something went wrong. Please try again later.")
@@ -316,7 +319,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         callSubmitDealAPI(false)
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -382,7 +384,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
             // Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     //    Log.e("resp", Gson().toJson(data))
 //                    Constant.dismissLoader()
 
@@ -468,7 +472,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     }
                     dialogProgress.dismiss()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -693,13 +696,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (isTimeOver) {
-                    onBackPressed()
-                } else if (isValidCard()) {
+                if (isValidCard()) {
                     if (isValid()) {
                         callPaymentMethodAPI(true)
                     }
                 }
+
             }
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
@@ -714,48 +716,15 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 )
             }
 
+
         }
     }
 
-    private fun setClearData() {
-        edtCardNumber.setText("")
-//        edtCardHolder.setText("")
-        edtExpiresDate.setText("")
-        edtCVV.setText("")
-//        llCardViewDetail.visibility = View.GONE
-    }
 
-    private fun getDetectedCreditCardImage(): String {
-        val type: CreditCardType = CreditCardType.detect(edtCardNumber.text.toString().trim())
-        return if (type != null) {
-            type.imageResourceName
-        } else {
-            "ic_camera"
-        }
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    private fun popupLeaveDeal() {
-        val dialog = Dialog(this, R.style.FullScreenDialog)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setContentView(R.layout.dialog_leave_my_deal)
-        dialog.run {
-            tvCancel.setOnClickListener {
-                dismiss()
-            }
-            tvLeaveDeal.setOnClickListener {
-                dismiss()
-                finish()
-            }
-        }
-        setLayoutParam(dialog)
-        dialog.show()
     }
 
     private fun setLayoutParam(dialog: Dialog) {
@@ -813,11 +782,14 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         when {
-            edtCardZipCode.text.toString().trim().length != 5 -> {
+
+            edtCardZipCode.text.toString()
+                .trim().length != 5 -> {
                 tvErrorCardZip.visibility = View.VISIBLE
                 tvErrorCardZip.text = getString(R.string.zipcode_must_be_valid_digits)
                 return false
             }
+
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
                 tvErrorFirstName.text = getString(R.string.first_name_required)
@@ -1205,7 +1177,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 } else {
                     Toast.makeText(this, "Requires Payment Confirmation", Toast.LENGTH_LONG).show()
                 }
-
             }
         }
     }
@@ -1244,4 +1215,5 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
         }.start()
     }
+
 }

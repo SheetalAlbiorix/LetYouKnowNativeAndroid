@@ -509,7 +509,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var lcdSuccResponseData: SubmitDealLCDData = SubmitDealLCDData()
     private fun callSubmitDealLCDAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
-
             showProgressDialog()
             val map: HashMap<String, Any> = HashMap()
             map[ApiConstant.dealID] = dataPendingDeal.dealID!!
@@ -912,7 +911,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
-//                initStripe()
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
@@ -1413,16 +1411,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 )
                 .build()
         )
-        /*cardInputWidget.setCardNumber(edtCardNumber.text.toString().trim())
-        cardInputWidget.setCvcCode(edtCVV.text.toString().trim())
-        cardInputWidget.setExpiryDate(1, 2022)
-        val params = cardInputWidget.paymentMethodCreateParams*/
-
-//        stripe.confirmPayment(this@LCDDealSummaryStep2Activity, ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams(params!!,key),authenticationContext: self)
         stripe.handleNextActionForPayment(this@LCDDealSummaryStep2Activity, key)
     }
 
-    private var secretKey = ""
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1600,5 +1591,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
 //        dialogProgress.dismiss()
     }
+
 
 }

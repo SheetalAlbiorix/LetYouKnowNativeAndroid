@@ -21,9 +21,6 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
-            android:name=".GooglePaymentActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.ucd.UCDDealListStep1NewActivity"
             android:exported="false" />
         <activity

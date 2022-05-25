@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.anko:anko-support-v4-commons:0.10.8@aar">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/ffd12d95fa6059c7d3fedc2b02bdb9f1/transformed/jetified-anko-support-v4-commons-0.10.8/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ffd12d95fa6059c7d3fedc2b02bdb9f1/transformed/jetified-anko-support-v4-commons-0.10.8/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/4b1f9a3ea4035620cce6202a68499fee/transformed/jetified-anko-support-v4-commons-0.10.8/res" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e8471caf8b31ea0949c0d68a2d29e95e/transformed/jetified-anko-support-v4-commons-0.10.8/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e8471caf8b31ea0949c0d68a2d29e95e/transformed/jetified-anko-support-v4-commons-0.10.8/AndroidManifest.xml" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e8471caf8b31ea0949c0d68a2d29e95e/transformed/jetified-anko-support-v4-commons-0.10.8/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/org.jetbrains.anko/anko-support-v4-commons/0.10.8/b358dbc75b511cbc20aa7ca162d8ed20295a7d8e/anko-support-v4-commons-0.10.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

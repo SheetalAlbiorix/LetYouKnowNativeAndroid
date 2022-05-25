@@ -26,6 +26,22 @@
             name="pendingUcdData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
+        <variable
+            name="isStripe"
+            type="Boolean" />
+
+        <variable
+            name="isGooglePay"
+            type="Boolean" />
+
+        <variable
+            name="isSamsungPay"
+            type="Boolean" />
+
+        <variable
+            name="isShowSamsungPay"
+            type="Boolean" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -142,7 +158,6 @@
                             android:layout_width="@dimen/_16sdp"
                             android:layout_height="@dimen/_16sdp"
                             android:src="@drawable/ic_zoom_out" />
-
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
@@ -335,6 +350,10 @@
 
                 <include
                     layout="@layout/layout_lyk_step2"
+                    app:isGooglePay="@{isGooglePay}"
+                    app:isSamsungPay="@{isSamsungPay}"
+                    app:isShowSamsungPay="@{isShowSamsungPay}"
+                    app:isStripe="@{isStripe}"
                     app:data="@{data}"
                     app:dollar="@{dollar}"
                     app:lightDealBindData="@{lightDealBindData}"

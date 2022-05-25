@@ -39,9 +39,6 @@ class CheckoutViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    val canUseGooglePay: LiveData<Boolean> = _canUseGooglePay
-    val canSavePasses: LiveData<Boolean> = _canSavePasses
-
     /**
      * Determine the user's ability to pay with a payment method supported by your app and display
      * a Google Pay payment button.

@@ -633,6 +633,7 @@ class MainActivity : BaseActivity(),
 
                     0 -> {
                         startActivity<BidHistoryActivity>()
+//                        startActivity<GooglePaymentActivity>()
                     }
                     1 -> {
                         startActivity<TransactionHistoryActivity>()

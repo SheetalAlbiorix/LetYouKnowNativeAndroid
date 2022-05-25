@@ -10,14 +10,21 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.braintreepayments.api.BraintreeClient
+import com.braintreepayments.api.GooglePayClient
+import com.braintreepayments.api.GooglePayRequest
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.pay.PayClient
 import com.google.android.gms.wallet.PaymentData
+import com.google.android.gms.wallet.TransactionInfo
+import com.google.android.gms.wallet.WalletConstants
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.retrofit.viewmodel.CheckoutViewModel
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment
+import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher
 import kotlinx.android.synthetic.main.activity_google_payment.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,6 +39,8 @@ class GooglePaymentActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_payment)
         init()
+//        initGoogle()
+        initLiveGoogle()
     }
 
     private fun init() {
@@ -49,7 +58,9 @@ class GooglePaymentActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.llGooglePay -> {
-                requestPayment()
+//                requestPayment()
+//                clickBTN()
+                clickGoogle()
             }
         }
     }
@@ -168,6 +179,86 @@ class GooglePaymentActivity : BaseActivity(), View.OnClickListener {
                 )
             }
             // Re-enables the Google Pay payment button.
+        }
+
+        /*  googlePayClient.onActivityResult(resultCode, data) { paymentMethodNonce, error ->
+              Log.e("response Google",Gson().toJson(paymentMethodNonce))
+              // send paymentMethodNonce.string to your server
+          }*/
+    }
+
+
+    private lateinit var braintreeClient: BraintreeClient
+    private lateinit var googlePayClient: GooglePayClient
+    private fun initGoogle() {
+        braintreeClient = BraintreeClient(this, "sandbox_f252zhq7_hh4cpc39zq4rgjcg")
+        googlePayClient = GooglePayClient(braintreeClient)
+    }
+
+    private fun clickBTN() {
+        val googlePayRequest = GooglePayRequest()
+
+        googlePayRequest.transactionInfo = TransactionInfo.newBuilder()
+            .setTotalPrice("1.00")
+            .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+            .setCurrencyCode("USD")
+            .build()
+        googlePayRequest.isBillingAddressRequired = true
+
+        googlePayClient.requestPayment(this, googlePayRequest) { error ->
+            error?.let {
+                // handle error
+                error.message?.let { it1 -> Log.e("error", it1) }
+            }
+        }
+    }
+
+    private lateinit var googlePayLauncher: GooglePayPaymentMethodLauncher
+    private fun initLiveGoogle() {
+        googlePayLauncher = GooglePayPaymentMethodLauncher(
+            activity = this,
+            config = GooglePayPaymentMethodLauncher.Config(
+                environment = GooglePayEnvironment.Test,
+                merchantCountryCode = "US",
+                merchantName = "Widget Store",
+                isEmailRequired = false,
+                existingPaymentMethodRequired = false
+            ),
+            readyCallback = ::onGooglePayReady,
+            resultCallback = ::onGooglePayResult
+        )
+    }
+
+    private fun clickGoogle() {
+        googlePayLauncher.present(
+            currencyCode = "USD",
+            amount = 2500
+        )
+    }
+
+    private fun onGooglePayReady(isReady: Boolean) {
+        llGooglePay.isEnabled = isReady
+    }
+
+    private fun onGooglePayResult(
+        result: GooglePayPaymentMethodLauncher.Result
+    ) {
+        when (result) {
+            is GooglePayPaymentMethodLauncher.Result.Completed -> {
+                // Payment details successfully captured.
+                // Send the paymentMethodId to your server to finalize payment.
+                val paymentMethodId = result.paymentMethod.id
+
+                paymentMethodId?.let { Log.e("PaymentId", it) }
+            }
+            GooglePayPaymentMethodLauncher.Result.Canceled -> {
+                // User canceled the operation
+                Log.e("Canceled", "Canceled")
+            }
+            is GooglePayPaymentMethodLauncher.Result.Failed -> {
+                result.error.message?.let { Log.e("Failed", it) }
+                // Operation failed; inspect `result.error` for the exception
+            }
         }
     }
 }

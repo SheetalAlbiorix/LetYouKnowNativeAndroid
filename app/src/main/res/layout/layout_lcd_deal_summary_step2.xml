@@ -682,68 +682,7 @@
                     android:background="@color/dividerColor" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <!--            <LinearLayout-->
-            <!--                android:visibility="gone"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="@dimen/_8sdp"-->
-            <!--                android:background="@drawable/bg_button3"-->
-            <!--                android:backgroundTint="@color/offWhite"-->
-            <!--                android:orientation="vertical"-->
-            <!--                android:padding="@dimen/_8sdp">-->
 
-            <!--                <androidx.appcompat.widget.AppCompatEditText-->
-            <!--                    android:id="@+id/edtCardNumber"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:background="@drawable/bg_edittext"-->
-            <!--                    android:digits="1234567890"-->
-            <!--                    android:drawableLeft="@drawable/ic_camera"-->
-            <!--                    android:hint="@string/card_number"-->
-            <!--                    android:inputType="number" />-->
-
-            <!--                <androidx.appcompat.widget.AppCompatEditText-->
-            <!--                    android:id="@+id/edtCardHolder"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginTop="@dimen/_8sdp"-->
-            <!--                    android:background="@drawable/bg_edittext"-->
-            <!--                    android:hint="@string/card_holder"-->
-            <!--                    android:inputType="text"-->
-            <!--                    android:visibility="gone" />-->
-
-            <!--                <LinearLayout-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginTop="@dimen/_8sdp"-->
-            <!--                    android:orientation="horizontal">-->
-
-            <!--                    <androidx.appcompat.widget.AppCompatEditText-->
-            <!--                        android:id="@+id/edtExpiresDate"-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_marginRight="@dimen/_4sdp"-->
-            <!--                        android:layout_weight="1"-->
-            <!--                        android:background="@drawable/bg_edittext"-->
-            <!--                        android:digits="1234567890"-->
-            <!--                        android:hint="@string/expire_date"-->
-            <!--                        android:inputType="number"-->
-            <!--                        android:maxLength="5" />-->
-
-            <!--                    <androidx.appcompat.widget.AppCompatEditText-->
-            <!--                        android:id="@+id/edtCVV"-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_marginLeft="@dimen/_4sdp"-->
-            <!--                        android:layout_weight="1"-->
-            <!--                        android:background="@drawable/bg_edittext"-->
-            <!--                        android:hint="@string/cvv"-->
-            <!--                        android:inputType="number"-->
-            <!--                        android:maxLength="3" />-->
-            <!--                </LinearLayout>-->
-
-
-            <!--            </LinearLayout>-->
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat

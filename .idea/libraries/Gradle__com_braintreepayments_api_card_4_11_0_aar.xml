@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: com.braintreepayments.api:card:4.11.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/00c379fb96d76f6b5bafde0d99171045/transformed/jetified-card-4.11.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/00c379fb96d76f6b5bafde0d99171045/transformed/jetified-card-4.11.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/00c379fb96d76f6b5bafde0d99171045/transformed/jetified-card-4.11.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/00c379fb96d76f6b5bafde0d99171045/transformed/jetified-card-4.11.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/card/4.11.0/ae63ea46b7a1ca2d74a943be0370e9adf986749d/card-4.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/card/4.11.0/a3cbb5eac97ce16dd83f7ee4447780c6ae24a49b/card-4.11.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

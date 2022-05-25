@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.anko:commons-base:0.10.8@aar">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/7ca0e92673ad611023dad5f1a98af56d/transformed/jetified-commons-base-0.10.8/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/149b50b78f001b5dd2fb9d51dae74a34/transformed/jetified-commons-base-0.10.8/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/0283fb402edbb391345b7c661619e72d/transformed/jetified-commons-base-0.10.8/res" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/15a5cb68a4b74c6ad9903bfdac9ea35b/transformed/jetified-commons-base-0.10.8/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/15a5cb68a4b74c6ad9903bfdac9ea35b/transformed/jetified-commons-base-0.10.8/AndroidManifest.xml" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/15a5cb68a4b74c6ad9903bfdac9ea35b/transformed/jetified-commons-base-0.10.8/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/org.jetbrains.anko/commons-base/0.10.8/a7b9886dd34c114aebcbcd7c492855425b2300e1/commons-base-0.10.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

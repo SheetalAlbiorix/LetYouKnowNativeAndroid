@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.wajahatkarim3.EasyMoney-Widgets:EasyMoney-Widgets:1.0.0@aar">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b8adce87c80cfe690dbf783ceda78b06/transformed/jetified-EasyMoney-Widgets-1.0.0/res" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b8adce87c80cfe690dbf783ceda78b06/transformed/jetified-EasyMoney-Widgets-1.0.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b8adce87c80cfe690dbf783ceda78b06/transformed/jetified-EasyMoney-Widgets-1.0.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.wajahatkarim3.EasyMoney-Widgets/EasyMoney-Widgets/1.0.0/d4819152329c7735ed5ba68b5945cf79415a9bc6/EasyMoney-Widgets-1.0.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.wajahatkarim3.EasyMoney-Widgets/EasyMoney-Widgets/1.0.0/2e801e476feffd481497a6b5ac0de0bfc8f63679/EasyMoney-Widgets-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

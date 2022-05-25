@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.vr:sdk-common:1.180.0@aar">
+    <CLASSES>
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/7cb52605cc43584c60a6c03a6274d1d6/transformed/jetified-sdk-common-1.180.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/7cb52605cc43584c60a6c03a6274d1d6/transformed/jetified-sdk-common-1.180.0/AndroidManifest.xml" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/7cb52605cc43584c60a6c03a6274d1d6/transformed/jetified-sdk-common-1.180.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
