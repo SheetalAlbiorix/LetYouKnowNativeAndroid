@@ -54,11 +54,6 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
 //        broadcastIntent()
     }
 
-    /*  private fun broadcastIntent(){
-          myReceiver = MyReceiver()
-          registerReceiver(myReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-      }*/
-
 
     override fun onResume() {
 //        this.registerReceiver(receiver, intentFilter)
