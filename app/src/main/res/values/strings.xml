@@ -246,7 +246,8 @@
     <string name="actual_model_may_vary">Actual model may vary</string>
     <string name="enter_promo_code_is_not_valid">Entered Promo Code is not valid</string>
     <string name="promo_code_cannot_be_applied_due_to_negative_balance">Promo code cannot be applied due to negative balance</string>
-    <string name="stripe_publishable_key">pk_live_51HaDBECeSnBm0gpFXIVn3xUrbHswZmXzrNL4fs5dwsSgaYnuRZ5zRNnqcYv4dANIFQUOEcVvGNCKaVrJ8o9MiVf000fDh9su8E</string>
+    <!--    <string name="stripe_publishable_key">pk_live_51HaDBECeSnBm0gpFXIVn3xUrbHswZmXzrNL4fs5dwsSgaYnuRZ5zRNnqcYv4dANIFQUOEcVvGNCKaVrJ8o9MiVf000fDh9su8E</string>-->
+    <string name="stripe_publishable_key">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
     <string name="stripe_publishable_key_test">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
     <string name="no_results_for_your_zip_code"><![CDATA[No Results for your Zip Code & Search Radius, but we\'re working on bringing deals to your area \nTip: Try expending your Search Radius]]></string>
     <string name="you_have_10days">You have 10 days from the timestamp below to complete your vehicle transaction. Your contact information has been forwarded to the dealer listed below. A copy of this information has been sent to the email associated with your account. </string>
@@ -404,5 +405,6 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
+    <string name="google_payment_canceled">Google Payment Canceled</string>
 
 </resources>

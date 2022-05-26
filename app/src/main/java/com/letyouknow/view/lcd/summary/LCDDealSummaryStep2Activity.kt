@@ -58,6 +58,8 @@ import com.stripe.android.ApiResultCallback
 import com.stripe.android.PaymentAuthConfig
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment
+import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher
 import com.stripe.android.model.PaymentIntent
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
@@ -70,6 +72,7 @@ import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import org.jetbrains.anko.clearTask
@@ -117,6 +120,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     var hubConnection: HubConnection? = null
 
     var isPercentShow = false
+
+    private var isStripe = true
+    private var isGooglePay = false
+    private var isSamsungPay = false
+    private var isShowSamsungPay = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lcd_deal_summary_step2)
@@ -211,6 +219,15 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         broadcastIntent()
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+
+        binding.isStripe = isStripe
+        binding.isGooglePay = isGooglePay
+        binding.isSamsungPay = isSamsungPay
+        binding.isShowSamsungPay = isShowSamsungPay
+        llCreditCard.setOnClickListener(this)
+        llAndroidPay.setOnClickListener(this)
+        llSamsungPay.setOnClickListener(this)
+        initLiveGoogle()
     }
 
     private fun broadcastIntent() {
@@ -551,7 +568,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
 
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
 //                    Constant.dismissLoader()
                     data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
                     data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
@@ -593,7 +612,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
-                            setClearCardData()
+                            if (!isGooglePay && !isSamsungPay)
+                                setClearCardData()
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
                             if (data.paymentResponse.requires_action!!)
                                 initStripe(data.paymentResponse.payment_intent_client_secret!!)
@@ -611,7 +631,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     }
                     dialogProgress?.dismiss()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -916,7 +935,15 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
-                    if (isValidCard()) {
+                    if (isGooglePay || isSamsungPay) {
+                        if (!TextUtils.isEmpty(cardStripeData.id)) {
+                            if (isValid()) {
+                                callBuyerAPI()
+                            }
+                        } else {
+                            alertError("Select Proper Card")
+                        }
+                    } else if (isValidCard()) {
                         if (isValid()) {
                             callPaymentMethodAPI(true)
                         }
@@ -944,7 +971,32 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
+            R.id.llCreditCard -> {
+                isStripe = true
+                isGooglePay = false
+                isSamsungPay = false
+                setGoogleSamsung()
+            }
+            R.id.llAndroidPay -> {
+                isStripe = false
+                isGooglePay = true
+                isSamsungPay = false
+                setGoogleSamsung()
+                onClickGooglePayment()
+            }
+            R.id.llSamsungPay -> {
+                isStripe = false
+                isGooglePay = false
+                isSamsungPay = true
+                setGoogleSamsung()
+            }
         }
+    }
+
+    private fun setGoogleSamsung() {
+        binding.isStripe = isStripe
+        binding.isGooglePay = isGooglePay
+        binding.isSamsungPay = isSamsungPay
     }
 
 
@@ -1096,7 +1148,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         when {
-            edtCardZipCode.text.toString().trim().length != 5 -> {
+            edtCardZipCode.text.toString()
+                .trim().length != 5 && (!isGooglePay && !isSamsungPay) -> {
                 tvErrorCardZip.visibility = View.VISIBLE
                 tvErrorCardZip.text = getString(R.string.zipcode_must_be_valid_digits)
                 return false
@@ -1592,5 +1645,60 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //        dialogProgress.dismiss()
     }
 
+    private lateinit var googlePayLauncher: GooglePayPaymentMethodLauncher
+    private fun initLiveGoogle() {
+        googlePayLauncher = GooglePayPaymentMethodLauncher(
+            activity = this,
+            config = GooglePayPaymentMethodLauncher.Config(
+                environment = GooglePayEnvironment.Test,
+                merchantCountryCode = "US",
+                merchantName = "Widget Store",
+                isEmailRequired = false,
+                existingPaymentMethodRequired = false
+            ),
+            readyCallback = ::onGooglePayReady,
+            resultCallback = ::onGooglePayResult
+        )
+    }
+
+    private fun onClickGooglePayment() {
+        googlePayLauncher.present(
+            currencyCode = "USD",
+            amount = 2500
+        )
+    }
+
+    private fun onGooglePayReady(isReady: Boolean) {
+        llAndroidPay.isEnabled = isReady
+    }
+
+    private fun onGooglePayResult(
+        result: GooglePayPaymentMethodLauncher.Result
+    ) {
+        when (result) {
+            is GooglePayPaymentMethodLauncher.Result.Completed -> {
+                result.paymentMethod.id?.let { Log.e("PaymentId", it) }
+                paymentIntentId = result.paymentMethod.id!!
+                result.paymentMethod.card?.let {
+                    cardStripeData = CardStripeData()
+                    cardStripeData.id = paymentIntentId
+                    cardStripeData.card?.last4 = result.paymentMethod.card?.last4
+                    cardStripeData.card?.brand = result.paymentMethod.card?.brand?.name
+                }
+            }
+            GooglePayPaymentMethodLauncher.Result.Canceled -> {
+                // User canceled the operation
+                Log.e("Canceled", "Canceled")
+                alertError(getString(R.string.google_payment_canceled))
+                cardStripeData = CardStripeData()
+            }
+            is GooglePayPaymentMethodLauncher.Result.Failed -> {
+                result.error.message?.let { Log.e("Failed", it) }
+                alertError(result.error.message)
+                cardStripeData = CardStripeData()
+                // Operation failed; inspect `result.error` for the exception
+            }
+        }
+    }
 
 }

@@ -22,6 +22,21 @@
             name="dollar"
             type="Float" />
 
+        <variable
+            name="isStripe"
+            type="Boolean" />
+
+        <variable
+            name="isGooglePay"
+            type="Boolean" />
+
+        <variable
+            name="isSamsungPay"
+            type="Boolean" />
+
+        <variable
+            name="isShowSamsungPay"
+            type="Boolean" />
 
     </data>
 
@@ -177,8 +192,11 @@
 
 
                 <include
-
                     layout="@layout/layout_lcd_deal_summary_step2"
+                    app:isGooglePay="@{isGooglePay}"
+                    app:isSamsungPay="@{isSamsungPay}"
+                    app:isShowSamsungPay="@{isShowSamsungPay}"
+                    app:isStripe="@{isStripe}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"

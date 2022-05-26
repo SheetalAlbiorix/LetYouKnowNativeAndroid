@@ -53,11 +53,11 @@ import com.stripe.android.model.PaymentIntent
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
 import com.stripe.android.model.StripeIntent
-import kotlinx.android.synthetic.main.activity_google_payment.*
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
@@ -93,6 +93,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private var isTimeOver = false
 
     private var isFirst60 = true
+    private var isStripe = true
+    private var isGooglePay = false
+    private var isSamsungPay = false
+    private var isShowSamsungPay = false
     private var state = "NC"
     private var imageId = "0"
 
@@ -139,6 +143,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             binding.pendingUcdData = dataPendingDeal
             binding.lightDealBindData = lightBindData
 
+            binding.isStripe = isStripe
+            binding.isGooglePay = isGooglePay
+            binding.isSamsungPay = isSamsungPay
+            binding.isShowSamsungPay = isShowSamsungPay
 
             binding.isStripe = true
             if (arImage.size != 0) {
@@ -183,6 +191,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         ivBack.setOnClickListener(this)
         ll360.setOnClickListener(this)
         llGallery.setOnClickListener(this)
+        llCreditCard.setOnClickListener(this)
+        llAndroidPay.setOnClickListener(this)
+        llSamsungPay.setOnClickListener(this)
 
         setState()
 
@@ -385,12 +396,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
-            // Log.e("Request Deal", Gson().toJson(map))
+            Log.e("Request Deal", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(
                     this
                 ) { data ->
-                    //    Log.e("resp", Gson().toJson(data))
+                    Log.e("resp", Gson().toJson(data))
 //                    Constant.dismissLoader()
 
                     if (data?.foundMatch!! && !data.isBadRequest!!) {
@@ -435,7 +446,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
-                            setClearCardData()
+                            if (!isGooglePay && !isSamsungPay)
+                                setClearCardData()
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
                             if (data.paymentResponse.requires_action!!) {
                                 initStripe(data.paymentResponse.payment_intent_client_secret!!)
@@ -538,7 +550,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 edtGiftCard.text.toString().trim(),
                 dataPendingDeal.dealID
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
@@ -560,7 +574,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         tvErrorPromo.visibility = View.VISIBLE
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -699,12 +712,19 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnProceedDeal -> {
                 setErrorVisible()
-                if (isValidCard()) {
+                if (isGooglePay || isSamsungPay) {
+                    if (!TextUtils.isEmpty(cardStripeData.id)) {
+                        if (isValid()) {
+                            callBuyerAPI()
+                        }
+                    } else {
+                        alertError("Select Proper Card")
+                    }
+                } else if (isValidCard()) {
                     if (isValid()) {
                         callPaymentMethodAPI(true)
                     }
                 }
-
             }
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
@@ -718,11 +738,33 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
-
-
+            R.id.llCreditCard -> {
+                isStripe = true
+                isGooglePay = false
+                isSamsungPay = false
+                setGoogleSamsung()
+            }
+            R.id.llAndroidPay -> {
+                isStripe = false
+                isGooglePay = true
+                isSamsungPay = false
+                setGoogleSamsung()
+                onClickGooglePayment()
+            }
+            R.id.llSamsungPay -> {
+                isStripe = false
+                isGooglePay = false
+                isSamsungPay = true
+                setGoogleSamsung()
+            }
         }
     }
 
+    private fun setGoogleSamsung() {
+        binding.isStripe = isStripe
+        binding.isGooglePay = isGooglePay
+        binding.isSamsungPay = isSamsungPay
+    }
 
 
     override fun onSupportNavigateUp(): Boolean {
@@ -785,9 +827,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         when {
-
             edtCardZipCode.text.toString()
-                .trim().length != 5 -> {
+                .trim().length != 5 && (!isGooglePay && !isSamsungPay) -> {
                 tvErrorCardZip.visibility = View.VISIBLE
                 tvErrorCardZip.text = getString(R.string.zipcode_must_be_valid_digits)
                 return false
@@ -870,7 +911,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 tvErrorZipCode.text = getString(R.string.enter_valid_zipcode)
                 return false
             }
-
             else -> return true
         }
     }
@@ -1236,7 +1276,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         )
     }
 
-    private fun clickGoogle() {
+    private fun onClickGooglePayment() {
         googlePayLauncher.present(
             currencyCode = "USD",
             amount = 2500
@@ -1244,7 +1284,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onGooglePayReady(isReady: Boolean) {
-        llGooglePay.isEnabled = isReady
+        llAndroidPay.isEnabled = isReady
     }
 
     private fun onGooglePayResult(
@@ -1252,18 +1292,25 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     ) {
         when (result) {
             is GooglePayPaymentMethodLauncher.Result.Completed -> {
-                // Payment details successfully captured.
-                // Send the paymentMethodId to your server to finalize payment.
-                val paymentMethodId = result.paymentMethod.id
-
-                paymentMethodId?.let { Log.e("PaymentId", it) }
+                result.paymentMethod.id?.let { Log.e("PaymentId", it) }
+                paymentIntentId = result.paymentMethod.id!!
+                result.paymentMethod.card?.let {
+                    cardStripeData = CardStripeData()
+                    cardStripeData.id = paymentIntentId
+                    cardStripeData.card?.last4 = result.paymentMethod.card?.last4
+                    cardStripeData.card?.brand = result.paymentMethod.card?.brand?.name
+                }
             }
             GooglePayPaymentMethodLauncher.Result.Canceled -> {
                 // User canceled the operation
                 Log.e("Canceled", "Canceled")
+                alertError(getString(R.string.google_payment_canceled))
+                cardStripeData = CardStripeData()
             }
             is GooglePayPaymentMethodLauncher.Result.Failed -> {
                 result.error.message?.let { Log.e("Failed", it) }
+                alertError(result.error.message)
+                cardStripeData = CardStripeData()
                 // Operation failed; inspect `result.error` for the exception
             }
         }

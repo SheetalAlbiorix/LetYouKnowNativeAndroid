@@ -41,13 +41,13 @@ import com.letyouknow.utils.Constant.Companion.TYPE_ONE_DEAL_NEAR_YOU
 import com.letyouknow.utils.Constant.Companion.TYPE_SEARCH_DEAL
 import com.letyouknow.utils.Constant.Companion.TYPE_SUBMIT_PRICE
 import com.letyouknow.view.account.AccountFragment
-import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
+import com.letyouknow.view.payment.GooglePaymentActivity
 import com.letyouknow.view.referreferral.ReferReferralActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
@@ -632,8 +632,8 @@ class MainActivity : BaseActivity(),
                 when (pos) {
 
                     0 -> {
-                        startActivity<BidHistoryActivity>()
-//                        startActivity<GooglePaymentActivity>()
+//                        startActivity<BidHistoryActivity>()
+                        startActivity<GooglePaymentActivity>()
                     }
                     1 -> {
                         startActivity<TransactionHistoryActivity>()

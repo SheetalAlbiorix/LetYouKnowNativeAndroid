@@ -33,14 +33,14 @@ data class AddressDara(
 ) : Serializable
 
 data class CardDetData(
-    val brand: String? = "",
+    var brand: String? = "",
     val checks: ChecksData? = ChecksData(),
     val country: String? = "",
     val exp_month: String? = "",
     val exp_year: String? = "",
     val funding: String? = "",
     val generated_from: String? = "",
-    val last4: String? = "",
+    var last4: String? = "",
     val networks: NetworksData? = NetworksData(),
     val three_d_secure_usage: ThreeDSecureUsageData? = ThreeDSecureUsageData(),
     val wallet: String? = ""

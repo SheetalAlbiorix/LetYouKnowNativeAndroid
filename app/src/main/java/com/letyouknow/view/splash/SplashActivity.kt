@@ -42,6 +42,9 @@ class SplashActivity : BaseActivity() {
      "password": "WH&ry9MegCbw3FPG"
      }
 
+      "Username": "e36328is98@gmail.com",
+     "password": "WH&ry9MegCbw3FPG"
+
     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

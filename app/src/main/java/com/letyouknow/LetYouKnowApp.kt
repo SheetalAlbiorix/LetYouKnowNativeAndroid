@@ -42,7 +42,7 @@ class LetYouKnowApp : Application() {
         appPreferencesHelper = AppPreferencesHelper(this, getString(R.string.app_name))
         PaymentConfiguration.init(
             applicationContext,
-            getString(R.string.stripe_publishable_key)
+            getString(R.string.stripe_publishable_key_test)
         )
         val uiCustomization =
             PaymentAuthConfig.Stripe3ds2UiCustomization.Builder()
