@@ -582,7 +582,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             spRadius.adapter = adapterRadius
             spRadius.onItemSelectedListener = this
             if (isBid) {
-                val radius = yearModelMakeData.radius + " mi"
+                val radius =
+                    if (yearModelMakeData.radius == "ALL" || yearModelMakeData.radius == "6000") yearModelMakeData.radius else yearModelMakeData.radius + " mi"
                 for (i in 0 until arRadius.size) {
                     if (radius == arRadius[i]) {
                         spRadius.setSelection(i)

@@ -231,6 +231,7 @@
     <string name="option_amp_accessories"><![CDATA[Option & Accessories]]></string>
     <string name="option_amp_accessories_colon"><![CDATA[Options & Accessories:]]></string>
     <string name="select_deal">Select Deal</string>
+    <string name="price_bid"><font size="10">or</font>\n<b>PRICE BID</b>\n<font size="10">To Save More</font></string>
     <string name="unlockedcardeals">UnlockedCarDeals:</string>
     <string name="search_summary">Search Summary</string>
     <string name="price_colon">Price : %1s$$</string>
