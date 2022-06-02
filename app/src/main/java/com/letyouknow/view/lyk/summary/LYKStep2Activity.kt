@@ -27,6 +27,7 @@ import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.alertPaymentError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
 import com.letyouknow.utils.Constant
@@ -194,6 +195,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         llCreditCard.setOnClickListener(this)
         llAndroidPay.setOnClickListener(this)
         llSamsungPay.setOnClickListener(this)
+        btnGooglePayProceedDeal.setOnClickListener(this)
 
         setState()
 
@@ -353,6 +355,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         AppGlobal.setLayoutParam(dialog)
         dialog.show()
     }
+
 
     private fun callSubmitDealAPI(isStripe: Boolean) {
         if (Constant.isOnline(this)) {
@@ -711,6 +714,22 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
+                if (isGooglePay || isSamsungPay) {
+                    if (!TextUtils.isEmpty(cardStripeData.id)) {
+                        if (isValid()) {
+                            callBuyerAPI()
+                        }
+                    } else {
+                        alertPaymentError(this, "Select Proper Card")
+                    }
+                } else if (isValidCard()) {
+                    if (isValid()) {
+                        callPaymentMethodAPI(true)
+                    }
+                }
+            }
+            R.id.btnGooglePayProceedDeal -> {
                 setErrorVisible()
                 if (isGooglePay || isSamsungPay) {
                     if (!TextUtils.isEmpty(cardStripeData.id)) {
@@ -1304,12 +1323,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             GooglePayPaymentMethodLauncher.Result.Canceled -> {
                 // User canceled the operation
                 Log.e("Canceled", "Canceled")
-                alertError(getString(R.string.google_payment_canceled))
+                alertPaymentError(this, getString(R.string.google_payment_canceled))
                 cardStripeData = CardStripeData()
             }
             is GooglePayPaymentMethodLauncher.Result.Failed -> {
                 result.error.message?.let { Log.e("Failed", it) }
-                alertError(result.error.message)
+                alertPaymentError(this, result.error.message)
                 cardStripeData = CardStripeData()
                 // Operation failed; inspect `result.error` for the exception
             }

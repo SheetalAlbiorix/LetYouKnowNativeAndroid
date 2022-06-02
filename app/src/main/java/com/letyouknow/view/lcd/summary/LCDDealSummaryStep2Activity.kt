@@ -227,6 +227,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         llCreditCard.setOnClickListener(this)
         llAndroidPay.setOnClickListener(this)
         llSamsungPay.setOnClickListener(this)
+        btnGooglePayProceedDeal.setOnClickListener(this)
         initLiveGoogle()
     }
 
@@ -787,6 +788,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 handlerPer.postDelayed(this, 30000)
             else {
                 isPercentShow = false
+                btnGooglePayProceedDeal.visibility = View.GONE
+                btnProceedDeal.visibility = View.VISIBLE
                 tvSubmitStartOver.text = getString(R.string.start_over)
             }
         }
@@ -930,6 +933,27 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
+                if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    removeHubConnection()
+                    callCheckVehicleStockAPI()
+                } else {
+                    if (isGooglePay || isSamsungPay) {
+                        if (!TextUtils.isEmpty(cardStripeData.id)) {
+                            if (isValid()) {
+                                callBuyerAPI()
+                            }
+                        } else {
+                            alertError("Select Proper Card")
+                        }
+                    } else if (isValidCard()) {
+                        if (isValid()) {
+                            callPaymentMethodAPI(true)
+                        }
+                    }
+                }
+            }
+            R.id.btnGooglePayProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
@@ -1689,12 +1713,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             GooglePayPaymentMethodLauncher.Result.Canceled -> {
                 // User canceled the operation
                 Log.e("Canceled", "Canceled")
-                alertError(getString(R.string.google_payment_canceled))
+                AppGlobal.alertPaymentError(this, getString(R.string.google_payment_canceled))
                 cardStripeData = CardStripeData()
             }
             is GooglePayPaymentMethodLauncher.Result.Failed -> {
                 result.error.message?.let { Log.e("Failed", it) }
-                alertError(result.error.message)
+                AppGlobal.alertPaymentError(this, result.error.message)
                 cardStripeData = CardStripeData()
                 // Operation failed; inspect `result.error` for the exception
             }

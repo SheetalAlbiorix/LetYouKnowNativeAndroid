@@ -58,7 +58,7 @@ class SearchFragment : BaseFragment(), View.OnClickListener {
 
     private fun setYear() {
         val adapterYear = ArrayAdapter<String?>(
-            activity!!,
+            requireActivity(),
             android.R.layout.simple_spinner_item,
             arYear as List<String?>
         )

@@ -61,10 +61,10 @@ class Constant {
         var PRIVACY_POLICY_LINK = "https://demo.letyouknow.com/privacypolicy"
 
         //        var PRIVACY_POLICY_LINK = "https://letyouknow.com/privacypolicy"
-        /* var HUB_CONNECTION_URL =
-             "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"*/
         var HUB_CONNECTION_URL =
-            "https://lyksignalrapi.azurewebsites.net/buyerhub"
+            "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"
+        /*var HUB_CONNECTION_URL =
+            "https://lyksignalrapi.azurewebsites.net/buyerhub"*/
 
         //            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
         var REFERRAL_LINK = "https://www.lyk.com/user1/referral"

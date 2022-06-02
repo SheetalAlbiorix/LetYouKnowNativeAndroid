@@ -132,7 +132,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
         submitDealUCDViewModel = ViewModelProvider(this)[SubmitDealUCDViewModel::class.java]
         submitPendingUCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
+            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
 
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
@@ -242,6 +242,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         llCreditCard.setOnClickListener(this)
         llAndroidPay.setOnClickListener(this)
         llSamsungPay.setOnClickListener(this)
+        btnGooglePayProceedDeal.setOnClickListener(this)
         initLiveGoogle()
     }
 
@@ -837,8 +838,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             countPer += 1
             if (tvPerc.text.toString().trim() != "0%")
                 handlerPer.postDelayed(this, 30000)
-            else
+            else {
+                btnProceedDeal.visibility = View.VISIBLE
+                btnGooglePayProceedDeal.visibility = View.VISIBLE
                 tvSubmitStartOver.text = getString(R.string.start_over)
+            }
+
         }
     }
 
@@ -981,6 +986,35 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.btnProceedDeal -> {
+                setErrorVisible()
+                if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    removeHubConnection()
+                    callCheckVehicleStockAPI()
+                } else {
+                    if (isGooglePay || isSamsungPay) {
+                        if (!TextUtils.isEmpty(cardStripeData.id)) {
+                            if (isValid()) {
+                                callBuyerAPI()
+                            }
+                        } else {
+                            alertError("Select Proper Card")
+                        }
+                    } else if (isValidCard()) {
+                        if (isValid()) {
+                            callPaymentMethodAPI(true)
+                        }
+                    }
+                }
+                /*if (isTimeOver) {
+                    onBackPressed()x
+                } else if (isValidCard()) {
+                    if (isValid()) {
+                        callBuyerAPI()
+                    }
+                }*/
+//
+            }
+            R.id.btnGooglePayProceedDeal -> {
                 setErrorVisible()
                 if (tvSubmitStartOver.text == getString(R.string.start_over)) {
                     removeHubConnection()
@@ -1719,12 +1753,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             GooglePayPaymentMethodLauncher.Result.Canceled -> {
                 // User canceled the operation
                 Log.e("Canceled", "Canceled")
-                alertError(getString(R.string.google_payment_canceled))
+                AppGlobal.alertPaymentError(this, getString(R.string.google_payment_canceled))
                 cardStripeData = CardStripeData()
             }
             is GooglePayPaymentMethodLauncher.Result.Failed -> {
                 result.error.message?.let { Log.e("Failed", it) }
-                alertError(result.error.message)
+                AppGlobal.alertPaymentError(this, result.error.message)
                 cardStripeData = CardStripeData()
                 // Operation failed; inspect `result.error` for the exception
             }

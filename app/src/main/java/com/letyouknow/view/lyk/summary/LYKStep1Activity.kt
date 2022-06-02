@@ -10,7 +10,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
-import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -938,7 +937,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                 dismiss()
             }
             yearModelMakeData.run {
-
                 tvDialogTitle.text =
                     vehicleYearStr + " " + vehicleMakeStr + " " + vehicleModelStr + " " + vehicleTrimStr
                 tvDialogExteriorColor.text = vehicleExtColorStr
@@ -986,30 +984,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         dialog.window?.attributes = layoutParams
     }
 
-    private fun callRefreshTokenApi() {
-        if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
-            val request = java.util.HashMap<String, Any>()
-            request[ApiConstant.AuthToken] = pref?.getUserData()?.authToken!!
-            request[ApiConstant.RefreshToken] = pref?.getUserData()?.refreshToken!!
-
-            tokenModel.refresh(this, request)!!.observe(this, { data ->
-                Constant.dismissLoader()
-                val userData = pref?.getUserData()
-                userData?.authToken = data.auth_token!!
-                userData?.refreshToken = data.refresh_token!!
-                pref?.setUserData(Gson().toJson(userData))
-                callSubmitPendingDealAPI()
-            }
-            )
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun setErrorVisible() {
         tvErrorInitials.visibility = View.GONE
@@ -1035,43 +1009,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             filtered
         }
 
-
-    fun EditText.addCurrencyFormatter() {
-
-        // Reference: https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext/29993290#29993290
-        this.addTextChangedListener(object : TextWatcher {
-
-            private var current = ""
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (s.toString() != current) {
-                    this@addCurrencyFormatter.removeTextChangedListener(this)
-                    // strip off the currency symbol
-
-                    // Reference for this replace regex: https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext/28005836#28005836
-                    val cleanString = s.toString().replace("\\D".toRegex(), "")
-                    val parsed = if (cleanString.isBlank()) 0.0 else cleanString.toDouble()
-                    // format the double into a currency format
-                    val formated = NumberFormat.getCurrencyInstance()
-                        .format(parsed / 10)
-
-                    current = formated
-                    this@addCurrencyFormatter.setText(formated)
-                    this@addCurrencyFormatter.setSelection(formated.length)
-
-                    this@addCurrencyFormatter.addTextChangedListener(this)
-                }
-            }
-        })
-
-    }
 
     fun setPrefSubmitPriceData() {
         pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))

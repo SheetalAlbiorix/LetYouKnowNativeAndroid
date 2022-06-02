@@ -489,6 +489,21 @@ class AppGlobal {
             edtView.filters = EmojiFilter.getFilter()
         }
 
+        fun alertPaymentError(context: Context, message: String?) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.setContentView(R.layout.dialog_error)
+            dialog.run {
+                tvErrorMessage.text = message
+                tvErrorOk.setOnClickListener {
+                    dismiss()
+                }
+            }
+            AppGlobal.setLayoutParam(dialog)
+            dialog.show()
+        }
 
     }
 
