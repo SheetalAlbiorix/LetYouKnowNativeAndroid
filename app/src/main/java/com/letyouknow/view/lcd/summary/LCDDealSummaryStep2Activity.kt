@@ -32,6 +32,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.*
 import com.letyouknow.utils.AppGlobal.Companion.alertCardError
+import com.letyouknow.utils.AppGlobal.Companion.alertPaymentError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
@@ -944,7 +945,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 callBuyerAPI()
                             }
                         } else {
-                            alertError("Select Proper Card")
+                            alertPaymentError(this, "Select Proper Card")
                         }
                     } else if (isValidCard()) {
                         if (isValid()) {

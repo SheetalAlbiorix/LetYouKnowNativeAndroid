@@ -997,7 +997,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 callBuyerAPI()
                             }
                         } else {
-                            alertError("Select Proper Card")
+                            AppGlobal.alertPaymentError(this, "Select Proper Card")
                         }
                     } else if (isValidCard()) {
                         if (isValid()) {
