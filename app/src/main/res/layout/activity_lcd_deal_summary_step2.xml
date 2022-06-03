@@ -19,6 +19,10 @@
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
         <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
             name="dollar"
             type="Float" />
 
@@ -179,6 +183,7 @@
                 <include
 
                     layout="@layout/layout_lcd_deal_summary_step2"
+                    app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"

@@ -404,5 +404,9 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
+    <string name="estimated_taxes">Estimated Taxes</string>
+    <string name="estimated_reg_non">Estimated Reg Non Tax Fees:\n<i>(registration, licensing and titling fees)</i></string>
+    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees</string>
+    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance:</string>
 
 </resources>

@@ -113,6 +113,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private var arPer = arrayListOf("75%", "50%", " 25%", "0%")
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+    private lateinit var calculateTaxViewModel: CalculateTaxViewModel
 
     var hubConnection: HubConnection? = null
 
@@ -136,6 +137,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
         submitPendingLCDDealViewModel =
             ViewModelProvider(this)[SubmitPendingLCDDealViewModel::class.java]
+        calculateTaxViewModel =
+            ViewModelProvider(this)[CalculateTaxViewModel::class.java]
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -434,6 +437,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         spState.onItemSelectedListener = this
     }
 
+
+    var dollar = 0.0
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -442,7 +447,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data == "0.00") {
                         llDollar.visibility = View.GONE
@@ -450,12 +457,14 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
+                    dollar = data.toDouble()
+                    callCalculateTaxAPI()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun callBuyerAPI() {
         if (Constant.isOnline(this)) {
@@ -681,7 +690,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 edtGiftCard.text.toString().trim(),
                 dataPendingDeal.dealID
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
@@ -690,6 +701,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         dataLCDDeal.discount = data.discount!!
                         dataLCDDeal.promotionId = data.promotionID!!
                         binding.ucdData = dataLCDDeal
+                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         dataLCDDeal.discount = 0.0f
@@ -703,7 +715,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         tvErrorPromo.visibility = View.VISIBLE
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -718,39 +729,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
     }
 
-    private fun startTimer() {
-        cTimer = object : CountDownTimer((seconds * 1000).toLong(), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                seconds -= 1
-                tvTimer.text = (String.format("%02d", seconds / 60)
-                        + ":" + String.format("%02d", seconds % 60))
-                if (seconds == 60 && isFirst60) {
-                    tvAddMin.visibility = View.VISIBLE
-                    isFirst60 = false
-                } else if (seconds < 60) {
-                    tvTimer.setTextColor(resources.getColor(R.color.colorB11D1D))
-                    tvTimer.setBackgroundResource(R.drawable.bg_round_border_red)
-                } else {
-                    tvTimer.setBackgroundResource(R.drawable.bg_round_border_blue)
-                    tvTimer.setTextColor(resources.getColor(R.color.colorPrimary))
-                }
-                if (seconds == 0 || seconds == 1) {
-                    tvAddMin.visibility = View.GONE
-                    tvTimer.visibility = View.GONE
-                    llExpired.visibility = View.VISIBLE
-                    isTimeOver = true
-                    tvSubmitStartOver.text = getString(R.string.try_again)
-                    cancelTimer()
-                    setPer()
-                    return
-                }
-            }
-
-            override fun onFinish() {
-            }
-
-        }.start()
-    }
 
     private lateinit var handlerPer: Handler
     private var countPer = 0
@@ -1214,6 +1192,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.spState -> {
                 val data = adapterState.getItem(position) as String
                 state = data
+                callCalculateTaxAPI()
             }
         }
     }
@@ -1592,5 +1571,29 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //        dialogProgress.dismiss()
     }
 
+    private fun callCalculateTaxAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            calculateTaxViewModel.getCalculateTax(
+                this,
+                dataLCDDeal.price!!.toDouble(),
+                dataLCDDeal.discount!!.toDouble(),
+                dollar,
+                state
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }
