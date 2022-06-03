@@ -43,8 +43,7 @@ class SplashActivity : BaseActivity() {
      }
 
      Albiorix12@gmail.com
-Albiorix@1234
-
+     Albiorix@1234
     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +53,6 @@ Albiorix@1234
         } else {
             init()
         }
-
-
     }
 
     private fun init() {
