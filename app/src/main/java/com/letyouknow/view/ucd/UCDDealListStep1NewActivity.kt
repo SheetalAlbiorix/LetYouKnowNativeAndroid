@@ -476,6 +476,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             }
 
             val request = HashMap<String, Any>()
+            request[ApiConstant.Product] = 3
             request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
