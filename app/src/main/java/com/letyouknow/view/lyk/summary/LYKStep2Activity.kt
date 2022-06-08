@@ -93,6 +93,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private var state = "NC"
     private var imageId = "0"
 
+    private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    var dollar = 0.0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +112,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
         submitDealViewModel = ViewModelProvider(this).get(SubmitDealViewModel::class.java)
         tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+        calculateTaxViewModel = ViewModelProvider(this).get(CalculateTaxViewModel::class.java)
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -138,6 +142,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
 
             binding.isStripe = true
+            binding.selectState = state
             if (arImage.size != 0) {
                 AppGlobal.loadImageUrl(this, ivMain, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
@@ -283,6 +288,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
+                    dollar = data.toDouble()
+                    callCalculateTaxAPI()
                 }
                 )
         } else {
@@ -404,7 +411,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                             Constant.ARG_SUBMIT_DEAL to Gson().toJson(
                                 data
                             ),
-                            ARG_TYPE_PRODUCT to "LetYouKnow"
+                            ARG_TYPE_PRODUCT to "LetYouKnow",
+                            Constant.ARG_CAL_TAX_DATA to Gson().toJson(calculateTaxData)
                         )
                         finish()
 
@@ -510,14 +518,15 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 "899065",
                 "pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA"
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     cardStripeData = data
                     if (isPayment)
                         callBuyerAPI()
                     else
                         Constant.dismissLoader()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -535,7 +544,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 edtGiftCard.text.toString().trim(),
                 dataPendingDeal.dealID
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
@@ -544,6 +555,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         yearModelMakeData.discount = data.discount!!
                         yearModelMakeData.promotionId = data.promotionID!!
                         binding.data = yearModelMakeData
+                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         yearModelMakeData.discount = 0.0f
@@ -555,9 +567,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
+                        callCalculateTaxAPI()
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -925,6 +937,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.spState -> {
                 val data = adapterState.getItem(position) as String
                 state = data
+                binding.selectState = state
+                callCalculateTaxAPI()
             }
         }
     }
@@ -1215,5 +1229,33 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
         }.start()
     }
+
+    private var calculateTaxData = CalculateTaxData()
+    private fun callCalculateTaxAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            calculateTaxViewModel.getCalculateTax(
+                this,
+                yearModelMakeData.price!!.toDouble(),
+                yearModelMakeData.discount!!.toDouble(),
+                dollar,
+                state
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
 }

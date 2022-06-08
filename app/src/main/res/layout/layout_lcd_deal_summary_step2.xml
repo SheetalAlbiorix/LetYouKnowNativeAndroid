@@ -33,6 +33,11 @@
         <variable
             name="taxData"
             type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
+            name="selectState"
+            type="String" />
+
     </data>
 
 
@@ -561,6 +566,16 @@
                         android:textSize="@dimen/_15sdp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:id="@+id/tvSelectState"
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@{@string/based_on_selected_state_of(selectState)}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

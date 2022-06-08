@@ -99,7 +99,13 @@ data class TransactionInfo(
     var vehiclePromoCode: Float? = 0.0f,
     val vehicleTrim: String? = "",
     val vehicleVIN: String? = "",
-    val vehicleYear: String? = ""
+    val vehicleYear: String? = "",
+    val documentationFee: Double? = 0.0,
+    val prePaymentToDealer: Double? = 0.0,
+    val adjustedLYKPrice: Double? = 0.0,
+    val carSalesTax: Double? = 0.0,
+    val nonTaxRegFee: Double? = 0.0,
+    val estimatedTotalRemainingBalance: Double? = 0.0,
 )
 
 data class VehicleAccessory(

@@ -234,6 +234,7 @@
     <string name="unlockedcardeals">UnlockedCarDeals:</string>
     <string name="search_summary">Search Summary</string>
     <string name="price_colon">Price : %1s$$</string>
+    <string name="price_colon1">Price:</string>
     <string name="miles_approximate_odometer_reading">%1s miles (approximate odometer reading)</string>
     <string name="proceed_to_review_page">PROCEED TO REVIEW PAGE</string>
     <string name="price_data">$%1$.2f</string>
@@ -405,8 +406,21 @@
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
     <string name="estimated_taxes">Estimated Taxes</string>
+    <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_reg_non">Estimated Reg Non Tax Fees:\n<i>(registration, licensing and titling fees)</i></string>
     <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees</string>
+    <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance:</string>
-
+    <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
+    <string name="based_on_selected_state_of"><font size="9"><sup>‡</sup></font> Based on your selected state of %1s</string>
+    <string name="based_on_selected_state_of_italic"><i><font size="9"><sup>‡</sup></font> Based on your selected state of %1s</i></string>
+    <string name="adjusted_lyk_price">Adjusted LYK Price</string>
+    <string name="doc_fee">Doc Fee:</string>
+    <string name="prepayment_by_lyk">Prepayment (by LYK)</string>
+    <string name="prepayment">Prepayment</string>
+    <string name="prepayment_colon">Prepayment:</string>
+    <string name="registration_licensing_titling_fees">(registration, licensing &amp; titling fees)</string>
+    <string name="dealer_receipt">Dealer Receipt</string>
+    <string name="my_receipt">My\nReceipt</string>
+    <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
 </resources>

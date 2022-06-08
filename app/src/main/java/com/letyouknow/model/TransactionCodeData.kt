@@ -46,7 +46,15 @@ data class TransactionCodeData(
     val product: String? = "",
     var packageStr: String? = "",
     var accessoriesStr: String? = "",
-    val isPackageNone: Boolean? = false
+    val isPackageNone: Boolean? = false,
+    val dealerDeposit: Double? = 0.0,
+    val lykFee: Double? = 0.0,
+    val documentationFee: Double? = 0.0,
+    val prePaymentToDealer: Double? = 0.0,
+    val adjustedLYKPrice: Double? = 0.0,
+    val carSalesTax: Double? = 0.0,
+    val nonTaxRegFee: Double? = 0.0,
+    val estimatedTotalRemainingBalance: Double? = 0.0,
 ) : Serializable
 
 data class AddressInfoData(

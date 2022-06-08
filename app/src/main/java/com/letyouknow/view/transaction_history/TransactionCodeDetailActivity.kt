@@ -1,10 +1,13 @@
 package com.letyouknow.view.transaction_history
 
 import android.app.Activity
+import android.app.Dialog
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -12,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityTransactionCodeDetailBinding
+import com.letyouknow.model.TransactionCodeData
 import com.letyouknow.retrofit.viewmodel.TransactionCodeViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.callDialerOpen
@@ -21,6 +25,8 @@ import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
 import com.letyouknow.utils.Constant.Companion.ARG_TRANSACTION_CODE
 import com.letyouknow.view.dashboard.MainActivity
 import kotlinx.android.synthetic.main.activity_transaction_code_detail.*
+import kotlinx.android.synthetic.main.activity_transaction_code_detail.tvBasedState
+import kotlinx.android.synthetic.main.dialog_dealer_receipt.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -33,6 +39,7 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var transactionCodeViewModel: TransactionCodeViewModel
     private var isNotification = false
+    private lateinit var transData: TransactionCodeData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +62,7 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
         btnFindYourCar.setOnClickListener(this)
         tvCallNumber.setOnClickListener(this)
         ivBack.setOnClickListener(this)
-
+        tvDealerReceipt.setOnClickListener(this)
         tvCallNumber.text = Html.fromHtml(getString(R.string.if_you_have_any_questions))
     }
 
@@ -93,6 +100,7 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
 
             transactionCodeViewModel.transactionCodeApiCall(this, code)!!
                 .observe(this, Observer { data ->
+                    transData = data
                     Constant.dismissLoader()
                     //  Log.e("Transaction Code Data", Gson().toJson(data))
                     tvVehicle.text =
@@ -229,6 +237,10 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.tvCallNumber -> {
                 callDialerOpen(this, getString(R.string.number))
             }
+            R.id.tvDealerReceipt -> {
+                if (::transData.isInitialized)
+                    showDealerReceiptDialog(transData)
+            }
             R.id.ivBack -> {
 //                if (isNotification) {
                 onBackPressed()
@@ -249,5 +261,52 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
         }
 //       super.onBackPressed()
 
+    }
+
+    private fun showDealerReceiptDialog(transData: TransactionCodeData) {
+        val dialogReceipt = Dialog(this, R.style.FullScreenDialog)
+        dialogReceipt.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogReceipt.setCancelable(false)
+        dialogReceipt.setContentView(R.layout.dialog_dealer_receipt)
+        dialogReceipt.run {
+            tvAdjustLYKPrice.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.adjustedLYKPrice)
+            tvDocFee.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.documentationFee)
+                }"
+            tvPrePayment.text =
+                "-${
+                    NumberFormat.getCurrencyInstance(Locale.US)
+                        .format(transData?.prePaymentToDealer)
+                }"
+            tvRemainingBal.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.remainingBalance)
+
+            tvEstimatedTax.text =
+                "+${NumberFormat.getCurrencyInstance(Locale.US).format(transData?.carSalesTax)}"
+            tvEstimatedReg.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.nonTaxRegFee)
+                }"
+            tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
+                .format(transData?.estimatedTotalRemainingBalance)
+            tvBasedState.text =
+                getString(R.string.based_on_selected_state_of, transData?.buyerState)
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogReceipt)
+        dialogReceipt.show()
+    }
+
+    private fun setLayoutParam(dialog: Dialog) {
+        val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.attributes = layoutParams
     }
 }

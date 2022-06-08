@@ -40,12 +40,21 @@
             type="Float" />
 
         <variable
+            name="selectState"
+            type="String" />
+
+        <variable
             name="data"
             type="com.letyouknow.model.YearModelMakeData" />
 
         <variable
             name="pendingUCDData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
+
+        <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
     </data>
 
 
@@ -61,13 +70,13 @@
             android:orientation="vertical">
             <!--goneeeee-->
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button"
                 android:backgroundTint="@color/offWhite"
                 android:orientation="vertical"
-                android:padding="@dimen/_25sdp">
+                android:padding="@dimen/_25sdp"
+                android:visibility="visible">
 
                 <TextView
                     style="@style/bold"
@@ -387,6 +396,96 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_15sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/estimated_taxes"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(taxData.carSalesTax)}"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/regular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/estimated_reg_non"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        style="@style/medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(taxData.nonTaxRegFee)}"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@drawable/bg_button3"
+                    android:backgroundTint="@color/navyBlue"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_12sdp">
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/estimated_total_remaining_balance"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15sdp" />
+
+                    <TextView
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(taxData.estimatedTotalPrice)}"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15sdp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <TextView
+                    android:id="@+id/tvSelectState"
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@{@string/based_on_selected_state_of(selectState)}"
+                    android:textColor="@color/color545d64"
+                    android:textSize="@dimen/_12sdp" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 

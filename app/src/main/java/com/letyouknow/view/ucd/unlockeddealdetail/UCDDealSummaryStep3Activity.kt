@@ -33,6 +33,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.*
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
+import com.letyouknow.utils.Constant.Companion.ARG_CAL_TAX_DATA
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import com.letyouknow.utils.Constant.Companion.ARG_IS_SHOW_PER
@@ -106,6 +107,10 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     var hubConnection: HubConnection? = null
     var isPercentShow = false
 
+    private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    var dollar = 0.0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ucd_deal_summary_step3)
@@ -124,7 +129,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
         submitDealUCDViewModel = ViewModelProvider(this)[SubmitDealUCDViewModel::class.java]
         submitPendingUCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
+            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
+        calculateTaxViewModel =
+            ViewModelProvider(this)[CalculateTaxViewModel::class.java]
 
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
@@ -157,6 +164,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             )
 
             binding.ucdData = ucdData
+            binding.selectState = state
             binding.pendingUcdData = pendingUCDData
 //            callRefreshTokenApi()
             callDollarAPI()
@@ -415,6 +423,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
+                    callCalculateTaxAPI()
                 }
                 )
         } else {
@@ -558,7 +567,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
                                 ),
-                                ARG_TYPE_PRODUCT to "UnlockedCarDeals"
+                                ARG_TYPE_PRODUCT to "UnlockedCarDeals",
+                                ARG_CAL_TAX_DATA to Gson().toJson(calculateTaxData)
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
@@ -680,7 +690,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 edtGiftCard.text.toString().trim(),
                 pendingUCDData.dealID
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
@@ -689,6 +701,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                         ucdData.discount = data.discount!!
                         ucdData.promotionId = data.promotionID!!
                         binding.ucdData = ucdData
+                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         ucdData.discount = 0.0f
@@ -700,9 +713,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
+                        callCalculateTaxAPI()
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -1316,6 +1329,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             R.id.spState -> {
                 val data = adapterState.getItem(position) as String
                 state = data
+                binding.selectState = state
+                callCalculateTaxAPI()
             }
         }
     }
@@ -1616,5 +1631,32 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 }
             }
         }.start()
+    }
+
+    private var calculateTaxData = CalculateTaxData()
+    private fun callCalculateTaxAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            calculateTaxViewModel.getCalculateTax(
+                this,
+                ucdData.price!!.toDouble(),
+                ucdData.discount!!.toDouble(),
+                dollar,
+                state
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 }

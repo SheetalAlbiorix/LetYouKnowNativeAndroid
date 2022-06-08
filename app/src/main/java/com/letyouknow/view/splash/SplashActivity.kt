@@ -64,8 +64,8 @@ class SplashActivity : BaseActivity() {
             }
         }, 3000)
         getFBToken()
-
     }
+
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)

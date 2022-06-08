@@ -22,6 +22,14 @@
             name="pendingUcdData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
+        <variable
+            name="selectState"
+            type="String" />
+
+        <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -174,6 +182,8 @@
 
                 <include
                     layout="@layout/layout_ucd_deal_summary_step3"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"

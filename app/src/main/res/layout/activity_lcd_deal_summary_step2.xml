@@ -26,6 +26,10 @@
             name="dollar"
             type="Float" />
 
+        <variable
+            name="selectState"
+            type="String" />
+
 
     </data>
 
@@ -183,6 +187,7 @@
                 <include
 
                     layout="@layout/layout_lcd_deal_summary_step2"
+                    app:selectState="@{selectState}"
                     app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"

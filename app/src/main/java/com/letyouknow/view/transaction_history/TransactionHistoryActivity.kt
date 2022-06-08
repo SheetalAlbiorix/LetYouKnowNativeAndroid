@@ -22,6 +22,9 @@ import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import kotlinx.android.synthetic.main.activity_transaction_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
+import kotlinx.android.synthetic.main.dialog_bid_history.ivDialogClose
+import kotlinx.android.synthetic.main.dialog_dealer_receipt.*
+import kotlinx.android.synthetic.main.dialog_my_receipt.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
@@ -77,28 +80,21 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
             R.id.ivBack -> {
                 onBackPressed()
             }
-            R.id.cardTransaction -> {
-                /* val pos = v.tag as Int
-                 if (selectPos != -1) {
-                     var data = adapterTransactionHistory.getItem(selectPos)
-                     data = false
-                     adapterTransactionHistory.update(selectPos, data)
-                 }
-
-                 var data = adapterTransactionHistory.getItem(pos)
-                 data = true
-                 adapterTransactionHistory.update(pos, data)
-                 selectPos = pos*/
-            }
             R.id.tvSeeMore -> {
                 val pos = v.tag as Int
-                popupTransactionHistory(adapterTransactionHistory.getItem(pos))
+                popupMyReceipt(adapterTransactionHistory.getItem(pos))
+//                popupTransactionHistory(adapterTransactionHistory.getItem(pos))
             }
             R.id.llTransaction -> {
                 val pos = v.tag as Int
                 val data = adapterTransactionHistory.getItem(pos)
                 if (!TextUtils.isEmpty(data.transactionCode))
                     startActivity<TransactionCodeDetailActivity>(Constant.ARG_TRANSACTION_CODE to data.transactionCode)
+            }
+
+            R.id.tvDealerReceipt -> {
+                val pos = v.tag as Int
+                showDealerReceiptDialog(adapterTransactionHistory.getItem(pos))
             }
         }
     }
@@ -200,6 +196,117 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
         dialog.show()
     }
 
+    private fun popupMyReceipt(data: TransactionHistoryData) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_my_receipt)
+        dialog.run {
+            ivDialogCloseRec.setOnClickListener {
+                dismiss()
+            }
+            data.run {
+                var type = ""
+                when (label) {
+                    "LCD" -> type = "LightningCarDeals"
+                    "UCD" -> type = "UnlockedCarDeals"
+                    "LYK" -> type = "LetYouKnow"
+                }
+                tvDialogSuccessUnSuccessRec.text = type
+                tvDialogTitleRec.text =
+                    "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
+                tvDialogExteriorColorRec.text =
+                    if (TextUtils.isEmpty(vehicleExteriorColor)) "ANY" else vehicleExteriorColor
+                tvDialogInteriorColorRec.text =
+                    if (TextUtils.isEmpty(vehicleInteriorColor)) "ANY" else vehicleInteriorColor
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+
+
+                tvDialogPackageRec.text = if (packages.isEmpty()) "ANY" else packages
+                tvDialogOptionsRec.text = if (accessories.isEmpty()) "ANY" else accessories
+                tvDialogZipCodeRec.text = zipCode
+                tvDialogRadiusRec.text = if (searchRadius == "6000") "All" else searchRadius
+                tvDialogSubmittedDateRec.text = timeStampFormatted
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosureRec.text =
+                            context.getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosureRec.text = condition
+                        } else {
+                            tvDialogDisclosureRec.text =
+                                tvDialogDisclosureRec.text.toString().trim() + ", " + condition
+                        }
+
+                    }
+                    llDiscRec.visibility = View.VISIBLE
+                } else {
+                    llDiscRec.visibility = View.GONE
+                }
+
+                tvPriceRec.text =
+                    NumberFormat.getCurrencyInstance(Locale.US).format(data?.price)
+                tvPrePaymentRec.text =
+                    "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.reservationPrepayment)
+                    }"
+                tvRemainingBalRec.text =
+                    NumberFormat.getCurrencyInstance(Locale.US).format(data?.remainingBalance)
+
+                tvEstimatedTaxRec.text =
+                    "+${NumberFormat.getCurrencyInstance(Locale.US).format(data?.carSalesTax)}"
+                tvEstimatedRegRec.text =
+                    "+${
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data?.nonTaxRegFee)
+                    }"
+                tvEstimatedTotalRec.text = NumberFormat.getCurrencyInstance(Locale.US)
+                    .format(data?.estimatedTotalRemainingBalance)
+                if (data.discount != null && data.discount != 0.0) {
+                    tvPromoRec.text = "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.discount)
+                    }"
+                    llPromoRec.visibility = View.VISIBLE
+                } else {
+                    llPromoRec.visibility = View.GONE
+                }
+
+                if (data.lykDollar != null && data.lykDollar != 0.0) {
+                    tvDollarsRec.text = "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.lykDollar)
+                    }"
+                    llDollarRec.visibility = View.VISIBLE
+                } else {
+                    llDollarRec.visibility = View.GONE
+                }
+                tvBasedStateRec.text =
+                    getString(R.string.based_on_selected_state_of, data?.buyerState)
+            }
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
     private fun setLayoutParam(dialog: Dialog) {
         val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
         dialog.window?.setLayout(
@@ -207,5 +314,43 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
             WindowManager.LayoutParams.MATCH_PARENT
         )
         dialog.window?.attributes = layoutParams
+    }
+
+    private fun showDealerReceiptDialog(transData: TransactionHistoryData) {
+        val dialogReceipt = Dialog(this, R.style.FullScreenDialog)
+        dialogReceipt.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogReceipt.setCancelable(false)
+        dialogReceipt.setContentView(R.layout.dialog_dealer_receipt)
+        dialogReceipt.run {
+            tvAdjustLYKPrice.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.adjustedLYKPrice)
+            tvDocFee.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.documentationFee)
+                }"
+            tvPrePayment.text =
+                "-${
+                    NumberFormat.getCurrencyInstance(Locale.US)
+                        .format(transData?.prePaymentToDealer)
+                }"
+            tvRemainingBal.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.remainingBalance)
+
+            tvEstimatedTax.text =
+                "+${NumberFormat.getCurrencyInstance(Locale.US).format(transData?.carSalesTax)}"
+            tvEstimatedReg.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.nonTaxRegFee)
+                }"
+            tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
+                .format(transData?.estimatedTotalRemainingBalance)
+            tvBasedState.text =
+                getString(R.string.based_on_selected_state_of, transData?.buyerState)
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogReceipt)
+        dialogReceipt.show()
     }
 }

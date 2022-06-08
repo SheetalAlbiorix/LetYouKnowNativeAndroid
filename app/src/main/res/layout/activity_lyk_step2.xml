@@ -27,6 +27,10 @@
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
         <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
             name="isStripe"
             type="Boolean" />
 
@@ -41,6 +45,10 @@
         <variable
             name="isShowSamsungPay"
             type="Boolean" />
+
+        <variable
+            name="selectState"
+            type="String" />
 
     </data>
 
@@ -350,6 +358,8 @@
 
                 <include
                     layout="@layout/layout_lyk_step2"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"

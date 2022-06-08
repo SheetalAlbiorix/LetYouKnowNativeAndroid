@@ -35,6 +35,7 @@ import com.letyouknow.utils.AppGlobal.Companion.alertCardError
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.formatPhoneNo
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
+import com.letyouknow.utils.Constant.Companion.ARG_CAL_TAX_DATA
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import com.letyouknow.utils.Constant.Companion.ARG_IS_SHOW_PER
@@ -114,10 +115,12 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
     private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    var dollar = 0.0
 
     var hubConnection: HubConnection? = null
 
     var isPercentShow = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lcd_deal_summary_step2)
@@ -162,6 +165,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             binding.ucdData = dataLCDDeal
             binding.pendingUcdData = dataPendingDeal
             binding.lightDealBindData = lightBindData
+            binding.selectState = state
             if (arImage.size != 0) {
                 AppGlobal.loadImageUrl(this, ivMain, arImage[0])
                 AppGlobal.loadImageUrl(this, ivBgGallery, arImage[0])
@@ -438,7 +442,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-    var dollar = 0.0
+
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -560,7 +564,9 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
 
             submitDealLCDViewModel.submitDealLCDCall(this, map)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
 //                    Constant.dismissLoader()
                     data.successResult?.transactionInfo?.vehiclePromoCode = dataLCDDeal.discount
                     data.successResult?.transactionInfo?.vehiclePrice = dataLCDDeal.price!!
@@ -584,7 +590,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
                                 ),
-                                ARG_TYPE_PRODUCT to "LightningCarDeals"
+                                ARG_TYPE_PRODUCT to "LightningCarDeals",
+                                ARG_CAL_TAX_DATA to Gson().toJson(calculateTaxData),
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
@@ -620,7 +627,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     }
                     dialogProgress?.dismiss()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -713,6 +719,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
+                        callCalculateTaxAPI()
                     }
                 }
         } else {
@@ -1192,6 +1199,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.spState -> {
                 val data = adapterState.getItem(position) as String
                 state = data
+                binding.selectState = state
                 callCalculateTaxAPI()
             }
         }
@@ -1533,7 +1541,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     ARG_SUBMIT_DEAL to Gson().toJson(
                         data
                     ),
-                    ARG_TYPE_PRODUCT to "LightningCarDeals"
+                    ARG_TYPE_PRODUCT to "LightningCarDeals",
+                    ARG_CAL_TAX_DATA to Gson().toJson(calculateTaxData)
                 )
                 finish()
             } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
@@ -1571,6 +1580,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 //        dialogProgress.dismiss()
     }
 
+    private var calculateTaxData = CalculateTaxData()
     private fun callCalculateTaxAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -1590,6 +1600,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 ) { data ->
                     Constant.dismissLoader()
                     binding.taxData = data
+                    calculateTaxData = data
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()

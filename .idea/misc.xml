@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable-v24/buy_with_googlepay_button_content.xml" value="0.1505" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/bg_button3.xml" value="0.1505" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/bg_edittext.xml" value="0.145" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/buy_with_googlepay_button_content.xml" value="0.1505" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/ic_money_check_alt_solid.xml" value="0.1325" />
@@ -20,16 +21,22 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_lyk_step1.xml" value="0.22" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_lyk_step2.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
-        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.18" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_transaction_code_detail.xml" value="0.10512820512820513" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_transaction_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_deal_list_step1.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_deal_summary_step3.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_negative.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_view_dollar.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_bid_history.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_car_not_available.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_change_password.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_deal_progress_bar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_dealer_receipt.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_edit_info.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_error.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_mobile_no.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_my_receipt.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_option_accessories.xml" value="0.17074275362318841" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_option_accessories_unlocked.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_password_hint.xml" value="0.20416666666666666" />

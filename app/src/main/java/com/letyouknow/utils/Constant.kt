@@ -111,6 +111,7 @@ class Constant {
         var ARG_IS_LYK_SHOW = "ARG_IS_LYK_SHOW"
         var ARG_MSRP_RANGE = "ARG_MSRP_RANGE"
         var ARG_DEAL_ID = "ARG_DEAL_ID"
+        var ARG_CAL_TAX_DATA = "ARG_CAL_TAX_DATA"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2

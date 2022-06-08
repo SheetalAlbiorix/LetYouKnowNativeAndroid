@@ -3,7 +3,6 @@ package com.letyouknow.view.ucd.submitdealsummary
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import android.text.Html
 import android.text.TextUtils
 import android.view.View
@@ -14,22 +13,27 @@ import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivitySubmitDealSummaryBinding
+import com.letyouknow.model.CalculateTaxData
 import com.letyouknow.model.SubmitDealLCDData
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
+import com.letyouknow.utils.Constant.Companion.ARG_CAL_TAX_DATA
 import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.letyouknow.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.letyouknow.view.dashboard.MainActivity
 import kotlinx.android.synthetic.main.activity_submit_deal_summary.*
-import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
+import kotlinx.android.synthetic.main.dialog_dealer_receipt.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
+import java.text.NumberFormat
+import java.util.*
 
 class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var submitDealData: SubmitDealLCDData
+    private lateinit var calculateTaxData: CalculateTaxData
     private lateinit var product: String
     private lateinit var binding: ActivitySubmitDealSummaryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +44,19 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_submit_deal_summary)
-        if (intent.hasExtra(ARG_SUBMIT_DEAL) && intent.hasExtra(Constant.ARG_TYPE_PRODUCT)) {
+        if (intent.hasExtra(ARG_CAL_TAX_DATA) && intent.hasExtra(ARG_SUBMIT_DEAL) && intent.hasExtra(
+                Constant.ARG_TYPE_PRODUCT
+            )
+        ) {
             submitDealData = Gson().fromJson(
                 intent.getStringExtra(ARG_SUBMIT_DEAL),
                 SubmitDealLCDData::class.java
             )
+            calculateTaxData = Gson().fromJson(
+                intent.getStringExtra(ARG_CAL_TAX_DATA),
+                CalculateTaxData::class.java
+            )
+            binding.taxData = calculateTaxData
 
             if (AppGlobal.isNotEmpty(submitDealData.miles) || AppGlobal.isNotEmpty(submitDealData.conditions)) {
                 if (AppGlobal.isNotEmpty(submitDealData.miles)) {
@@ -157,45 +169,13 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
         }
         btnFindYourCar.setOnClickListener(this)
         tvCallNumber.setOnClickListener(this)
+        tvDealerReceipt.setOnClickListener(this)
         tvCallNumber.text = Html.fromHtml(getString(R.string.if_you_have_any_questions))
         ivBack.visibility = View.GONE
         tvTitleTool.visibility = View.GONE
 //        showProgressDialog()
     }
 
-    private var a = 0
-    private val handlerDealPro: Handler = Handler()
-    private fun showProgressDialog() {
-        val dialogProgress = Dialog(this, R.style.FullScreenDialog)
-        dialogProgress.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogProgress.setCancelable(false)
-        dialogProgress.setContentView(R.layout.dialog_deal_progress_bar)
-        setProgressData(dialogProgress)
-        setLayoutParam(dialogProgress)
-        dialogProgress.show()
-    }
-
-    private fun setProgressData(dialogProgress: Dialog) {
-        a = dialogProgress.proBar.progress
-        Thread {
-            while (a < 100) {
-                a += 1
-                handlerDealPro.post(Runnable {
-                    dialogProgress.proBar.progress = a
-                    dialogProgress.tvProgressPr.text = a.toString() + "%"
-                    if (a == 100) {
-                        dialogProgress.dismiss()
-                    }
-                })
-                try {
-                    // Sleep for 50 ms to show progress you can change it as well.
-                    Thread.sleep(50)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            }
-        }.start()
-    }
 
     private fun setLayoutParam(dialog: Dialog) {
         val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
@@ -221,6 +201,9 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             R.id.tvCallNumber -> {
                 AppGlobal.callDialerOpen(this, getString(R.string.number))
             }
+            R.id.tvDealerReceipt -> {
+                showDealerReceiptDialog(submitDealData)
+            }
         }
     }
 
@@ -229,4 +212,44 @@ class SubmitDealSummaryActivity : BaseActivity(), View.OnClickListener {
             intentFor<MainActivity>().clearTask().newTask()
         )
     }
+
+    private fun showDealerReceiptDialog(data: SubmitDealLCDData) {
+        val transData = data.successResult?.transactionInfo
+        val dialogReceipt = Dialog(this, R.style.FullScreenDialog)
+        dialogReceipt.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogReceipt.setCancelable(false)
+        dialogReceipt.setContentView(R.layout.dialog_dealer_receipt)
+        dialogReceipt.run {
+            tvAdjustLYKPrice.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.adjustedLYKPrice)
+            tvDocFee.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.documentationFee)
+                }"
+            tvPrePayment.text =
+                "-${
+                    NumberFormat.getCurrencyInstance(Locale.US)
+                        .format(transData?.prePaymentToDealer)
+                }"
+            tvRemainingBal.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.remainingBalance)
+
+            tvEstimatedTax.text =
+                "+${NumberFormat.getCurrencyInstance(Locale.US).format(transData?.carSalesTax)}"
+            tvEstimatedReg.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.nonTaxRegFee)
+                }"
+            tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
+                .format(transData?.estimatedTotalRemainingBalance)
+            tvBasedState.text =
+                getString(R.string.based_on_selected_state_of, transData?.buyerState)
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogReceipt)
+        dialogReceipt.show()
+    }
+
 }

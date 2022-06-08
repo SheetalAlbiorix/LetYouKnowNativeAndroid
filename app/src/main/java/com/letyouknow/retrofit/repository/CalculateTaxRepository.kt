@@ -42,7 +42,6 @@ object CalculateTaxRepository {
                 call: Call<CalculateTaxData>,
                 response: Response<CalculateTaxData>,
             ) {
-
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     taxData.value = data!!
