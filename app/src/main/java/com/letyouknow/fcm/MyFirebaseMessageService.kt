@@ -9,22 +9,13 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.*
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
-import com.letyouknow.model.BidPriceData
 import com.letyouknow.model.MarketConditionsData
-import com.letyouknow.model.PrefSubmitPriceData
-import com.letyouknow.retrofit.ApiConstant
-import com.letyouknow.retrofit.viewmodel.CheckVehicleStockViewModel
-import com.letyouknow.retrofit.viewmodel.VehicleYearViewModel
-import com.letyouknow.utils.AppGlobal.Companion.pref
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
 import com.letyouknow.utils.Constant.Companion.HOT_PRICE
@@ -35,12 +26,9 @@ import com.letyouknow.utils.Constant.Companion.MARKET_CONDITION
 import com.letyouknow.utils.Constant.Companion.PROMO_CODE
 import com.letyouknow.utils.Constant.Companion.UCD_DEAL
 import com.letyouknow.view.dashboard.MainActivity
-import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 
-class MyFirebaseMessageService : FirebaseMessagingService(), ViewModelStoreOwner, LifecycleOwner {
+class MyFirebaseMessageService : FirebaseMessagingService() {
 
     val NOTIFICATION_CHANNEL_ID = "10001"
     val default_notification_channel_id = "default"
@@ -136,115 +124,10 @@ class MyFirebaseMessageService : FirebaseMessagingService(), ViewModelStoreOwner
         }
     }
 
-
-    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
-    private fun callCheckVehicleStockAPI(data: BidPriceData) {
-        if (Constant.isOnline(this)) {
-            val pkgList = JsonArray()
-            if (!data.vehicleInStockCheckInput?.packageList.isNullOrEmpty()) {
-                for (i in 0 until data.vehicleInStockCheckInput?.packageList?.size!!) {
-                    pkgList.add(data.vehicleInStockCheckInput.packageList[i])
-                }
-            }
-            val accList = JsonArray()
-            if (!data.vehicleInStockCheckInput?.accessoryList.isNullOrEmpty()) {
-                for (i in 0 until data.vehicleInStockCheckInput?.accessoryList?.size!!) {
-                    accList.add(data.vehicleInStockCheckInput.accessoryList[i])
-                }
-            }
-
-            val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = getProductType(data.label!!)
-            request[ApiConstant.YearId1] = data.vehicleInStockCheckInput?.yearId!!
-            request[ApiConstant.MakeId1] = data.vehicleInStockCheckInput.makeId!!
-            request[ApiConstant.ModelID] = data.vehicleInStockCheckInput.modelId!!
-            request[ApiConstant.TrimID] = data.vehicleInStockCheckInput.trimId!!
-            request[ApiConstant.ExteriorColorID] = data.vehicleInStockCheckInput.exteriorColorId!!
-            request[ApiConstant.InteriorColorID] = data.vehicleInStockCheckInput.interiorColorId!!
-            request[ApiConstant.ZipCode1] = data.vehicleInStockCheckInput.zipcode!!
-            request[ApiConstant.SearchRadius1] = data.vehicleInStockCheckInput.searchRadius!!
-            request[ApiConstant.AccessoryList] = accList
-            request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
-            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
-                .observe(this, Observer { dataStock ->
-                    Constant.dismissLoader()
-                    if (dataStock) {
-//                        setPrefSubmitPriceData(data)
-                    } else {
-                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                        pref?.setSubmitPriceTime("")
-                        startActivity(
-                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SUBMIT_PRICE).clearTask()
-                                .newTask()
-                        )
-                    }
-                }
-                )
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getProductType(data: String): Int {
-        var productType = 0
-        when (data) {
-            "LYK" -> {
-                productType = 1
-            }
-            "LCD" -> {
-                productType = 2
-            }
-            "UCD" -> {
-                productType = 3
-            }
-            "DIY" -> {
-                productType = 4
-            }
-            else -> {
-                productType = 0
-            }
-        }
-        return productType
-    }
-
-    override fun getViewModelStore(): ViewModelStore {
-        return ViewModelStore()
-    }
-
-    override fun getLifecycle(): Lifecycle {
-        TODO("Not yet implemented")
-    }
-
-    private lateinit var vehicleYearModel: VehicleYearViewModel
-
-    private fun callVehicleYearAPI() {
-        try {
-            if (Constant.isOnline(this)) {
-                vehicleYearModel.getYear(
-                    this,
-                    "1",
-                    ""
-                )!!
-                    .observe(this, Observer { data ->
-                        try {
-                            Log.e("Year Data", Gson().toJson(data))
-                        } catch (e: Exception) {
-                        }
-                    }
-                    )
-            } else {
-                Toast.makeText(applicationContext, Constant.noInternet, Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
-        }
-    }
-
     companion object {
         fun clearNotifications(activity: Activity) {
             val manager = activity.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             manager.cancel(101)
         }
     }
-
 }

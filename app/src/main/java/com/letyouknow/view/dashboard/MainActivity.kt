@@ -431,7 +431,6 @@ class MainActivity : BaseActivity(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     override fun onResume() {
@@ -442,9 +441,9 @@ class MainActivity : BaseActivity(),
             pref?.setBid(false)
             if (Constant.isInitProgress() && Constant.progress.isShowing)
                 Constant.dismissLoader()
-            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
+            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
         }
     }
 
