@@ -526,9 +526,9 @@ class MainActivity : BaseActivity(),
                 TYPE_SUBMIT_PRICE -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(LYKFragment(), getString(R.string.submit_your_price))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
                     item.isChecked = true
+                    loadFragment(LYKFragment(), getString(R.string.submit_your_price))
 
                 }
                 TYPE_ONE_DEAL_NEAR_YOU -> {
@@ -544,12 +544,14 @@ class MainActivity : BaseActivity(),
                 TYPE_SEARCH_DEAL -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(UCDFragment(), getString(R.string.search_deals))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
                     item.isChecked = true
+                    loadFragment(UCDFragment(), getString(R.string.search_deals))
                 }
             }
         } else {
+            val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
+            item.isChecked = true
             loadFragment(LYKFragment(), getString(R.string.submit_your_price))
         }
 

@@ -400,8 +400,6 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                 request[ApiConstant.ImageProduct] = "MultiAngle"
                 request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
             }
-
-
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->
                     Constant.dismissLoader()
@@ -411,7 +409,6 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 )
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
