@@ -101,6 +101,7 @@
                     android:layout_gravity="top|end"
                     android:src="@drawable/ic_close"
                     app:tint="@color/white" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
