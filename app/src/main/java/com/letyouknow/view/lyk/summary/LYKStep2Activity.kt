@@ -185,7 +185,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         ivBack.setOnClickListener(this)
         ll360.setOnClickListener(this)
         llGallery.setOnClickListener(this)
-
+        tvRebatesDisc.setOnClickListener(this)
         setState()
 
         edtPhoneNumber.filters =
@@ -218,15 +218,15 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onStateChange() {
-        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
-        Constant.onTextChangeMiddleName(this, edtMiddleName)
-        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
-        Constant.onTextChangeAddress1(this, edtAddress1, tvErrorAddress1)
+        Constant.onTextChangeFirstName1(this, edtFirstName, tvErrorFirstName, tvRebatesDisc)
+        Constant.onTextChangeMiddleName1(this, edtMiddleName, tvRebatesDisc)
+        Constant.onTextChangeLastName1(this, edtLastName, tvErrorLastName, tvRebatesDisc)
+        Constant.onTextChangeAddress11(this, edtAddress1, tvErrorAddress1, tvRebatesDisc)
         Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
         Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
 //        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
-        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
+        Constant.onTextChangeCity1(this, edtCity, tvErrorCity, tvRebatesDisc)
         Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
 
         edtGiftCard.addTextChangedListener(object : TextWatcher {
@@ -246,10 +246,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         ColorStateList.valueOf(resources.getColor(R.color.color88898A))
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
             }
-
         })
     }
 
