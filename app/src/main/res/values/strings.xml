@@ -405,12 +405,12 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
-    <string name="estimated_taxes">Estimated Taxes</string>
+    <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_reg_non">Estimated Reg Non Tax Fees:\n<i>(registration, licensing and titling fees)</i></string>
-    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees</string>
+    <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
+    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance:</string>
+    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
     <string name="based_on_selected_state_of"><font size="9"><sup>‡</sup></font> Based on your selected state of %1s</string>
     <string name="based_on_selected_state_of_italic"><i><font size="9"><sup>‡</sup></font> Based on your selected state of %1s</i></string>
