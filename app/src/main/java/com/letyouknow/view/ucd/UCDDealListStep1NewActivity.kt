@@ -567,7 +567,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             if (yearModelMakeData.vehicleIntColorID == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
         yearMakeData.arPackages = arSelectPackages
         yearMakeData.arOptions = arSelectAccessories
-        yearMakeData.price = data.price
+        yearMakeData.price = data.price!! - 100.0f
         yearMakeData.radius = yearModelMakeData.radius
         yearMakeData.zipCode = yearModelMakeData.zipCode
 
