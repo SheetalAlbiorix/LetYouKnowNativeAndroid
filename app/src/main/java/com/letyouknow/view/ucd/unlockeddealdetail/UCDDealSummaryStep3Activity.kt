@@ -2093,7 +2093,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private fun getRebateData(): ArrayList<RebateDiscData> {
         arRebate.add(RebateDiscData("Empl Disc†: \$4,500", false))
         arRebate.add(RebateDiscData("Student†: \$1,500", false))
-        arRebate.add(RebateDiscData("Loyalty†: \$ 500", false))
+        arRebate.add(RebateDiscData("Loyalty†: \$500", false))
         arRebate.add(RebateDiscData("Military†: \$2,500", false))
         arRebate.add(RebateDiscData("Financing†: \$3,200", false))
         arRebate.add(RebateDiscData("Rebate ALL†: \$3,000", false))

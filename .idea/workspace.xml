@@ -14,13 +14,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep3Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/unlockeddealdetail/UCDDealSummaryStep3Activity.kt" afterDir="false" />
-    </list>
+    <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -295,7 +289,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655719746632</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="- LYK_43&#10;- set validation on apply and reset button">
+      <created>1655723779840</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1655723779840</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -319,7 +320,8 @@
     <MESSAGE value="- add Rebate/ Disc button&#10;- set validation on text change is in progress" />
     <MESSAGE value="- set validation on text change is in progress" />
     <MESSAGE value="- LYK_43&#10;- Add Check Addt’l Rebates/Disc button next to the Submit button on the submit  page, where this button is initially grayed out and disabled. However, enable it once the user completes all of their address info (it goes back into the   grayed out mode if the user erases some of their info, so it’s incomplete again). If the user clicks on this button, produce a pop-up that may follow the following format, where the pop-up contents are dynamic:" />
-    <option name="LAST_COMMIT_MESSAGE" value="- LYK_43&#10;- Add Check Addt’l Rebates/Disc button next to the Submit button on the submit  page, where this button is initially grayed out and disabled. However, enable it once the user completes all of their address info (it goes back into the   grayed out mode if the user erases some of their info, so it’s incomplete again). If the user clicks on this button, produce a pop-up that may follow the following format, where the pop-up contents are dynamic:" />
+    <MESSAGE value="- LYK_43&#10;- set validation on apply and reset button" />
+    <option name="LAST_COMMIT_MESSAGE" value="- LYK_43&#10;- set validation on apply and reset button" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
