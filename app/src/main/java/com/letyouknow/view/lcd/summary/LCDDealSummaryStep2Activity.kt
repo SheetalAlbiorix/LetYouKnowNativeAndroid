@@ -970,11 +970,16 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     adapterRebateDisc.update(i, arRebate[i])
                 }
                 strRebate = Gson().toJson(adapterRebateDisc.getAll())
-                dialogRebate.dismiss()
             }
             R.id.tvApplyRebate -> {
-                strRebate = Gson().toJson(arRebate)
-                dialogRebate.dismiss()
+                val arData = adapterRebateDisc.getAll()
+                val arFilter = arData.filter { data -> data.isSelect == true }
+                if (arFilter.isNullOrEmpty()) {
+                    showApplyEmptyDialog()
+                } else {
+                    strRebate = Gson().toJson(arRebate)
+                    dialogRebate.dismiss()
+                }
             }
         }
     }
@@ -1738,14 +1743,14 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val str = s?.toString()
-                if (str?.length!! >= 0) {
-                    isMiddleName = true
-                    setDisableVar()
-                } else {
-                    isMiddleName = false
-                    setDisableVar()
-                }
+                /* val str = s?.toString()
+                 if (str?.length!! >= 0) {
+                     isMiddleName = true
+                     setDisableVar()
+                 } else {
+                     isMiddleName = false
+                     setDisableVar()
+                 }*/
 
             }
 
@@ -1764,11 +1769,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         } else {
                             edtText.setText("")
                         }
-                        isMiddleName = true
-                        setDisableVar()
+                        /* isMiddleName = true
+                         setDisableVar()*/
                     } else {
-                        isMiddleName = false
-                        setDisableVar()
+                        /*isMiddleName = false
+                        setDisableVar()*/
                     }
                 }
             }
@@ -2001,7 +2006,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     fun setDisableVar() {
-        if (isFirstName && isLastName && isMiddleName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode && isState) {
+        if (isFirstName && isLastName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode && isState) {
             tvRebatesDisc.isEnabled = true
             tvRebatesDisc.setBackgroundResource(R.drawable.bg_button)
         } else {
@@ -2045,6 +2050,20 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         arRebate.add(RebateDiscData("LYK Promo: \$1,000", false))
         strRebate = Gson().toJson(arRebate)
         return arRebate
+    }
+
+    private fun showApplyEmptyDialog() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_inventory_availability)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
     }
 
 }
