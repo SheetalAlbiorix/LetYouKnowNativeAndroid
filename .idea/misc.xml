@@ -9,6 +9,7 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/bg_button_disable.xml" value="0.1505" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/bg_edittext.xml" value="0.145" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/buy_with_googlepay_button_content.xml" value="0.1505" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/ic_checkbox_unchecked_border_gray.xml" value="0.1505" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/ic_money_check_alt_solid.xml" value="0.1325" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/drawable/ic_search.xml" value="0.1395" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_edit_information.xml" value="0.1" />
@@ -44,7 +45,9 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_password_hint.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_price_validation.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_privacy_policy_terms_conditions.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_rebate_disc.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_referral_info.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_vehicle_packages.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/fragment_360_view.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/fragment_account1.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/fragment_exterior.xml" value="0.20416666666666666" />
@@ -67,6 +70,8 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_dollar_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_edit_notification.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_edit_notification1.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_packages.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_rebate_disc.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_spinner.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_transaction_history1.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/list_item_unlocked_car.xml" value="0.20416666666666666" />

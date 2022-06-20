@@ -44,6 +44,7 @@ import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
+import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
 import com.stripe.android.ApiResultCallback
@@ -58,12 +59,14 @@ import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.dialog_rebate_disc.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.util.*
 
@@ -205,6 +208,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         checkEmptyData()
+        dialogRebateDisc()
     }
 
     private fun setEmojiOnEditText() {
@@ -252,6 +256,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         ColorStateList.valueOf(resources.getColor(R.color.color88898A))
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -732,12 +737,37 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
-
-
+            R.id.tvRebatesDisc -> {
+                dialogRebate.show()
+            }
+            R.id.llRebate -> {
+                val pos = v.tag as Int
+                val data = adapterRebateDisc.getItem(pos)
+                data.isSelect = !data.isSelect!!
+                adapterRebateDisc.update(pos, data)
+            }
+            R.id.tvCancelRebate -> {
+                val type: Type = object : TypeToken<java.util.ArrayList<RebateDiscData>?>() {}.type
+                arRebate = Gson().fromJson(strRebate, type)
+                for (i in 0 until arRebate.size) {
+                    adapterRebateDisc.update(i, arRebate[i])
+                }
+                dialogRebate.dismiss()
+            }
+            R.id.tvResetRebate -> {
+                for (i in 0 until arRebate.size) {
+                    arRebate[i].isSelect = false
+                    adapterRebateDisc.update(i, arRebate[i])
+                }
+                strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                dialogRebate.dismiss()
+            }
+            R.id.tvApplyRebate -> {
+                strRebate = Gson().toJson(arRebate)
+                dialogRebate.dismiss()
+            }
         }
     }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -799,7 +829,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
     private fun isValid(): Boolean {
         when {
-
             edtCardZipCode.text.toString()
                 .trim().length != 5 -> {
                 tvErrorCardZip.visibility = View.VISIBLE
@@ -943,6 +972,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 val data = adapterState.getItem(position) as String
                 state = data
                 binding.selectState = state
+                isState = true
                 callCalculateTaxAPI()
             }
         }
@@ -1159,8 +1189,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private var paymentIntentId = ""
     override fun onSuccess(result: PaymentIntentResult) {
         val paymentIntent: PaymentIntent = result.intent
-        val status: StripeIntent.Status? = paymentIntent.status
-        when (status) {
+        when (paymentIntent.status) {
             StripeIntent.Status.Succeeded -> {
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 Log.e("completed", gson.toJson(paymentIntent))
@@ -1263,7 +1292,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-    fun checkEmptyData() {
+    private fun checkEmptyData() {
         if (!TextUtils.isEmpty(dataPendingDeal.buyer?.firstName)) {
             isFirstName = true
         }
@@ -1288,9 +1317,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         if (!TextUtils.isEmpty(dataPendingDeal.buyer?.email)) {
             isBuyerEmail = true
         }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.state)) {
+            isState = true
+        }
     }
 
-    fun onTextChangeFirstName1(
+    private fun onTextChangeFirstName1(
         edtText: EditText,
         errorText: TextView,
     ) {
@@ -1306,7 +1338,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s?.toString()
-                if (str?.length!! >= 0) {
+                if (str?.length!! > 0) {
                     if (Constant.firstNameValidator(str)) {
                         Constant.setErrorBorder(edtText, errorText)
                         errorText.text = getString(R.string.enter_valid_first_name)
@@ -1331,7 +1363,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeMiddleName1(edtText: EditText) {
+    private fun onTextChangeMiddleName1(edtText: EditText) {
         edtText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -1381,7 +1413,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeLastName1(
+    private fun onTextChangeLastName1(
         edtText: EditText,
         errorText: TextView
     ) {
@@ -1422,7 +1454,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeAddress11(
+    private fun onTextChangeAddress11(
         edtText: EditText,
         errorText: TextView
     ) {
@@ -1455,7 +1487,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     setDisableVar()
                     //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
                 } else {
-                    isAddress1 = true
+                    isAddress1 = false
                     setDisableVar()
                     Constant.setErrorBorder(edtText, errorText)
                     errorText.text = getString(R.string.enter_addressline1)
@@ -1471,7 +1503,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeCity1(
+    private fun onTextChangeCity1(
         edtText: EditText,
         errorText: TextView
     ) {
@@ -1511,7 +1543,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeEmail(edtText: EditText, errorText: TextView) {
+    private fun onTextChangeEmail(edtText: EditText, errorText: TextView) {
         edtText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -1543,7 +1575,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangePhoneNo(edtText: EditText, errorText: TextView) {
+    private fun onTextChangePhoneNo(edtText: EditText, errorText: TextView) {
         edtText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -1575,7 +1607,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         })
     }
 
-    fun onTextChangeZipCode(edtText: EditText, errorText: TextView) {
+    private fun onTextChangeZipCode(edtText: EditText, errorText: TextView) {
         edtText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -1597,23 +1629,58 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     isZipCode = false
                     setDisableVar()
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
 
             }
-
         })
     }
 
     fun setDisableVar() {
-        if (isFirstName && isLastName && isMiddleName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode) {
+        if (isFirstName && isLastName && isMiddleName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode && isState) {
             tvRebatesDisc.isEnabled = true
             tvRebatesDisc.setBackgroundResource(R.drawable.bg_button)
         } else {
             tvRebatesDisc.isEnabled = false
             tvRebatesDisc.setBackgroundResource(R.drawable.bg_button_disable)
         }
+    }
+
+    private lateinit var adapterRebateDisc: RebateDiscAdapter
+    private lateinit var dialogRebate: Dialog
+    private var arRebate: ArrayList<RebateDiscData> = ArrayList()
+    private var strRebate = ""
+
+    private fun dialogRebateDisc() {
+        dialogRebate = Dialog(this, R.style.FullScreenDialog)
+        dialogRebate.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogRebate.setCancelable(true)
+        dialogRebate.setCanceledOnTouchOutside(true)
+        dialogRebate.setContentView(R.layout.dialog_rebate_disc)
+        dialogRebate.run {
+            adapterRebateDisc =
+                RebateDiscAdapter(R.layout.list_item_rebate_disc, this@LYKStep2Activity)
+            dialogRebate.rvRebate.adapter = adapterRebateDisc
+            adapterRebateDisc.addAll(getRebateData())
+
+            tvCancelRebate.setOnClickListener(this@LYKStep2Activity)
+            tvResetRebate.setOnClickListener(this@LYKStep2Activity)
+            tvApplyRebate.setOnClickListener(this@LYKStep2Activity)
+        }
+        setLayoutParam(dialogRebate)
+    }
+
+
+    private fun getRebateData(): ArrayList<RebateDiscData> {
+        arRebate.add(RebateDiscData("Empl Disc†: \$4,500", false))
+        arRebate.add(RebateDiscData("Student†: \$1,500", false))
+        arRebate.add(RebateDiscData("Loyalty†: \$ 500", false))
+        arRebate.add(RebateDiscData("Military†: \$2,500", false))
+        arRebate.add(RebateDiscData("Financing†: \$3,200", false))
+        arRebate.add(RebateDiscData("Rebate ALL†: \$3,000", false))
+        arRebate.add(RebateDiscData("LYK Promo: \$1,000", false))
+        strRebate = Gson().toJson(arRebate)
+        return arRebate
     }
 }
