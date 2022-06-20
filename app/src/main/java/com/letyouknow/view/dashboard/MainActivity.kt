@@ -444,6 +444,26 @@ class MainActivity : BaseActivity(),
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
             loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+        } else {
+            setFragOnReloadPage()
+        }
+    }
+
+
+    private fun setFragOnReloadPage() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.flContainer)
+        if (fragment is LYKFragment) {
+            val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
+            item.isChecked = true
+        } else if (fragment is OneDealNearYouFragment) {
+            val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
+            item.isChecked = true
+        } else if (fragment is UCDFragment) {
+            val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
+            item.isChecked = true
+        } else if (fragment is AccountFragment) {
+            val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom4)
+            item.isChecked = true
         }
     }
 
@@ -465,14 +485,14 @@ class MainActivity : BaseActivity(),
                 resources.getString(R.string.transaction_history)
             )
         )
-        /* arDrawer.add(
-             DrawerData(
-                 4,
-                 R.drawable.ic_fav,
-                 R.drawable.ic_fav_white,
-                 "Favourite Searches"
-             )
-         )*/
+/* arDrawer.add(
+ DrawerData(
+     4,
+     R.drawable.ic_fav,
+     R.drawable.ic_fav_white,
+     "Favourite Searches"
+ )
+)*/
         arDrawer.add(
             DrawerData(
                 5,
@@ -581,7 +601,7 @@ class MainActivity : BaseActivity(),
     private fun loadFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flContainer, fragment)
-        // transaction.addToBackStack(null)
+// transaction.addToBackStack(null)
         transaction.commit()
         setTitle(title)
     }
@@ -595,9 +615,9 @@ class MainActivity : BaseActivity(),
         val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
         if (item.isChecked) {
             val fragment = supportFragmentManager.findFragmentById(R.id.flContainer)
-            /* if (fragment is DealSummeryActivity || fragment is DealSummeryStep2Fragment) {
-                 loadFragment(HomeFragment(), getString(R.string.search_deals_title))
-             } else {*/
+/* if (fragment is DealSummeryActivity || fragment is DealSummeryStep2Fragment) {
+     loadFragment(HomeFragment(), getString(R.string.search_deals_title))
+ } else {*/
             super.onBackPressed()
 //            }
         } else {
