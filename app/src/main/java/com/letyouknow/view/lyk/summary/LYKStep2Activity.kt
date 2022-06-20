@@ -13,7 +13,10 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -74,7 +77,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private var arCardList: ArrayList<CardListData> = ArrayList()
     private var lightBindData: LightDealBindData = LightDealBindData()
     private lateinit var cTimer: CountDownTimer
-    private var seconds = 300
 
     private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var dataPendingDeal: SubmitPendingUcdData
@@ -86,16 +88,21 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var tokenModel: RefreshTokenViewModel
 
     private lateinit var arImage: ArrayList<String>
-
-    private var isTimeOver = false
-
-    private var isFirst60 = true
     private var state = "NC"
     private var imageId = "0"
 
     private lateinit var calculateTaxViewModel: CalculateTaxViewModel
-    var dollar = 0.0
+    private var dollar = 0.0
 
+    private var isFirstName = false
+    private var isMiddleName = false
+    private var isLastName = false
+    private var isAddress1 = false
+    private var isCity = false
+    private var isZipCode = false
+    private var isState = false
+    private var isBuyerEmail = false
+    private var isBuyerMNo = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,13 +113,13 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
-        lykDollarViewModel = ViewModelProvider(this).get(LYKDollarViewModel::class.java)
-        promoCodeViewModel = ViewModelProvider(this).get(PromoCodeViewModel::class.java)
-        paymentMethodViewModel = ViewModelProvider(this).get(PaymentMethodViewModel::class.java)
-        buyerViewModel = ViewModelProvider(this).get(BuyerViewModel::class.java)
-        submitDealViewModel = ViewModelProvider(this).get(SubmitDealViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
-        calculateTaxViewModel = ViewModelProvider(this).get(CalculateTaxViewModel::class.java)
+        lykDollarViewModel = ViewModelProvider(this)[LYKDollarViewModel::class.java]
+        promoCodeViewModel = ViewModelProvider(this)[PromoCodeViewModel::class.java]
+        paymentMethodViewModel = ViewModelProvider(this)[PaymentMethodViewModel::class.java]
+        buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
+        submitDealViewModel = ViewModelProvider(this)[SubmitDealViewModel::class.java]
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
+        calculateTaxViewModel = ViewModelProvider(this)[CalculateTaxViewModel::class.java]
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -197,7 +204,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         setEmojiOnEditText()
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
-
+        checkEmptyData()
     }
 
     private fun setEmojiOnEditText() {
@@ -218,16 +225,15 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onStateChange() {
-        Constant.onTextChangeFirstName1(this, edtFirstName, tvErrorFirstName, tvRebatesDisc)
-        Constant.onTextChangeMiddleName1(this, edtMiddleName, tvRebatesDisc)
-        Constant.onTextChangeLastName1(this, edtLastName, tvErrorLastName, tvRebatesDisc)
-        Constant.onTextChangeAddress11(this, edtAddress1, tvErrorAddress1, tvRebatesDisc)
-        Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
-        Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
-//        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+        onTextChangeFirstName1(edtFirstName, tvErrorFirstName)
+        onTextChangeMiddleName1(edtMiddleName)
+        onTextChangeLastName1(edtLastName, tvErrorLastName)
+        onTextChangeAddress11(edtAddress1, tvErrorAddress1)
+        onTextChangeEmail(edtEmail, tvErrorEmailAddress)
+        onTextChangePhoneNo(edtPhoneNumber, tvErrorPhoneNo)
         Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
-        Constant.onTextChangeCity1(this, edtCity, tvErrorCity, tvRebatesDisc)
-        Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
+        onTextChangeCity1(edtCity, tvErrorCity)
+        onTextChangeZipCode(edtZipCode, tvErrorZipCode)
 
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -278,7 +284,9 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             lykDollarViewModel.getDollar(this, dataPendingDeal.dealID)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data == "0.00") {
                         llDollar.visibility = View.GONE
@@ -289,7 +297,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     dollar = data.toDouble()
                     callCalculateTaxAPI()
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -1256,4 +1263,357 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
+    fun checkEmptyData() {
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.firstName)) {
+            isFirstName = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.middleName)) {
+            isMiddleName = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.lastName)) {
+            isLastName = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.address1)) {
+            isAddress1 = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.city)) {
+            isCity = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.zipcode)) {
+            isZipCode = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.phoneNumber)) {
+            isBuyerMNo = true
+        }
+        if (!TextUtils.isEmpty(dataPendingDeal.buyer?.email)) {
+            isBuyerEmail = true
+        }
+    }
+
+    fun onTextChangeFirstName1(
+        edtText: EditText,
+        errorText: TextView,
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! >= 0) {
+                    if (Constant.firstNameValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_first_name)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isFirstName = true
+                    setDisableVar()
+                } else {
+                    isFirstName = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangeMiddleName1(edtText: EditText) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! >= 0) {
+                    isMiddleName = true
+                    setDisableVar()
+                } else {
+                    isMiddleName = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val str = edtText.text.toString().trim()
+
+                if (s != null) {
+                    if (str.length > 0) {
+                        if (!str.substring(s.length - 1)
+                                .isDigitsOnly() && Constant.middleNameValidatorText(str)
+                        ) {
+                            if (s.length > 1) {
+                                edtText.setText(s.subSequence(1, s.length))
+                                edtText.setSelection(1)
+                            }
+                        } else {
+                            edtText.setText("")
+                        }
+                        isMiddleName = true
+                        setDisableVar()
+                    } else {
+                        isMiddleName = false
+                        setDisableVar()
+                    }
+                }
+            }
+
+        })
+    }
+
+    fun onTextChangeLastName1(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.lastNameValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_last_name)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isLastName = true
+                    setDisableVar()
+                } else {
+                    isLastName = false
+                    setDisableVar()
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangeAddress11(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (str.length == 0) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_addressline1)
+                    } else if (str.length > 1 && str.length < 3) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text =
+                            getString(R.string.address1_must_be_minimum_three_characters)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isAddress1 = true
+                    setDisableVar()
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                } else {
+                    isAddress1 = true
+                    setDisableVar()
+                    Constant.setErrorBorder(edtText, errorText)
+                    errorText.text = getString(R.string.enter_addressline1)
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangeCity1(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.cityValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_City)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isCity = true
+                    setDisableVar()
+                } else {
+                    isCity = false
+                    setDisableVar()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangeEmail(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isBuyerEmail = true
+                    setDisableVar()
+                } else {
+                    isBuyerEmail = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangePhoneNo(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isBuyerMNo = true
+                    setDisableVar()
+                } else {
+                    isBuyerMNo = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun onTextChangeZipCode(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isZipCode = true
+                    setDisableVar()
+                } else {
+                    isZipCode = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    fun setDisableVar() {
+        if (isFirstName && isLastName && isMiddleName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode) {
+            tvRebatesDisc.isEnabled = true
+            tvRebatesDisc.setBackgroundResource(R.drawable.bg_button)
+        } else {
+            tvRebatesDisc.isEnabled = false
+            tvRebatesDisc.setBackgroundResource(R.drawable.bg_button_disable)
+        }
+    }
 }
