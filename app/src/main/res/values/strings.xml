@@ -42,6 +42,7 @@
     <string name="last_name">Last Name</string>
     <string name="enter_valid_last_name">Enter Valid Last Name</string>
     <string name="enter_valid_middle_name">Enter Valid Middle Name</string>
+    <string name="enter_middle_name">Enter Middle Name</string>
     <string name="enter_valid_City">Enter Valid City</string>
     <string name="enter_valid_zipcode">Enter Valid Zip Code</string>
     <string name="last_name_required">Last Name Required</string>
@@ -404,5 +405,8 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
+    <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
+    <string name="delivery_options">Delivery Options</string>
+    <string name="shipping_info">Shipping Info</string>
 
 </resources>
