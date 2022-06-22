@@ -61,7 +61,7 @@
             android:orientation="vertical">
             <!--goneeeee-->
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button"

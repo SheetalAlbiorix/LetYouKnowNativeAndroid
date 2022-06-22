@@ -62,7 +62,7 @@
                 android:background="@drawable/bg_button3"
                 android:backgroundTint="@color/orange"
                 android:orientation="horizontal"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_4sdp"
                 android:visibility="gone">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -96,8 +96,8 @@
 
                 <ImageView
                     android:id="@+id/ivClosePromo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
                     android:layout_gravity="top|end"
                     android:src="@drawable/ic_close"
                     app:tint="@color/white" />
