@@ -23,6 +23,7 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_transaction_code_detail.xml" value="0.10512820512820513" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_deal_list_step1.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_deal_summary_step3.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_ucd_negative.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_view_dollar.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/dialog_bid_history.xml" value="0.1" />
@@ -45,6 +46,7 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_card_detail.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_card_google_samsung.xml" value="0.203125" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_deal_summary_hot_market.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_dealer_shipping_info.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_final_one_deal_near_summary.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_final_unlocked_deal_summary.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/layout_lcd_deal_summary_step1.xml" value="0.1" />

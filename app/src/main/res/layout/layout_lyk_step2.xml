@@ -44,7 +44,19 @@
             type="com.letyouknow.model.YearModelMakeData" />
 
         <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
             name="pendingUCDData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
+
+        <variable
+            name="pendingUCDShippingData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
     </data>
 
@@ -61,13 +73,13 @@
             android:orientation="vertical">
             <!--goneeeee-->
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button"
                 android:backgroundTint="@color/offWhite"
                 android:orientation="vertical"
-                android:padding="@dimen/_25sdp">
+                android:padding="@dimen/_25sdp"
+                android:visibility="visible">
 
                 <TextView
                     style="@style/bold"
@@ -821,6 +833,12 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
             android:visibility="gone" />
+
+        <include
+            layout="@layout/layout_dealer_shipping_info"
+            app:isCheck="@{isCheck}"
+            app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
+            app:pendingUCDData="@{pendingUCDShippingData}" />
 
         <TextView
             style="@style/bold"
