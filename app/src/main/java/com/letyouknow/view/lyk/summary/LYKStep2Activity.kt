@@ -983,6 +983,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             R.id.spDeliveryPreference -> {
                 val data = adapterDeliveryPref.getItem(position) as String
                 deliveryPrefStr = data
+                chkSameAsBuyer.isChecked = true
                 binding.isShowShippingCheckBox = position != 0
             }
         }
