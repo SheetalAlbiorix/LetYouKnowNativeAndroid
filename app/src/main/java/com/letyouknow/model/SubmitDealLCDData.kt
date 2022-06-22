@@ -99,7 +99,16 @@ data class TransactionInfo(
     var vehiclePromoCode: Float? = 0.0f,
     val vehicleTrim: String? = "",
     val vehicleVIN: String? = "",
-    val vehicleYear: String? = ""
+    val vehicleYear: String? = "",
+    val shipToName: String? = "",
+    val shipToAddress1: String? = "",
+    val shipToAddress2: String? = "",
+    val shipToCity: String? = "",
+    val shipToState: String? = "",
+    val shipToZipcode: String? = "",
+    val shipToPhone: String? = "",
+    val shipToEmail: String? = "",
+    val shipIt: String? = "",
 )
 
 data class VehicleAccessory(

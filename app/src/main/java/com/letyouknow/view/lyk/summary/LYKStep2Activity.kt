@@ -39,7 +39,6 @@ import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.letyouknow.utils.Constant.Companion.ARG_TYPE_PRODUCT
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
-import com.letyouknow.utils.Constant.Companion.hideErrorText
 import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
@@ -324,7 +323,28 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.state] = state
             map[ApiConstant.zipcode] = edtZipCode.text.toString().trim()
             map[ApiConstant.country] = "US"
-
+            map[ApiConstant.ShipToFirstName] =
+                if (isShipping()) edtShippingFirstName.text.toString().trim() else ""
+            map[ApiConstant.ShipToMiddleName] =
+                if (isShipping()) edtShippingMiddleName.text.toString().trim() else ""
+            map[ApiConstant.ShipToLastName] =
+                if (isShipping()) edtShippingLastName.text.toString().trim() else ""
+            map[ApiConstant.ShipToPhoneNumber] =
+                if (isShipping()) edtShippingPhoneNumber.text.toString().trim() else ""
+            map[ApiConstant.ShipToEmail] =
+                if (isShipping()) edtShippingEmail.text.toString().trim() else ""
+            map[ApiConstant.ShipToAddress1] =
+                if (isShipping()) edtShippingAddress1.text.toString().trim() else ""
+            map[ApiConstant.ShipToAddress2] =
+                if (isShipping()) edtShippingAddress2.text.toString().trim() else ""
+            map[ApiConstant.ShipToCity] =
+                if (isShipping()) edtShippingCity.text.toString().trim() else ""
+            map[ApiConstant.ShipToState] = if (isShipping()) shippingState else ""
+            map[ApiConstant.ShipToZipcode] =
+                if (isShipping()) edtShippingZipCode.text.toString().trim() else ""
+            map[ApiConstant.ShipToCountry] = "US"
+            map[ApiConstant.ShipIt] = isShipping()
+            Log.e("buyer req", Gson().toJson(map))
             buyerViewModel.buyerCall(this, map)!!
                 .observe(
                     this
@@ -339,6 +359,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun isShipping(): Boolean {
+        return spDeliveryPreference.selectedItemPosition == 1
     }
 
     fun alertError(message: String?) {
@@ -399,12 +423,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
-            // Log.e("Request Deal", Gson().toJson(map))
+            Log.e("submit Deal Req", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(
                     this
                 ) { data ->
-                    //    Log.e("resp", Gson().toJson(data))
+                    Log.e("Submit LYK resp", Gson().toJson(data))
 //                    Constant.dismissLoader()
 
                     if (data?.foundMatch!! && !data.isBadRequest!!) {
@@ -1262,8 +1286,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         chkSameAsBuyer.setOnCheckedChangeListener(this)
         setShippingState()
 
-
-
         if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
             edtShippingPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
         else
@@ -1415,101 +1437,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun validShippingCheck() {
-        if (TextUtils.isEmpty(edtShippingFirstName.text.toString().trim())) {
-            Constant.setErrorBorder(edtShippingFirstName, tvShippingErrorFirstName)
-            tvShippingErrorFirstName.text = getString(R.string.first_name_required)
-        } else {
-            hideErrorText(edtShippingFirstName, tvShippingErrorFirstName)
-        }
-        if ((Constant.firstNameValidator(edtShippingFirstName.text.toString().trim()))) {
-            Constant.setErrorBorder(edtShippingFirstName, tvShippingErrorFirstName)
-            tvShippingErrorFirstName.text = getString(R.string.enter_valid_first_name)
-        } else {
-            hideErrorText(edtShippingFirstName, tvShippingErrorFirstName)
-        }
-        if (TextUtils.isEmpty(edtShippingLastName.text.toString().trim())) {
-            Constant.setErrorBorder(edtShippingLastName, tvShippingErrorLastName)
-            tvShippingErrorLastName.text = getString(R.string.last_name_required)
-        } else {
-            hideErrorText(edtShippingLastName, tvShippingErrorLastName)
-        }
-        if ((Constant.lastNameValidator(edtShippingLastName.text.toString().trim()))) {
-            Constant.setErrorBorder(edtShippingLastName, tvShippingErrorLastName)
-            tvShippingErrorLastName.text = getString(R.string.enter_valid_last_name)
-        } else {
-            hideErrorText(edtShippingLastName, tvShippingErrorLastName)
-        }
-        if (TextUtils.isEmpty(edtShippingEmail.text.toString().trim())) {
-            tvShippingErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
-            Constant.setErrorBorder(edtShippingEmail, tvShippingErrorEmailAddress)
-        } else {
-            hideErrorText(edtShippingEmail, tvShippingErrorEmailAddress)
-        }
-        if (!Constant.emailValidator(edtShippingEmail.text.toString().trim())) {
-            tvShippingErrorEmailAddress.text = getString(R.string.enter_valid_email)
-            Constant.setErrorBorder(edtShippingEmail, tvShippingErrorEmailAddress)
-        } else {
-            hideErrorText(edtShippingEmail, tvShippingErrorEmailAddress)
-        }
-        if (TextUtils.isEmpty(edtShippingAddress1.text.toString().trim())) {
-            tvShippingErrorEmailAddress.text = getString(R.string.enter_addressline1)
-            Constant.setErrorBorder(edtShippingAddress1, tvShippingErrorAddress1)
-        } else {
-            hideErrorText(edtShippingAddress1, tvShippingErrorAddress1)
-        }
-        if (edtShippingAddress1.text.toString().trim().length < 3) {
-            tvShippingErrorEmailAddress.text =
-                getString(R.string.address1_must_be_minimum_three_characters)
-            Constant.setErrorBorder(edtShippingAddress1, tvShippingErrorAddress1)
-        } else {
-            hideErrorText(edtShippingAddress1, tvShippingErrorAddress1)
-        }
-
-        if (TextUtils.isEmpty(edtShippingCity.text.toString().trim())) {
-            Constant.setErrorBorder(edtShippingCity, tvShippingErrorCity)
-            tvShippingErrorCity.text = getString(R.string.city_required)
-        } else {
-            hideErrorText(edtShippingCity, tvShippingErrorCity)
-        }
-        if ((Constant.cityValidator(edtShippingCity.text.toString().trim()))) {
-            Constant.setErrorBorder(edtShippingCity, tvShippingErrorCity)
-            tvShippingErrorCity.text = getString(R.string.enter_valid_City)
-        } else {
-            hideErrorText(edtShippingCity, tvShippingErrorCity)
-        }
-
-        if (TextUtils.isEmpty(edtShippingPhoneNumber.text.toString().trim())) {
-            Constant.setErrorBorder(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
-            tvShippingErrorPhoneNo.text = getString(R.string.enter_phonenumber)
-        } else {
-            hideErrorText(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
-        }
-
-        if (edtShippingPhoneNumber.text.toString().length != 13) {
-            Constant.setErrorBorder(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
-            tvShippingErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
-        } else {
-            hideErrorText(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
-        }
-        if (shippingState == "State") {
-            tvShippingErrorState.visibility = View.VISIBLE
-        } else {
-            tvShippingErrorState.visibility = View.GONE
-        }
-        if (TextUtils.isEmpty(edtShippingZipCode.text.toString().trim())) {
-            Constant.setErrorBorder(edtShippingZipCode, tvShippingErrorZipCode)
-        } else {
-            hideErrorText(edtShippingZipCode, tvShippingErrorZipCode)
-        }
-        if ((edtShippingZipCode.text.toString().length != 5)) {
-            Constant.setErrorBorder(edtShippingZipCode, tvShippingErrorZipCode)
-            tvShippingErrorZipCode.text = getString(R.string.enter_valid_zipcode)
-        } else {
-            hideErrorText(edtShippingZipCode, tvShippingErrorZipCode)
-        }
-    }
-
     private fun onStateChangeShipping() {
         Constant.onTextChangeFirstName(this, edtShippingFirstName, tvShippingErrorFirstName)
         Constant.onTextChangeMiddleName(this, edtShippingMiddleName)
@@ -1517,7 +1444,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         Constant.onTextChangeAddress1(this, edtShippingAddress1, tvShippingErrorAddress1)
         Constant.onTextChange(this, edtShippingEmail, tvShippingErrorEmailAddress)
         Constant.onTextChange(this, edtShippingPhoneNumber, tvShippingErrorPhoneNo)
-//        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
         Constant.onTextChange(this, edtShippingAddress2, tvShippingErrorAddress2)
         Constant.onTextChangeCity(this, edtShippingCity, tvShippingErrorCity)
         Constant.onTextChange(this, edtShippingZipCode, tvShippingErrorZipCode)

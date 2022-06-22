@@ -45,7 +45,6 @@ object SubmitDealRepository {
                     //  Log.v("submitDeal Resp ", response.toString())
                     Constant.dismissLoader()
 
-
                     val errorData = Gson().fromJson(
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitDealLCDData::class.java
