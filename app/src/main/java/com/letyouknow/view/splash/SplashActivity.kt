@@ -42,6 +42,8 @@ class SplashActivity : BaseActivity() {
      "password": "WH&ry9MegCbw3FPG"
      }
 
+     Albiorix12@gmail.com
+     Albiorix@1234
     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +53,6 @@ class SplashActivity : BaseActivity() {
         } else {
             init()
         }
-
-
     }
 
     private fun init() {

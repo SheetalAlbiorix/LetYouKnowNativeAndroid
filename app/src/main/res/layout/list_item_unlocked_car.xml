@@ -157,7 +157,7 @@
             <TextView
                 android:id="@+id/tvSelectDeal"
                 style="@style/bold"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/bg_button3"
@@ -165,7 +165,23 @@
                 android:paddingTop="@dimen/_7sdp"
                 android:paddingEnd="@dimen/_28sdp"
                 android:paddingBottom="@dimen/_7sdp"
+                android:gravity="center"
                 android:text="@string/select_deal"
+                android:textAllCaps="true"
+                android:textColor="@color/offWhite"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/tvPriceBid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_button3"
+                android:gravity="center"
+                android:paddingStart="@dimen/_28sdp"
+                android:paddingEnd="@dimen/_28sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:text="@string/price_bid"
                 android:textAllCaps="true"
                 android:textColor="@color/offWhite"
                 android:textSize="@dimen/_12sdp" />
