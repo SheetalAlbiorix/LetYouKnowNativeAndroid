@@ -280,8 +280,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun setBidPreSelectionData() {
-
-
         Handler().postDelayed({
             if (yearModelMakeData.price!! > 0.0f) {
                 val formatter: DecimalFormat =
@@ -300,7 +298,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             prefSubmitPriceData.zipCode = yearModelMakeData.zipCode
             prefSubmitPriceData.loanType = yearModelMakeData.loanType
             prefSubmitPriceData.price = yearModelMakeData.price?.toDouble()
-            prefSubmitPriceData.radius = yearModelMakeData.radius + " mi"
+            prefSubmitPriceData.radius =
+                if (yearModelMakeData.radius!!.contains(" mi") || yearModelMakeData.radius == "ALL") yearModelMakeData.radius else yearModelMakeData.radius + " mi"
             setPrefSubmitPriceData()
         }, 500)
 
@@ -354,14 +353,10 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
                     }
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
-
             }
-
         })
-//        edtPrice.currencyFormat()
-//        edtPrice.filters = arrayOf(CurrencyFormatInputFilter())
+
     }
 
     private fun onChangePrice() {
@@ -553,7 +548,14 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
 
     private fun callRadiusAPI() {
         if (!TextUtils.isEmpty(pref?.getRadius())) {
-            val radius = pref?.getRadius() + " mi"
+            var radius = ""
+            if (pref?.getRadius()?.contains(" mi")!!)
+                radius = pref?.getRadius()!!
+            else if (pref?.getRadius() == "ALL")
+                radius = pref?.getRadius()!!
+            else
+                radius = pref?.getRadius() + " mi"
+
             val arData: ArrayList<String> = ArrayList()
             var isMatch = false
             for (i in 0 until arRadius.size) {
@@ -582,7 +584,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             spRadius.adapter = adapterRadius
             spRadius.onItemSelectedListener = this
             if (isBid) {
-                val radius = yearModelMakeData.radius + " mi"
+                val radius =
+                    if (yearModelMakeData.radius == "ALL" || yearModelMakeData.radius == "6000") yearModelMakeData.radius else yearModelMakeData.radius + " mi"
                 for (i in 0 until arRadius.size) {
                     if (radius == arRadius[i]) {
                         spRadius.setSelection(i)
