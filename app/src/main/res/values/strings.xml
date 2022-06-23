@@ -409,5 +409,7 @@
     <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
     <string name="delivery_options">Delivery Options</string>
     <string name="shipping_info">Shipping Info</string>
+    <string name="any_price">ANY PRICE</string>
+    <string name="price_range_required">Price Range Required</string>
 
 </resources>

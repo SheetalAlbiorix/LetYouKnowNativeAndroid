@@ -263,4 +263,7 @@ interface ApiInterface {
 
     @GET("activematching/deal/{dealId}")
     fun activeMatchingDeal(@Path(value = "dealId") token: String?): Call<ActiveMatchingData>
+
+    @GET("vehiclecriteria/PriceRange")
+    fun priceRange(): Call<ArrayList<PriceRangeData>>
 }

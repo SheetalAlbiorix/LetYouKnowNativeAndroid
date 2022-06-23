@@ -68,6 +68,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private lateinit var zipCodeModel: VehicleZipCodeViewModel
     private lateinit var findUCDDealGuestViewModel: FindUCDDealViewModel
     private lateinit var socialMobileViewModel: SocialMobileViewModel
+    private lateinit var priceRangeViewModel: PriceRangeViewModel
 
     private lateinit var adapterYear: YearSpinnerAdapter
     private lateinit var adapterMake: MakeSpinnerAdapter
@@ -76,12 +77,17 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private lateinit var adapterExterior: ExteriorSpinnerAdapter
     private lateinit var adapterInterior: InteriorSpinnerAdapter
     private lateinit var adapterRadius: RadiusSpinnerAdapter
+    private lateinit var adapterPriceRange: PriceRangeSpinnerAdapter
 
     private var productId = "3"
+    private var ucdPriceId = ""
     private var yearId = ""
     private var makeId = ""
     private var modelId = ""
     private var trimId = ""
+
+    private var lowerBorder = "ANY PRICE"
+    private var upperBorder = ""
 
     private var yearStr = "YEAR - NEW CARS"
     private var makeStr = "MAKE"
@@ -150,8 +156,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 ViewModelProvider(this)[FindUCDDealViewModel::class.java]
             tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
             socialMobileViewModel = ViewModelProvider(this)[SocialMobileViewModel::class.java]
+            priceRangeViewModel = ViewModelProvider(this)[PriceRangeViewModel::class.java]
 
-
+            tvPriceRange.setOnClickListener(this)
             tvYear.setOnClickListener(this)
             btnProceedDeal.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
@@ -197,6 +204,21 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 }
 
             })
+        } catch (e: Exception) {
+
+        }
+    }
+
+    private fun setPriceRange() {
+        try {
+            val arData = ArrayList<PriceRangeData>()
+            val priceRangeData = PriceRangeData()
+            priceRangeData.ucdPriceRangeID = "0"
+            priceRangeData.lowerBorder = "ANY PRICE"
+            arData.add(0, priceRangeData)
+            adapterPriceRange = PriceRangeSpinnerAdapter(requireActivity(), arData)
+            spPriceRange.adapter = adapterPriceRange
+            setSpinnerLayoutPos(0, spPriceRange, requireActivity())
         } catch (e: Exception) {
 
         }
@@ -375,6 +397,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.tvPriceRange -> {
+                tvPriceRange.visibility = View.GONE
+                spPriceRange.visibility = View.VISIBLE
+                callPriceRangeAPI()
+                spPriceRange.performClick()
+            }
             R.id.tvYear -> {
                 tvYear.visibility = View.GONE
                 spYear.visibility = View.VISIBLE
@@ -447,9 +475,72 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     }
 
     var isCallingYear = false
-    private fun callVehicleYearAPI() {
+    private fun callPriceRangeAPI() {
         try {
             isCallingYear = true
+            if (Constant.isOnline(requireActivity())) {
+                if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.dismissLoader()
+                }
+                if (!Constant.isInitProgress()) {
+                    Constant.showLoader(requireActivity())
+                } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                    Constant.showLoader(requireActivity())
+                }
+                priceRangeViewModel.getPriceRange(requireActivity())!!
+                    .observe(requireActivity(), Observer { data ->
+                        if (isEmpty(prefSearchDealData.yearId))
+                            Constant.dismissLoader()
+                        isCallingYear = false
+                        Log.e("PriceRange Data", Gson().toJson(data))
+                        try {
+                            if (data != null || data?.size!! > 0) {
+                                val priceRangeData = PriceRangeData()
+                                priceRangeData.lowerBorder = "ANY PRICE"
+                                priceRangeData.ucdPriceRangeID = "0"
+                                data.add(0, priceRangeData)
+                                adapterPriceRange =
+                                    PriceRangeSpinnerAdapter(requireActivity(), data)
+                                spPriceRange.adapter = adapterPriceRange
+                                for (i in 0 until data.size) {
+                                    if (!AppGlobal.isEmpty(prefSearchDealData.ucdPriceRangeID) && prefSearchDealData.ucdPriceRangeID == data[i].ucdPriceRangeID) {
+                                        spPriceRange.setSelection(i, true)
+                                        AppGlobal.setSpinnerLayoutPos(
+                                            i,
+                                            spPriceRange,
+                                            requireActivity()
+                                        )
+                                        callVehicleYearAPI()
+                                    }
+                                }
+                                spPriceRange.onItemSelectedListener = this
+                            } else {
+                                val arData = ArrayList<PriceRangeData>()
+                                val priceRangeData = PriceRangeData()
+                                priceRangeData.lowerBorder = "ANY PRICE"
+                                priceRangeData.ucdPriceRangeID = "0"
+                                arData.add(priceRangeData)
+                                adapterPriceRange =
+                                    PriceRangeSpinnerAdapter(requireActivity(), arData)
+                                spPriceRange.adapter = adapterPriceRange
+                                spPriceRange.onItemSelectedListener = this
+                            }
+                        } catch (e: Exception) {
+
+                        }
+                    }
+                    )
+            } else {
+                Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+
+        }
+    }
+
+    private fun callVehicleYearAPI() {
+        try {
+//            isCallingYear = true
             if (Constant.isOnline(requireActivity())) {
                 if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.dismissLoader()
@@ -463,7 +554,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.makeId))
                             Constant.dismissLoader()
-                        isCallingYear = false
+//                        isCallingYear = false
                         Log.e("Year Data", Gson().toJson(data))
                         try {
                             if (data != null || data?.size!! > 0) {
@@ -490,7 +581,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 spYear.onItemSelectedListener = this
                             }
                         } catch (e: Exception) {
-
                         }
                     }
                     )
@@ -498,7 +588,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
-
         }
     }
 
@@ -835,6 +924,42 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
+            R.id.spPriceRange -> {
+                val data = adapterPriceRange.getItem(position) as PriceRangeData
+                ucdPriceId = data.ucdPriceRangeID!!
+                lowerBorder = if (TextUtils.isEmpty(data.lowerBorder)) "" else data.lowerBorder!!
+                upperBorder = if (TextUtils.isEmpty(data.upperBorder)) "" else data.upperBorder!!
+
+//                if (data.lowerBorder != "ANY PRICE") {
+                prefSearchDealData.ucdPriceRangeID = data.ucdPriceRangeID
+                prefSearchDealData.lowerBorder =
+                    if (TextUtils.isEmpty(data.lowerBorder)) "" else data.lowerBorder
+                prefSearchDealData.upperBorder =
+                    if (TextUtils.isEmpty(data.upperBorder)) "" else data.upperBorder
+                prefSearchDealData.yearId = ""
+                prefSearchDealData.yearStr = ""
+                prefSearchDealData.makeId = ""
+                prefSearchDealData.modelId = ""
+                prefSearchDealData.trimId = ""
+                prefSearchDealData.extColorId = ""
+                prefSearchDealData.intColorId = ""
+                prefSearchDealData.makeStr = ""
+                prefSearchDealData.modelStr = ""
+                prefSearchDealData.trimStr = ""
+                prefSearchDealData.extColorStr = ""
+                prefSearchDealData.intColorStr = ""
+                Constant.dismissLoader()
+                setPrefData()
+                setErrorVisibleGone()
+                callVehicleYearAPI()
+                setModel()
+                setTrim()
+                setExteriorColor()
+                setInteriorColor()
+//                    setRadius()
+//                }
+                setSpinnerLayoutPos(position, spPriceRange, requireActivity())
+            }
             R.id.spYear -> {
                 val data = adapterYear.getItem(position) as VehicleYearData
                 yearId = data.vehicleYearID!!
@@ -1153,6 +1278,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun setTimerPrefData() {
         try {
             prefSearchDealData = pref?.getSearchDealData()!!
+            setPriceRange()
             setYear()
             setMake()
             setModel()
@@ -1162,6 +1288,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
             onChangeZipCode()
 
+            ucdPriceId = prefSearchDealData.ucdPriceRangeID!!
             yearId = prefSearchDealData.yearId!!
             makeId = prefSearchDealData.makeId!!
             modelId = prefSearchDealData.modelId!!
@@ -1169,13 +1296,17 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             extColorId = prefSearchDealData.extColorId!!
             intColorId = prefSearchDealData.intColorId!!
             radiusId = prefSearchDealData.searchRadius!!
+            lowerBorder = prefSearchDealData.lowerBorder!!
+            upperBorder = prefSearchDealData.upperBorder!!
             yearStr = prefSearchDealData.yearStr!!
             makeStr = prefSearchDealData.makeStr!!
             modelStr = prefSearchDealData.modelStr!!
             trimStr = prefSearchDealData.trimStr!!
             extColorStr = prefSearchDealData.extColorStr!!
             intColorStr = prefSearchDealData.intColorStr!!
-            if (TextUtils.isEmpty(yearId)) {
+            if (TextUtils.isEmpty(ucdPriceId)) {
+                lowerBorder = "ANY PRICE"
+                upperBorder = ""
                 yearStr = "YEAR - NEW CARS"
                 makeStr = "MAKE"
                 modelStr = "MODEL"
@@ -1185,11 +1316,16 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 radiusId = "SEARCH RADIUS"
                 tvYear.visibility = View.VISIBLE
                 spYear.visibility = View.GONE
+                tvPriceRange.visibility = View.VISIBLE
+                spPriceRange.visibility = View.GONE
             } else {
+                tvPriceRange.visibility = View.GONE
+                spPriceRange.visibility = View.VISIBLE
                 tvYear.visibility = View.GONE
                 spYear.visibility = View.VISIBLE
                 if (!isCallingYear)
-                    callVehicleYearAPI()
+                    callPriceRangeAPI()
+//                    callVehicleYearAPI()
             }
             edtZipCode.setText(prefSearchDealData.zipCode)
             if (prefSearchDealData.zipCode?.length!! >= 1) {
