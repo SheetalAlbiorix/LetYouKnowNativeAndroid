@@ -488,8 +488,6 @@ class AppGlobal {
         fun setEmojiKeyBoard(edtView: AppCompatEditText) {
             edtView.filters = EmojiFilter.getFilter()
         }
-
-
     }
 
 }
