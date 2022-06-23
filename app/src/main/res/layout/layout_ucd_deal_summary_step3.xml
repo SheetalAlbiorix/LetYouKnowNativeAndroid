@@ -48,6 +48,18 @@
             name="isShowSamsungPay"
             type="Boolean" />
 
+
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="pendingUCDShippingData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
     </data>
 
 
@@ -891,6 +903,12 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
             android:visibility="gone" />
+
+        <include
+            layout="@layout/layout_dealer_shipping_info"
+            app:isCheck="@{isCheck}"
+            app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
+            app:pendingUCDData="@{pendingUCDShippingData}" />
 
         <TextView
             style="@style/bold"

@@ -38,6 +38,18 @@
             name="isShowSamsungPay"
             type="Boolean" />
 
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="pendingUCDShippingData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -189,6 +201,9 @@
                 </FrameLayout>
 
                 <include
+                    app:isCheck="@{isCheck}"
+                    app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}"
                     layout="@layout/layout_ucd_deal_summary_step3"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"

@@ -1019,4 +1019,70 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         val date = df.format(Calendar.getInstance().time)
         pref?.setSubmitPriceTime(date)
     }
+
+    /*Add a dropdown menu on the LYK Disclosure page named Delivery Preference with
+    two mutually exclusive selections (Pick up at dealer and Ship it to me), where Pick up
+    at dealer is the default (preselected) choice. Add the same dropdown menu on the
+    submit pages for UCD and LCD products;
+    b) If Ship it choice has been selected, add a preselected checkbox with the following
+    verbiage placed next to it on the Submit page right above Buyer info (for all three
+    products). Shipping info same as buyer info. If the user reverts the choice back to pick
+    up at dealer, this line should be hidden across all products. If the user picks up Ship it
+    to me in one product, flip delivery choices on all other products to shipping and
+    populate the preselected checkmark with its verbiage on all products on Submit pages
+    and vice versa, if they went back and reverted their choice to the original selection of
+    pick up at dealer, revert all choices to that default selection and hide the preselected
+    checkmark with its verbiage on submit pages; and
+    c) When the user unchecks the preselected checkmark of Shipping info same as buyer
+    info, then expand the shipping section with the name of Shipping Info placed on top.
+    This section should be identical to the Buyer Info and all info must be prepopulated for
+    the user. Updating this section, should save this information, but must not carry over to
+    the buyer info. Implement all relevant name, address, phone and email validations as is
+    the case on the buyer info. If the user went back and check the Shipping info same as
+    buyer info, override all shipping info with the buyer info and hide this shipping
+    section.*/
+
+
+    /*Delivery option - let's simplify the location of the dropdown menu for the Delivery Options to make
+     it uniform across all 3 products to save you time. For all 3 products let's place the Delivery Options on submit pages.
+    Where: Under payment and above buyer info
+    Let's include Delivery Options section (same font as Buyer Info)
+    Then, have a dropdown menu (preselected as Pick up at dealer). If they change it to Ship it to me, then below, add the CHECKBOX
+    (checked :heavy_check_mark: - :ballot_box_with_check:) Shipping info same as buyer info. THIS IS ABOVE Buyer Info.
+    If they unchecked it, roll it out to have an identical to buyer info section (prepopulated as is buyer info). Call it Shipping Info.
+    Cases (3):
+    1. (This is now + the drop down - Delivery Options) Structure (if Pick up at dealer is chosen):
+    Payment Info
+    ....
+    Delivery Options
+    DROPDOWN MENU (Pick up at dealer)
+    Buyer Info
+    ....
+    2. Structure (if Ship it to me is chosen and checkmark is :heavy_check_mark:- :ballot_box_with_check:):
+    Payment Info
+    ....
+    Delivery Options
+    DROPDOWN MENU (Ship it to me)
+    :ballot_box_with_check: Shipping info same as buyer info
+    Buyer Info
+    ....
+    If they reverted back to pick up at dealer, hide the checkmark and its section.
+    3. Structure (if Ship it to me is chosen and checkmark is unchecked - ☐)
+    Payment Info
+    ....
+    Delivery Options
+    DROPDOWN MENU (Ship it to me)
+    ☐ Shipping info same as buyer info
+    Shipping Info (same font as Buyer Info)
+    ....prepopulate buyer info for convenience
+    Buyer Info
+    This person...
+    ....
+    If they reverted back to pick up at dealer, hide the checkmark and its section.
+    Below the Buyer Info, but above This person... verbiage add a button (Check Addt'l Rebates) - grayed out until buyer info is complete
+    ==================================================
+    -- Numbered it a bit better for you
+    -- Case 1 is nearly what we have now
+    -- 2 is nearly 1 plus checkmark
+    3 is nearly 2 plus Shipping Info*/
 }

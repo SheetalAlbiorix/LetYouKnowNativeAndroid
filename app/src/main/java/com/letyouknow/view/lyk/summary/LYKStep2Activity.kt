@@ -13,6 +13,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
+import android.widget.CompoundButton
+import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -42,6 +44,7 @@ import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
+import com.letyouknow.view.spinneradapter.DeliveryPreferenceAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
 import com.stripe.android.ApiResultCallback
@@ -59,6 +62,7 @@ import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_card_google_samsung.*
+import kotlinx.android.synthetic.main.layout_dealer_shipping_info.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
@@ -70,7 +74,8 @@ import java.util.*
 
 
 class LYKStep2Activity : BaseActivity(), View.OnClickListener,
-    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentIntentResult> {
+    AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentIntentResult>,
+    CompoundButton.OnCheckedChangeListener {
     lateinit var binding: ActivityLykStep2Binding
     private lateinit var adapterCardList: CardListAdapter
     private var selectCardPos = -1
@@ -142,6 +147,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             )
             binding.data = yearModelMakeData
             binding.pendingUcdData = dataPendingDeal
+            binding.pendingUCDShippingData = dataPendingDeal
             binding.lightDealBindData = lightBindData
 
             binding.isStripe = isStripe
@@ -200,7 +206,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         setState()
 
         edtPhoneNumber.filters =
-            arrayOf<InputFilter>(filter, InputFilter.LengthFilter(13))//        backButton()
+            arrayOf<InputFilter>(
+                filterPhoneNo(edtPhoneNumber),
+                InputFilter.LengthFilter(13)
+            )//        backButton()
 
         onStateChange()
         initPayment()
@@ -209,6 +218,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         initLiveGoogle()
+        setDeliveryOptions()
     }
 
     private fun setEmojiOnEditText() {
@@ -219,6 +229,13 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         AppGlobal.setEmojiKeyBoard(edtAddress2)
         AppGlobal.setEmojiKeyBoard(edtCity)
         AppGlobal.setEmojiKeyBoard(edtMiddleName)
+
+        AppGlobal.setEmojiKeyBoard(edtShippingFirstName)
+        AppGlobal.setEmojiKeyBoard(edtShippingLastName)
+        AppGlobal.setEmojiKeyBoard(edtShippingAddress1)
+        AppGlobal.setEmojiKeyBoard(edtShippingAddress2)
+        AppGlobal.setEmojiKeyBoard(edtShippingCity)
+        AppGlobal.setEmojiKeyBoard(edtShippingMiddleName)
     }
 
     private lateinit var stripe: Stripe
@@ -323,7 +340,28 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.state] = state
             map[ApiConstant.zipcode] = edtZipCode.text.toString().trim()
             map[ApiConstant.country] = "US"
-
+            map[ApiConstant.ShipToFirstName] =
+                if (isShipping()) edtShippingFirstName.text.toString().trim() else ""
+            map[ApiConstant.ShipToMiddleName] =
+                if (isShipping()) edtShippingMiddleName.text.toString().trim() else ""
+            map[ApiConstant.ShipToLastName] =
+                if (isShipping()) edtShippingLastName.text.toString().trim() else ""
+            map[ApiConstant.ShipToPhoneNumber] =
+                if (isShipping()) edtShippingPhoneNumber.text.toString().trim() else ""
+            map[ApiConstant.ShipToEmail] =
+                if (isShipping()) edtShippingEmail.text.toString().trim() else ""
+            map[ApiConstant.ShipToAddress1] =
+                if (isShipping()) edtShippingAddress1.text.toString().trim() else ""
+            map[ApiConstant.ShipToAddress2] =
+                if (isShipping()) edtShippingAddress2.text.toString().trim() else ""
+            map[ApiConstant.ShipToCity] =
+                if (isShipping()) edtShippingCity.text.toString().trim() else ""
+            map[ApiConstant.ShipToState] = if (isShipping()) shippingState else ""
+            map[ApiConstant.ShipToZipcode] =
+                if (isShipping()) edtShippingZipCode.text.toString().trim() else ""
+            map[ApiConstant.ShipToCountry] = "US"
+            map[ApiConstant.ShipIt] = isShipping()
+            Log.e("buyer req", Gson().toJson(map))
             buyerViewModel.buyerCall(this, map)!!
                 .observe(
                     this
@@ -338,6 +376,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun isShipping(): Boolean {
+        return spDeliveryPreference.selectedItemPosition == 1
     }
 
     fun alertError(message: String?) {
@@ -400,10 +442,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
             Log.e("Request Deal", Gson().toJson(map))
+            Log.e("submit Deal Req", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(
                     this
                 ) { data ->
+                    Log.e("Submit LYK resp", Gson().toJson(data))
                     Log.e("resp", Gson().toJson(data))
 //                    Constant.dismissLoader()
 
@@ -717,15 +761,31 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 setErrorVisible()
                 if (isGooglePay || isSamsungPay) {
                     if (!TextUtils.isEmpty(cardStripeData.id)) {
-                        if (isValid()) {
-                            callBuyerAPI()
+                        if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                            if (isValidShipping() && isValid()) {
+                                callPaymentMethodAPI(true)
+                            }
+                        } else {
+                            if (isValid()) {
+                                callBuyerAPI()
+                            }
                         }
                     } else {
                         alertPaymentError(this, "Select Proper Card")
                     }
-                } else if (isValidCard()) {
-                    if (isValid()) {
-                        callPaymentMethodAPI(true)
+                } else {
+                    if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                        if (isValidCard()) {
+                            if (isValidShipping() && isValid()) {
+                                callPaymentMethodAPI(true)
+                            }
+                        }
+                    } else {
+                        if (isValidCard()) {
+                            if (isValid()) {
+                                callPaymentMethodAPI(true)
+                            }
+                        }
                     }
                 }
             }
@@ -733,15 +793,17 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 setErrorVisible()
                 if (isGooglePay || isSamsungPay) {
                     if (!TextUtils.isEmpty(cardStripeData.id)) {
-                        if (isValid()) {
-                            callBuyerAPI()
+                        if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                            if (isValidShipping() && isValid()) {
+                                callPaymentMethodAPI(true)
+                            }
+                        } else {
+                            if (isValid()) {
+                                callBuyerAPI()
+                            }
                         }
                     } else {
-                        alertError("Select Proper Card")
-                    }
-                } else if (isValidCard()) {
-                    if (isValid()) {
-                        callPaymentMethodAPI(true)
+                        alertPaymentError(this, "Select Proper Card")
                     }
                 }
             }
@@ -785,7 +847,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         binding.isSamsungPay = isSamsungPay
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -800,48 +861,51 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         dialog.window?.attributes = layoutParams
     }
 
-    var filter = InputFilter { source, start, end, dest, dstart, dend ->
-        var source = source
+    private fun filterPhoneNo(edtPhoneNumber: EditText): InputFilter {
+        var filter = InputFilter { source, start, end, dest, dstart, dend ->
+            var source = source
 
-        if (source.length > 0) {
-            if (!Character.isDigit(source[0])) return@InputFilter "" else {
-                if (source.toString().length > 1) {
-                    val number = source.toString()
-                    val digits1 = number.toCharArray()
-                    val digits2 = number.split("(?<=.)").toTypedArray()
-                    source = digits2[digits2.size - 1]
-                }
-                if (edtPhoneNumber.text.toString().length < 1) {
-                    return@InputFilter "($source"
-                } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
-                        .length <= 3
-                ) {
-                    return@InputFilter source
-                } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
-                        .length <= 5
-                ) {
-                    val isContain = dest.toString().contains(")")
-                    return@InputFilter if (isContain) {
-                        source
-                    } else {
-                        ")$source"
+            if (source.length > 0) {
+                if (!Character.isDigit(source[0])) return@InputFilter "" else {
+                    if (source.toString().length > 1) {
+                        val number = source.toString()
+                        val digits1 = number.toCharArray()
+                        val digits2 = number.split("(?<=.)").toTypedArray()
+                        source = digits2[digits2.size - 1]
                     }
-                } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
-                        .length <= 7
-                ) {
-                    return@InputFilter source
-                } else if (edtPhoneNumber.text.toString().length > 7) {
-                    val isContain = dest.toString().contains("-")
-                    return@InputFilter if (isContain) {
-                        source
-                    } else {
-                        "-$source"
+                    if (edtPhoneNumber.text.toString().length < 1) {
+                        return@InputFilter "($source"
+                    } else if (edtPhoneNumber.text.toString().length > 1 && edtPhoneNumber.text.toString()
+                            .length <= 3
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 3 && edtPhoneNumber.text.toString()
+                            .length <= 5
+                    ) {
+                        val isContain = dest.toString().contains(")")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            ")$source"
+                        }
+                    } else if (edtPhoneNumber.text.toString().length > 5 && edtPhoneNumber.text.toString()
+                            .length <= 7
+                    ) {
+                        return@InputFilter source
+                    } else if (edtPhoneNumber.text.toString().length > 7) {
+                        val isContain = dest.toString().contains("-")
+                        return@InputFilter if (isContain) {
+                            source
+                        } else {
+                            "-$source"
+                        }
                     }
                 }
+            } else {
             }
-        } else {
+            source
         }
-        source
+        return filter
     }
 
     private fun isValid(): Boolean {
@@ -988,6 +1052,16 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 val data = adapterState.getItem(position) as String
                 state = data
             }
+            R.id.spShippingState -> {
+                val data = adapterShippingState.getItem(position) as String
+                shippingState = data
+            }
+            R.id.spDeliveryPreference -> {
+                val data = adapterDeliveryPref.getItem(position) as String
+                deliveryPrefStr = data
+                chkSameAsBuyer.isChecked = true
+                binding.isShowShippingCheckBox = position != 0
+            }
         }
     }
 
@@ -1019,7 +1093,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun setErrorVisible() {
         tvErrorFirstName.visibility = View.GONE
@@ -1278,6 +1351,180 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }.start()
     }
 
+
+    private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter
+    private var arDeliveryPref = arrayListOf("Pick up at dealer", "Ship it to me")
+    private var deliveryPrefStr = "Pick up at dealer"
+
+    private fun setDeliveryOptions() {
+        setDeliveryPref()
+        chkSameAsBuyer.isChecked = true
+        binding.isCheck = true
+        chkSameAsBuyer.setOnCheckedChangeListener(this)
+        setShippingState()
+
+        if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
+            edtShippingPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
+        else
+            edtShippingPhoneNumber.setText(dataPendingDeal.buyer?.phoneNumber)
+        edtShippingPhoneNumber.filters =
+            arrayOf<InputFilter>(
+                filterPhoneNo(edtShippingPhoneNumber),
+                InputFilter.LengthFilter(13)
+            )
+
+        tvSaveShipping.setOnClickListener(this)
+        onStateChangeShipping()
+    }
+
+    private fun setDeliveryPref() {
+        adapterDeliveryPref = DeliveryPreferenceAdapter(
+            this,
+            arDeliveryPref
+        )
+        spDeliveryPreference.adapter = adapterDeliveryPref
+        spDeliveryPreference.onItemSelectedListener = this
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        when (buttonView?.id) {
+            R.id.chkSameAsBuyer -> {
+                binding.isCheck = isChecked
+                if (!isChecked) {
+                    binding.pendingUCDShippingData = dataPendingDeal
+                    for (i in 0 until arState.size) {
+                        if (arState[i] == dataPendingDeal.buyer?.state) {
+                            spShippingState.setSelection(i)
+                        }
+                    }
+
+                    edtShippingPhoneNumber.filters = arrayOf()
+                    if (dataPendingDeal.buyer?.phoneNumber?.contains("(") == false)
+                        edtShippingPhoneNumber.setText(AppGlobal.formatPhoneNo(dataPendingDeal.buyer?.phoneNumber))
+                    else
+                        edtShippingPhoneNumber.setText(dataPendingDeal.buyer?.phoneNumber)
+                    edtShippingPhoneNumber.filters =
+                        arrayOf<InputFilter>(
+                            filterPhoneNo(edtShippingPhoneNumber),
+                            InputFilter.LengthFilter(13)
+                        )
+                }
+//                validShippingCheck()
+            }
+        }
+    }
+
+    private lateinit var adapterShippingState: StateSpinnerAdapter
+    private var shippingState = "NC"
+    private fun setShippingState() {
+        adapterShippingState = StateSpinnerAdapter(
+            this,
+            arState
+        )
+        spShippingState.adapter = adapterShippingState
+        spShippingState.onItemSelectedListener = this
+
+        for (i in 0 until arState.size) {
+            if (arState[i] == dataPendingDeal.buyer?.state) {
+                spShippingState.setSelection(i)
+            }
+        }
+    }
+
+    private fun isValidShipping(): Boolean {
+        when {
+            TextUtils.isEmpty(edtShippingFirstName.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtShippingFirstName, tvShippingErrorFirstName)
+                tvShippingErrorFirstName.text = getString(R.string.first_name_required)
+                return false
+            }
+            (Constant.firstNameValidator(edtShippingFirstName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtShippingFirstName, tvShippingErrorFirstName)
+                tvShippingErrorFirstName.text = getString(R.string.enter_valid_first_name)
+                return false
+            }
+            TextUtils.isEmpty(edtShippingLastName.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtShippingLastName, tvShippingErrorLastName)
+                tvShippingErrorLastName.text = getString(R.string.last_name_required)
+                return false
+            }
+            (Constant.lastNameValidator(edtShippingLastName.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtShippingLastName, tvShippingErrorLastName)
+                tvShippingErrorLastName.text = getString(R.string.enter_valid_last_name)
+                return false
+            }
+            TextUtils.isEmpty(edtShippingEmail.text.toString().trim()) -> {
+                tvShippingErrorEmailAddress.text = getString(R.string.enter_email_address_vali)
+                Constant.setErrorBorder(edtShippingEmail, tvShippingErrorEmailAddress)
+                return false
+            }
+            !Constant.emailValidator(edtShippingEmail.text.toString().trim()) -> {
+                tvShippingErrorEmailAddress.text = getString(R.string.enter_valid_email)
+                Constant.setErrorBorder(edtShippingEmail, tvShippingErrorEmailAddress)
+                return false
+            }
+            TextUtils.isEmpty(edtShippingAddress1.text.toString().trim()) -> {
+                tvShippingErrorEmailAddress.text = getString(R.string.enter_addressline1)
+                Constant.setErrorBorder(edtShippingAddress1, tvShippingErrorAddress1)
+                return false
+            }
+            edtShippingAddress1.text.toString().trim().length < 3 -> {
+                tvShippingErrorEmailAddress.text =
+                    getString(R.string.address1_must_be_minimum_three_characters)
+                Constant.setErrorBorder(edtShippingEmail, tvShippingErrorEmailAddress)
+                return false
+            }
+
+            TextUtils.isEmpty(edtShippingCity.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtShippingCity, tvShippingErrorCity)
+                tvShippingErrorCity.text = getString(R.string.city_required)
+                return false
+            }
+            (Constant.cityValidator(edtShippingCity.text.toString().trim())) -> {
+                Constant.setErrorBorder(edtShippingCity, tvShippingErrorCity)
+                tvShippingErrorCity.text = getString(R.string.enter_valid_City)
+                return false
+            }
+
+            TextUtils.isEmpty(edtShippingPhoneNumber.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
+                tvShippingErrorPhoneNo.text = getString(R.string.enter_phonenumber)
+                return false
+            }
+
+            (edtShippingPhoneNumber.text.toString().length != 13) -> {
+                Constant.setErrorBorder(edtShippingPhoneNumber, tvShippingErrorPhoneNo)
+                tvShippingErrorPhoneNo.text = getString(R.string.enter_valid_phone_number)
+                return false
+            }
+            shippingState == "State" -> {
+                tvShippingErrorState.visibility = View.VISIBLE
+                return false
+            }
+            TextUtils.isEmpty(edtShippingZipCode.text.toString().trim()) -> {
+                Constant.setErrorBorder(edtShippingZipCode, tvShippingErrorZipCode)
+                return false
+            }
+            (edtShippingZipCode.text.toString().length != 5) -> {
+                Constant.setErrorBorder(edtShippingZipCode, tvShippingErrorZipCode)
+                tvShippingErrorZipCode.text = getString(R.string.enter_valid_zipcode)
+                return false
+            }
+            else -> return true
+        }
+    }
+
+    private fun onStateChangeShipping() {
+        Constant.onTextChangeFirstName(this, edtShippingFirstName, tvShippingErrorFirstName)
+        Constant.onTextChangeMiddleName(this, edtShippingMiddleName)
+        Constant.onTextChangeLastName(this, edtShippingLastName, tvShippingErrorLastName)
+        Constant.onTextChangeAddress1(this, edtShippingAddress1, tvShippingErrorAddress1)
+        Constant.onTextChange(this, edtShippingEmail, tvShippingErrorEmailAddress)
+        Constant.onTextChange(this, edtShippingPhoneNumber, tvShippingErrorPhoneNo)
+        Constant.onTextChange(this, edtShippingAddress2, tvShippingErrorAddress2)
+        Constant.onTextChangeCity(this, edtShippingCity, tvShippingErrorCity)
+        Constant.onTextChange(this, edtShippingZipCode, tvShippingErrorZipCode)
+    }
 
     private lateinit var googlePayLauncher: GooglePayPaymentMethodLauncher
     private fun initLiveGoogle() {

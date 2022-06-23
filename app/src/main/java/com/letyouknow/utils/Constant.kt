@@ -518,5 +518,10 @@ class Constant {
             edtView.setBackgroundResource(R.drawable.bg_edittext_error)
             tvError.visibility = View.VISIBLE
         }
+
+        fun hideErrorText(edtText: EditText, errorText: TextView) {
+            edtText.setBackgroundResource(R.drawable.bg_edittext)
+            errorText.visibility = View.GONE
+        }
     }
 }
