@@ -159,7 +159,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             priceRangeViewModel = ViewModelProvider(this)[PriceRangeViewModel::class.java]
 
             tvPriceRange.setOnClickListener(this)
-            tvYear.setOnClickListener(this)
+//            tvYear.setOnClickListener(this)
             btnProceedDeal.setOnClickListener(this)
             tvPromo.setOnClickListener(this)
             ivClosePromo.setOnClickListener(this)
@@ -226,6 +226,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun setYear() {
         try {
+//            spYear.isEnabled = false
             val arData = ArrayList<VehicleYearData>()
             val yearData = VehicleYearData()
             yearData.year = "YEAR - NEW CARS"
@@ -243,7 +244,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             spMake.isEnabled = false
             val arData = ArrayList<VehicleMakeData>()
             val makeData = VehicleMakeData()
-            makeData.make = "MAKE"
+            if (prefSearchDealData.lowerBorder == "ANY PRICE")
+                makeData.make = "MAKE"
+            else {
+                makeData.make = "ANY"
+                makeData.vehicleMakeID = "0"
+            }
             arData.add(0, makeData)
             adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
             spMake.adapter = adapterMake
@@ -258,7 +264,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             spModel.isEnabled = false
             val arData = ArrayList<VehicleModelData>()
             val modelData = VehicleModelData()
-            modelData.model = "MODEL"
+            if (prefSearchDealData.lowerBorder == "ANY PRICE")
+                modelData.model = "MODEL"
+            else {
+                modelData.model = "ANY"
+                modelData.vehicleModelID = "0"
+            }
             arData.add(0, modelData)
             adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
             spModel.adapter = adapterModel
@@ -273,7 +284,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             spTrim.isEnabled = false
             val arData = ArrayList<VehicleTrimData>()
             val trimData = VehicleTrimData()
-            trimData.trim = "TRIM"
+            if (prefSearchDealData.lowerBorder == "ANY PRICE")
+                trimData.trim = "TRIM"
+            else {
+                trimData.trim = "ANY"
+                trimData.vehicleTrimID = "0"
+            }
             arData.add(0, trimData)
             adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
             spTrim.adapter = adapterTrim
@@ -287,9 +303,14 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         try {
             spExteriorColor.isEnabled = false
             val arData = ArrayList<ExteriorColorData>()
-            val trimData = ExteriorColorData()
-            trimData.exteriorColor = "EXTERIOR COLOR"
-            arData.add(0, trimData)
+            val extData = ExteriorColorData()
+            if (prefSearchDealData.lowerBorder == "ANY PRICE")
+                extData.exteriorColor = "EXTERIOR COLOR"
+            else {
+                extData.exteriorColor = "ANY"
+                extData.vehicleExteriorColorID = "0"
+            }
+            arData.add(0, extData)
             adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
             spExteriorColor.adapter = adapterExterior
             setSpinnerLayoutPos(0, spExteriorColor, requireActivity())
@@ -303,7 +324,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             spInteriorColor.isEnabled = false
             val arData = ArrayList<InteriorColorData>()
             val interiorData = InteriorColorData()
-            interiorData.interiorColor = "INTERIOR COLOR"
+            if (prefSearchDealData.lowerBorder == "ANY PRICE")
+                interiorData.interiorColor = "INTERIOR COLOR"
+            else {
+                interiorData.interiorColor = "ANY"
+                interiorData.vehicleInteriorColorID = "0"
+            }
             arData.add(0, interiorData)
             adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
             spInteriorColor.adapter = adapterInterior
@@ -402,13 +428,14 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 spPriceRange.visibility = View.VISIBLE
                 callPriceRangeAPI()
                 spPriceRange.performClick()
+
             }
-            R.id.tvYear -> {
-                tvYear.visibility = View.GONE
-                spYear.visibility = View.VISIBLE
-                callVehicleYearAPI()
-                spYear.performClick()
-            }
+            /* R.id.tvYear -> {
+                 tvYear.visibility = View.GONE
+                 spYear.visibility = View.VISIBLE
+                 callVehicleYearAPI()
+                 spYear.performClick()
+             }*/
             R.id.btnProceedDeal -> {
                 if (isValid()) {
                     if (pref?.getUserData()?.isSocial!!) {
@@ -513,6 +540,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                         callVehicleYearAPI()
                                     }
                                 }
+                                callVehicleYearAPI()
                                 spPriceRange.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<PriceRangeData>()
@@ -541,6 +569,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun callVehicleYearAPI() {
         try {
 //            isCallingYear = true
+//            spYear.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
                 if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.dismissLoader()
@@ -559,7 +588,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         try {
                             if (data != null || data?.size!! > 0) {
                                 val yearData = VehicleYearData()
-                                yearData.year = "YEAR - NEW CARS"
+                                if (lowerBorder == "ANY PRICE")
+                                    yearData.year = "YEAR - NEW CARS"
+                                else {
+                                    yearData.year = "ANY"
+                                    yearData.vehicleYearID = "0"
+                                }
                                 data.add(0, yearData)
                                 adapterYear = YearSpinnerAdapter(requireActivity(), data)
                                 spYear.adapter = adapterYear
@@ -567,14 +601,20 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                     if (!AppGlobal.isEmpty(prefSearchDealData.yearId) && prefSearchDealData.yearId == data[i].vehicleYearID) {
                                         spYear.setSelection(i, true)
                                         AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
-                                        callVehicleMakeAPI()
+                                        if (prefSearchDealData.yearStr != "ANY")
+                                            callVehicleMakeAPI()
                                     }
                                 }
                                 spYear.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<VehicleYearData>()
                                 val yearData = VehicleYearData()
-                                yearData.year = "YEAR - NEW CARS"
+                                if (lowerBorder == "ANY PRICE")
+                                    yearData.year = "YEAR - NEW CARS"
+                                else {
+                                    yearData.year = "ANY"
+                                    yearData.vehicleYearID = "0"
+                                }
                                 arData.add(0, yearData)
                                 adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                                 spYear.adapter = adapterYear
@@ -593,7 +633,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun callVehicleMakeAPI() {
         try {
-            spMake.isEnabled = true
+            spMake.isEnabled =
+                (prefSearchDealData.yearStr != "ANY" && prefSearchDealData.yearStr != "YEAR - NEW CARS")
+
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.makeId)) {
                     if (!Constant.isInitProgress()) {
@@ -610,14 +652,20 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val makeData = VehicleMakeData()
-                                makeData.make = "MAKE"
+                                if (lowerBorder == "ANY PRICE")
+                                    makeData.make = "MAKE"
+                                else {
+                                    makeData.make = "ANY"
+                                    makeData.vehicleMakeID = "0"
+                                }
                                 data.add(0, makeData)
                                 adapterMake = MakeSpinnerAdapter(requireActivity(), data)
                                 spMake.adapter = adapterMake
                                 for (i in 0 until data.size) {
                                     if (!AppGlobal.isEmpty(prefSearchDealData.makeId) && prefSearchDealData.makeId == data[i].vehicleMakeID) {
                                         spMake.setSelection(i, true)
-                                        callVehicleModelAPI()
+                                        if (prefSearchDealData.makeStr != "ANY")
+                                            callVehicleModelAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spMake, requireActivity())
                                     }
                                 }
@@ -625,7 +673,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             } else {
                                 val arData = ArrayList<VehicleMakeData>()
                                 val makeData = VehicleMakeData()
-                                makeData.make = "MAKE"
+                                if (lowerBorder == "ANY PRICE")
+                                    makeData.make = "MAKE"
+                                else {
+                                    makeData.make = "ANY"
+                                    makeData.vehicleMakeID = "0"
+                                }
                                 arData.add(0, makeData)
                                 adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
                                 spMake.adapter = adapterMake
@@ -646,7 +699,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun callVehicleModelAPI() {
         try {
-            spModel.isEnabled = true
+            spModel.isEnabled =
+                (prefSearchDealData.makeStr != "ANY" && prefSearchDealData.makeStr != "MAKE")
+
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.modelId)) {
                     if (!Constant.isInitProgress()) {
@@ -663,14 +718,20 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val modelData = VehicleModelData()
-                                modelData.model = "MODEL"
+                                if (lowerBorder == "ANY PRICE")
+                                    modelData.model = "MODEL"
+                                else {
+                                    modelData.model = "ANY"
+                                    modelData.vehicleModelID = "0"
+                                }
                                 data.add(0, modelData)
                                 adapterModel = ModelSpinnerAdapter(requireActivity(), data)
                                 spModel.adapter = adapterModel
                                 for (i in 0 until data.size) {
                                     if (!AppGlobal.isEmpty(prefSearchDealData.modelId) && prefSearchDealData.modelId == data[i].vehicleModelID) {
                                         spModel.setSelection(i, true)
-                                        callVehicleTrimAPI()
+                                        if (prefSearchDealData.modelStr != "ANY")
+                                            callVehicleTrimAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spModel, requireActivity())
                                     }
                                 }
@@ -678,7 +739,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             } else {
                                 val arData = ArrayList<VehicleModelData>()
                                 val modelData = VehicleModelData()
-                                modelData.model = "MODEL"
+                                if (lowerBorder == "ANY PRICE")
+                                    modelData.model = "MODEL"
+                                else {
+                                    modelData.model = "ANY"
+                                    modelData.vehicleModelID = "0"
+                                }
                                 arData.add(0, modelData)
                                 adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
                                 spModel.adapter = adapterModel
@@ -699,7 +765,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun callVehicleTrimAPI() {
         try {
-            spTrim.isEnabled = true
+            spTrim.isEnabled =
+                (prefSearchDealData.modelStr != "ANY" && prefSearchDealData.modelStr != "MODEL")
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.trimId)) {
                     if (!Constant.isInitProgress()) {
@@ -723,14 +790,20 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         try {
                             if (data != null || data?.size!! > 0) {
                                 val trimData = VehicleTrimData()
-                                trimData.trim = "TRIM"
+                                if (lowerBorder == "ANY PRICE")
+                                    trimData.trim = "TRIM"
+                                else {
+                                    trimData.trim = "ANY"
+                                    trimData.vehicleTrimID = "0"
+                                }
                                 data.add(0, trimData)
                                 adapterTrim = TrimsSpinnerAdapter(requireActivity(), data)
                                 spTrim.adapter = adapterTrim
                                 for (i in 0 until data.size) {
                                     if (!AppGlobal.isEmpty(prefSearchDealData.trimId) && prefSearchDealData.trimId == data[i].vehicleTrimID) {
                                         spTrim.setSelection(i, true)
-                                        callExteriorColorAPI()
+                                        if (prefSearchDealData.trimStr != "ANY")
+                                            callExteriorColorAPI()
                                         AppGlobal.setSpinnerLayoutPos(i, spTrim, requireActivity())
                                     }
                                 }
@@ -738,7 +811,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             } else {
                                 val arData = ArrayList<VehicleTrimData>()
                                 val trimData = VehicleTrimData()
-                                trimData.trim = "TRIM"
+                                if (lowerBorder == "ANY PRICE")
+                                    trimData.trim = "TRIM"
+                                else {
+                                    trimData.trim = "ANY"
+                                    trimData.vehicleTrimID = "0"
+                                }
                                 arData.add(0, trimData)
                                 adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
                                 spTrim.adapter = adapterTrim
@@ -759,7 +837,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun callExteriorColorAPI() {
         try {
-            spExteriorColor.isEnabled = true
+            spExteriorColor.isEnabled =
+                (prefSearchDealData.trimStr != "ANY" && prefSearchDealData.trimStr != "TRIM")
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.extColorId)) {
                     if (!Constant.isInitProgress()) {
@@ -780,21 +859,25 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         if (isEmpty(prefSearchDealData.intColorId))
                             Constant.dismissLoader()
                         try {
-                            Log.e("Make Data", Gson().toJson(data))
+                            Log.e("Exterior Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
                                 val exteriorColorData = ExteriorColorData()
-                                exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                                data.add(0, exteriorColorData)
-                                val exteriorColorData1 = ExteriorColorData()
-                                exteriorColorData1.vehicleExteriorColorID = "0"
-                                exteriorColorData1.exteriorColor = "ANY"
-                                data.add(1, exteriorColorData1)
+                                if (lowerBorder == "ANY PRICE") {
+                                    exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                                    data.add(0, exteriorColorData)
+                                } else {
+                                    exteriorColorData.vehicleExteriorColorID = "0"
+                                    exteriorColorData.exteriorColor = "ANY"
+                                    data.add(0, exteriorColorData)
+                                }
+
                                 adapterExterior = ExteriorSpinnerAdapter(requireActivity(), data)
                                 spExteriorColor.adapter = adapterExterior
                                 for (i in 0 until data.size) {
                                     if (!AppGlobal.isEmpty(prefSearchDealData.extColorId) && prefSearchDealData.extColorId == data[i].vehicleExteriorColorID) {
                                         spExteriorColor.setSelection(i, true)
-                                        callInteriorColorAPI()
+                                        if (prefSearchDealData.extColorStr != "ANY")
+                                            callInteriorColorAPI()
                                         AppGlobal.setSpinnerLayoutPos(
                                             i,
                                             spExteriorColor,
@@ -806,12 +889,21 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             } else {
                                 val arData = ArrayList<ExteriorColorData>()
                                 val exteriorColorData = ExteriorColorData()
+                                if (lowerBorder == "ANY PRICE") {
+                                    exteriorColorData.exteriorColor = "EXTERIOR COLOR"
+                                    arData.add(0, exteriorColorData)
+                                } else {
+                                    exteriorColorData.vehicleExteriorColorID = "0"
+                                    exteriorColorData.exteriorColor = "ANY"
+                                    arData.add(0, exteriorColorData)
+                                }
+                                /*val exteriorColorData = ExteriorColorData()
                                 exteriorColorData.exteriorColor = "EXTERIOR COLOR"
                                 arData.add(0, exteriorColorData)
                                 val exteriorColorData1 = ExteriorColorData()
                                 exteriorColorData1.vehicleExteriorColorID = "0"
                                 exteriorColorData1.exteriorColor = "ANY"
-                                arData.add(1, exteriorColorData1)
+                                arData.add(1, exteriorColorData1)*/
                                 adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
                                 spExteriorColor.adapter = adapterExterior
                                 spExteriorColor.onItemSelectedListener = this
@@ -831,7 +923,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun callInteriorColorAPI() {
         try {
-            spInteriorColor.isEnabled = true
+            spInteriorColor.isEnabled =
+                (prefSearchDealData.extColorStr != "ANY" && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
+//            spInteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.intColorId)) {
                     if (!Constant.isInitProgress()) {
@@ -854,13 +948,16 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         try {
                             Log.e("Make Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
-                                val interiorColorData = InteriorColorData()
-                                interiorColorData.interiorColor = "INTERIOR COLOR"
-                                data.add(0, interiorColorData)
-                                val interiorColorData1 = InteriorColorData()
-                                interiorColorData1.vehicleInteriorColorID = "0"
-                                interiorColorData1.interiorColor = "ANY"
-                                data.add(1, interiorColorData1)
+                                if (lowerBorder == "ANY PRICE") {
+                                    val interiorColorData = InteriorColorData()
+                                    interiorColorData.interiorColor = "INTERIOR COLOR"
+                                    data.add(0, interiorColorData)
+                                } else {
+                                    val interiorColorData1 = InteriorColorData()
+                                    interiorColorData1.vehicleInteriorColorID = "0"
+                                    interiorColorData1.interiorColor = "ANY"
+                                    data.add(0, interiorColorData1)
+                                }
                                 adapterInterior = InteriorSpinnerAdapter(requireActivity(), data)
                                 spInteriorColor.adapter = adapterInterior
                                 for (i in 0 until data.size) {
@@ -877,13 +974,23 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 spInteriorColor.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<InteriorColorData>()
-                                val interiorColorData = InteriorColorData()
+                                /*val interiorColorData = InteriorColorData()
                                 interiorColorData.interiorColor = "INTERIOR COLOR"
                                 arData.add(0, interiorColorData)
                                 val interiorColorData1 = InteriorColorData()
                                 interiorColorData1.vehicleInteriorColorID = "0"
                                 interiorColorData1.interiorColor = "ANY"
-                                arData.add(1, interiorColorData1)
+                                arData.add(1, interiorColorData1)*/
+                                if (lowerBorder == "ANY PRICE") {
+                                    val interiorColorData = InteriorColorData()
+                                    interiorColorData.interiorColor = "INTERIOR COLOR"
+                                    arData.add(0, interiorColorData)
+                                } else {
+                                    val interiorColorData1 = InteriorColorData()
+                                    interiorColorData1.vehicleInteriorColorID = "0"
+                                    interiorColorData1.interiorColor = "ANY"
+                                    arData.add(0, interiorColorData1)
+                                }
                                 adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
                                 spInteriorColor.adapter = adapterInterior
                                 spInteriorColor.onItemSelectedListener = this
@@ -952,6 +1059,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 setPrefData()
                 setErrorVisibleGone()
                 callVehicleYearAPI()
+                setMake()
                 setModel()
                 setTrim()
                 setExteriorColor()
@@ -980,7 +1088,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    callVehicleMakeAPI()
+                    if (prefSearchDealData.yearStr != "ANY")
+                        callVehicleMakeAPI()
                     setModel()
                     setTrim()
                     setExteriorColor()
@@ -1008,7 +1117,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    callVehicleModelAPI()
+                    if (prefSearchDealData.makeStr != "ANY")
+                        callVehicleModelAPI()
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
@@ -1032,7 +1142,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    callVehicleTrimAPI()
+                    if (prefSearchDealData.modelStr != "ANY")
+                        callVehicleTrimAPI()
                     setExteriorColor()
                     setInteriorColor()
 //                    setRadius()
@@ -1053,7 +1164,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    callExteriorColorAPI()
+                    if (prefSearchDealData.trimStr != "ANY")
+                        callExteriorColorAPI()
                     setInteriorColor()
 //                    setRadius()
                 }
@@ -1072,7 +1184,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    callInteriorColorAPI()
+                    if (prefSearchDealData.extColorStr != "ANY")
+                        callInteriorColorAPI()
 //                    setRadius()
                 }
             }
@@ -1223,7 +1336,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             handler = Handler()
             handler.postDelayed(runnable, 1000)
         } else {
-            if (tvYear.visibility == View.GONE) {
+            if (tvPriceRange.visibility == View.GONE) {
+//            if (tvYear.visibility == View.GONE) {
                 yearStr = "YEAR - NEW CARS"
                 makeStr = "MAKE"
                 modelStr = "MODEL"
@@ -1231,8 +1345,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 extColorStr = "EXTERIOR COLOR"
                 intColorStr = "INTERIOR COLOR"
                 radiusId = "SEARCH RADIUS"
-                tvYear.visibility = View.VISIBLE
-                spYear.visibility = View.GONE
+//                tvYear.visibility = View.VISIBLE
+//                spYear.visibility = View.GONE
+                tvPriceRange.visibility = View.VISIBLE
+                spPriceRange.visibility = View.GONE
             }
         }
 
@@ -1254,7 +1370,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
                     pref?.setSearchDealTime("")
                     setTimerPrefData()
-                    if (tvYear.visibility == View.GONE) {
+                    if (tvPriceRange.visibility == View.GONE) {
+//                    if (tvYear.visibility == View.GONE) {
+                        lowerBorder = "ANY PRICE"
+                        upperBorder = ""
                         yearStr = "YEAR - NEW CARS"
                         makeStr = "MAKE"
                         modelStr = "MODEL"
@@ -1262,8 +1381,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         extColorStr = "EXTERIOR COLOR"
                         intColorStr = "INTERIOR COLOR"
                         radiusId = "SEARCH RADIUS"
-                        tvYear.visibility = View.VISIBLE
-                        spYear.visibility = View.GONE
+//                        tvYear.visibility = View.VISIBLE
+//                        spYear.visibility = View.GONE
+                        tvPriceRange.visibility = View.VISIBLE
+                        spPriceRange.visibility = View.GONE
                     }
                 } else {
                     handler.postDelayed(this, 1000)
@@ -1272,7 +1393,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
             }
         }
-
     }
 
     private fun setTimerPrefData() {
@@ -1285,7 +1405,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             setTrim()
             setExteriorColor()
             setInteriorColor()
-
             onChangeZipCode()
 
             ucdPriceId = prefSearchDealData.ucdPriceRangeID!!
@@ -1314,15 +1433,15 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 extColorStr = "EXTERIOR COLOR"
                 intColorStr = "INTERIOR COLOR"
                 radiusId = "SEARCH RADIUS"
-                tvYear.visibility = View.VISIBLE
-                spYear.visibility = View.GONE
+                /*tvYear.visibility = View.VISIBLE
+                spYear.visibility = View.GONE*/
                 tvPriceRange.visibility = View.VISIBLE
                 spPriceRange.visibility = View.GONE
             } else {
                 tvPriceRange.visibility = View.GONE
                 spPriceRange.visibility = View.VISIBLE
-                tvYear.visibility = View.GONE
-                spYear.visibility = View.VISIBLE
+                /* tvYear.visibility = View.GONE
+                 spYear.visibility = View.VISIBLE*/
                 if (!isCallingYear)
                     callPriceRangeAPI()
 //                    callVehicleYearAPI()
