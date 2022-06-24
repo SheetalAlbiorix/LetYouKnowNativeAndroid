@@ -537,9 +537,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                             spPriceRange,
                                             requireActivity()
                                         )
-                                        callVehicleYearAPI()
+//                                        callVehicleYearAPI()
                                     }
                                 }
+                                callVehicleYearAPI()
                                 spPriceRange.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<PriceRangeData>()

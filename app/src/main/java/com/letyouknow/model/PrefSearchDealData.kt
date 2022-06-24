@@ -20,6 +20,6 @@ data class PrefSearchDealData(
     var intColorStr: String? = "",
     var searchRadius: String? = "",
     var ucdPriceRangeID: String? = "",
-    var lowerBorder: String? = "",
+    var lowerBorder: String? = "ANY PRICE",
     var upperBorder: String? = "",
 ) : Serializable
