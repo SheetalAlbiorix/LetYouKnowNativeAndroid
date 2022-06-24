@@ -33,6 +33,8 @@ data class FindUcdDealData(
     val card_brand: String? = "",
     val card_last4: String? = "",
     val imageId: String? = "",
+    val exteriorColorId: String? = "",
+    val interiorColorId: String? = "",
     var discount: Float? = 0.0f,
     var isSelect: Boolean? = false
 ) : Serializable

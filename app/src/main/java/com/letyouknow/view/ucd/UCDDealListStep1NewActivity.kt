@@ -242,6 +242,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                   selectPos = pos
   */
                 val data = adapterLinear.getItem(pos)
+                yearModelMakeData.vehicleExtColorID = data.exteriorColorId
+                yearModelMakeData.vehicleExtColorID = data.interiorColorId
                 startActivity<UCDDealSummaryStep2Activity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
                     ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -478,8 +480,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
             request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.ExteriorColorID] = dataFind.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = dataFind.interiorColorId!!
             request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
             request[ApiConstant.SearchRadius1] =
                 if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
@@ -533,16 +535,16 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         submitData.makeId = yearModelMakeData.vehicleMakeID!!
         submitData.modelId = yearModelMakeData.vehicleModelID!!
         submitData.trimId = yearModelMakeData.vehicleTrimID!!
-        submitData.extColorId = yearModelMakeData.vehicleExtColorID!!
-        submitData.intColorId = yearModelMakeData.vehicleIntColorID!!
+        submitData.extColorId = data.exteriorColorId!!
+        submitData.intColorId = data.interiorColorId!!
         submitData.yearStr = data.vehicleYear!!
         submitData.makeStr = data.vehicleMake!!
         submitData.modelStr = data.vehicleModel!!
         submitData.trimStr = data.vehicleTrim!!
         submitData.extColorStr =
-            if (yearModelMakeData.vehicleExtColorID == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
         submitData.intColorStr =
-            if (yearModelMakeData.vehicleIntColorID == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
         submitData.packagesData = arSelectPackages
         submitData.optionsData = arSelectAccessories
         pref?.setSubmitPriceData(Gson().toJson(submitData))
@@ -552,16 +554,16 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         yearMakeData.vehicleMakeID = yearModelMakeData.vehicleMakeID
         yearMakeData.vehicleModelID = yearModelMakeData.vehicleModelID
         yearMakeData.vehicleTrimID = yearModelMakeData.vehicleTrimID
-        yearMakeData.vehicleExtColorID = yearModelMakeData.vehicleExtColorID
-        yearMakeData.vehicleIntColorID = yearModelMakeData.vehicleIntColorID
+        yearMakeData.vehicleExtColorID = data.exteriorColorId
+        yearMakeData.vehicleIntColorID = data.interiorColorId
         yearMakeData.vehicleYearStr = data.vehicleYear
         yearMakeData.vehicleMakeStr = data.vehicleMake
         yearMakeData.vehicleModelStr = data.vehicleModel
         yearMakeData.vehicleTrimStr = data.vehicleTrim
         yearMakeData.vehicleExtColorStr =
-            if (yearModelMakeData.vehicleExtColorID == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
         yearMakeData.vehicleIntColorStr =
-            if (yearModelMakeData.vehicleIntColorID == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
         yearMakeData.arPackages = arSelectPackages
         yearMakeData.arOptions = arSelectAccessories
         yearMakeData.price = data.price!! - 100.0f
