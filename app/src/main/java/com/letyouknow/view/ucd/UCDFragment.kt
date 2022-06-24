@@ -540,7 +540,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                         callVehicleYearAPI()
                                     }
                                 }
-                                callVehicleYearAPI()
                                 spPriceRange.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<PriceRangeData>()
@@ -603,6 +602,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                         AppGlobal.setSpinnerLayoutPos(i, spYear, requireActivity())
                                         if (prefSearchDealData.yearStr != "ANY")
                                             callVehicleMakeAPI()
+
                                     }
                                 }
                                 spYear.onItemSelectedListener = this
@@ -861,11 +861,16 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         try {
                             Log.e("Exterior Data", Gson().toJson(data))
                             if (data != null || data?.size!! > 0) {
-                                val exteriorColorData = ExteriorColorData()
                                 if (lowerBorder == "ANY PRICE") {
+                                    val exteriorColorData = ExteriorColorData()
                                     exteriorColorData.exteriorColor = "EXTERIOR COLOR"
                                     data.add(0, exteriorColorData)
+                                    val exteriorColorData1 = ExteriorColorData()
+                                    exteriorColorData1.vehicleExteriorColorID = "0"
+                                    exteriorColorData1.exteriorColor = "ANY"
+                                    data.add(1, exteriorColorData1)
                                 } else {
+                                    val exteriorColorData = ExteriorColorData()
                                     exteriorColorData.vehicleExteriorColorID = "0"
                                     exteriorColorData.exteriorColor = "ANY"
                                     data.add(0, exteriorColorData)
@@ -888,22 +893,21 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 spExteriorColor.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<ExteriorColorData>()
-                                val exteriorColorData = ExteriorColorData()
                                 if (lowerBorder == "ANY PRICE") {
+                                    val exteriorColorData = ExteriorColorData()
                                     exteriorColorData.exteriorColor = "EXTERIOR COLOR"
                                     arData.add(0, exteriorColorData)
+                                    val exteriorColorData1 = ExteriorColorData()
+                                    exteriorColorData1.vehicleExteriorColorID = "0"
+                                    exteriorColorData1.exteriorColor = "ANY"
+                                    arData.add(1, exteriorColorData1)
                                 } else {
+                                    val exteriorColorData = ExteriorColorData()
                                     exteriorColorData.vehicleExteriorColorID = "0"
                                     exteriorColorData.exteriorColor = "ANY"
                                     arData.add(0, exteriorColorData)
                                 }
-                                /*val exteriorColorData = ExteriorColorData()
-                                exteriorColorData.exteriorColor = "EXTERIOR COLOR"
-                                arData.add(0, exteriorColorData)
-                                val exteriorColorData1 = ExteriorColorData()
-                                exteriorColorData1.vehicleExteriorColorID = "0"
-                                exteriorColorData1.exteriorColor = "ANY"
-                                arData.add(1, exteriorColorData1)*/
+
                                 adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
                                 spExteriorColor.adapter = adapterExterior
                                 spExteriorColor.onItemSelectedListener = this
@@ -952,6 +956,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                     val interiorColorData = InteriorColorData()
                                     interiorColorData.interiorColor = "INTERIOR COLOR"
                                     data.add(0, interiorColorData)
+                                    val interiorColorData1 = InteriorColorData()
+                                    interiorColorData1.vehicleInteriorColorID = "0"
+                                    interiorColorData1.interiorColor = "ANY"
+                                    data.add(1, interiorColorData1)
                                 } else {
                                     val interiorColorData1 = InteriorColorData()
                                     interiorColorData1.vehicleInteriorColorID = "0"
@@ -974,17 +982,15 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 spInteriorColor.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<InteriorColorData>()
-                                /*val interiorColorData = InteriorColorData()
-                                interiorColorData.interiorColor = "INTERIOR COLOR"
-                                arData.add(0, interiorColorData)
-                                val interiorColorData1 = InteriorColorData()
-                                interiorColorData1.vehicleInteriorColorID = "0"
-                                interiorColorData1.interiorColor = "ANY"
-                                arData.add(1, interiorColorData1)*/
+
                                 if (lowerBorder == "ANY PRICE") {
                                     val interiorColorData = InteriorColorData()
                                     interiorColorData.interiorColor = "INTERIOR COLOR"
                                     arData.add(0, interiorColorData)
+                                    val interiorColorData1 = InteriorColorData()
+                                    interiorColorData1.vehicleInteriorColorID = "0"
+                                    interiorColorData1.interiorColor = "ANY"
+                                    arData.add(1, interiorColorData1)
                                 } else {
                                     val interiorColorData1 = InteriorColorData()
                                     interiorColorData1.vehicleInteriorColorID = "0"
@@ -1090,6 +1096,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     if (prefSearchDealData.yearStr != "ANY")
                         callVehicleMakeAPI()
+                    else
+                        setMake()
                     setModel()
                     setTrim()
                     setExteriorColor()
@@ -1119,6 +1127,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     if (prefSearchDealData.makeStr != "ANY")
                         callVehicleModelAPI()
+                    else
+                        setModel()
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
@@ -1144,6 +1154,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     if (prefSearchDealData.modelStr != "ANY")
                         callVehicleTrimAPI()
+                    else
+                        setTrim()
                     setExteriorColor()
                     setInteriorColor()
 //                    setRadius()
@@ -1166,6 +1178,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     if (prefSearchDealData.trimStr != "ANY")
                         callExteriorColorAPI()
+                    else
+                        setExteriorColor()
                     setInteriorColor()
 //                    setRadius()
                 }
@@ -1186,6 +1200,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     if (prefSearchDealData.extColorStr != "ANY")
                         callInteriorColorAPI()
+                    else
+                        setInteriorColor()
+
 //                    setRadius()
                 }
             }
@@ -1435,6 +1452,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 radiusId = "SEARCH RADIUS"
                 /*tvYear.visibility = View.VISIBLE
                 spYear.visibility = View.GONE*/
+                callPriceRangeAPI()
                 tvPriceRange.visibility = View.VISIBLE
                 spPriceRange.visibility = View.GONE
             } else {

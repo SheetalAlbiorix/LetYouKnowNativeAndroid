@@ -26,17 +26,17 @@ class YearSpinnerAdapter(val context: Context, var arList: ArrayList<VehicleYear
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val v = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        if (arList[0].year == "ANY") {
-            v.llSpinner.visibility = View.VISIBLE
-        } else {
-            if (position == 0) {
-                v.llSpinner.visibility = View.GONE
-            }
+        /*  if (arList[0].year == "ANY") {
+              v.llSpinner.visibility = View.VISIBLE
+          } else {
+              if (position == 0) {
+                  v.llSpinner.visibility = View.GONE
+              }
+          }*/
+        if (position == 0 && arList[0].year == "YEAR - NEW CARS") {
+            v.llSpinner.visibility = View.GONE
+            //            v.tvTitle.height=0
         }
-        /* if (position == 0) {
-             v.llSpinner.visibility = View.GONE
- //            v.tvTitle.height=0
-         }*/
         v.tvTitle.text = arList[position].year
 
         return v!!

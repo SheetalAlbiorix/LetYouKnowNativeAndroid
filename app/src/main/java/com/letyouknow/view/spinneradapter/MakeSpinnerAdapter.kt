@@ -26,7 +26,7 @@ class MakeSpinnerAdapter(val context: Context, var arList: ArrayList<VehicleMake
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val v = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        if (position == 0) {
+        if (position == 0 && arList[0].make == "MAKE") {
             v.llSpinner.visibility = View.GONE
         }
         v.tvTitle.text = arList[position].make
