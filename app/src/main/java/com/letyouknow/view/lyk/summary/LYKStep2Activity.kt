@@ -423,7 +423,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             map[ApiConstant.vehiclePackageIDs] = arJsonPackage
             map[ApiConstant.dealerAccessoryIDs] = arJsonAccessories
-            Log.e("submit Deal Req", Gson().toJson(map))
+            Log.e("Submit Deal Request", Gson().toJson(map))
             submitDealViewModel.submitDealCall(this, map)!!
                 .observe(
                     this
