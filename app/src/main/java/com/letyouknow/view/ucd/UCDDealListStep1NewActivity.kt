@@ -148,12 +148,12 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                 ).trim()
             if (yearModelMakeData.LowPrice != "ANY PRICE") {
                 request[ApiConstant.LowPrice] =
-                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) "100000" else if (TextUtils.isEmpty(
+                    if (TextUtils.isEmpty(
                             yearModelMakeData.LowPrice!!
                         )
                     ) "1" else yearModelMakeData.LowPrice!!
                 request[ApiConstant.HighPrice] =
-                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) yearModelMakeData.LowPrice!! else yearModelMakeData.HighPrice!!
+                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) "1000000" else yearModelMakeData.HighPrice!!
             }
             Log.e("Request Find Deal", Gson().toJson(request))
             findUCDDealGuestViewModel.findDeal(this, request)!!
