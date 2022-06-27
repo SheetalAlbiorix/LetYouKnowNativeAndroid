@@ -111,7 +111,6 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
 
             callSearchFindDealAPI()
 //            callRefreshTokenApi()
-
         }
 
         if (intent.hasExtra(ARG_IS_NOTIFICATION)) {
@@ -147,6 +146,15 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     "mi",
                     ""
                 ).trim()
+            if (yearModelMakeData.LowPrice != "ANY PRICE") {
+                request[ApiConstant.LowPrice] =
+                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) "100000" else if (TextUtils.isEmpty(
+                            yearModelMakeData.LowPrice!!
+                        )
+                    ) "1" else yearModelMakeData.LowPrice!!
+                request[ApiConstant.HighPrice] =
+                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) yearModelMakeData.LowPrice!! else yearModelMakeData.HighPrice!!
+            }
             Log.e("Request Find Deal", Gson().toJson(request))
             findUCDDealGuestViewModel.findDeal(this, request)!!
                 .observe(this, Observer { data ->
@@ -155,8 +163,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                         tvNotFound.visibility = View.VISIBLE
                         callImageIdAPI()
                     } else {
-                        Log.e("data_length", data.size.toString());
-                        arUnlocked.addAll(data);
+                        Log.e("data_length", data.size.toString())
+                        arUnlocked.addAll(data)
                         adapterLinear = Items_LinearRVAdapter(arUnlocked, this)
                         adapterLinear.notifyDataSetChanged()
                         rvUnlockedCar.adapter = adapterLinear
@@ -340,7 +348,6 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     tvTitleDisclosure.visibility = View.GONE
                 }
             }
-
         }
         setLayoutParam(dialog)
         dialog.show()
@@ -453,9 +460,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
          Constant.dismissLoader()
      }*/
 
-
     //Price Bid
-
     private fun callCheckVehicleStockAPI(dataFind: FindUcdDealData) {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {

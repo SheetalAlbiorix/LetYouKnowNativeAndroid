@@ -363,6 +363,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         dataYear.vehicleIntColorStr = intColorStr
         dataYear.radius = radiusId
         dataYear.zipCode = edtZipCode.text.toString().trim()
+        dataYear.LowPrice = lowerBorder
+        dataYear.HighPrice = upperBorder
 //                    Log.e("Find UCD",Gson().toJson(data))
         startActivity<UCDDealListStep1NewActivity>(
             ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
@@ -882,7 +884,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 for (i in 0 until data.size) {
                                     if (!AppGlobal.isEmpty(prefSearchDealData.extColorId) && prefSearchDealData.extColorId == data[i].vehicleExteriorColorID) {
                                         spExteriorColor.setSelection(i, true)
-                                        if (prefSearchDealData.extColorStr != "ANY")
+                                        if (prefSearchDealData.extColorStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE")
                                             callInteriorColorAPI()
                                         AppGlobal.setSpinnerLayoutPos(
                                             i,
@@ -929,7 +931,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun callInteriorColorAPI() {
         try {
             spInteriorColor.isEnabled =
-                (prefSearchDealData.extColorStr != "ANY" && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
+                ((prefSearchDealData.extColorStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE") && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
 //            spInteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.intColorId)) {
@@ -1199,7 +1201,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     Constant.dismissLoader()
                     setPrefData()
                     setErrorVisibleGone()
-                    if (prefSearchDealData.extColorStr != "ANY")
+                    if (prefSearchDealData.extColorStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE")
                         callInteriorColorAPI()
                     else
                         setInteriorColor()

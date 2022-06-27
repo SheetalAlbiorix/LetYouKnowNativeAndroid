@@ -112,6 +112,7 @@ class ApiConstant {
         var ShipToZipcode = "ShipToZipcode"
         var ShipToCountry = "ShipToCountry"
         var ShipIt = "ShipIt"
-
+        var LowPrice = "LowPrice"
+        var HighPrice = "HighPrice"
     }
 }
