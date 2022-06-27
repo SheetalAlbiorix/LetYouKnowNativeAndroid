@@ -79,9 +79,9 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun init() {
-        imageIdViewModel = ViewModelProvider(this).get(ImageIdViewModel::class.java)
-        imageUrlViewModel = ViewModelProvider(this).get(ImageUrlViewModel::class.java)
-        tokenModel = ViewModelProvider(this).get(RefreshTokenViewModel::class.java)
+        imageIdViewModel = ViewModelProvider(this)[ImageIdViewModel::class.java]
+        imageUrlViewModel = ViewModelProvider(this)[ImageUrlViewModel::class.java]
+        tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
         submitPendingUCDDealViewModel =
             ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
 
