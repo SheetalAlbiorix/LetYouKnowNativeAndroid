@@ -42,7 +42,7 @@ class PriceRangeSpinnerAdapter(val context: Context, var arList: ArrayList<Price
             }
         }
 
-        view.tvTitle.text = str
+        view.tvTitle.text = str.toUpperCase()
         return view
     }
 

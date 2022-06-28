@@ -366,6 +366,11 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         dataYear.LowPrice = lowerBorder
         dataYear.HighPrice = upperBorder
 //                    Log.e("Find UCD",Gson().toJson(data))
+        /*  startActivity<UCDStep1Activity>(
+              ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
+              ARG_RADIUS to radiusId,
+              ARG_ZIPCODE to edtZipCode.text.toString().trim()
+          )*/
         startActivity<UCDDealListStep1NewActivity>(
             ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
             ARG_RADIUS to radiusId,

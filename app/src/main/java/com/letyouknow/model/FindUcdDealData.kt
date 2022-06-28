@@ -2,6 +2,13 @@ package com.letyouknow.model
 
 import java.io.Serializable
 
+data class FindUCDMainData(
+    var position: Int? = 0,
+    var imageID: String? = "",
+    var imgUrl: String? = "",
+    var arUCD: ArrayList<FindUcdDealData> = ArrayList()
+) : Serializable
+
 data class FindUcdDealData(
     val dealID: String? = "",
     val userID: String? = "",
@@ -36,5 +43,10 @@ data class FindUcdDealData(
     val exteriorColorId: String? = "",
     val interiorColorId: String? = "",
     var discount: Float? = 0.0f,
+    var imageUrl: String? = "",
+    var yearId: String? = "",
+    var makeId: String? = "",
+    var modelId: String? = "",
+    var trimId: String? = "",
     var isSelect: Boolean? = false
 ) : Serializable
