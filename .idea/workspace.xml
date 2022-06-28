@@ -23,7 +23,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[11a294fb]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Albiorix Technology\.android\avd\Pixel_4_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -275,7 +275,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656325193567</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="- set price range data">
+      <created>1656326636368</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1656326636368</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -290,7 +297,8 @@
     <MESSAGE value="- set pref data" />
     <MESSAGE value="- set promo data" />
     <MESSAGE value="- user selected search radius should be carried over from the UCD into LYK too" />
-    <option name="LAST_COMMIT_MESSAGE" value="- user selected search radius should be carried over from the UCD into LYK too" />
+    <MESSAGE value="- set price range data" />
+    <option name="LAST_COMMIT_MESSAGE" value="- set price range data" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

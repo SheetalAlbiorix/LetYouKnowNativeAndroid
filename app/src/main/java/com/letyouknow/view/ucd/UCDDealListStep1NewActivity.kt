@@ -170,6 +170,9 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                         rvUnlockedCar.adapter = adapterLinear
                         callImageIdAPI()
                         setRVScrollListener()
+                        val arGroup = arUnlocked.groupBy { data -> data?.vehicleModel }
+                        val arGroup1 = arGroup.values
+
                         //  loadData(data)
                         // Constant.dismissLoader()
                     }
