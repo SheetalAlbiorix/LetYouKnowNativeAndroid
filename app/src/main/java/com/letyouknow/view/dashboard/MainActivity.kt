@@ -47,8 +47,8 @@ import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
 import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
-import com.letyouknow.view.payment.GooglePaymentActivity
 import com.letyouknow.view.referreferral.ReferReferralActivity
+import com.letyouknow.view.splash.SamsungPaymentActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.ucd.UCDDealListStep1Activity
@@ -654,7 +654,8 @@ class MainActivity : BaseActivity(),
 
                     0 -> {
 //                        startActivity<BidHistoryActivity>()
-                        startActivity<GooglePaymentActivity>()
+//                        startActivity<GooglePaymentActivity>()
+                        startActivity<SamsungPaymentActivity>()
                     }
                     1 -> {
                         startActivity<TransactionHistoryActivity>()

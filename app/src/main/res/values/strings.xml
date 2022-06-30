@@ -6,6 +6,7 @@
     <string name="deal_summary">Deal Summary</string>
 
     <string name="google_web_client_id">1041344513800-0vpjta95n0sqcu7algdb1fupcmbeihjq.apps.googleusercontent.com</string>
+    <string name="samsung_pay_service_id">83cea3be495f42ceaae313</string>
 
     <!--    FaceBook AppID-->
     <string name="facebook_app_id">2719149108369502</string>
