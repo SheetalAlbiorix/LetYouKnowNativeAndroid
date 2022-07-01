@@ -278,11 +278,11 @@
             android:value="Y" />
         <meta-data
             android:name="spay_debug_api_key"
-            android:value="6acddb95270f48f5879c078e3000a262" />
+            android:value="@string/spay_debug_api_key" />
 
         <meta-data
             android:name="spay_sdk_api_level"
-            android:value="1.8" />
+            android:value="2.17" />
     </application>
 
 </manifest>

@@ -2,6 +2,8 @@
   <library name="Gradle: E">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/app/lib/samsungpay_2.5.00.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/lib/SamsungPaySDK_2.16.00_release.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/lib/SamsungPaySDK_2.17.00_release.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -7,4 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "LetYouKnow"
-include ':app'
+include ':app',':SamsungPaySDK_2.17.00_release'

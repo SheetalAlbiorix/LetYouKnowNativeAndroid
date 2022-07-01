@@ -11,6 +11,7 @@ import com.letyouknow.R
 import com.samsung.android.sdk.samsungpay.v2.PartnerInfo
 import com.samsung.android.sdk.samsungpay.v2.SamsungPay
 import com.samsung.android.sdk.samsungpay.v2.SpaySdk
+import com.samsung.android.sdk.samsungpay.v2.SpaySdk.EXTRA_ERROR_REASON
 import com.samsung.android.sdk.samsungpay.v2.StatusListener
 import com.samsung.android.sdk.samsungpay.v2.payment.CardInfo
 import com.samsung.android.sdk.samsungpay.v2.payment.PaymentManager
@@ -41,12 +42,15 @@ class SamsungPaymentActivity : AppCompatActivity(), View.OnClickListener {
         }
         partnerInfo = PartnerInfo(getString(R.string.samsung_pay_service_id), bundle)
         samsungPay = SamsungPay(this, partnerInfo)
+        samsungPay.activateSamsungPay()
+        samsungPay.goToUpdatePage()
         paymentManager = PaymentManager(this, partnerInfo)
-
+        requestCardInfo()
         samsungPay.getSamsungPayStatus(object : StatusListener {
             override fun onSuccess(status: Int, bundle: Bundle?) {
                 when (status) {
                     SamsungPay.SPAY_NOT_SUPPORTED -> {
+                        Log.e("not support", bundle?.getInt(EXTRA_ERROR_REASON).toString())
                         tvSamsungPay.visibility = View.GONE
                     }
                     SamsungPay.SPAY_NOT_READY -> {
