@@ -97,8 +97,6 @@ class Items_LinearRVAdapter(
         if (holder.itemViewType == Constant.VIEW_TYPE_ITEM) {
             holder.itemView.tvSelectDeal.tag = position
             holder.itemView.tvSelectDeal.setOnClickListener(clickListener)
-            holder.itemView.tvPriceBid.tag = position
-            holder.itemView.tvPriceBid.setOnClickListener(clickListener)
 
             holder.itemView.tvViewOptions.tag = position
             holder.itemView.tvViewOptions.setOnClickListener(clickListener)
@@ -140,7 +138,6 @@ class Items_LinearRVAdapter(
                 holder.itemView.llDisclosure.visibility = View.VISIBLE
             } else {
                 holder.itemView.llDisclosure.visibility = View.GONE
-                holder.itemView.tvPriceBid.visibility = View.VISIBLE
             }
             AppGlobal.strikeThrough(holder.itemView.tvMSRP)
         }

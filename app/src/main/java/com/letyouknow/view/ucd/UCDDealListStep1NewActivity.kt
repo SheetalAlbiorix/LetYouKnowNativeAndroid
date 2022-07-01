@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -16,11 +15,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
 import com.letyouknow.databinding.ActivityUcdDealListStep1Binding
-import com.letyouknow.model.*
+import com.letyouknow.model.FindUcdDealData
+import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
@@ -34,7 +33,6 @@ import com.letyouknow.utils.Constant.Companion.ARG_ZIPCODE
 import com.letyouknow.utils.OnLoadMoreListener
 import com.letyouknow.utils.RecyclerViewLoadMoreScroll
 import com.letyouknow.view.dashboard.MainActivity
-import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import kotlinx.android.synthetic.main.activity_ucd_deal_list_step1.*
 import kotlinx.android.synthetic.main.dialog_option_accessories_unlocked.*
@@ -44,7 +42,6 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
@@ -261,10 +258,6 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             R.id.ivEdit -> {
                 onBackPressed()
             }
-            R.id.tvPriceBid -> {
-                val pos = v.tag as Int
-                callCheckVehicleStockAPI(adapterLinear.getItem(pos))
-            }
         }
     }
 
@@ -450,134 +443,4 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    /* fun loadData(arList:ArrayList<FindUcdDealData>) = CoroutineScope(Dispatchers.Main).launch {
-         adapterUnlockedCarDeal.addAll(arList)
-         Constant.dismissLoader()
-     }*/
-
-
-    //Price Bid
-
-    private fun callCheckVehicleStockAPI(dataFind: FindUcdDealData) {
-        if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
-            val pkgList = JsonArray()
-            for (i in 0 until dataFind.vehiclePackages?.size!!) {
-                pkgList.add(dataFind.vehiclePackages[i].vehiclePackageID)
-            }
-            val accList = JsonArray()
-            for (i in 0 until dataFind.vehicleAccessories?.size!!) {
-                accList.add(dataFind.vehicleAccessories[i].dealerAccessoryID)
-            }
-
-            val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = 3
-            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
-            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
-            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = dataFind.exteriorColorId!!
-            request[ApiConstant.InteriorColorID] = dataFind.interiorColorId!!
-            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] =
-                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
-                    "mi",
-                    ""
-                ).trim()
-
-            request[ApiConstant.AccessoryList] = accList
-            request[ApiConstant.PackageList1] = pkgList
-            Log.e("RequestStock", Gson().toJson(request))
-            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
-                .observe(this, Observer { data ->
-                    Constant.dismissLoader()
-                    Log.e("check Stock", data.toString())
-                    if (data) {
-                        setLYKData(dataFind)
-                    } else {
-                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                        pref?.setSubmitPriceTime("")
-                        startActivity(
-                            intentFor<MainActivity>(Constant.ARG_IS_LYK_SHOW to true).clearTask()
-                                .newTask()
-                        )
-                    }
-                }
-                )
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setLYKData(data: FindUcdDealData) {
-        val arSelectPackages = ArrayList<VehiclePackagesData>()
-        for (i in 0 until data.vehiclePackages!!.size) {
-            data.vehiclePackages[i].isSelect = true
-            arSelectPackages.add(data.vehiclePackages[i])
-        }
-
-        val arSelectAccessories = ArrayList<VehicleAccessoriesData>()
-        for (i in 0 until data.vehicleAccessories!!.size) {
-            data.vehicleAccessories[i].isSelect = true
-            arSelectAccessories.add(data.vehicleAccessories[i])
-        }
-
-        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
-        val date = df.format(Calendar.getInstance().time)
-        pref?.setSubmitPriceTime(date)
-
-        val submitData = PrefSubmitPriceData()
-        submitData.yearId = yearModelMakeData.vehicleYearID!!
-        submitData.makeId = yearModelMakeData.vehicleMakeID!!
-        submitData.modelId = yearModelMakeData.vehicleModelID!!
-        submitData.trimId = yearModelMakeData.vehicleTrimID!!
-        submitData.extColorId = data.exteriorColorId!!
-        submitData.intColorId = data.interiorColorId!!
-        submitData.yearStr = data.vehicleYear!!
-        submitData.makeStr = data.vehicleMake!!
-        submitData.modelStr = data.vehicleModel!!
-        submitData.trimStr = data.vehicleTrim!!
-        submitData.extColorStr =
-            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
-        submitData.intColorStr =
-            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
-        submitData.packagesData = arSelectPackages
-        submitData.optionsData = arSelectAccessories
-        pref?.setSubmitPriceData(Gson().toJson(submitData))
-
-        val yearMakeData = YearModelMakeData()
-        yearMakeData.vehicleYearID = yearModelMakeData.vehicleYearID
-        yearMakeData.vehicleMakeID = yearModelMakeData.vehicleMakeID
-        yearMakeData.vehicleModelID = yearModelMakeData.vehicleModelID
-        yearMakeData.vehicleTrimID = yearModelMakeData.vehicleTrimID
-        yearMakeData.vehicleExtColorID = data.exteriorColorId
-        yearMakeData.vehicleIntColorID = data.interiorColorId
-        yearMakeData.vehicleYearStr = data.vehicleYear
-        yearMakeData.vehicleMakeStr = data.vehicleMake
-        yearMakeData.vehicleModelStr = data.vehicleModel
-        yearMakeData.vehicleTrimStr = data.vehicleTrim
-        yearMakeData.vehicleExtColorStr =
-            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
-        yearMakeData.vehicleIntColorStr =
-            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
-        yearMakeData.arPackages = arSelectPackages
-        yearMakeData.arOptions = arSelectAccessories
-        yearMakeData.price = data.price!! - 100.0f
-        yearMakeData.radius = yearModelMakeData.radius
-        yearMakeData.zipCode = yearModelMakeData.zipCode
-
-        Handler().postDelayed({
-            startActivity<LYKStep1Activity>(
-                ARG_YEAR_MAKE_MODEL to Gson().toJson(
-                    yearMakeData
-                ),
-                Constant.ARG_IS_BID to true
-            )
-            finish()
-        }, 1000)
-    }
 }
