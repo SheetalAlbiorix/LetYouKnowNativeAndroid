@@ -23,15 +23,12 @@ object PromotionGeneralRepository {
         call.enqueue(object : Callback<PromotionData> {
             override fun onFailure(call: Call<PromotionData>, t: Throwable) {
                 if (t is SocketTimeoutException) {
-
                     Constant.dismissLoader()
                     AppGlobal.alertError(
                         context,
                         "Socket Time out. Please try again."
                     )
                 }
-                // Log.v("DEBUG : ", t.message.toString())
-
             }
 
             override fun onResponse(

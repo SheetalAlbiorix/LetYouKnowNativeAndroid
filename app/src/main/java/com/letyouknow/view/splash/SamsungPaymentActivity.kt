@@ -42,8 +42,6 @@ class SamsungPaymentActivity : AppCompatActivity(), View.OnClickListener {
         }
         partnerInfo = PartnerInfo(getString(R.string.samsung_pay_service_id), bundle)
         samsungPay = SamsungPay(this, partnerInfo)
-        samsungPay.activateSamsungPay()
-        samsungPay.goToUpdatePage()
         paymentManager = PaymentManager(this, partnerInfo)
         requestCardInfo()
         samsungPay.getSamsungPayStatus(object : StatusListener {
@@ -112,7 +110,6 @@ class SamsungPaymentActivity : AppCompatActivity(), View.OnClickListener {
                             dsCount++
                         }
                         else -> {
-
                         }
                     }
                 }
