@@ -22,6 +22,7 @@ import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
+import com.letyouknow.utils.AppGlobal.Companion.setNoData
 import com.letyouknow.utils.AppGlobal.Companion.setSpinnerLayoutPos
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_RADIUS
@@ -321,55 +322,6 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             ARG_RADIUS to radiusId,
             ARG_ZIPCODE to edtZipCode.text.toString().trim()
         )
-        /*  if (Constant.isOnline(requireActivity())) {
-              if(!Constant.isInitProgress()){
-                  Constant.showLoader(requireActivity())
-              } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                  Constant.showLoader(requireActivity())
-              }
-              val request = HashMap<String, Any>()
-              request[ApiConstant.vehicleYearID] = yearId
-              request[ApiConstant.vehicleMakeID] = makeId
-              request[ApiConstant.vehicleModelID] = modelId
-              request[ApiConstant.vehicleTrimID] = trimId
-              request[ApiConstant.vehicleExteriorColorID] = extColorId
-              request[ApiConstant.vehicleInteriorColorID] = intColorId
-              request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
-              request[ApiConstant.searchRadius] =
-                  if (radiusId == "ALL") "6000" else radiusId.replace("mi", "").trim()
-              Log.e("Request Find Deal", Gson().toJson(request))
-              findUCDDealGuestViewModel.findDeal(requireActivity(), request)!!
-                  .observe(this, Observer { data ->
-                      Constant.dismissLoader()
-  //                    Log.e("Response", Gson().toJson(data))
-                      val dataYear = YearModelMakeData()
-                      dataYear.vehicleYearID = yearId
-                      dataYear.vehicleMakeID = makeId
-                      dataYear.vehicleModelID = modelId
-                      dataYear.vehicleTrimID = trimId
-                      dataYear.vehicleExtColorID = extColorId
-                      dataYear.vehicleIntColorID = intColorId
-                      dataYear.vehicleYearStr = yearStr
-                      dataYear.vehicleMakeStr = makeStr
-                      dataYear.vehicleModelStr = modelStr
-                      dataYear.vehicleTrimStr = trimStr
-                      dataYear.vehicleExtColorStr = extColorStr
-                      dataYear.vehicleIntColorStr = intColorStr
-                      dataYear.radius = radiusId
-                      dataYear.zipCode = edtZipCode.text.toString().trim()
-  //                    Log.e("Find UCD",Gson().toJson(data))
-                      startActivity<UCDDealListStep1Activity>(
-                          ARG_UCD_DEAL to Gson().toJson(data),
-                          ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
-                          ARG_RADIUS to radiusId,
-                          ARG_ZIPCODE to edtZipCode.text.toString().trim()
-                      )
-                  }
-                  )
-
-          } else {
-              Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
-          }*/
     }
 
 
@@ -466,7 +418,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         isCallingYear = false
                         Log.e("Year Data", Gson().toJson(data))
                         try {
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val yearData = VehicleYearData()
                                 yearData.year = "YEAR - NEW CARS"
                                 data.add(0, yearData)
@@ -488,6 +440,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                                 spYear.adapter = adapterYear
                                 spYear.onItemSelectedListener = this
+                                setNoData(requireActivity(), spYear)
+                                setClearData()
                             }
                         } catch (e: Exception) {
 
@@ -519,7 +473,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             Constant.dismissLoader()
                         try {
                             Log.e("Make Data", Gson().toJson(data))
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val makeData = VehicleMakeData()
                                 makeData.make = "MAKE"
                                 data.add(0, makeData)
@@ -541,6 +495,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
                                 spMake.adapter = adapterMake
                                 spMake.onItemSelectedListener = this
+                                setNoData(requireActivity(), spMake)
+                                setClearData()
                             }
                         } catch (e: Exception) {
 
@@ -572,7 +528,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             Constant.dismissLoader()
                         try {
                             Log.e("Make Data", Gson().toJson(data))
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val modelData = VehicleModelData()
                                 modelData.model = "MODEL"
                                 data.add(0, modelData)
@@ -594,6 +550,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
                                 spModel.adapter = adapterModel
                                 spModel.onItemSelectedListener = this
+                                setNoData(requireActivity(), spModel)
+                                setClearData()
                             }
                         } catch (e: Exception) {
 
@@ -632,7 +590,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                             Constant.dismissLoader()
                         Log.e("Make Data", Gson().toJson(data))
                         try {
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val trimData = VehicleTrimData()
                                 trimData.trim = "TRIM"
                                 data.add(0, trimData)
@@ -654,6 +612,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                 adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
                                 spTrim.adapter = adapterTrim
                                 spTrim.onItemSelectedListener = this
+                                setNoData(requireActivity(), spTrim)
+                                setClearData()
                             }
                         } catch (e: Exception) {
 
@@ -1373,5 +1333,16 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setClearData() {
+        tvYear.visibility = View.GONE
+        spYear.visibility = View.VISIBLE
+        setYear()
+        setMake()
+        setModel()
+        setTrim()
+        prefSearchDealData = PrefSearchDealData()
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
     }
 }

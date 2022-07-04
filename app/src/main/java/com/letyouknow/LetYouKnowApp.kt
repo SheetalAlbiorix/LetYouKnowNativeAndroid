@@ -34,8 +34,6 @@ class LetYouKnowApp : Application() {
 
         FirebaseCrashlytics.getInstance().log("Crash")
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-//        FacebookSdk.sdkInitialize(this)
-//        AppEventsLogger.activateApp(this);
         mInstance = this
 //        Fabric.with(this, Crashlytics())
 

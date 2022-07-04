@@ -26,6 +26,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.AppGlobal.Companion.alertError
 import com.letyouknow.utils.AppGlobal.Companion.isEmpty
+import com.letyouknow.utils.AppGlobal.Companion.setNoData
 import com.letyouknow.utils.AppGlobal.Companion.stringToDate
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
@@ -361,7 +362,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         isCallingYear = false
                         try {
                             Log.e("Year Data", Gson().toJson(data))
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val yearData = VehicleYearData()
                                 yearData.year = "YEAR - NEW CARS"
                                 data.add(0, yearData)
@@ -383,6 +384,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                                 adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                                 spYear.adapter = adapterYear
                                 spYear.onItemSelectedListener = this
+                                setNoData(requireActivity(), spYear)
+                                setClearData()
                             }
                         } catch (e: Exception) {
                         }
@@ -418,7 +421,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         Constant.dismissLoader()
                     //   Log.e("Make Data", Gson().toJson(data))
                     try {
-                        if (data != null || data?.size!! > 0) {
+                        if (!data.isNullOrEmpty()) {
                             val makeData = VehicleMakeData()
                             makeData.make = "MAKE"
                             data.add(0, makeData)
@@ -441,6 +444,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                             adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
                             spMake.adapter = adapterMake
                             spMake.onItemSelectedListener = this
+                            setNoData(requireActivity(), spMake)
+                            setClearData()
                         }
                     } catch (e: Exception) {
                     }
@@ -473,7 +478,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         Constant.dismissLoader()
                     //  Log.e("MODEL Data", Gson().toJson(data))
                     try {
-                        if (data != null || data?.size!! > 0) {
+                        if (!data.isNullOrEmpty()) {
                             val modelData = VehicleModelData()
                             modelData.model = "MODEL"
                             data.add(0, modelData)
@@ -495,6 +500,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                             adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
                             spModel.adapter = adapterModel
                             spModel.onItemSelectedListener = this
+                            setNoData(requireActivity(), spModel)
+                            setClearData()
                         }
                     } catch (e: Exception) {
                     }
@@ -528,7 +535,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         Constant.dismissLoader()
                     // Log.e("TRIM Data", Gson().toJson(data))
                     try {
-                        if (data != null || data?.size!! > 0) {
+                        if (!data.isNullOrEmpty()) {
                             val trimData = VehicleTrimData()
                             trimData.trim = "TRIM"
                             data.add(0, trimData)
@@ -550,6 +557,8 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                             adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
                             spTrim.adapter = adapterTrim
                             spTrim.onItemSelectedListener = this
+                            setNoData(requireActivity(), spTrim)
+                            setClearData()
                         }
                     } catch (e: Exception) {
                     }
@@ -1898,6 +1907,19 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setClearData() {
+        tvYear.visibility = View.VISIBLE
+        spYear.visibility = View.GONE
+        setYear()
+        setMake()
+        setModel()
+        setTrim()
+        prefSubmitPriceData = PrefSubmitPriceData()
+        pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+        setCurrentTime()
+        setTimerPrefData()
     }
 
     private fun setUCDPrefData() {
