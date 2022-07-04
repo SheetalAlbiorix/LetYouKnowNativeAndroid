@@ -388,7 +388,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         }
                         isValidZipCode = data
                         prefSearchDealData.isZipCode = isValidZipCode!!
-                        setPrefData()
+                        prefSearchDealData.isUCDSelZipCode = true
+                        setPrefZipCodeData()
                         setLCDPrefData()
                     } catch (e: Exception) {
                     }
@@ -1046,6 +1047,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         setCurrentTime()
     }
 
+    private fun setPrefZipCodeData() {
+        prefSearchDealData.isUCDSelZipCode = true
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+        setCurrentTime()
+    }
+
     private fun setInitPrefData() {
         prefSearchDealData.isUCDSel = false
         pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
@@ -1358,18 +1365,36 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun setLCDPrefData() {
         val prefUCD = pref?.getSearchDealData()
         val lcdData = pref?.getOneDealNearYouData()
-        if (isValidZipCode) {
-            if ((TextUtils.isEmpty(lcdData?.zipCode) || prefUCD?.zipCode == lcdData?.zipCode) && !lcdData?.isLCD!!) {
-                lcdData.zipCode = prefUCD?.zipCode
+        if (isValidZipCode && !prefUCD?.isUCDSel!! && prefUCD.isUCDSelZipCode!!) {
+            if ((TextUtils.isEmpty(lcdData?.zipCode) || prefUCD.zipCode == lcdData?.zipCode) && !lcdData?.isLCD!!) {
+                lcdData.zipCode = prefUCD.zipCode
                 lcdData.isZipCode = true
             }
-            if ((TextUtils.isEmpty(lcdData?.yearId) || prefUCD?.yearId == lcdData?.yearId) && !lcdData?.isLCD!!) {
-                lcdData.yearId = prefUCD?.yearId
-                lcdData.yearStr = prefUCD?.yearStr
+            if ((TextUtils.isEmpty(lcdData?.yearId) || prefUCD.yearId == lcdData?.yearId) && !lcdData?.isLCD!!) {
+                lcdData.yearId = prefUCD.yearId
+                lcdData.yearStr = prefUCD.yearStr
             }
-            if ((TextUtils.isEmpty(lcdData?.makeId) || prefUCD?.makeId == lcdData?.makeId) && !lcdData?.isLCD!!) {
-                lcdData.makeId = prefUCD?.makeId
-                lcdData.makeStr = prefUCD?.makeStr
+            if ((TextUtils.isEmpty(lcdData?.makeId) || prefUCD.makeId == lcdData?.makeId) && !lcdData?.isLCD!!) {
+                lcdData.makeId = prefUCD.makeId
+                lcdData.makeStr = prefUCD.makeStr
+            }
+            if ((TextUtils.isEmpty(lcdData?.modelId) || prefUCD.modelId == lcdData?.modelId) && !lcdData?.isLCD!!) {
+                lcdData.modelId = prefUCD.modelId
+                lcdData.modelStr = prefUCD.modelStr
+            }
+            if ((TextUtils.isEmpty(lcdData?.trimId) || prefUCD.trimId == lcdData?.trimId) && !lcdData?.isLCD!!) {
+                lcdData.trimId = prefUCD.trimId
+                lcdData.trimStr = prefUCD.trimStr
+            }
+
+            if ((TextUtils.isEmpty(lcdData?.extColorId) || prefUCD.extColorId == lcdData?.extColorId) && !lcdData?.isLCD!!) {
+                lcdData.extColorId = prefUCD.extColorId
+                lcdData.extColorStr = prefUCD.extColorStr
+            }
+
+            if ((TextUtils.isEmpty(lcdData?.intColorId) || prefUCD.intColorId == lcdData?.intColorId) && !lcdData?.isLCD!!) {
+                lcdData.intColorId = prefUCD.intColorId
+                lcdData.intColorStr = prefUCD.intColorStr
             }
             setLCDPrefData(lcdData!!)
         } else {
@@ -1377,11 +1402,10 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 setLCDPrefData(PrefOneDealNearYouData())
             }
         }
-
     }
 
     private fun setLCDPrefData(lcdData: PrefOneDealNearYouData) {
-        pref?.setSearchDealData(Gson().toJson(lcdData))
+        pref?.setOneDealNearYouData(Gson().toJson(lcdData))
         setLCDCurrentTime()
     }
 

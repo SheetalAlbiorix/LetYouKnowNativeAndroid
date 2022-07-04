@@ -1924,28 +1924,29 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun setUCDPrefData() {
         val prefUCD = pref?.getSearchDealData()
+        val prefLCD = pref?.getOneDealNearYouData()
         val lykData = pref?.getSubmitPriceData()
-        if ((TextUtils.isEmpty(prefUCD?.yearId) || lykData?.yearId == prefUCD?.yearId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.yearId) || lykData?.yearId == prefUCD?.yearId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.yearId = lykData?.yearId
             prefUCD?.yearStr = lykData?.yearStr
         }
-        if ((TextUtils.isEmpty(prefUCD?.makeId) || lykData?.makeId == prefUCD?.makeId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.makeId) || lykData?.makeId == prefUCD?.makeId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.makeId = lykData?.makeId
             prefUCD?.makeStr = lykData?.makeStr
         }
-        if ((TextUtils.isEmpty(prefUCD?.modelId) || lykData?.modelId == prefUCD?.modelId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.modelId) || lykData?.modelId == prefUCD?.modelId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.modelId = lykData?.modelId
             prefUCD?.modelStr = lykData?.modelStr
         }
-        if ((TextUtils.isEmpty(prefUCD?.trimId) || lykData?.trimId == prefUCD?.trimId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.trimId) || lykData?.trimId == prefUCD?.trimId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.trimId = lykData?.trimId
             prefUCD?.trimStr = lykData?.trimStr
         }
-        if ((TextUtils.isEmpty(prefUCD?.extColorId) || lykData?.extColorId == prefUCD?.extColorId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.extColorId) || lykData?.extColorId == prefUCD?.extColorId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.extColorId = lykData?.extColorId
             prefUCD?.extColorStr = lykData?.extColorStr
         }
-        if ((TextUtils.isEmpty(prefUCD?.intColorId) || lykData?.intColorId == prefUCD?.intColorId) && !prefUCD?.isUCDSel!!) {
+        if ((TextUtils.isEmpty(prefUCD?.intColorId) || lykData?.intColorId == prefUCD?.intColorId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
             prefUCD?.intColorId = lykData?.intColorId
             prefUCD?.intColorStr = lykData?.intColorStr
         }

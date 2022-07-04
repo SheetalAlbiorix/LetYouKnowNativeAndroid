@@ -221,7 +221,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
     private lateinit var handler: Handler
     private fun setPrefData() {
         prefOneDealNearYouData.isLCD = isValidZipCode
-        pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
+        pref?.setOneDealNearYouData(Gson().toJson(if (isValidZipCode) prefOneDealNearYouData else PrefOneDealNearYouData()))
         setCurrentTime()
     }
 
