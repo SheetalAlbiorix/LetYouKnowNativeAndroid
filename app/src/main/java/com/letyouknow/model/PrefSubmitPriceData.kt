@@ -22,5 +22,6 @@ data class PrefSubmitPriceData(
     var radius: String? = "",
     var loanType: String? = "",
     var zipCode: String? = "",
-    var isChange: Boolean? = false
+    var isChange: Boolean? = false,
+    var isLYK: Boolean? = false
 ) : Serializable

@@ -220,6 +220,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private lateinit var handler: Handler
     private fun setPrefData() {
+        prefOneDealNearYouData.isLCD = isValidZipCode
         pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
         setCurrentTime()
     }
@@ -1600,6 +1601,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
                     prefOneDealNearYouData.trimId = data.vehicleTrimID
+                    prefOneDealNearYouData.trimStr = data.trim
                     prefOneDealNearYouData.trimStr = data.trim
                     prefOneDealNearYouData.extColorId = ""
                     prefOneDealNearYouData.intColorId = ""

@@ -18,5 +18,6 @@ data class PrefSearchDealData(
     var trimStr: String? = "",
     var extColorStr: String? = "",
     var intColorStr: String? = "",
-    var searchRadius: String? = ""
+    var searchRadius: String? = "",
+    var isUCDSel: Boolean? = false
 ) : Serializable

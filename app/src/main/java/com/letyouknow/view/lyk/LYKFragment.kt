@@ -1924,30 +1924,30 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
 
     private fun setUCDPrefData() {
         val prefUCD = pref?.getSearchDealData()
-        val lcdData = pref?.getSubmitPriceData()
-        if (TextUtils.isEmpty(prefUCD?.yearId) || lcdData?.yearId == prefUCD?.yearId) {
-            prefUCD?.yearId = lcdData?.yearId
-            prefUCD?.yearStr = lcdData?.yearStr
+        val lykData = pref?.getSubmitPriceData()
+        if ((TextUtils.isEmpty(prefUCD?.yearId) || lykData?.yearId == prefUCD?.yearId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.yearId = lykData?.yearId
+            prefUCD?.yearStr = lykData?.yearStr
         }
-        if (TextUtils.isEmpty(prefUCD?.makeId) || lcdData?.makeId == prefUCD?.makeId) {
-            prefUCD?.makeId = lcdData?.makeId
-            prefUCD?.makeStr = lcdData?.makeStr
+        if ((TextUtils.isEmpty(prefUCD?.makeId) || lykData?.makeId == prefUCD?.makeId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.makeId = lykData?.makeId
+            prefUCD?.makeStr = lykData?.makeStr
         }
-        if (TextUtils.isEmpty(prefUCD?.modelId) || lcdData?.modelId == prefUCD?.modelId) {
-            prefUCD?.modelId = lcdData?.modelId
-            prefUCD?.modelStr = lcdData?.modelStr
+        if ((TextUtils.isEmpty(prefUCD?.modelId) || lykData?.modelId == prefUCD?.modelId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.modelId = lykData?.modelId
+            prefUCD?.modelStr = lykData?.modelStr
         }
-        if (TextUtils.isEmpty(prefUCD?.trimId) || lcdData?.trimId == prefUCD?.trimId) {
-            prefUCD?.trimId = lcdData?.trimId
-            prefUCD?.trimStr = lcdData?.trimStr
+        if ((TextUtils.isEmpty(prefUCD?.trimId) || lykData?.trimId == prefUCD?.trimId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.trimId = lykData?.trimId
+            prefUCD?.trimStr = lykData?.trimStr
         }
-        if (TextUtils.isEmpty(prefUCD?.extColorId) || lcdData?.extColorId == prefUCD?.extColorId) {
-            prefUCD?.extColorId = lcdData?.extColorId
-            prefUCD?.extColorStr = lcdData?.extColorStr
+        if ((TextUtils.isEmpty(prefUCD?.extColorId) || lykData?.extColorId == prefUCD?.extColorId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.extColorId = lykData?.extColorId
+            prefUCD?.extColorStr = lykData?.extColorStr
         }
-        if (TextUtils.isEmpty(prefUCD?.intColorId) || lcdData?.intColorId == prefUCD?.intColorId) {
-            prefUCD?.intColorId = lcdData?.intColorId
-            prefUCD?.intColorStr = lcdData?.intColorStr
+        if ((TextUtils.isEmpty(prefUCD?.intColorId) || lykData?.intColorId == prefUCD?.intColorId) && !prefUCD?.isUCDSel!!) {
+            prefUCD?.intColorId = lykData?.intColorId
+            prefUCD?.intColorStr = lykData?.intColorStr
         }
         setUCDPrefData(prefUCD!!)
     }

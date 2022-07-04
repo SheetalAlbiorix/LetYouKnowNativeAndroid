@@ -389,6 +389,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         isValidZipCode = data
                         prefSearchDealData.isZipCode = isValidZipCode!!
                         setPrefData()
+                        setLCDPrefData()
                     } catch (e: Exception) {
                     }
                 }
@@ -1040,6 +1041,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     }
 
     private fun setPrefData() {
+        prefSearchDealData.isUCDSel = true
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+        setCurrentTime()
+    }
+
+    private fun setInitPrefData() {
+        prefSearchDealData.isUCDSel = false
         pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
         setCurrentTime()
     }
@@ -1163,7 +1171,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     edtZipCode.setBackgroundResource(R.drawable.bg_edittext_dark)
                 }
                 prefSearchDealData.zipCode = edtZipCode.text.toString().trim()
-                setPrefData()
+                setInitPrefData()
             }
 
             callRadiusAPI()
@@ -1344,5 +1352,43 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         setTrim()
         prefSearchDealData = PrefSearchDealData()
         pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+    }
+
+
+    private fun setLCDPrefData() {
+        val prefUCD = pref?.getSearchDealData()
+        val lcdData = pref?.getOneDealNearYouData()
+        if (isValidZipCode) {
+            if ((TextUtils.isEmpty(lcdData?.zipCode) || prefUCD?.zipCode == lcdData?.zipCode) && !lcdData?.isLCD!!) {
+                lcdData.zipCode = prefUCD?.zipCode
+                lcdData.isZipCode = true
+            }
+            if ((TextUtils.isEmpty(lcdData?.yearId) || prefUCD?.yearId == lcdData?.yearId) && !lcdData?.isLCD!!) {
+                lcdData.yearId = prefUCD?.yearId
+                lcdData.yearStr = prefUCD?.yearStr
+            }
+            if ((TextUtils.isEmpty(lcdData?.makeId) || prefUCD?.makeId == lcdData?.makeId) && !lcdData?.isLCD!!) {
+                lcdData.makeId = prefUCD?.makeId
+                lcdData.makeStr = prefUCD?.makeStr
+            }
+            setLCDPrefData(lcdData!!)
+        } else {
+            if (!lcdData?.isLCD!!) {
+                setLCDPrefData(PrefOneDealNearYouData())
+            }
+        }
+
+    }
+
+    private fun setLCDPrefData(lcdData: PrefOneDealNearYouData) {
+        pref?.setSearchDealData(Gson().toJson(lcdData))
+        setLCDCurrentTime()
+    }
+
+    private fun setLCDCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setOneDealNearYou(date)
+        startHandler()
     }
 }

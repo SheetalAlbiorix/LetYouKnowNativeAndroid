@@ -485,12 +485,9 @@ class AppGlobal {
             return min
         }
 
-
-    }
-
-    fun setEmojiKeyBoard(edtView: AppCompatEditText) {
-        edtView.filters = EmojiFilter.getFilter()
-    }
+        fun setEmojiKeyBoard(edtView: AppCompatEditText) {
+            edtView.filters = EmojiFilter.getFilter()
+        }
 
         fun showWarningDialog(context: Context) {
             val dialog = Dialog(context, R.style.FullScreenDialog)
