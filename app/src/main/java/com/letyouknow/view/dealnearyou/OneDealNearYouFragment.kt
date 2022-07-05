@@ -2108,4 +2108,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
     }
 
+    private fun setPrefLCDtoLYK() {
+        val prefLCD = pref?.getOneDealNearYou()
+    }
+
 }

@@ -51,6 +51,7 @@ object SubmitPendingLCDDealRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitPendingUcdData::class.java
                     )
+//                    if (!dataError.messageList.isNullOrEmpty()) {
                     var msgStr = ""
                     var isFirst = true
 
@@ -61,7 +62,6 @@ object SubmitPendingLCDDealRepository {
                         } else {
                             msgStr = msgStr + ",\n" + dataError.messageList[i]
                         }
-
                     }
                     if (!TextUtils.isEmpty(msgStr)) {
                         AppGlobal.alertError(
@@ -69,6 +69,12 @@ object SubmitPendingLCDDealRepository {
                             msgStr
                         )
                     }
+                    /*}else{
+                        AppGlobal.alertError(
+                            context,
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
+                    }*/
                 }
             }
         })
