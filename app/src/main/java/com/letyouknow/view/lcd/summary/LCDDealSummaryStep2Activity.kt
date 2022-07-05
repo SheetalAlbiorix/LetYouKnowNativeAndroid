@@ -503,11 +503,13 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.ShipToState] = if (isShipping()) shippingState else ""
             map[ApiConstant.ShipToZipcode] =
                 if (isShipping()) edtShippingZipCode.text.toString().trim() else ""
-            map[ApiConstant.ShipToCountry] = "US"
+            map[ApiConstant.ShipToCountry] = if (isShipping()) "US" else ""
             map[ApiConstant.ShipIt] = isShipping()
 
             buyerViewModel.buyerCall(this, map)!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
 //                    Constant.dismissLoader()
                     if (TextUtils.isEmpty(data.buyerId)) {
                         alertError("Something went wrong. Please try again later.")
@@ -515,7 +517,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         callSubmitDealLCDAPI(false)
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }

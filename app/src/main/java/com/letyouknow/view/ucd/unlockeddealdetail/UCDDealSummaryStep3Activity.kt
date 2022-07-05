@@ -630,24 +630,6 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     }
                     dialogProgress?.dismiss()
 //                    }
-
-                    /* if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
-                         startActivity<UCDNegativeActivity>(
-                             ARG_UCD_DEAL to Gson().toJson(ucdData),
-                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                             ARG_IMAGE_URL to Gson().toJson(arImage),
-                             ARG_IMAGE_ID to imageId,
-                             ARG_IS_SHOW_PER to isPercentShow
-                         )
-                     } else {
-                         clearPrefSearchDealData()
-                         startActivity<SubmitDealSummaryActivity>(
-                             ARG_SUBMIT_DEAL to Gson().toJson(
-                                 data
-                             )
-                         )
-                     }
-                     finish()*/
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
