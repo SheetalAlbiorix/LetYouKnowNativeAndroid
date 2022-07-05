@@ -293,6 +293,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         lcdData.intColorStr = yearModelMakeData.vehicleIntColorStr
         lcdData.packagesData = yearModelMakeData.arPackages
         lcdData.optionsData = yearModelMakeData.arOptions
+        lcdData.isLCD = true
         pref?.setOneDealNearYouData(Gson().toJson(lcdData))
 
 

@@ -16,21 +16,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSearchDealData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSearchDealData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSubmitPriceData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/PrefSubmitPriceData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dealnearyou/OneDealNearYouFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lcd/summary/LCDDealSummaryStep2Activity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/dashboard/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[11a294fb]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Albiorix Technology\.android\avd\S21_Ultra_API_31.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -376,7 +370,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656910017064</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="- set pref data in LYK,UCD and LCD">
+      <created>1656942447611</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1656942447611</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -398,7 +399,8 @@
     <MESSAGE value="- remove merge code" />
     <MESSAGE value="- implement samsung pay code" />
     <MESSAGE value="- initialize master debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="- initialize master debug" />
+    <MESSAGE value="- set pref data in LYK,UCD and LCD" />
+    <option name="LAST_COMMIT_MESSAGE" value="- set pref data in LYK,UCD and LCD" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -518,17 +520,17 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1144</line>
+          <line>1145</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1145</line>
+          <line>1146</line>
           <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1148</line>
+          <line>1149</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
@@ -548,7 +550,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1182</line>
+          <line>1183</line>
           <option name="timeStamp" value="156" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="kotlin-line">
@@ -728,132 +730,132 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1366</line>
+          <line>1367</line>
           <option name="timeStamp" value="673" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1367</line>
+          <line>1368</line>
           <option name="timeStamp" value="674" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1368</line>
+          <line>1369</line>
           <option name="timeStamp" value="675" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1369</line>
+          <line>1370</line>
           <option name="timeStamp" value="676" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1371</line>
+          <line>1372</line>
           <option name="timeStamp" value="677" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1372</line>
+          <line>1373</line>
           <option name="timeStamp" value="678" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1375</line>
+          <line>1376</line>
           <option name="timeStamp" value="679" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1376</line>
+          <line>1377</line>
           <option name="timeStamp" value="680" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1379</line>
+          <line>1380</line>
           <option name="timeStamp" value="681" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1380</line>
+          <line>1381</line>
           <option name="timeStamp" value="682" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1383</line>
+          <line>1384</line>
           <option name="timeStamp" value="683" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1384</line>
+          <line>1385</line>
           <option name="timeStamp" value="684" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1388</line>
+          <line>1389</line>
           <option name="timeStamp" value="685" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1389</line>
+          <line>1390</line>
           <option name="timeStamp" value="686" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1393</line>
+          <line>1394</line>
           <option name="timeStamp" value="687" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1394</line>
+          <line>1395</line>
           <option name="timeStamp" value="688" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1397</line>
+          <line>1398</line>
           <option name="timeStamp" value="689" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1400</line>
+          <line>1401</line>
           <option name="timeStamp" value="690" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1406</line>
+          <line>1407</line>
           <option name="timeStamp" value="691" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1407</line>
+          <line>1408</line>
           <option name="timeStamp" value="692" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1411</line>
+          <line>1412</line>
           <option name="timeStamp" value="693" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1412</line>
+          <line>1413</line>
           <option name="timeStamp" value="694" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1413</line>
+          <line>1414</line>
           <option name="timeStamp" value="695" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1414</line>
+          <line>1415</line>
           <option name="timeStamp" value="696" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1364</line>
+          <line>1365</line>
           <option name="timeStamp" value="697" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt</url>
-          <line>1365</line>
+          <line>1366</line>
           <option name="timeStamp" value="698" />
         </line-breakpoint>
       </breakpoints>
