@@ -1200,8 +1200,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 prefSubmitPriceData.packagesData = adapterPackages.getAll()
                 Constant.dismissLoader()
                 prefSubmitPriceData.optionsData = ArrayList()
-                pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                setCurrentTime()
+                setLYKPrefData()
                 setRadius()
 
             }
@@ -1284,8 +1283,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 }
                 prefSubmitPriceData = pref?.getSubmitPriceData()!!
                 prefSubmitPriceData.optionsData = adapterOptions.getAll()
-                pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                setCurrentTime()
+                setLYKPrefData()
                 setRadius()
             }
             R.id.tvResetOption -> {
@@ -1397,8 +1395,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     callVehicleMakeAPI()
                     setModel()
@@ -1431,8 +1428,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     callVehicleModelAPI()
                     setTrim()
@@ -1461,8 +1457,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     callVehicleTrimAPI()
                     setExteriorColor()
@@ -1490,8 +1485,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     callExteriorColorAPI()
                     setInteriorColor()
@@ -1517,8 +1511,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     callInteriorColorAPI()
                     setPackages(false)
@@ -1539,8 +1532,7 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                     prefSubmitPriceData.packagesData = ArrayList()
                     prefSubmitPriceData.optionsData = ArrayList()
                     Constant.dismissLoader()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
-                    setCurrentTime()
+                    setLYKPrefData()
                     setErrorVisibleGone()
                     setPackages(true)
                     callVehiclePackagesAPI()
@@ -1926,31 +1918,21 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         val prefUCD = pref?.getSearchDealData()
         val prefLCD = pref?.getOneDealNearYouData()
         val lykData = pref?.getSubmitPriceData()
-        if ((TextUtils.isEmpty(prefUCD?.yearId) || lykData?.yearId == prefUCD?.yearId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.yearId = lykData?.yearId
-            prefUCD?.yearStr = lykData?.yearStr
+        if (!prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
+            prefUCD.yearId = lykData?.yearId
+            prefUCD.yearStr = lykData?.yearStr
+            prefUCD.makeId = lykData?.makeId
+            prefUCD.makeStr = lykData?.makeStr
+            prefUCD.modelId = lykData?.modelId
+            prefUCD.modelStr = lykData?.modelStr
+            prefUCD.trimId = lykData?.trimId
+            prefUCD.trimStr = lykData?.trimStr
+            prefUCD.extColorId = lykData?.extColorId
+            prefUCD.extColorStr = lykData?.extColorStr
+            prefUCD.intColorId = lykData?.intColorId
+            prefUCD.intColorStr = lykData?.intColorStr
+            setUCDPrefData(prefUCD)
         }
-        if ((TextUtils.isEmpty(prefUCD?.makeId) || lykData?.makeId == prefUCD?.makeId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.makeId = lykData?.makeId
-            prefUCD?.makeStr = lykData?.makeStr
-        }
-        if ((TextUtils.isEmpty(prefUCD?.modelId) || lykData?.modelId == prefUCD?.modelId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.modelId = lykData?.modelId
-            prefUCD?.modelStr = lykData?.modelStr
-        }
-        if ((TextUtils.isEmpty(prefUCD?.trimId) || lykData?.trimId == prefUCD?.trimId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.trimId = lykData?.trimId
-            prefUCD?.trimStr = lykData?.trimStr
-        }
-        if ((TextUtils.isEmpty(prefUCD?.extColorId) || lykData?.extColorId == prefUCD?.extColorId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.extColorId = lykData?.extColorId
-            prefUCD?.extColorStr = lykData?.extColorStr
-        }
-        if ((TextUtils.isEmpty(prefUCD?.intColorId) || lykData?.intColorId == prefUCD?.intColorId) && !prefUCD?.isUCDSel!! && !prefLCD?.isLCD!!) {
-            prefUCD?.intColorId = lykData?.intColorId
-            prefUCD?.intColorStr = lykData?.intColorStr
-        }
-        setUCDPrefData(prefUCD!!)
     }
 
     private fun setUCDPrefData(ucdData: PrefSearchDealData) {
@@ -1963,5 +1945,11 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         val date = df.format(Calendar.getInstance().time)
         pref?.setSearchDealTime(date)
         startHandler()
+    }
+
+    private fun setLYKPrefData() {
+        prefSubmitPriceData.isLYK = true
+        pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+        setCurrentTime()
     }
 }

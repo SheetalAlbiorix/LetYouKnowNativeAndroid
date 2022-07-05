@@ -415,6 +415,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             }
                             isValidZipCode = data
                             prefOneDealNearYouData.isZipCode = isValidZipCode!!
+                            setPrefLCDtoLYK()
                         } catch (e: Exception) {
                         }
                     }
@@ -1533,7 +1534,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLCDtoLYK()
                 }
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
             }
@@ -1564,7 +1565,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLCDtoLYK()
                 }
             }
             R.id.spModel -> {
@@ -1591,7 +1592,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLCDtoLYK()
                 }
             }
             R.id.spTrim -> {
@@ -1616,7 +1617,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLCDtoLYK()
                 }
             }
             R.id.spExteriorColor -> {
@@ -1638,7 +1639,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLCDtoLYK()
                 }
             }
             R.id.spInteriorColor -> {
@@ -1655,11 +1656,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     prefOneDealNearYouData.optionsData = ArrayList()
                     Constant.dismissLoader()
                     setPrefData()
+                    setPrefLCDtoLYK()
                     setErrorVisibleGone()
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
-
                 }
             }
         }
@@ -2108,6 +2109,43 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         setTrim()
         prefOneDealNearYouData = PrefOneDealNearYouData()
         pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
+    }
+
+    private fun setPrefLCDtoLYK() {
+        var prefLCD = pref?.getOneDealNearYouData()
+        var prefUCD = pref?.getSearchDealData()
+        var prefLYK = pref?.getSubmitPriceData()
+
+        if (!prefLYK?.isLYK!! && !prefUCD?.isUCDSel!!) {
+            if (isValidZipCode) {
+                prefLYK.zipCode = prefLCD?.zipCode
+            }
+            prefLYK.yearId = prefLCD?.yearId
+            prefLYK.yearStr = prefLCD?.yearStr
+            prefLYK.makeId = prefLCD?.makeId
+            prefLYK.makeStr = prefLCD?.makeStr
+            prefLYK.modelId = prefLCD?.modelId
+            prefLYK.modelStr = prefLCD?.modelStr
+            prefLYK.trimId = prefLCD?.trimId
+            prefLYK.trimStr = prefLCD?.trimStr
+            prefLYK.extColorId = prefLCD?.extColorId
+            prefLYK.extColorStr = prefLCD?.extColorStr
+            prefLYK.intColorId = prefLCD?.intColorId
+            prefLYK.intColorStr = prefLCD?.intColorStr
+            setLCDtoLYKPrefData(prefLYK)
+        }
+    }
+
+    private fun setLCDtoLYKPrefData(lykData: PrefSubmitPriceData) {
+        pref?.setSubmitPriceData(Gson().toJson(lykData))
+        setLYKCurrentTime()
+    }
+
+    private fun setLYKCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
+        startHandler()
     }
 
 }
