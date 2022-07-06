@@ -32,6 +32,7 @@ import com.letyouknow.utils.AppGlobal.Companion.strikeThrough
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
+import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_TYPE_VIEW
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
@@ -41,6 +42,7 @@ import com.letyouknow.utils.Constant.Companion.setErrorBorder
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep2Activity
 import com.letyouknow.view.spinneradapter.FinancingOptionSpinnerAdapter
+import com.letyouknow.view.ucd.UCDDealListStep1NewActivity
 import kotlinx.android.synthetic.main.activity_ucd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -70,6 +72,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
 
     private var imageId = "0"
+    private var isFromLYKNegative = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ucd_deal_summary_step2)
@@ -143,6 +146,10 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         scrollTouchListener()
         onChangeInitials()
         edtInitials.filters = arrayOf(letterFilter, InputFilter.LengthFilter(3))
+        if (intent?.hasExtra(ARG_IS_FROM_LYK) == true) {
+            isFromLYKNegative = intent.getBooleanExtra(ARG_IS_FROM_LYK, false)
+            callImageIdAPI()
+        }
     }
 
     private fun onChangeInitials() {
@@ -570,4 +577,48 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             filtered
         }
+
+    private fun callImageIdAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = java.util.HashMap<String, Any>()
+            yearModelMakeData.run {
+                request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+            }
+            Log.e("ImageId Request", Gson().toJson(request))
+            imageIdViewModel.imageIdCall(this, request)!!
+                .observe(this, Observer { data ->
+                    Constant.dismissLoader()
+                    imageId = data
+                    callImageUrlAPI(imageId)
+                }
+                )
+
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    override fun onBackPressed() {
+        if (isFromLYKNegative) {
+            startActivity<UCDDealListStep1NewActivity>(
+                ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+                Constant.ARG_RADIUS to dataUCDDeal.searchRadius,
+                Constant.ARG_ZIPCODE to dataUCDDeal.zipCode,
+                Constant.ARG_UCD_DEAL to dataUCDDeal,
+                Constant.ARG_IS_FROM_LYK to true
+            )
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

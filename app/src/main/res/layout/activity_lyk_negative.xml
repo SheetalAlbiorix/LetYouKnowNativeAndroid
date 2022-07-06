@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -229,6 +230,16 @@
                      layout="@layout/layout_deal_summery_hot_market"
                      android:visibility='@{lcdDealData.dealID.equals("0") ? View.VISIBLE : View.GONE}'
                      app:lcdDealData="@{lcdDealData}" />-->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUnlockedCar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:paddingStart="@dimen/_37sdp"
+                    android:paddingEnd="@dimen/_37sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_unlocked_car" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

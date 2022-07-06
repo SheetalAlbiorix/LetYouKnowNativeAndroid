@@ -25,6 +25,7 @@ import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LYK_SHOW
 import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
@@ -32,6 +33,8 @@ import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
+import com.letyouknow.view.ucd.Items_LinearRVAdapter
+import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import kotlinx.android.synthetic.main.activity_lyk_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.layout_lyk_negative.*
@@ -56,6 +59,9 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
 
     private lateinit var isSoldViewModel: IsSoldViewModel
+
+    private lateinit var adapterUCD: Items_LinearRVAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lyk_negative)
@@ -115,6 +121,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             } else {
                 tvPriceMSRP.visibility = View.GONE
             }
+            ucdList()
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
@@ -125,6 +132,16 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         tvStep2.setOnClickListener(this)
         ivBack.visibility = View.GONE
         tvTitleTool.visibility = View.GONE
+    }
+
+    private fun ucdList() {
+        if (::submitDealData.isInitialized && !submitDealData.negativeResult?.ucdDeals.isNullOrEmpty()) {
+            val arUcd: ArrayList<FindUcdDealData?> = ArrayList()
+            arUcd.addAll(submitDealData.negativeResult?.ucdDeals!!)
+            adapterUCD = Items_LinearRVAdapter(arUcd, this, false)
+            adapterUCD.notifyDataSetChanged()
+            rvUnlockedCar.adapter = adapterUCD
+        }
     }
 
     override fun getViewActivity(): Activity {
@@ -162,6 +179,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                     Constant.ARG_TYPE_VIEW to 2,
                     Constant.ARG_IMAGE_ID to imageId
                 )
+            }
+            R.id.tvSelectDeal -> {
+                val pos = v.tag as Int
+                callCheckVehicleStockUCDAPI(adapterUCD.getItem(pos))
             }
         }
     }
@@ -429,5 +450,86 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun callCheckVehicleStockUCDAPI(data: FindUcdDealData) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val pkgList = JsonArray()
+            for (i in 0 until data.vehiclePackages?.size!!) {
+                pkgList.add(data.vehiclePackages!![i].vehiclePackageID)
+            }
+            val accList = JsonArray()
+            for (i in 0 until data.vehicleAccessories?.size!!) {
+                accList.add(data.vehicleAccessories!![i].dealerAccessoryID)
+            }
+
+            val request = HashMap<String, Any>()
+            request[ApiConstant.Product] = 3
+            request[ApiConstant.YearId1] = data.yearId!!
+            request[ApiConstant.MakeId1] = data.makeId!!
+            request[ApiConstant.ModelID] = data.modelId!!
+            request[ApiConstant.TrimID] = data.trimId!!
+            request[ApiConstant.ExteriorColorID] = data.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = data.interiorColorId!!
+
+            request[ApiConstant.ZipCode1] = data.zipCode!!
+            request[ApiConstant.SearchRadius1] =
+                data.searchRadius!!
+
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            //Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { dataStock ->
+                    Constant.dismissLoader()
+                    if (dataStock) {
+                        setUCDStock(data)
+                    } else {
+                        startActivity(
+                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                                .newTask()
+                        )
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setUCDStock(data: FindUcdDealData) {
+        yearModelMakeData.vehicleExtColorID = data.exteriorColorId
+        yearModelMakeData.vehicleExtColorID = data.interiorColorId
+        setPrefUcdDealData(data)
+        startActivity<UCDDealSummaryStep2Activity>(
+            Constant.ARG_UCD_DEAL to Gson().toJson(data),
+            ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+            ARG_IMAGE_ID to imageId,
+            ARG_IS_FROM_LYK to true
+        )
+    }
+
+    private fun setPrefUcdDealData(data: FindUcdDealData) {
+        val prefSearchDealData = PrefSearchDealData()
+        prefSearchDealData.yearId = data.yearId
+        prefSearchDealData.yearStr = data.vehicleYear
+        prefSearchDealData.makeId = data.makeId
+        prefSearchDealData.makeStr = data.vehicleMake
+        prefSearchDealData.modelId = data.modelId
+        prefSearchDealData.modelStr = data.vehicleModel
+        prefSearchDealData.trimId = data.trimId
+        prefSearchDealData.trimStr = data.vehicleTrim
+        prefSearchDealData.extColorId = data.exteriorColorId
+        prefSearchDealData.extColorStr = data.vehicleExteriorColor
+        prefSearchDealData.intColorId = data.vehicleInventoryID
+        prefSearchDealData.intColorStr = data.vehicleInteriorColor
+        prefSearchDealData.zipCode = data.zipCode
+        prefSearchDealData.searchRadius = data.searchRadius
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
     }
 }

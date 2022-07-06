@@ -23,7 +23,8 @@ import java.util.*
 
 class Items_LinearRVAdapter(
     private var itemsCells: ArrayList<FindUcdDealData?>,
-    var clickListener: View.OnClickListener
+    var clickListener: View.OnClickListener,
+    var isShowPriceBid: Boolean?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -140,7 +141,8 @@ class Items_LinearRVAdapter(
                 holder.itemView.llDisclosure.visibility = View.VISIBLE
             } else {
                 holder.itemView.llDisclosure.visibility = View.GONE
-                holder.itemView.tvPriceBid.visibility = View.VISIBLE
+                if (isShowPriceBid!!)
+                    holder.itemView.tvPriceBid.visibility = View.VISIBLE
             }
             AppGlobal.strikeThrough(holder.itemView.tvMSRP)
         }
