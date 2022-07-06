@@ -121,6 +121,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     private lateinit var submitPendingLCDDealViewModel: SubmitPendingLCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
     private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    private lateinit var rebateViewModel: RebateViewModel
     var dollar = 0.0
 
     var hubConnection: HubConnection? = null
@@ -158,6 +159,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             ViewModelProvider(this)[SubmitPendingLCDDealViewModel::class.java]
         calculateTaxViewModel =
             ViewModelProvider(this)[CalculateTaxViewModel::class.java]
+        rebateViewModel =
+            ViewModelProvider(this)[RebateViewModel::class.java]
 
         if (intent.hasExtra(ARG_LCD_DEAL_GUEST) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -1654,6 +1657,41 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     binding.taxData = data
                     calculateTaxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun callRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.VehicleYearID1] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.VehicleMakeID1] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.VehicleModelID1] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.VehicleTrimID1] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.GuestId] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.DealId] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.ProductId1] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.RebateList] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.priceBid] = dataLCDDeal.price!!.toDouble()
+            map[ApiConstant.promocodeDiscount] = dataLCDDeal.discount!!.toDouble()
+            map[ApiConstant.lykDollars] = dollar
+            map[ApiConstant.abbrev] = state
+            rebateViewModel.rebateApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()

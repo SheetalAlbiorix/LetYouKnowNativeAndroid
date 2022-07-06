@@ -95,6 +95,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private var imageId = "0"
 
     private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    private lateinit var rebateViewModel: RebateViewModel
+    private lateinit var rebateResetViewModel: RebateResetViewModel
     private var dollar = 0.0
 
     private var isFirstName = false
@@ -123,6 +125,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         submitDealViewModel = ViewModelProvider(this)[SubmitDealViewModel::class.java]
         tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
         calculateTaxViewModel = ViewModelProvider(this)[CalculateTaxViewModel::class.java]
+        rebateViewModel = ViewModelProvider(this)[RebateViewModel::class.java]
+        rebateResetViewModel = ViewModelProvider(this)[RebateResetViewModel::class.java]
 
         if (intent.hasExtra(ARG_YEAR_MAKE_MODEL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_IMAGE_URL
@@ -1296,7 +1300,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-
     private fun checkEmptyData() {
         if (!TextUtils.isEmpty(dataPendingDeal.buyer?.firstName)) {
             isFirstName = true
@@ -1701,5 +1704,63 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
         setLayoutParam(dialog)
         dialog.show()
+    }
+
+
+    //rebate api
+    private fun callRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.priceBid] = yearModelMakeData.price!!.toDouble()
+            map[ApiConstant.priceBid] = yearModelMakeData.discount!!.toDouble()
+            map[ApiConstant.priceBid] = dollar
+            map[ApiConstant.priceBid] = state
+            rebateViewModel.rebateApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //reset rebate api
+    private fun callRebateResetAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.priceBid] = yearModelMakeData.price!!.toDouble()
+            map[ApiConstant.priceBid] = yearModelMakeData.discount!!.toDouble()
+            map[ApiConstant.priceBid] = dollar
+            map[ApiConstant.priceBid] = state
+            rebateResetViewModel.rebateResetApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 }

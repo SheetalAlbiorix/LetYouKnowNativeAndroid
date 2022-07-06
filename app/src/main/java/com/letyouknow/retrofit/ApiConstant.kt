@@ -100,6 +100,17 @@ class ApiConstant {
         var DeviceType = "DeviceType"
         var promotionID = "promotionID"
         var UserProfileId = "UserProfileId"
-
+        var priceBid = "priceBid"
+        var promocodeDiscount = "promocodeDiscount"
+        var lykDollars = "lykDollars"
+        var abbrev = "abbrev"
+        var VehicleYearID1 = "VehicleYearID"
+        var VehicleMakeID1 = "VehicleMakeID"
+        var VehicleModelID1 = "VehicleModelID"
+        var VehicleTrimID1 = "VehicleTrimID"
+        var GuestId = "GuestId"
+        var DealId = "DealId"
+        var ProductId1 = "ProductId"
+        var RebateList = "RebateList"
     }
 }

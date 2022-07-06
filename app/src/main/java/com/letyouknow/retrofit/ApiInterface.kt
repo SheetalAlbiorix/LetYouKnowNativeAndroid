@@ -271,4 +271,10 @@ interface ApiInterface {
         @Query("lykDollars") lykDollars: Double?,
         @Query("abbrev") abbrev: String?
     ): Call<CalculateTaxData>
+
+    @POST("rebate")
+    fun rebate(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/reset")
+    fun rebateReset(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
 }

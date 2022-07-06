@@ -406,6 +406,18 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
+    <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
+    <string name="delivery_options">Delivery Options</string>
+    <string name="shipping_info">Shipping Info</string>
+    <string name="year_new_cars">YEAR - NEW CARS</string>
+    <string name="make_title">MAKE</string>
+    <string name="model_title">MODEL</string>
+    <string name="trim_title">TRIM</string>
+    <string name="exterior_color_title">EXTERIOR COLOR</string>
+    <string name="interior_color_title">INTERIOR COLOR</string>
+    <string name="packages_title">PACKAGES</string>
+    <string name="options_accessories_title">OPTIONS &amp; ACCESSORIES </string>
+
     <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
@@ -425,4 +437,5 @@
     <string name="my_receipt">My\nReceipt</string>
     <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
     <string name="rebatesDisc">Rebates/Disc</string>
+    <string name="estimated_discount">Estimated Discount<font size="10"><sup>‡</sup></font>:</string>
 </resources>
