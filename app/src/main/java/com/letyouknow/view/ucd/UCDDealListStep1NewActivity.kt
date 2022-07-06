@@ -117,6 +117,11 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     intent.getStringExtra(Constant.ARG_UCD_DEAL),
                     FindUcdDealData::class.java
                 )
+                arUnlocked = ArrayList()
+                arUnlocked.add(dataUCDDeal)
+                adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                adapterLinear.notifyDataSetChanged()
+                rvUnlockedCar.adapter = adapterLinear
                 callImageIdAPI()
             } else {
                 callSearchFindDealAPI()
@@ -285,7 +290,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        if (isNotification) {
+        if (isNotification || isFromLYK) {
             startActivity(
                 intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
                     .newTask()
@@ -378,10 +383,14 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
                 if (isFromLYK) {
-                    request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
+                    /*request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
                     request[ApiConstant.vehicleMakeID] = dataUCDDeal.makeId!!
                     request[ApiConstant.vehicleModelID] = dataUCDDeal.modelId!!
-                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!
+                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!*/
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
                 } else {
                     request[ApiConstant.vehicleYearID] = vehicleYearID!!
                     request[ApiConstant.vehicleMakeID] = vehicleMakeID!!

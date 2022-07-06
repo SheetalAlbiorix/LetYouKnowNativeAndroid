@@ -613,7 +613,7 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
                 Constant.ARG_RADIUS to dataUCDDeal.searchRadius,
                 Constant.ARG_ZIPCODE to dataUCDDeal.zipCode,
-                Constant.ARG_UCD_DEAL to dataUCDDeal,
+                Constant.ARG_UCD_DEAL to Gson().toJson(dataUCDDeal),
                 Constant.ARG_IS_FROM_LYK to true
             )
             finish()

@@ -37,12 +37,19 @@ import com.letyouknow.view.ucd.Items_LinearRVAdapter
 import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import kotlinx.android.synthetic.main.activity_lyk_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.dialog_option_accessories.ivDialogClose
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogDisclosure
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogExteriorColor
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogOptions
+import kotlinx.android.synthetic.main.dialog_option_accessories_unlocked.*
 import kotlinx.android.synthetic.main.layout_lyk_negative.*
+import kotlinx.android.synthetic.main.layout_lyk_negative.tvPrice
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -109,6 +116,8 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             )
 
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
+
+            binding.radius = yearModelMakeData.radius?.replace(" mi", "")
             binding.data = yearModelMakeData
             binding.dealData = submitDealData
             if (imageId == "0") {
@@ -125,7 +134,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
-        tvViewOptions.setOnClickListener(this)
+        tvViewOptionsLYK.setOnClickListener(this)
         btnModify.setOnClickListener(this)
         btnWait.setOnClickListener(this)
         tvLightingCar.setOnClickListener(this)
@@ -165,9 +174,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             R.id.btnWait -> {
                 callCheckVehicleStockAPI(false)
             }
-            R.id.tvViewOptions -> {
+            R.id.tvViewOptionsLYK -> {
                 popupOption()
             }
+
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
                     Constant.ARG_TYPE_VIEW to 0,
@@ -183,6 +193,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             R.id.tvSelectDeal -> {
                 val pos = v.tag as Int
                 callCheckVehicleStockUCDAPI(adapterUCD.getItem(pos))
+            }
+            R.id.tvViewOptions -> {
+                val pos = v.tag as Int
+                popupOptionUCD(adapterUCD.getItem(pos))
             }
         }
     }
@@ -239,6 +253,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         setLayoutParam(dialog)
         dialog.show()
     }
+
 
     private fun setLayoutParam(dialog: Dialog) {
         val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
@@ -529,7 +544,71 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         prefSearchDealData.intColorId = data.vehicleInventoryID
         prefSearchDealData.intColorStr = data.vehicleInteriorColor
         prefSearchDealData.zipCode = data.zipCode
-        prefSearchDealData.searchRadius = data.searchRadius
+        prefSearchDealData.searchRadius = yearModelMakeData.radius
         pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+    }
+
+    private fun popupOptionUCD(data: FindUcdDealData) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_option_accessories_unlocked)
+        dialog.run {
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+            data.run {
+                tvDialogVehicle.text = "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
+                tvDialogExteriorColor.text = vehicleExteriorColor
+                tvDialogInterior.text = vehicleInteriorColor
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+                if (packages.isEmpty())
+                    tvDialogPackages.visibility = View.GONE
+                tvDialogPackages.text = packages
+
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+                if (accessories.isEmpty())
+                    tvDialogOptions.visibility = View.GONE
+                tvDialogOptions.text = accessories
+                tvPrice.text = "Price: " + NumberFormat.getCurrencyInstance(Locale.US).format(price)
+
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosure.text =
+                            getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosure.text = condition
+                        } else {
+                            tvDialogDisclosure.text =
+                                tvDialogDisclosure.text.toString().trim() + ", " + condition
+                        }
+                    }
+                    tvDialogDisclosure.visibility = View.VISIBLE
+                    tvTitleDisclosure.visibility = View.VISIBLE
+                } else {
+                    tvDialogDisclosure.visibility = View.GONE
+                    tvTitleDisclosure.visibility = View.GONE
+                }
+            }
+
+        }
+        setLayoutParam(dialog)
+        dialog.show()
     }
 }
