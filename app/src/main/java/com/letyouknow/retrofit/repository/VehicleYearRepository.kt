@@ -21,10 +21,10 @@ object VehicleYearRepository {
         lowPrice: String? = "",
         highPrice: String? = ""
     ): MutableLiveData<ArrayList<VehicleYearData>> {
-        AppGlobal.printRequestAuth("Year req", "ProductId: " + productId + ", zipCode: " + zipCode)
         val getVehicleYearData = MutableLiveData<ArrayList<VehicleYearData>>()
         var lowPriceParam = lowPrice
         var highPriceParam = highPrice
+
         if (type == 3) {
             if (lowPrice != "ANY PRICE") {
                 lowPriceParam =
@@ -34,8 +34,18 @@ object VehicleYearRepository {
                     ) "0" else lowPrice!!
                 highPriceParam =
                     if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            } else {
+                lowPriceParam = null
+                highPriceParam = null
             }
+        } else {
+            lowPriceParam = null
+            highPriceParam = null
         }
+        AppGlobal.printRequestAuth(
+            "Year req",
+            "ProductId: " + productId + ", zipCode: " + zipCode + ", Type: " + type + " LowPrice: " + lowPriceParam + " HighPrice: " + highPriceParam
+        )
         val call = RetrofitClient.apiInterface.getVehicleYears(
             productId,
             zipCode,

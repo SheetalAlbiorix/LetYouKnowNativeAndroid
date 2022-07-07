@@ -114,5 +114,7 @@ class ApiConstant {
         var ShipIt = "ShipIt"
         var LowPrice = "LowPrice"
         var HighPrice = "HighPrice"
+        var lowprice1 = "lowprice"
+        var highprice1 = "highprice"
     }
 }

@@ -659,7 +659,11 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         Constant.showLoader(requireActivity())
                     }
                 }
-                vehicleMakeModel.getMake(requireActivity(), productId, yearId, "")!!
+                vehicleMakeModel.getMake(
+                    requireActivity(), productId, yearId, "", 3,
+                    lowerBorder,
+                    upperBorder
+                )!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.modelId))
                             Constant.dismissLoader()
@@ -725,7 +729,11 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         Constant.showLoader(requireActivity())
                     }
                 }
-                vehicleModelModel.getModel(requireActivity(), productId, yearId, makeId, "")!!
+                vehicleModelModel.getModel(
+                    requireActivity(), productId, yearId, makeId, "", 3,
+                    lowerBorder,
+                    upperBorder
+                )!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.trimId))
                             Constant.dismissLoader()
@@ -796,7 +804,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     yearId,
                     makeId,
                     modelId,
-                    ""
+                    "", 3,
+                    lowerBorder,
+                    upperBorder
                 )!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.extColorId))
@@ -868,7 +878,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     yearId,
                     makeId,
                     modelId,
-                    trimId, ""
+                    trimId, "", 3,
+                    lowerBorder,
+                    upperBorder
                 )!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.intColorId))
@@ -960,7 +972,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     makeId,
                     modelId,
                     trimId,
-                    extColorId, ""
+                    extColorId, "", 3,
+                    lowerBorder,
+                    upperBorder
                 )!!
                     .observe(requireActivity(), Observer { data ->
                         Constant.dismissLoader()

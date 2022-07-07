@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.InteriorColorData
 import com.letyouknow.retrofit.RetrofitClient
@@ -21,11 +22,35 @@ object InteriorColorRepository {
         modelId: String?,
         trimId: String?,
         exteriorColorId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): MutableLiveData<ArrayList<InteriorColorData>> {
+        var lowPriceParam = lowPrice
+        var highPriceParam = highPrice
+
+        if (type == 3) {
+            if (lowPrice != "ANY PRICE") {
+                lowPriceParam =
+                    if (TextUtils.isEmpty(
+                            lowPrice
+                        )
+                    ) "0" else lowPrice!!
+                highPriceParam =
+                    if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            } else {
+                lowPriceParam = null
+                highPriceParam = null
+            }
+        } else {
+            lowPriceParam = null
+            highPriceParam = null
+        }
         AppGlobal.printRequestAuth(
             "Interior req",
             "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "exteriorColorId: " + exteriorColorId + ", " + "zipCode: " + zipCode
+                    + ", Type: " + type + " LowPrice: " + lowPriceParam + " HighPrice: " + highPriceParam
         )
         val getInteriorColorData = MutableLiveData<ArrayList<InteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleInteriorColors(
@@ -35,7 +60,9 @@ object InteriorColorRepository {
             modelId,
             trimId,
             exteriorColorId,
-            zipCode
+            zipCode,
+            lowPriceParam,
+            highPriceParam
         )
 
         call.enqueue(object : Callback<ArrayList<InteriorColorData>> {

@@ -27,6 +27,11 @@ interface ApiInterface {
         @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleYearData>>
 
+    @GET("vehiclecriteria/getvehicleyears")
+    fun getVehicleYears1(
+        @FieldMap options: Map<String, String>?
+    ): Call<ArrayList<VehicleYearData>>
+
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
         @Query("productId") productId: String?,
