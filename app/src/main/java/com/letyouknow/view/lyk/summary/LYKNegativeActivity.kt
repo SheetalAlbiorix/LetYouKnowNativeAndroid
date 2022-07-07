@@ -506,6 +506,8 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                     if (dataStock) {
                         setUCDStock(data)
                     } else {
+                        pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+                        setCurrentUCDTime()
                         startActivity(
                             intentFor<MainActivity>(
                                 Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL,
@@ -550,6 +552,13 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         prefSearchDealData.zipCode = data.zipCode
         prefSearchDealData.searchRadius = yearModelMakeData.radius
         pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+        setCurrentUCDTime()
+    }
+
+    private fun setCurrentUCDTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSearchDealTime(date)
     }
 
     private fun popupOptionUCD(data: FindUcdDealData) {
