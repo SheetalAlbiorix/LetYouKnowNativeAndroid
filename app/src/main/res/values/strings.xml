@@ -414,4 +414,158 @@
     <string name="delivery_options">Delivery Options</string>
     <string name="shipping_info">Shipping Info</string>
 
+
+    //samsungpay
+    <string name="merchant_sdk_test">Merchant SDK test</string>
+    <string name="pay_with_samsung_pay">Pay with Samsung Pay</string>
+    <string name="exit_confirm_message">Do you really want to exit?</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="currency_type">Currency</string>
+    <string name="card_holder_name_enabled">Display card holder name</string>
+    <string name="combo_card_enabled">Request combo card</string>
+    <string name="request_cpf">Request CPF</string>
+
+    <string name="amount_controls">Amount Controls</string>
+    <string name="amount_control_name_item">Item</string>
+    <string name="amount_control_name_tax">Tax</string>
+    <string name="amount_control_name_shipping">Shipping</string>
+    <string name="amount_control_name_fuel">Fuel</string>
+    <string name="amount_control_pending">Pending</string>
+    <string name="view_more">View More</string>
+    <string name="order_no">Order No</string>
+    <string name="payment_cryptogram">DSRP Cryptogram type</string>
+    <string name="select_your_country">Select Your Country</string>
+    <string name="country">Country</string>
+    <string name="country_code">CountryCode</string>
+    <string name="card_brand1">VI</string>
+    <string name="card_brand2">MC</string>
+    <string name="card_brand3">AX</string>
+    <string name="card_brand4">DS</string>
+    <string name="display_option_addressee">ADDRESSEE</string>
+    <string name="display_option_address">ADDRESS</string>
+    <string name="display_option_phone_number">PHONE_NUMBER</string>
+    <string name="display_option_email">EMAIL</string>
+    <string name="product_price">Product Price</string>
+    <string name="tax_amount">Tax Amount</string>
+    <string name="shipping_amount">Shipping Amount</string>
+    <string name="card_brand_control_title">CARD/BRAND CONTROLS</string>
+    <string name="card_brand_control_desc">Controls for allowed brands, combo card, etc</string>
+    <string name="enable">enable</string>
+    <string name="shipping_address_display_option">Shipping Address Display Options</string>
+    <string name="address_in_payment_sheet">REQUEST ADDRESS OPTIONS</string>
+    <string name="shipping_address_from_partner_title">SHIPPING ADDRESS FROM PARTNER</string>
+
+    <string name="customer_name">Name</string>
+    <string name="address_line1">Address line 1</string>
+    <string name="address_line2">Address line 2</string>
+
+    <string name="server">SERVER :</string>
+    <string name="debug_mode">DEBUG MODE :</string>
+
+    <!-- Menu Items -->
+    <string name="more">MORE</string>
+    <string name="pref_key_secure_display">keySecureDisplay</string>
+    <string name="pref_title_secure_display">Secure Display</string>
+    <string name="pref_summary_secure_display">Prevent capturing screen</string>
+    <string name="pref_key_lock_orientation_land">keyLockOrientationLand</string>
+    <string name="pref_title_lock_orientation">Screen Orientation</string>
+    <string name="pref_summary_lock_orientation">Lock orientation to landscape</string>
+    <string name="pref_key_test_mode">KeyTestMode</string>
+    <string name="pref_title_test_mode">Test Mode</string>
+    <string name="pref_summary_test_mode">Only for merchant aggregator(i.e. BrainTree)</string>
+
+    <!-- Alert strings -->
+    <string name="go_to_samsung_pay_update_popup_title">Go to Samsung Pay update page</string>
+    <string name="go_to_samsung_pay_start_popup_title">Provision Samsung Pay</string>
+    <string name="error">Error</string>
+    <string name="spay_not_supported">SPAY_NOT_SUPPORTED! (=Status value : 0 ) </string>
+    <string name="spay_not_ready">SPAY_NOT_READY! (=Status value : 1 ) </string>
+    <string name="spay_ready">SPAY_READY! (=Status value : 2 ) </string>
+    <string name="spay_not_allowed_temporally">SPAY NOT ALLOWED TEMPORALLY(=Status value : 3) </string>
+    <string name="get_samsung_pay_status_on_fail">getSamsungPayStatus onFail! errorCode : </string>
+
+    <!-- Address options on the Payment Sheet -->
+
+    <string name="do_not_show">No Billing/Shipping Address</string>
+    <string name="billing_address_required_from_spay">Only Billing Address (SPay)</string>
+    <string name="shipping_address_required_from_spay">Only Shipping Address (SPay)</string>
+    <string name="shipping_address_sent_from_merchant">Only Shipping Address (Merchant)</string>
+    <string name="billing_address_required_spay_shipping_address_merchant">Billing (SPay), Shipping (Merchant)</string>
+    <string name="billing_and_shipping_from_spay">Billing and Shipping Addresses (SPay) </string>
+    <string name="return_shipping_validation">Valid Shipping address?</string>
+    <string name="return_billing_validation">Valid Billing address?</string>
+    <string name="update_sheet_with_message">update sheet with custom message?</string>
+    <string name="custom_error_message_on_card_info_updated_guide">This custom error message will be sent when onCardInfoUpdated callback received</string>
+    <string name="custom_error_message_for_card_info_changed">This is custom error message for card info changed.</string>
+    <string name="custom_error_message_for_billing">This is custom error message for billing.</string>
+    <string name="custom_error_message_for_shipping">This is custom error message for shipping.</string>
+    <string name="custom_error_message_list_item">CUSTOM_ERROR_MESSAGE</string>
+
+    <string name="partner_defined_shipping_address_name">Adam</string>
+    <string name="partner_defined_shipping_address_line1">708</string>
+    <string name="partner_defined_shipping_address_line2">1st Avenue SE</string>
+    <string name="partner_defined_shipping_address_city">Bellevue</string>
+    <string name="partner_defined_shipping_address_state">WA</string>
+    <string name="partner_defined_shipping_address_zip_code">98005</string>
+    <string name="partner_defined_shipping_address_phone">+18002563789</string>
+    <string name="partner_defined_shipping_address_email">sample@h.com</string>
+
+    <string name="billing_address">Billing Address</string>
+    <string name="billing_address_controls">Billing Address Controls</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="shipping_address_controls">Shipping Address Controls</string>
+    <string name="plain_text_editable_example">Plain Text Example (Editable)</string>
+    <string name="plain_text_control_title_hint">title</string>
+    <string name="plain_text_control_message_hint">message</string>
+    <string name="plain_text_pre_defined_example">Plain Text Example (Pre-defined from code)</string>
+    <string name="plain_text_pre_defined_title">Title Example (Pre-defined)</string>
+    <string name="plain_text_pre_defined_message">Message Example (Pre-defined)</string>
+    <string name="extra_option_controls">Extra Option Controls</string>
+    <string name="extra_control_sheet_desc">Controls for plain text, custom error message</string>
+    <string name="allowed_card_brand_desc">Allowed card brands</string>
+    <string name="get_samsung_pay_status_result">getSamsungPayStatus result : </string>
+    <string name="get_user_info_popup">Select user information for the request</string>
+    <string name="user_information">User information</string>
+    <string name="user_info_all">ALL</string>
+    <string name="user_info_name">NAME</string>
+    <string name="user_info_first_name">FIRST NAME</string>
+    <string name="user_info_last_name">LAST NAME</string>
+    <string name="user_info_email">EMAIL</string>
+    <string name="user_info_tel">TEL</string>
+    <string name="user_info_imei">DEVICE IMEI</string>
+    <string name="user_info_model">DEVICE MODEL</string>
+    <string name="user_info_bill_address">BILLING ADDRESS</string>
+    <string name="user_info_ship_address">SHIPPING ADDRESS</string>
+    <string name="user_info_birthday">DATE OF BIRTH</string>
+    <string name="dialog_ok_btn">OK</string>
+    <string name="shipping_method">Shipping Method</string>
+
+    <string name="payment_result"> - Payment Result - </string>
+    <string name="payment_card_brand">PaymentCardBrand</string>
+    <string name="payment_card_last_4_dpan">PaymentCardLast4DPAN</string>
+    <string name="payment_card_last_4_fpan">PaymentCardLast4FPAN</string>
+    <string name="payment_shipping_address">PaymentShippingAddress</string>
+    <string name="payment_shipping_method">PaymentShippingMethod</string>
+    <string name="payment_combo_card">combo card type</string>
+    <string name="payment_combo_credit">Credit</string>
+    <string name="payment_combo_debit">Debit</string>
+    <string name="payment_combo_invalid_type">Invalid Type</string>
+    <string name="cpf_info_title">CPF Info</string>
+    <string name="cpf_holder_name">CPF holder name</string>
+    <string name="cpf_number">CPF number</string>
+
+    <string name="not_requested">Not Requested</string>
+
+    <!-- SDK API test options -->
+    <string name="samsung_pay_sdk_api_test">Samsung Pay SDK API Test</string>
+    <string name="get_samsung_pay_status">getSamsungPayStatus</string>
+    <string name="request_card_info">requestCardInfo</string>
+    <string name="activate_samsung_pay">activateSamsungPay</string>
+    <string name="go_to_update_page">goToUpdatePage</string>
+    <string name="standard_shipping_free">Standard shipping (Free)</string>
+    <string name="two_days_shipping">2 days shipping (0.1$)</string>
+    <string name="one_day_shipping">1 day shipping (0.2$)</string>
+    <string name="provide_all_options">All options will be provided to user</string>
+    <string name="provide_only_one_option">Only selected option will be provided to user</string>
+
 </resources>

@@ -1,21 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".view.splash.SamsungPaymentActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tvSamsungPay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_button"
-        android:paddingStart="@dimen/_15sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_15sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:text="Samsung Pay"
-        android:textColor="@color/white" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/sample_app_info_layout"
+            layout="@layout/custom_sheet_sample_app_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/padding_start"
+            android:layout_marginTop="@dimen/padding_5dp"
+            android:layout_marginEnd="@dimen/padding_end" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/footer"
+            android:layout_below="@+id/sample_app_info_layout"
+            android:paddingStart="@dimen/padding_start"
+            android:paddingEnd="@dimen/padding_end"
+            android:scrollbars="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/card_brand_control"
+                    layout="@layout/card_brand_controls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true" />
+
+                <include
+                    android:id="@+id/extra_control"
+                    layout="@layout/custom_extra_controls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_brand_control" />
+
+                <include
+                    android:id="@+id/address_controls_title"
+                    layout="@layout/custom_address_controls_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/extra_control" />
+
+                <include
+                    android:id="@+id/billing_address_layout"
+                    layout="@layout/custom_billing_address_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/address_controls_title" />
+
+                <include
+                    android:id="@+id/shipping_address_control"
+                    layout="@layout/custom_shipping_address_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/billing_address_layout" />
+
+                <include
+                    android:id="@+id/amount_details"
+                    layout="@layout/custom_amount_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shipping_address_control" />
+
+                <include
+                    android:id="@+id/sdk_api_test"
+                    layout="@layout/sdk_api_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/amount_details" />
+
+            </RelativeLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:id="@+id/samsungPayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:contentDescription="@string/pay_with_samsung_pay"
+                android:src="@drawable/pay_rectangular_full_screen_black"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

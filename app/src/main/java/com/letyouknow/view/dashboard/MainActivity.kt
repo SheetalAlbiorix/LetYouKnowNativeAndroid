@@ -48,7 +48,6 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.referreferral.ReferReferralActivity
-import com.letyouknow.view.splash.SamsungPaymentActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.ucd.UCDDealListStep1Activity

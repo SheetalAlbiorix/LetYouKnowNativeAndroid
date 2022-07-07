@@ -21,13 +21,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
         <activity
-            android:name=".view.splash.SamsungPaymentActivity"
+            android:name=".view.samsungpay.SamsungPaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".DemoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SamsungPayActivity"
+            android:name=".view.demo.DemoActivity"
             android:exported="false" />
         <activity
             android:name=".view.ucd.UCDDealListStep1NewActivity"
@@ -283,5 +280,10 @@
             android:name="spay_sdk_api_level"
             android:value="2.17" />
     </application>
+
+    <queries>
+        <package android:name="com.samsung.android.spay" />
+        <package android:name="com.samsung.android.samsungpay.gear" />
+    </queries>
 
 </manifest>

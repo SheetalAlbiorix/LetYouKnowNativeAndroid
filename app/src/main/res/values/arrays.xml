@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="currency_array">
+        <item>USD</item>
+        <item>INR</item>
+        <item>KRW</item>
+        <item>EUR</item>
+        <item>AUD</item>
+        <item>JPY</item>
+        <item>CNY</item>
+        <item>GBP</item>
+        <item>SGD</item>
+        <item>RUB</item>
+        <item>BRL</item>
+        <item>HKD</item>
+        <item>THB</item>
+        <item>AUD</item>
+        <item>CAD</item>
+        <item>MYR</item>
+        <item>CHF</item>
+        <item>SEK</item>
+        <item>TWD</item>
+        <item>AED</item>
+    </string-array>
+    <string-array name="cryptogram_array">
+        <item>NONE</item>
+        <item>UCAF</item>
+        <item>ICC</item>
+    </string-array>
+    <string-array name="request_address">
+        <item>@string/do_not_show</item>
+        <item>@string/billing_address_required_from_spay</item>
+        <item>@string/shipping_address_required_from_spay</item>
+        <item>@string/shipping_address_sent_from_merchant</item>
+        <item>@string/billing_address_required_spay_shipping_address_merchant</item>
+        <item>@string/billing_and_shipping_from_spay</item>
+    </string-array>
+    <string-array name="return_billing_address_error_type">
+        <item>ERROR_NONE</item>
+        <item>ERROR_BILLING_ADDRESS_INVALID</item>
+        <item>ERROR_BILLING_ADDRESS_NOT_EXIST</item>
+        <item>@string/custom_error_message_list_item</item>
+    </string-array>
+    <string-array name="return_shipping_address_error_type">
+        <item>ERROR_NONE</item>
+        <item>ERROR_SHIPPING_ADDRESS_INVALID</item>
+        <item>ERROR_SHIPPING_ADDRESS_NOT_EXIST</item>
+        <item>ERROR_SHIPPING_ADDRESS_UNABLE_TO_SHIP</item>
+        <item>@string/custom_error_message_list_item</item>
+    </string-array>
+    <string-array name="format_of_amount">
+        <item>FORMAT_TOTAL_PRICE_ONLY</item>
+        <item>FORMAT_TOTAL_FREE_TEXT_ONLY</item>
+        <item>FORMAT_TOTAL_AMOUNT_PENDING_TEXT_ONLY</item>
+        <item>FORMAT_TOTAL_PENDING_TEXT_ONLY</item>
+    </string-array>
+
+</resources>

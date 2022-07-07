@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_top">5dp</dimen>
+    <dimen name="padding_start">20dp</dimen>
+    <dimen name="padding_end">20dp</dimen>
+    <dimen name="padding_5dp">5dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="tool_bar_size">40dp</dimen>
+    <dimen name="table_row_text_size">15sp</dimen>
+    <dimen name="control_category_title_text_size">15sp</dimen>
+</resources>
