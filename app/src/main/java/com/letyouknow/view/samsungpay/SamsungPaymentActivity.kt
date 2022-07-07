@@ -142,7 +142,7 @@ class SamsungPaymentActivity : AppCompatActivity(), DialogInterface.OnClickListe
                 override fun onSuccess(status: Int, bundle: Bundle) {
                     when (status) {
                         SpaySdk.SPAY_READY -> {
-                            mBinding!!.samsungPayButton.setVisibility(View.VISIBLE)
+                            mBinding!!.samsungPayButton.visibility = View.VISIBLE
                             if (mPaymentManager == null) {
                                 mPaymentManager = PaymentManager(
                                     mContext,
@@ -154,14 +154,14 @@ class SamsungPaymentActivity : AppCompatActivity(), DialogInterface.OnClickListe
                         SpaySdk.SPAY_NOT_SUPPORTED, SpaySdk.SPAY_NOT_READY, SpaySdk.SPAY_NOT_ALLOWED_TEMPORALLY -> mBinding!!.samsungPayButton.setVisibility(
                             View.INVISIBLE
                         )
-                        else -> mBinding!!.samsungPayButton.setVisibility(View.INVISIBLE)
+                        else -> mBinding!!.samsungPayButton.visibility = View.INVISIBLE
                     }
                     showOnSuccessLog(status, bundle) // Print log
                     showOnSuccessMessage(status, bundle) // Print messages.
                 }
 
                 override fun onFail(errorCode: Int, bundle: Bundle) {
-                    mBinding!!.samsungPayButton.setVisibility(View.INVISIBLE)
+                    mBinding!!.samsungPayButton.visibility = View.INVISIBLE
                     showOnFailLogAndMessage(errorCode, bundle) // Print log and messages.
                 }
             })

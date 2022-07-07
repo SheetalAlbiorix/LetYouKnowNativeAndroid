@@ -48,8 +48,9 @@ import com.letyouknow.view.login.LoginActivity
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.referreferral.ReferReferralActivity
+import com.letyouknow.view.samsungpay.SamPaymentActivity
+import com.letyouknow.view.samsungpay.SamsungPaymentActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
-import com.letyouknow.view.transaction_history.TransactionHistoryActivity
 import com.letyouknow.view.ucd.UCDDealListStep1Activity
 import com.letyouknow.view.ucd.UCDDealListStep1NewActivity
 import com.letyouknow.view.ucd.UCDFragment
@@ -657,7 +658,8 @@ class MainActivity : BaseActivity(),
                         startActivity<SamsungPaymentActivity>()
                     }
                     1 -> {
-                        startActivity<TransactionHistoryActivity>()
+//                        startActivity<TransactionHistoryActivity>()
+                        startActivity<SamPaymentActivity>()
                     }
                     2 -> {
                         startActivity<HowItWorkHelpWebViewActivity>(

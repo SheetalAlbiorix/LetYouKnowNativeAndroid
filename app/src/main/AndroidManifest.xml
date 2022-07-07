@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
+    <queries>
+        <package android:name="com.samsung.android.spay" />
+        <package android:name="com.samsung.android.samsungpay.gear" />
+    </queries>
+
     <application
         android:name=".LetYouKnowApp"
         android:allowBackup="true"
@@ -20,6 +25,9 @@
         android:theme="@style/Theme.LetYouKnow"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
+        <activity
+            android:name=".view.samsungpay.SamPaymentActivity"
+            android:exported="false" />
         <activity
             android:name=".view.samsungpay.SamsungPaymentActivity"
             android:exported="false" />
@@ -280,10 +288,5 @@
             android:name="spay_sdk_api_level"
             android:value="2.17" />
     </application>
-
-    <queries>
-        <package android:name="com.samsung.android.spay" />
-        <package android:name="com.samsung.android.samsungpay.gear" />
-    </queries>
 
 </manifest>
