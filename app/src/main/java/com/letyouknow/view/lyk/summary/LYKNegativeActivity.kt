@@ -28,6 +28,7 @@ import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LYK_SHOW
+import com.letyouknow.utils.Constant.Companion.ARG_IS_UCD
 import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
@@ -506,7 +507,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                         setUCDStock(data)
                     } else {
                         startActivity(
-                            intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                            intentFor<MainActivity>(
+                                Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL,
+                                ARG_IS_UCD to true
+                            ).clearTask()
                                 .newTask()
                         )
                     }

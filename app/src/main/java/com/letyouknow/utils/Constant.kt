@@ -107,6 +107,7 @@ class Constant {
         var ARG_IS_SHOW_PER = "ARG_IS_SHOW_PER"
         var ARG_IS_BID = "ARG_IS_BID"
         var ARG_IS_LCD = "ARG_IS_LCD"
+        var ARG_IS_UCD = "ARG_IS_UCD"
         var ARG_TYPE_PRODUCT = "ARG_TYPE_PRODUCT"
         var ARG_IS_LYK_SHOW = "ARG_IS_LYK_SHOW"
         var ARG_MSRP_RANGE = "ARG_MSRP_RANGE"
