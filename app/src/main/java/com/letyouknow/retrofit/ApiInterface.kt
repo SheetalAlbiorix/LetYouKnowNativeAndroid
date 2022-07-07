@@ -22,14 +22,18 @@ interface ApiInterface {
     @GET("vehiclecriteria/getvehicleyears")
     fun getVehicleYears(
         @Query("productId") productId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleYearData>>
 
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleMakeData>>
 
     @GET("vehiclecriteria/getvehiclemodels")
@@ -37,7 +41,9 @@ interface ApiInterface {
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleModelData>>
 
     @GET("vehiclecriteria/getvehicletrims")
@@ -46,7 +52,9 @@ interface ApiInterface {
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleTrimData>>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
@@ -56,7 +64,9 @@ interface ApiInterface {
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<ExteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleinteriorcolors")
@@ -67,7 +77,9 @@ interface ApiInterface {
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
         @Query("exteriorColorId") exteriorColorId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<InteriorColorData>>
 
 

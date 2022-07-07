@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.VehicleYearData
 import com.letyouknow.retrofit.RetrofitClient
@@ -15,12 +16,32 @@ object VehicleYearRepository {
     fun getVehicleYearApiCall(
         context: Context,
         productId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): MutableLiveData<ArrayList<VehicleYearData>> {
         AppGlobal.printRequestAuth("Year req", "ProductId: " + productId + ", zipCode: " + zipCode)
         val getVehicleYearData = MutableLiveData<ArrayList<VehicleYearData>>()
-        val call = RetrofitClient.apiInterface.getVehicleYears(productId, zipCode)
-
+        var lowPriceParam = lowPrice
+        var highPriceParam = highPrice
+        if (type == 3) {
+            if (lowPrice != "ANY PRICE") {
+                lowPriceParam =
+                    if (TextUtils.isEmpty(
+                            lowPrice
+                        )
+                    ) "0" else lowPrice!!
+                highPriceParam =
+                    if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            }
+        }
+        val call = RetrofitClient.apiInterface.getVehicleYears(
+            productId,
+            zipCode,
+            lowPriceParam,
+            highPriceParam
+        )
         call.enqueue(object : Callback<ArrayList<VehicleYearData>> {
             override fun onFailure(call: Call<ArrayList<VehicleYearData>>, t: Throwable) {
                 Constant.dismissLoader()

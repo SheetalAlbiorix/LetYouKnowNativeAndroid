@@ -586,7 +586,14 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
                     Constant.showLoader(requireActivity())
                 }
-                vehicleYearModel.getYear(requireActivity(), productId, "")!!
+                vehicleYearModel.getYear(
+                    requireActivity(),
+                    productId,
+                    "",
+                    3,
+                    lowerBorder,
+                    upperBorder
+                )!!
                     .observe(requireActivity(), Observer { data ->
                         if (isEmpty(prefSearchDealData.makeId))
                             Constant.dismissLoader()

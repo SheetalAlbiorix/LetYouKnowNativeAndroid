@@ -15,17 +15,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/UCDStep1ViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/ucdstep1/UCDStep1Activity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_ucdstep1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_ucd_step1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindUcdDealData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/model/FindUcdDealData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/spinneradapter/PriceRangeSpinnerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/spinneradapter/PriceRangeSpinnerAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/ApiInterface.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/VehicleYearRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/VehicleYearViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/viewmodel/VehicleYearViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/UCDFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,8 +36,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Interface" />
-        <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
@@ -62,7 +56,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="master_debug" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,6 +89,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="ToolWindowEmulator.ShowToolbar" value="false" />
     <property name="android-custom-viewC:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.cottacush/CurrencyEditText/0.0.3/9499052a1e52b868b03302a21e1d0308d55d696c/CurrencyEditText-0.0.3-sources.jar!/com/cottacush/android/currencyedittext/CurrencyEditText.kt_SELECTED" value="CurrencyEditText" />
@@ -116,7 +111,7 @@
     <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable-anydpi" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LetYouKnowOld" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MatsApp_old" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -126,22 +121,26 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\layout" />
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\lib" />
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\java\com\letyouknow\utils" />
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable" />
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable-v24" />
-      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app" />
-      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable-anydpi" />
     </key>
     <key name="android.template.-1583338715">
+      <recent name="com.letyouknow.view.splash" />
       <recent name="com.letyouknow.view.ucd.ucdstep1" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\lib" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="com.letyouknow.retrofit.viewmodel" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
-      <recent name="com.letyouknow.view.spinneradapter" />
       <recent name="com.letyouknow.retrofit.viewmodel" />
       <recent name="com.letyouknow.retrofit.repository" />
+      <recent name="com.letyouknow.view.spinneradapter" />
       <recent name="com.letyouknow.utils" />
       <recent name="com.letyouknow.model" />
     </key>
@@ -149,7 +148,7 @@
       <recent name="com.letyouknow.view.payment" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="LetYouKnow.app" />
       <option name="DEPLOY" value="true" />
@@ -207,6 +206,19 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="samsungpay_2.5.00.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/app/lib/samsungpay_2.5.00.jar" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JAR Application.samsungpay_2.5.00.jar" />
+        <item itemvalue="JAR Application.samsungpay_2.5.00.jar" />
+        <item itemvalue="JAR Application.samsungpay_2.5.00.jar" />
+        <item itemvalue="JAR Application.samsungpay_2.5.00.jar" />
+        <item itemvalue="JAR Application.samsungpay_2.5.00.jar" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -297,7 +309,105 @@
       <option name="project" value="LOCAL" />
       <updated>1656326636368</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="- grouping data bby using Model">
+      <created>1656420481538</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1656420481538</updated>
+    </task>
+    <task id="LOCAL-00013" summary="- implement samsung payment gateway">
+      <created>1656574964483</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1656574964483</updated>
+    </task>
+    <task id="LOCAL-00014" summary="- implement samsung payment gateway">
+      <created>1656655259249</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1656655259249</updated>
+    </task>
+    <task id="LOCAL-00015" summary="- set live url">
+      <created>1656657917930</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1656657917930</updated>
+    </task>
+    <task id="LOCAL-00016" summary="- remove merge code">
+      <created>1656667293122</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1656667293122</updated>
+    </task>
+    <task id="LOCAL-00017" summary="- implement samsung pay code">
+      <created>1656680438153</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1656680438153</updated>
+    </task>
+    <task id="LOCAL-00018" summary="- implement samsung pay code">
+      <created>1656681907318</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1656681907318</updated>
+    </task>
+    <task id="LOCAL-00019" summary="- initialize master debug">
+      <created>1656909663165</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1656909663165</updated>
+    </task>
+    <task id="LOCAL-00020" summary="- initialize master debug">
+      <created>1656910017064</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1656910017064</updated>
+    </task>
+    <task id="LOCAL-00021" summary="- set pref data in LYK,UCD and LCD">
+      <created>1656942447611</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1656942447611</updated>
+    </task>
+    <task id="LOCAL-00022" summary="- set pref data in LYK,UCD and LCD">
+      <created>1656998264868</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1656998264868</updated>
+    </task>
+    <task id="LOCAL-00023" summary="- create the estimated data layout">
+      <created>1657091742220</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1657091742220</updated>
+    </task>
+    <task id="LOCAL-00024" summary="- add ucd list in lyk negative screen">
+      <created>1657115006903</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1657115006903</updated>
+    </task>
+    <task id="LOCAL-00025" summary="- add ucd list in lyk negative screen">
+      <created>1657171990924</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1657171990925</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -313,7 +423,16 @@
     <MESSAGE value="- set promo data" />
     <MESSAGE value="- user selected search radius should be carried over from the UCD into LYK too" />
     <MESSAGE value="- set price range data" />
-    <option name="LAST_COMMIT_MESSAGE" value="- set price range data" />
+    <MESSAGE value="- grouping data bby using Model" />
+    <MESSAGE value="- implement samsung payment gateway" />
+    <MESSAGE value="- set live url" />
+    <MESSAGE value="- remove merge code" />
+    <MESSAGE value="- implement samsung pay code" />
+    <MESSAGE value="- initialize master debug" />
+    <MESSAGE value="- set pref data in LYK,UCD and LCD" />
+    <MESSAGE value="- create the estimated data layout" />
+    <MESSAGE value="- add ucd list in lyk negative screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="- add ucd list in lyk negative screen" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -348,17 +467,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/ucdstep1/UCDStep1Activity.kt</url>
-          <line>112</line>
+          <line>100</line>
           <option name="timeStamp" value="674" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/ucdstep1/UCDStep1Activity.kt</url>
-          <line>154</line>
+          <line>142</line>
           <option name="timeStamp" value="675" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/ucd/ucdstep1/UCDStep1Activity.kt</url>
-          <line>155</line>
+          <line>143</line>
           <option name="timeStamp" value="676" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
