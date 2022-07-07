@@ -16,14 +16,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b7cf5390-1c44-4c19-bc4b-1fef53867b9d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[11a294fb]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[RZ8N50BKQ7B]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -53,7 +54,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="lyk_69_Implement_the_following_Buyer_platform_update_4" />
+        <entry key="$PROJECT_DIR$" value="samsung_pay" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,7 +79,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ApkExportedModule" value="LetYouKnow.app" />
     <property name="BundleExportedModule" value="LetYouKnow.app" />
-    <property name="DEBUGGABLE_DEVICE" value="realme-rmx2030-11a294fb" />
+    <property name="DEBUGGABLE_DEVICE" value="samsung-sm_a315f-RZ8N50BKQ7B" />
     <property name="DEBUGGABLE_PROCESS" value="com.letyouknow" />
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="ExportApk.ApkPath" value="E:\Albiorix\AlbiorixApplication\LetYouKnow\app" />
@@ -123,6 +124,9 @@
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\java\com\letyouknow\utils" />
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable" />
       <recent name="E:\Albiorix\AlbiorixApplication\LetYouKnow\app\src\main\res\drawable-v24" />
+    </key>
+    <key name="android.template.2113564021">
+      <recent name="com.letyouknow.view.samsungpay" />
     </key>
     <key name="android.template.-1583338715">
       <recent name="com.letyouknow.view.splash" />
@@ -397,7 +401,28 @@
       <option name="project" value="LOCAL" />
       <updated>1657115006903</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="- add ucd list in lyk negative screen">
+      <created>1657171990924</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1657171990925</updated>
+    </task>
+    <task id="LOCAL-00026" summary="- add lowprice and highprice param in the year,make,model,trim,ext color and int color api same as web">
+      <created>1657183889154</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1657183889154</updated>
+    </task>
+    <task id="LOCAL-00027" summary="- add samsung pay task">
+      <created>1657190444004</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1657190444004</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -422,8 +447,9 @@
     <MESSAGE value="- set pref data in LYK,UCD and LCD" />
     <MESSAGE value="- create the estimated data layout" />
     <MESSAGE value="- add ucd list in lyk negative screen" />
-    <MESSAGE value="- add lowprice and upperprice added into year api" />
-    <option name="LAST_COMMIT_MESSAGE" value="- add lowprice and upperprice added into year api" />
+    <MESSAGE value="- add lowprice and highprice param in the year,make,model,trim,ext color and int color api same as web" />
+    <MESSAGE value="- add samsung pay task" />
+    <option name="LAST_COMMIT_MESSAGE" value="- add samsung pay task" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -995,6 +1021,46 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKNegativeActivity.kt</url>
           <line>121</line>
           <option name="timeStamp" value="747" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>46</line>
+          <option name="timeStamp" value="752" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>50</line>
+          <option name="timeStamp" value="753" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>52</line>
+          <option name="timeStamp" value="754" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>51</line>
+          <option name="timeStamp" value="755" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>54</line>
+          <option name="timeStamp" value="756" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>55</line>
+          <option name="timeStamp" value="757" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/retrofit/repository/BuyerRepository.kt</url>
+          <line>56</line>
+          <option name="timeStamp" value="758" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/summary/LYKStep2Activity.kt</url>
+          <line>346</line>
+          <option name="timeStamp" value="759" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/letyouknow/view/lyk/LYKFragment.kt</url>

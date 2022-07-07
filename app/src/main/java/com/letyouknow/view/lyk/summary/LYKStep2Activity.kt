@@ -314,7 +314,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.firstName] = edtFirstName.text.toString().trim()
             map[ApiConstant.middleName] = edtMiddleName.text.toString().trim()
             map[ApiConstant.lastName] = edtLastName.text.toString().trim()
-            map[ApiConstant.phoneNumber] = dataPendingDeal.buyer?.phoneNumber!!
+            map[ApiConstant.phoneNumber] = edtPhoneNumber.text.toString()
             map[ApiConstant.email] = edtEmail.text.toString().trim()
             map[ApiConstant.addressId] = dataPendingDeal.buyer?.addressId!!
             map[ApiConstant.address1] = edtAddress1.text.toString().trim()
