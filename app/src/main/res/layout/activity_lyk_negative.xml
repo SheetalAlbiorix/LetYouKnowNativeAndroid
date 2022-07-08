@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
+
 
         <variable
             name="type"
@@ -17,6 +19,10 @@
         <variable
             name="dealData"
             type="com.letyouknow.model.SubmitDealLCDData" />
+
+        <variable
+            name="radius"
+            type="String" />
 
     </data>
 
@@ -226,9 +232,57 @@
                     app:dealData="@{dealData}" />
 
                 <!-- <include
-                     layout="@layout/layout_deal_summery_hot_market"
-                     android:visibility='@{lcdDealData.dealID.equals("0") ? View.VISIBLE : View.GONE}'
-                     app:lcdDealData="@{lcdDealData}" />-->
+                      layout="@layout/layout_deal_summery_hot_market"
+                      android:visibility='@{lcdDealData.dealID.equals("0") ? View.VISIBLE : View.GONE}'
+                      app:lcdDealData="@{lcdDealData}" />-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_37sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_37sdp"
+                    android:orientation="vertical"
+                    android:visibility='@{dealData.negativeResult.thirdLabel.equals("3")  ? View.VISIBLE : View.GONE}'
+                    app:cardBackgroundColor="@color/offWhite"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="0dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_15sdp">
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="You may also like"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_14sdp" />
+
+                        <TextView
+                            android:id="@+id/tvExterior"
+                            style="@style/thinItalic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{@string/miles_within(radius,data.zipCode)}"
+                            android:textColor="@color/color212529"
+                            android:textSize="@dimen/_11sdp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUnlockedCar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_37sdp"
+                    android:paddingEnd="@dimen/_37sdp"
+                    android:visibility='@{dealData.negativeResult.thirdLabel.equals("3") ? View.VISIBLE : View.GONE}'
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_unlocked_car" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

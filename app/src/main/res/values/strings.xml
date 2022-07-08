@@ -413,4 +413,5 @@
     <string name="any_price">ANY PRICE</string>
     <string name="price_range_required">Price Range Required</string>
 
+    <string name="miles_within"><i>(%1s miles within %2s)</i></string>
 </resources>

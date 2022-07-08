@@ -26,6 +26,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
 import com.letyouknow.utils.Constant.Companion.ARG_RADIUS
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL
@@ -68,7 +69,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     lateinit var scrollListener: RecyclerViewLoadMoreScroll
     lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
-
+    private var isFromLYK = false
+    private lateinit var dataUCDDeal: FindUcdDealData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ucd_deal_list_step1)
@@ -109,7 +111,21 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             }*/
 //            callImageIdAPI()
 
-            callSearchFindDealAPI()
+            if (intent.hasExtra(ARG_IS_FROM_LYK)) {
+                isFromLYK = intent.getBooleanExtra(ARG_IS_FROM_LYK, false)
+                dataUCDDeal = Gson().fromJson(
+                    intent.getStringExtra(Constant.ARG_UCD_DEAL),
+                    FindUcdDealData::class.java
+                )
+                arUnlocked = ArrayList()
+                arUnlocked.add(dataUCDDeal)
+                adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                adapterLinear.notifyDataSetChanged()
+                rvUnlockedCar.adapter = adapterLinear
+                callImageIdAPI()
+            } else {
+                callSearchFindDealAPI()
+            }
 //            callRefreshTokenApi()
         }
 
@@ -163,6 +179,9 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                         tvNotFound.visibility = View.VISIBLE
                         callImageIdAPI()
                     } else {
+                        Log.e("data_length", data.size.toString());
+                        arUnlocked.addAll(data);
+                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
                         Log.e("data_length", data.size.toString())
                         arUnlocked.addAll(data)
                         adapterLinear = Items_LinearRVAdapter(arUnlocked, this)
@@ -285,7 +304,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        if (isNotification) {
+        if (isNotification || isFromLYK) {
             startActivity(
                 intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
                     .newTask()
@@ -376,10 +395,21 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
               }*/
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
-                request[ApiConstant.vehicleYearID] = vehicleYearID!!
-                request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
-                request[ApiConstant.vehicleModelID] = vehicleModelID!!
-                request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                if (isFromLYK) {
+                    /*request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
+                    request[ApiConstant.vehicleMakeID] = dataUCDDeal.makeId!!
+                    request[ApiConstant.vehicleModelID] = dataUCDDeal.modelId!!
+                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!*/
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                } else {
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                }
             }
             Log.e("ImageId Request", Gson().toJson(request))
             imageIdViewModel.imageIdCall(this, request)!!

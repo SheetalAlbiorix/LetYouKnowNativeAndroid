@@ -20,7 +20,10 @@ data class NegativeResult(
     val lcdPrice: Float? = 0.0f,
     val dealID: String? = "0",
     val vehicleInventoryID: String? = "",
-    val minimalDistance: String? = ""
+    val minimalDistance: String? = "",
+    val dealPrice: Float? = 0.0f,
+    val thirdLabel: String? = "",
+    val ucdDeals: ArrayList<FindUcdDealData>? = ArrayList()
 ) : Serializable
 
 data class PaymentResponseData(

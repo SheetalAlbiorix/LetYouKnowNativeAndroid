@@ -446,7 +446,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             Constant.dismissLoader()
                         try {
                             // Log.e("Year Data", Gson().toJson(data))
-                            if (data != null && data.size > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 spYear.isEnabled = true
                                 tvYear.visibility = View.GONE
                                 spYear.visibility = View.VISIBLE
@@ -473,6 +473,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterYear = YearSpinnerAdapter(requireActivity(), arData)
                                 spYear.adapter = adapterYear
                                 spYear.onItemSelectedListener = this
+                                AppGlobal.setNoData(requireActivity(), spYear)
+                                setClearData()
                             }
                         } catch (e: Exception) {
                         }
@@ -508,7 +510,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             Constant.dismissLoader()
                         try {
                             Log.e("Make Data", Gson().toJson(data))
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val makeData = VehicleMakeData()
                                 makeData.make = "MAKE"
                                 data.add(0, makeData)
@@ -530,6 +532,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
                                 spMake.adapter = adapterMake
                                 spMake.onItemSelectedListener = this
+                                AppGlobal.setNoData(requireActivity(), spMake)
+                                setClearData()
                             }
                         } catch (e: Exception) {
                         }
@@ -566,7 +570,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             Constant.dismissLoader()
                         //   Log.e("Make Data", Gson().toJson(data))
                         try {
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val modelData = VehicleModelData()
                                 modelData.model = "MODEL"
                                 data.add(0, modelData)
@@ -588,6 +592,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
                                 spModel.adapter = adapterModel
                                 spModel.onItemSelectedListener = this
+                                AppGlobal.setNoData(requireActivity(), spModel)
+                                setClearData()
                             }
                         } catch (e: Exception) {
                         }
@@ -626,7 +632,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             Constant.dismissLoader()
                         Log.e("Make Data", Gson().toJson(data))
                         try {
-                            if (data != null || data?.size!! > 0) {
+                            if (!data.isNullOrEmpty()) {
                                 val trimData = VehicleTrimData()
                                 trimData.trim = "TRIM"
                                 data.add(0, trimData)
@@ -648,6 +654,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                                 adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
                                 spTrim.adapter = adapterTrim
                                 spTrim.onItemSelectedListener = this
+                                AppGlobal.setNoData(requireActivity(), spTrim)
+                                setClearData()
                             }
                         } catch (e: Exception) {
                         }
@@ -2087,6 +2095,17 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         } else {
             Toast.makeText(requireActivity(), Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+
+    private fun setClearData() {
+        edtZipCode.setText("")
+        setYear()
+        setMake()
+        setModel()
+        setTrim()
+        prefOneDealNearYouData = PrefOneDealNearYouData()
+        pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
     }
 
 }
