@@ -12,12 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.CompoundButton
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -46,8 +41,8 @@ import com.letyouknow.utils.CreditCardNumberTextWatcher
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
-import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.DeliveryPreferenceAdapter
+import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
 import com.stripe.android.ApiResultCallback

@@ -15,12 +15,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.CompoundButton
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -54,8 +49,8 @@ import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.negative.LCDNegativeActivity
 import com.letyouknow.view.signup.CardListAdapter
-import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.DeliveryPreferenceAdapter
+import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
 import com.microsoft.signalr.HubConnection
@@ -1900,6 +1895,36 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 count: Int,
                 after: Int
             ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.lastNameValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_last_name)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isLastName = true
+                    setDisableVar()
+                } else {
+                    isLastName = false
+                    setDisableVar()
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
     private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter
     private var arDeliveryPref = arrayListOf("Pick up at dealer", "Ship it to me")
     private var deliveryPrefStr = "Pick up at dealer"
@@ -1924,7 +1949,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvSaveShipping.setOnClickListener(this)
         onStateChangeShipping()
     }
-
     private fun setDeliveryPref() {
         adapterDeliveryPref = DeliveryPreferenceAdapter(
             this,
@@ -2071,34 +2095,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         Constant.onTextChange(this, edtShippingAddress2, tvShippingErrorAddress2)
         Constant.onTextChangeCity(this, edtShippingCity, tvShippingErrorCity)
         Constant.onTextChange(this, edtShippingZipCode, tvShippingErrorZipCode)
-    }
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val str = s?.toString()
-                if (str?.length!! > 0) {
-                    if (Constant.lastNameValidator(str)) {
-                        Constant.setErrorBorder(edtText, errorText)
-                        errorText.text = getString(R.string.enter_valid_last_name)
-                        errorText.visibility = View.VISIBLE
-                    } else {
-                        edtText.setBackgroundResource(R.drawable.bg_edittext)
-                        errorText.visibility = View.GONE
-                    }
-                    isLastName = true
-                    setDisableVar()
-                } else {
-                    isLastName = false
-                    setDisableVar()
-                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-        })
     }
 
     private fun onTextChangeAddress11(

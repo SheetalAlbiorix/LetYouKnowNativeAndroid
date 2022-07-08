@@ -412,9 +412,6 @@
     <string name="delivery_options">Delivery Options</string>
     <string name="shipping_info">Shipping Info</string>
     <string name="miles_within"><i>(%1s miles within %2s)</i></string>
-    <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
-    <string name="delivery_options">Delivery Options</string>
-    <string name="shipping_info">Shipping Info</string>
     <string name="year_new_cars">YEAR - NEW CARS</string>
     <string name="make_title">MAKE</string>
     <string name="model_title">MODEL</string>
