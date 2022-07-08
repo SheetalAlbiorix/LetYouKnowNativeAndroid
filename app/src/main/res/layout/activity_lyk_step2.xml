@@ -50,6 +50,18 @@
             name="selectState"
             type="String" />
 
+        <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
+            name="pendingUCDShippingData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -358,16 +370,19 @@
 
                 <include
                     layout="@layout/layout_lyk_step2"
+                    app:data="@{data}"
+                    app:dollar="@{dollar}"
+                    app:isCheck="@{isCheck}"
                     app:selectState="@{selectState}"
                     app:taxData="@{taxData}"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
+                    app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
                     app:isStripe="@{isStripe}"
-                    app:data="@{data}"
-                    app:dollar="@{dollar}"
                     app:lightDealBindData="@{lightDealBindData}"
-                    app:pendingUCDData="@{pendingUcdData}" />
+                    app:pendingUCDData="@{pendingUcdData}"
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}" />
 
             </LinearLayout>
 

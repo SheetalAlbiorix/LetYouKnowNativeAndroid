@@ -26,6 +26,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
 import com.letyouknow.utils.Constant.Companion.ARG_RADIUS
 import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL
@@ -68,7 +69,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     lateinit var scrollListener: RecyclerViewLoadMoreScroll
     lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
-
+    private var isFromLYK = false
+    private lateinit var dataUCDDeal: FindUcdDealData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ucd_deal_list_step1)
@@ -109,7 +111,21 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             }*/
 //            callImageIdAPI()
 
-            callSearchFindDealAPI()
+            if (intent.hasExtra(ARG_IS_FROM_LYK)) {
+                isFromLYK = intent.getBooleanExtra(ARG_IS_FROM_LYK, false)
+                dataUCDDeal = Gson().fromJson(
+                    intent.getStringExtra(Constant.ARG_UCD_DEAL),
+                    FindUcdDealData::class.java
+                )
+                arUnlocked = ArrayList()
+                arUnlocked.add(dataUCDDeal)
+                adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                adapterLinear.notifyDataSetChanged()
+                rvUnlockedCar.adapter = adapterLinear
+                callImageIdAPI()
+            } else {
+                callSearchFindDealAPI()
+            }
 //            callRefreshTokenApi()
 
         }
@@ -157,7 +173,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         Log.e("data_length", data.size.toString());
                         arUnlocked.addAll(data);
-                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this)
+                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
                         adapterLinear.notifyDataSetChanged()
                         rvUnlockedCar.adapter = adapterLinear
                         callImageIdAPI()
@@ -242,6 +258,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                   selectPos = pos
   */
                 val data = adapterLinear.getItem(pos)
+                yearModelMakeData.vehicleExtColorID = data.exteriorColorId
+                yearModelMakeData.vehicleExtColorID = data.interiorColorId
                 startActivity<UCDDealSummaryStep2Activity>(
                     ARG_UCD_DEAL to Gson().toJson(data),
                     ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
@@ -272,7 +290,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        if (isNotification) {
+        if (isNotification || isFromLYK) {
             startActivity(
                 intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
                     .newTask()
@@ -364,10 +382,21 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
               }*/
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
-                request[ApiConstant.vehicleYearID] = vehicleYearID!!
-                request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
-                request[ApiConstant.vehicleModelID] = vehicleModelID!!
-                request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                if (isFromLYK) {
+                    /*request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
+                    request[ApiConstant.vehicleMakeID] = dataUCDDeal.makeId!!
+                    request[ApiConstant.vehicleModelID] = dataUCDDeal.modelId!!
+                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!*/
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                } else {
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                }
             }
             Log.e("ImageId Request", Gson().toJson(request))
             imageIdViewModel.imageIdCall(this, request)!!
@@ -478,8 +507,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
             request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
             request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-            request[ApiConstant.InteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.ExteriorColorID] = dataFind.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = dataFind.interiorColorId!!
             request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
             request[ApiConstant.SearchRadius1] =
                 if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
@@ -533,16 +562,16 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         submitData.makeId = yearModelMakeData.vehicleMakeID!!
         submitData.modelId = yearModelMakeData.vehicleModelID!!
         submitData.trimId = yearModelMakeData.vehicleTrimID!!
-        submitData.extColorId = yearModelMakeData.vehicleExtColorID!!
-        submitData.intColorId = yearModelMakeData.vehicleIntColorID!!
+        submitData.extColorId = data.exteriorColorId!!
+        submitData.intColorId = data.interiorColorId!!
         submitData.yearStr = data.vehicleYear!!
         submitData.makeStr = data.vehicleMake!!
         submitData.modelStr = data.vehicleModel!!
         submitData.trimStr = data.vehicleTrim!!
         submitData.extColorStr =
-            if (yearModelMakeData.vehicleExtColorID == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
         submitData.intColorStr =
-            if (yearModelMakeData.vehicleIntColorID == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
         submitData.packagesData = arSelectPackages
         submitData.optionsData = arSelectAccessories
         pref?.setSubmitPriceData(Gson().toJson(submitData))
@@ -552,16 +581,16 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         yearMakeData.vehicleMakeID = yearModelMakeData.vehicleMakeID
         yearMakeData.vehicleModelID = yearModelMakeData.vehicleModelID
         yearMakeData.vehicleTrimID = yearModelMakeData.vehicleTrimID
-        yearMakeData.vehicleExtColorID = yearModelMakeData.vehicleExtColorID
-        yearMakeData.vehicleIntColorID = yearModelMakeData.vehicleIntColorID
+        yearMakeData.vehicleExtColorID = data.exteriorColorId
+        yearMakeData.vehicleIntColorID = data.interiorColorId
         yearMakeData.vehicleYearStr = data.vehicleYear
         yearMakeData.vehicleMakeStr = data.vehicleMake
         yearMakeData.vehicleModelStr = data.vehicleModel
         yearMakeData.vehicleTrimStr = data.vehicleTrim
         yearMakeData.vehicleExtColorStr =
-            if (yearModelMakeData.vehicleExtColorID == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
         yearMakeData.vehicleIntColorStr =
-            if (yearModelMakeData.vehicleIntColorID == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
         yearMakeData.arPackages = arSelectPackages
         yearMakeData.arOptions = arSelectAccessories
         yearMakeData.price = data.price!! - 100.0f

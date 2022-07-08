@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.letyouknow.utils.ConstantData" />
+
+        <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
+            name="pendingUCDData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:backgroundTint="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/delivery_options"
+            android:textColor="@color/color3e5365"
+            android:textSize="@dimen/_16sdp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/bg_button"
+            android:backgroundTint="@color/offWhite1"
+            android:padding="@dimen/_1sdp">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spDeliveryPreference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_spinner_light_offwhite"
+                android:padding="0dp"
+                android:popupBackground="@drawable/bg_button3_white"
+                android:spinnerMode="dropdown" />
+        </FrameLayout>
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkSameAsBuyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/bg_checkbox"
+            android:drawablePadding="@dimen/_10sdp"
+            android:text="@string/shipping_info_same_as_buyer_info"
+            android:textColor="?blackText"
+            android:visibility="@{isShowShippingCheckBox?View.VISIBLE : View.GONE}" />
+
+        <TextView
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/shipping_info"
+            android:textColor="@color/color3e5365"
+            android:textSize="@dimen/_16sdp"
+            android:visibility="@{isShowShippingCheckBox?isCheck?View.GONE : View.VISIBLE : View.GONE}" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llDeliveryEditInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_button3"
+            android:backgroundTint="@color/offWhite"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            android:visibility="@{isShowShippingCheckBox?isCheck?View.GONE : View.VISIBLE : View.GONE}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtShippingFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/first_name_required"
+                        android:inputType="text"
+                        android:text="@{pendingUCDData.buyer.firstName}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvShippingErrorFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_firstname"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <Space
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtShippingMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/bg_edittext"
+                        android:hint="@string/middle_name"
+                        android:inputType="text"
+                        android:text="@{pendingUCDData.buyer.middleName}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@string/enter_middle_name"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/last_name_req"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.lastName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_lastname"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/address_line_1_required"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.address1}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorAddress1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_addressline1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/address_line_2"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.address2}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorAddress2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_addressline2"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/city_required"
+                android:inputType="text"
+                android:text="@{pendingUCDData.buyer.city}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_city"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_button"
+                android:backgroundTint="@color/offWhite1"
+                android:padding="@dimen/_1sdp">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spShippingState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_spinner_light_offwhite"
+                    android:padding="0dp"
+                    android:popupBackground="@drawable/bg_button3_white"
+                    android:spinnerMode="dropdown" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tvShippingErrorState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_state"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:digits="1234567890"
+                android:hint="@string/zip_code_required"
+                android:inputType="number"
+                android:maxLength="5"
+                android:text="@{pendingUCDData.buyer.zipcode}" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_zipcode"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/phone_number_required" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_phonenumber"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtShippingEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_edittext"
+                android:hint="@string/email_address_required"
+                android:inputType="textEmailAddress"
+                android:text="@{pendingUCDData.buyer.email}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShippingErrorEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/enter_email_address_vali"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/tvSaveShipping"
+            style="@style/bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/bg_button"
+            android:gravity="center"
+            android:paddingStart="@dimen/_18sdp"
+            android:paddingTop="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_18sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

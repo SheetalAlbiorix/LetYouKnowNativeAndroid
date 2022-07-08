@@ -42,6 +42,7 @@
     <string name="last_name">Last Name</string>
     <string name="enter_valid_last_name">Enter Valid Last Name</string>
     <string name="enter_valid_middle_name">Enter Valid Middle Name</string>
+    <string name="enter_middle_name">Enter Middle Name</string>
     <string name="enter_valid_City">Enter Valid City</string>
     <string name="enter_valid_zipcode">Enter Valid Zip Code</string>
     <string name="last_name_required">Last Name Required</string>
@@ -248,7 +249,8 @@
     <string name="actual_model_may_vary">Actual model may vary</string>
     <string name="enter_promo_code_is_not_valid">Entered Promo Code is not valid</string>
     <string name="promo_code_cannot_be_applied_due_to_negative_balance">Promo code cannot be applied due to negative balance</string>
-    <string name="stripe_publishable_key">pk_live_51HaDBECeSnBm0gpFXIVn3xUrbHswZmXzrNL4fs5dwsSgaYnuRZ5zRNnqcYv4dANIFQUOEcVvGNCKaVrJ8o9MiVf000fDh9su8E</string>
+    <string name="stripe_publishable_key">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
+    <!--    <string name="stripe_publishable_key">pk_live_51HaDBECeSnBm0gpFXIVn3xUrbHswZmXzrNL4fs5dwsSgaYnuRZ5zRNnqcYv4dANIFQUOEcVvGNCKaVrJ8o9MiVf000fDh9su8E</string>-->
     <string name="stripe_publishable_key_test">pk_test_51HaDBECeSnBm0gpFvqOxWxW9jMO18C1lEIK5mcWf6ZWMN4w98xh8bPplgB8TOLdhutqGFUYtEHCVXh2nHWgnYTDw00Pe7zmGIA</string>
     <string name="no_results_for_your_zip_code"><![CDATA[No Results for your Zip Code & Search Radius, but we\'re working on bringing deals to your area \nTip: Try expending your Search Radius]]></string>
     <string name="you_have_10days">You have 10 days from the timestamp below to complete your vehicle transaction. Your contact information has been forwarded to the dealer listed below. A copy of this information has been sent to the email associated with your account. </string>
@@ -406,6 +408,10 @@
     <string name="android_pay">Android Pay</string>
     <string name="samsung_pay">Samsung Pay</string>
     <string name="debit_credit_card">Debit/Credit Card</string>
+    <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
+    <string name="delivery_options">Delivery Options</string>
+    <string name="shipping_info">Shipping Info</string>
+    <string name="miles_within"><i>(%1s miles within %2s)</i></string>
     <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
     <string name="delivery_options">Delivery Options</string>
     <string name="shipping_info">Shipping Info</string>

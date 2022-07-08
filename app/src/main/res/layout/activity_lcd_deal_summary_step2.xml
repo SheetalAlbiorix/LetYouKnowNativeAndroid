@@ -27,6 +27,17 @@
             type="Float" />
 
         <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
+            name="isShowShippingCheckBox"
+            type="Boolean" />
+
+        <variable
+            name="pendingUCDShippingData"
+            type="com.letyouknow.model.SubmitPendingUcdData" />
+        <variable
             name="selectState"
             type="String" />
 
@@ -185,14 +196,16 @@
 
 
                 <include
-
                     layout="@layout/layout_lcd_deal_summary_step2"
                     app:selectState="@{selectState}"
                     app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
+                    app:isCheck="@{isCheck}"
+                    app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
-                    app:pendingUCDData="@{pendingUcdData}" />
+                    app:pendingUCDData="@{pendingUcdData}"
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}" />
 
             </LinearLayout>
 

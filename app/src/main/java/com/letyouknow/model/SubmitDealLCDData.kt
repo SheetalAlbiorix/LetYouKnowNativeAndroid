@@ -106,6 +106,15 @@ data class TransactionInfo(
     val carSalesTax: Double? = 0.0,
     val nonTaxRegFee: Double? = 0.0,
     val estimatedTotalRemainingBalance: Double? = 0.0,
+    val shipToName: String? = "",
+    val shipToAddress1: String? = "",
+    val shipToAddress2: String? = "",
+    val shipToCity: String? = "",
+    val shipToState: String? = "",
+    val shipToZipcode: String? = "",
+    val shipToPhone: String? = "",
+    val shipToEmail: String? = "",
+    val shipIt: String? = "",
 )
 
 data class VehicleAccessory(

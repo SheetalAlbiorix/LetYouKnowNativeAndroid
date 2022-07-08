@@ -489,7 +489,24 @@ class AppGlobal {
             edtView.filters = EmojiFilter.getFilter()
         }
 
+        fun showWarningDialog(context: Context) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dialog_car_not_available)
+            dialog.run {
+                Handler().postDelayed({
+                    dismiss()
+                }, 3000)
+            }
+            setLayoutParam(dialog)
+            dialog.show()
+        }
 
+        fun setNoData(context: Context, spinner: Spinner) {
+            Constant.dismissLoader()
+            spinner.isEnabled = false
+            showWarningDialog(context)
+        }
     }
-
 }

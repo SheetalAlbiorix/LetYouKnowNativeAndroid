@@ -118,5 +118,18 @@ class ApiConstant {
         var VehicleModelId1 = "VehicleModelId"
         var VehicleTrimId1 = "VehicleTrimId"
         var stateAbbr = "stateAbbr"
+        var ShipToFirstName = "ShipToFirstName"
+        var ShipToMiddleName = "ShipToMiddleName"
+        var ShipToLastName = "ShipToLastName"
+        var ShipToPhoneNumber = "ShipToPhoneNumber"
+        var ShipToEmail = "ShipToEmail"
+        var ShipToAddress1 = "ShipToAddress1"
+        var ShipToAddress2 = "ShipToAddress2"
+        var ShipToCity = "ShipToCity"
+        var ShipToState = "ShipToState"
+        var ShipToZipcode = "ShipToZipcode"
+        var ShipToCountry = "ShipToCountry"
+        var ShipIt = "ShipIt"
+
     }
 }

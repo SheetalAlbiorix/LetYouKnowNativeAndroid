@@ -51,22 +51,30 @@ object SubmitPendingLCDDealRepository {
                         response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
                         SubmitPendingUcdData::class.java
                     )
-                    var msgStr = ""
-                    var isFirst = true
 
-                    for (i in 0 until dataError?.messageList?.size!!) {
-                        if (isFirst) {
-                            isFirst = false
-                            msgStr = dataError.messageList[i]
-                        } else {
-                            msgStr = msgStr + ",\n" + dataError.messageList[i]
+                    if (!dataError.messageList.isNullOrEmpty()) {
+                        var msgStr = ""
+                        var isFirst = true
+
+                        for (i in 0 until dataError?.messageList?.size!!) {
+                            if (isFirst) {
+                                isFirst = false
+                                msgStr = dataError.messageList[i]
+                            } else {
+                                msgStr = msgStr + ",\n" + dataError.messageList[i]
+                            }
+
                         }
-
-                    }
-                    if (!TextUtils.isEmpty(msgStr)) {
+                        if (!TextUtils.isEmpty(msgStr)) {
+                            AppGlobal.alertError(
+                                context,
+                                msgStr
+                            )
+                        }
+                    } else {
                         AppGlobal.alertError(
                             context,
-                            msgStr
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                         )
                     }
                 }

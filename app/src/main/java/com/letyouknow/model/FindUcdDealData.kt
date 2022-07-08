@@ -22,6 +22,10 @@ data class FindUcdDealData(
     val vehicleTrim: String? = "",
     val vehicleExteriorColor: String? = "",
     val vehicleInteriorColor: String? = "",
+    val yearId: String? = "",
+    val makeId: String? = "",
+    val modelId: String? = "",
+    val trimId: String? = "",
     val vehiclePackages: ArrayList<VehiclePackagesData>? = ArrayList(),
     val vehicleAccessories: ArrayList<VehicleAccessoriesData>? = ArrayList(),
     val miles: String? = "",
@@ -33,6 +37,8 @@ data class FindUcdDealData(
     val card_brand: String? = "",
     val card_last4: String? = "",
     val imageId: String? = "",
+    val exteriorColorId: String? = "",
+    val interiorColorId: String? = "",
     var discount: Float? = 0.0f,
     var isSelect: Boolean? = false
 ) : Serializable
