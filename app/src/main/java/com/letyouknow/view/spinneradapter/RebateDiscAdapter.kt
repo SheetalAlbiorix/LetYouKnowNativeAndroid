@@ -2,18 +2,20 @@ package com.letyouknow.view.spinneradapter
 
 import android.view.View
 import com.letyouknow.R
-import com.letyouknow.model.RebateDiscData
+import com.letyouknow.model.RebateListData
 import kotlinx.android.synthetic.main.list_item_rebate_disc.view.*
+import java.text.NumberFormat
+import java.util.*
 
 class RebateDiscAdapter(layout: Int, val clickListener: View.OnClickListener) :
-    com.logispeed.ui.base.BaseAdapter<RebateDiscData>(layout),
-    com.logispeed.ui.base.BaseAdapter.OnBind<RebateDiscData> {
+    com.logispeed.ui.base.BaseAdapter<RebateListData>(layout),
+    com.logispeed.ui.base.BaseAdapter.OnBind<RebateListData> {
 
     init {
         setOnBinding(this)
     }
 
-    override fun onBind(view: View, position: Int, data: RebateDiscData) {
+    override fun onBind(view: View, position: Int, data: RebateListData) {
         view.run {
             data.run {
                 llRebate.isEnabled = !isGray!!
@@ -34,6 +36,9 @@ class RebateDiscAdapter(layout: Int, val clickListener: View.OnClickListener) :
                     }
                 }
                 chkRebate.text = rebateName
+                tvRebatePrice.text =
+                    NumberFormat.getCurrencyInstance(Locale.US).format(rebatePrice)!!
+                        .replace(".00", "")
                 llRebate.tag = position
                 llRebate.setOnClickListener(clickListener)
             }

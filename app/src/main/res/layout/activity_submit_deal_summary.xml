@@ -5,6 +5,7 @@
 
     <data>
 
+        <import type="android.text.Html" />
         <import type="android.view.View" />
 
         <import type="java.text.NumberFormat" />
@@ -681,7 +682,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@{@string/based_on_selected_state_of(data.successResult.transactionInfo.buyerState)}"
+                    android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of,data.successResult.transactionInfo.buyerState))}"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_11sdp" />
 

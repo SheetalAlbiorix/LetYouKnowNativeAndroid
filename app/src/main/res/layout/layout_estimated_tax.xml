@@ -3,6 +3,10 @@
 
     <data>
 
+        <import type="android.text.Html" />
+
+        <import type="android.view.View" />
+
         <import type="java.text.NumberFormat" />
 
         <import type="java.util.Locale" />
@@ -73,6 +77,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="@{(taxData.estimatedRebates.equals(0.0)) ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -92,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(taxData.carSalesTax)}"
+                android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(taxData.estimatedRebates)}"
                 android:textColor="@color/color545d64"
                 android:textSize="@dimen/_12sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -127,13 +132,12 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
-            android:id="@+id/tvSelectState"
             style="@style/regular"
+            android:id="@+id/tvSelectState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:text="@{@string/based_on_selected_state_of(selectState)}"
-            android:textColor="@color/color545d64"
-            android:textSize="@dimen/_12sdp" />
+            android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of,selectState))}"
+            android:textColor="@color/color545d64" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

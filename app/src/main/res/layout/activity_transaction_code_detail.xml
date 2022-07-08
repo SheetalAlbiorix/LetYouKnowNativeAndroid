@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html" />
 
         <import type="android.view.View" />
 
@@ -657,7 +658,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@{@string/based_on_selected_state_of_italic(data.buyerState)}"
+                        android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of_italic,data.buyerState))}"
                         android:textColor="@color/color545d64"
                         android:textSize="@dimen/_10sdp" />
 

@@ -26,9 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/_8sdp"
-        android:text="†Subject to the verification process by a matched dealer"
+        android:text="@string/subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"
         android:textColor="@color/color545d64"
         android:textSize="@dimen/_10sdp" />
+    <!--        android:text="†Subject to the verification process by a matched dealer"-->
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

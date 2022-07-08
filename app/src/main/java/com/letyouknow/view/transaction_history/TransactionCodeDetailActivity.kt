@@ -292,7 +292,7 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
             tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
                 .format(transData?.estimatedTotalRemainingBalance)
             tvBasedState.text =
-                getString(R.string.based_on_selected_state_of, transData?.buyerState)
+                Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
             ivDialogClose.setOnClickListener {
                 dismiss()
             }

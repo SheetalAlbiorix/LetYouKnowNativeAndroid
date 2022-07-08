@@ -110,10 +110,16 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private var imageId = "0"
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+
     var hubConnection: HubConnection? = null
     var isPercentShow = false
 
     private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    private lateinit var rebateViewModel: RebateViewModel
+    private lateinit var rebateResetViewModel: RebateResetViewModel
+    private lateinit var rebateListViewModel: RebateListViewModel
+    private lateinit var rebateCheckedViewModel: RebateCheckedViewModel
+
     var dollar = 0.0
 
     private var isFirstName = false
@@ -147,7 +153,10 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
         calculateTaxViewModel =
             ViewModelProvider(this)[CalculateTaxViewModel::class.java]
-
+        rebateViewModel = ViewModelProvider(this)[RebateViewModel::class.java]
+        rebateResetViewModel = ViewModelProvider(this)[RebateResetViewModel::class.java]
+        rebateListViewModel = ViewModelProvider(this)[RebateListViewModel::class.java]
+        rebateCheckedViewModel = ViewModelProvider(this)[RebateCheckedViewModel::class.java]
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -252,7 +261,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
 
         checkEmptyData()
-        dialogRebateDisc()
+        callRebateListAPI()
     }
 
     private fun broadcastIntent() {
@@ -1030,16 +1039,25 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 )
             }
             R.id.tvRebatesDisc -> {
-                dialogRebate.show()
+                if (arRebate.isNullOrEmpty()) {
+                    AppGlobal.alertError(
+                        this,
+                        getString(R.string.no_rebates_found, " " + yearModelMakeData.zipCode)
+                    )
+                } else {
+                    strRebate = Gson().toJson(arRebate)
+                    dialogRebate.show()
+                }
             }
             R.id.llRebate -> {
                 val pos = v.tag as Int
                 val data = adapterRebateDisc.getItem(pos)
                 data.isSelect = !data.isSelect!!
                 adapterRebateDisc.update(pos, data)
+                callCheckedRebateAPI()
             }
             R.id.tvCancelRebate -> {
-                val type: Type = object : TypeToken<java.util.ArrayList<RebateDiscData>?>() {}.type
+                val type: Type = object : TypeToken<ArrayList<RebateListData>?>() {}.type
                 arRebate = Gson().fromJson(strRebate, type)
                 for (i in 0 until arRebate.size) {
                     adapterRebateDisc.update(i, arRebate[i])
@@ -1047,11 +1065,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 dialogRebate.dismiss()
             }
             R.id.tvResetRebate -> {
-                for (i in 0 until arRebate.size) {
-                    arRebate[i].isSelect = false
-                    adapterRebateDisc.update(i, arRebate[i])
-                }
-                strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                callRebateResetAPI()
+
             }
             R.id.tvApplyRebate -> {
                 val arData = adapterRebateDisc.getAll()
@@ -1059,8 +1074,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
-                    strRebate = Gson().toJson(arRebate)
-                    dialogRebate.dismiss()
+                    callApplyRebateAPI()
                 }
             }
         }
@@ -1703,6 +1717,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    if (calculateTaxData.estimatedRebates != 0.0)
+                        data.estimatedRebates = calculateTaxData.estimatedRebates
                     binding.taxData = data
                     calculateTaxData = data
                 }
@@ -2067,20 +2083,20 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
     private lateinit var adapterRebateDisc: RebateDiscAdapter
     private lateinit var dialogRebate: Dialog
-    private var arRebate: ArrayList<RebateDiscData> = ArrayList()
+    private var arRebate: ArrayList<RebateListData> = ArrayList()
     private var strRebate = ""
 
-    private fun dialogRebateDisc() {
+    private fun dialogRebateDisc(arData: ArrayList<RebateListData>) {
         dialogRebate = Dialog(this, R.style.FullScreenDialog)
         dialogRebate.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogRebate.setCancelable(true)
-        dialogRebate.setCanceledOnTouchOutside(true)
+        dialogRebate.setCancelable(false)
+        dialogRebate.setCanceledOnTouchOutside(false)
         dialogRebate.setContentView(R.layout.dialog_rebate_disc)
         dialogRebate.run {
             adapterRebateDisc =
                 RebateDiscAdapter(R.layout.list_item_rebate_disc, this@UCDDealSummaryStep3Activity)
             dialogRebate.rvRebate.adapter = adapterRebateDisc
-            adapterRebateDisc.addAll(getRebateData())
+            adapterRebateDisc.addAll(arData)
 
             tvCancelRebate.setOnClickListener(this@UCDDealSummaryStep3Activity)
             tvResetRebate.setOnClickListener(this@UCDDealSummaryStep3Activity)
@@ -2089,18 +2105,6 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         setLayoutParam(dialogRebate)
     }
 
-
-    private fun getRebateData(): ArrayList<RebateDiscData> {
-        arRebate.add(RebateDiscData("Empl Disc†: \$4,500", false))
-        arRebate.add(RebateDiscData("Student†: \$1,500", false))
-        arRebate.add(RebateDiscData("Loyalty†: \$500", false))
-        arRebate.add(RebateDiscData("Military†: \$2,500", false))
-        arRebate.add(RebateDiscData("Financing†: \$3,200", false))
-        arRebate.add(RebateDiscData("Rebate ALL†: \$3,000", false))
-        arRebate.add(RebateDiscData("LYK Promo: \$1,000", false))
-        strRebate = Gson().toJson(arRebate)
-        return arRebate
-    }
 
     private fun showApplyEmptyDialog() {
         val dialog = Dialog(this, R.style.FullScreenDialog)
@@ -2114,5 +2118,205 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         }
         setLayoutParam(dialog)
         dialog.show()
+    }
+
+    //rebate api
+    private fun callApplyRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
+            map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
+            map[ApiConstant.lykDollars] = dollar
+            map[ApiConstant.stateAbbr] = state
+            rebateViewModel.rebateApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                    strRebate = Gson().toJson(arRebate)
+                    dialogRebate.dismiss()
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //reset rebate Reset api
+    private fun callRebateResetAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
+            map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
+            map[ApiConstant.lykDollars] = dollar
+            map[ApiConstant.stateAbbr] = state
+            rebateResetViewModel.rebateResetApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                    strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                    for (i in 0 until arRebate.size) {
+                        arRebate[i].isSelect = false
+                        arRebate[i].isOtherSelect = false
+                        arRebate[i].isGray = false
+                        adapterRebateDisc.update(i, arRebate[i])
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //rebate list api
+    private fun callRebateListAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+
+            rebateListViewModel.rebateListApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    arRebate = ArrayList()
+                    if (data.isNotEmpty()) {
+                        arRebate = data
+                        dialogRebateDisc(data)
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //checked rebate api
+    private fun callCheckedRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            rebateCheckedViewModel.rebateCheckApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    if (!data.autoCheckList.isNullOrEmpty()) {
+                        for (i in 0 until data.autoCheckList.size) {
+                            for (j in 0 until adapterRebateDisc.itemCount) {
+                                if (adapterRebateDisc.getItem(j).rebateId == data.autoCheckList[i]) {
+                                    val dataCheck = adapterRebateDisc.getItem(j)
+                                    dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
+                                    adapterRebateDisc.update(j, dataCheck)
+                                }
+                            }
+                        }
+                    }
+                    if (!data.grayOutList.isNullOrEmpty()) {
+                        for (i in 0 until data.grayOutList.size) {
+                            for (j in 0 until adapterRebateDisc.itemCount) {
+                                if (adapterRebateDisc.getItem(j).rebateId == data.grayOutList[i]) {
+                                    val dataGray = adapterRebateDisc.getItem(j)
+                                    dataGray.isGray = true
+                                    adapterRebateDisc.update(j, dataGray)
+                                }
+                            }
+                        }
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 }

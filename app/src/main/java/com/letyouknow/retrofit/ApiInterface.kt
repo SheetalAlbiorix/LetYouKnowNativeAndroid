@@ -277,4 +277,11 @@ interface ApiInterface {
 
     @POST("rebate/reset")
     fun rebateReset(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/getlist")
+    fun rebateGetList(@Body request: HashMap<String, Any>): Call<ArrayList<RebateListData>>
+
+    @POST("rebate/CheckAvailability")
+    fun checkRebate(@Body request: HashMap<String, Any>): Call<RebateCheckedData>
+
 }

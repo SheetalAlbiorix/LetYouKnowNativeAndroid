@@ -425,8 +425,8 @@
     <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
-    <string name="based_on_selected_state_of"><font size="9"><sup>‡</sup></font> <sub>Based on your selected state of %1s</sub></string>
-    <string name="based_on_selected_state_of_italic"><i><font size="9"><sup>‡</sup></font> Based on your selected state of %1s</i></string>
+    <string name="based_on_selected_state_of"> <![CDATA[<sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font>]]></string>
+    <string name="based_on_selected_state_of_italic"><![CDATA[<i><sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font></i>]]></string>
     <string name="adjusted_lyk_price">Adjusted LYK Price:</string>
     <string name="doc_fee">Doc Fee:</string>
     <string name="prepayment_by_lyk">Prepayment (by LYK):</string>
@@ -438,4 +438,6 @@
     <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
     <string name="rebatesDisc">Rebates/Disc</string>
     <string name="estimated_discount">Estimated Discount<font size="10"><sup>‡</sup></font>:</string>
+    <string name="no_rebates_found">No Rebates Found For Your Zip Code of %1s</string>
+    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.]]></string>
 </resources>

@@ -112,5 +112,11 @@ class ApiConstant {
         var DealId = "DealId"
         var ProductId1 = "ProductId"
         var RebateList = "RebateList"
+        var Zipcode1 = "Zipcode"
+        var VehicleYearId1 = "VehicleYearId"
+        var VehicleMakeId1 = "VehicleMakeId"
+        var VehicleModelId1 = "VehicleModelId"
+        var VehicleTrimId1 = "VehicleTrimId"
+        var stateAbbr = "stateAbbr"
     }
 }

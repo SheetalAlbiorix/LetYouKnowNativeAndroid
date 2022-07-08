@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -494,7 +495,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
                 .format(transData?.estimatedTotalRemainingBalance)
             tvBasedState.text =
-                getString(R.string.based_on_selected_state_of, transData?.buyerState)
+                Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
@@ -603,7 +604,7 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                     llDollarRec.visibility = View.GONE
                 }
                 tvBasedStateRec.text =
-                    getString(R.string.based_on_selected_state_of, data?.buyerState)
+                    Html.fromHtml(getString(R.string.based_on_selected_state_of, data?.buyerState))
             }
         }
         setLayoutParam(dialog)

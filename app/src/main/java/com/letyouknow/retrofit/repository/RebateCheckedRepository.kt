@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.R
-import com.letyouknow.model.CalculateTaxData
+import com.letyouknow.model.RebateCheckedData
 import com.letyouknow.retrofit.RetrofitClient
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
@@ -14,18 +14,18 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 
 
-object RebateResetRepository {
-    fun rebateResetApiCall(
+object RebateCheckedRepository {
+    fun rebateCheckApiCall(
         context: Activity,
         request: HashMap<String, Any>
-    ): MutableLiveData<CalculateTaxData> {
-        AppGlobal.printRequestAuth("Add RebateReset req", Gson().toJson(request))
-        val rebateData = MutableLiveData<CalculateTaxData>()
+    ): MutableLiveData<RebateCheckedData> {
+        AppGlobal.printRequestAuth("Add RebateCheck req", Gson().toJson(request))
+        val rebateData = MutableLiveData<RebateCheckedData>()
 //        request
-        val call = RetrofitClient.apiInterface.rebateReset(request)
+        val call = RetrofitClient.apiInterface.checkRebate(request)
 
-        call.enqueue(object : Callback<CalculateTaxData> {
-            override fun onFailure(call: Call<CalculateTaxData>, t: Throwable) {
+        call.enqueue(object : Callback<RebateCheckedData> {
+            override fun onFailure(call: Call<RebateCheckedData>, t: Throwable) {
                 Constant.dismissLoader()
                 if (t is SocketTimeoutException) {
                     AppGlobal.alertError(
@@ -37,13 +37,13 @@ object RebateResetRepository {
             }
 
             override fun onResponse(
-                call: Call<CalculateTaxData>,
-                response: Response<CalculateTaxData>,
+                call: Call<RebateCheckedData>,
+                response: Response<RebateCheckedData>,
             ) {
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
                     if (response.body() == null) {
-                        rebateData.value = CalculateTaxData()
+                        rebateData.value = RebateCheckedData()
                     } else {
                         // Log.v("referral Resp : ", Gson().toJson(response.body()))
                         rebateData.value = data!!
@@ -57,7 +57,7 @@ object RebateResetRepository {
                 } else {
                     // Log.v("referral Resp : ", response.toString())
                     Constant.dismissLoader()
-                    rebateData.value = CalculateTaxData()
+                    rebateData.value = RebateCheckedData()
                 }
             }
         })
