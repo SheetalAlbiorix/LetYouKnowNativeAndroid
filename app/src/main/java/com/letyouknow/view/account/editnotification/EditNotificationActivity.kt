@@ -124,9 +124,9 @@ class EditNotificationActivity : BaseActivity(), View.OnClickListener {
                 Constant.showLoader(this)
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Email_NOTI] = adapterEditNotification.getItem(0).isSelect!!
-            map[ApiConstant.SMS] = adapterEditNotification.getItem(1).isSelect!!
-            map[ApiConstant.PushNotification] = adapterEditNotification.getItem(2).isSelect!!
+            map[ApiConstant.Email_NOTI] = false
+            map[ApiConstant.SMS] = false
+            map[ApiConstant.PushNotification] = adapterEditNotification.getItem(0).isSelect!!
             //Log.e("request", Gson().toJson(map))
             notificationOptionsUpdateViewModel.notificationOptionUpdateApiCall(this, map)!!
                 .observe(this, {

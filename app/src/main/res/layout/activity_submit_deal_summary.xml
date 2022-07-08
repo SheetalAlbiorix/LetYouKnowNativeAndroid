@@ -5,6 +5,7 @@
 
     <data>
 
+        <import type="android.text.Html" />
         <import type="android.view.View" />
 
         <import type="java.text.NumberFormat" />
@@ -22,6 +23,10 @@
         <variable
             name="userName"
             type="String" />
+
+        <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
 
     </data>
 
@@ -426,7 +431,90 @@
                               android:textSize="@dimen/_12sdp" />-->
 
                     </TableRow>
+
+                    <TableRow android:layout_marginTop="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_taxes"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(taxData.carSalesTax)}"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_reg_non"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(taxData.nonTaxRegFee)}"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_total_remaining_balance"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(taxData.estimatedTotalPrice)}"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
+
+                    </TableRow>
                 </TableLayout>
+
+                <TextView
+                    android:id="@+id/tvDealerReceipt"
+                    style="@style/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_button3"
+                    android:paddingStart="@dimen/_25sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_25sdp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="@string/dealer_receipt"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
 
                 <TextView
                     style="@style/medium"
@@ -459,7 +547,6 @@
                             tool:text="@{@string/account_last_4digit(data.successResult.transactionInfo.paymentMethod,data.successResult.transactionInfo.paymentLast4)}" />
 
                         <TextView
-
                             android:text="@{data.successResult.transactionInfo.vehicleInteriorColor}"
                             android:textColor="@color/color3e5365"
                             android:textSize="@dimen/_12sdp"
@@ -490,6 +577,7 @@
                     </TableRow>
 
                 </TableLayout>
+
 
                 <TextView
                     style="@style/medium"
@@ -588,6 +676,15 @@
                     android:text="@string/this_person_must"
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of,data.successResult.transactionInfo.buyerState))}"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_11sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/btnFindYourCar"

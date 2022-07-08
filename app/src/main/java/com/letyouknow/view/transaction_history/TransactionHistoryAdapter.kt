@@ -79,6 +79,8 @@ class TransactionHistoryAdapter(layout: Int, val clickListener: View.OnClickList
             tvSeeMore.setOnClickListener(clickListener)
             llTransaction.tag = position
             llTransaction.setOnClickListener(clickListener)
+            tvDealerReceipt.tag = position
+            tvDealerReceipt.setOnClickListener(clickListener)
 
         }
     }

@@ -112,6 +112,7 @@ class Constant {
         var ARG_IS_LYK_SHOW = "ARG_IS_LYK_SHOW"
         var ARG_MSRP_RANGE = "ARG_MSRP_RANGE"
         var ARG_DEAL_ID = "ARG_DEAL_ID"
+        var ARG_CAL_TAX_DATA = "ARG_CAL_TAX_DATA"
         var ARG_IS_FROM_LYK = "ARG_IS_FROM_LYK"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
@@ -295,7 +296,7 @@ class Constant {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     val str = s?.toString()
-                    if (str?.length!! >= 0) {
+                    if (str?.length!! > 0) {
                         edtText.setBackgroundResource(R.drawable.bg_edittext)
                         errorText.visibility = View.GONE
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
@@ -514,6 +515,10 @@ class Constant {
             })
         }
 
+
+
+
+
         fun setErrorBorder(edtView: EditText, tvError: TextView) {
             edtView.requestFocus()
             edtView.setBackgroundResource(R.drawable.bg_edittext_error)
@@ -524,5 +529,7 @@ class Constant {
             edtText.setBackgroundResource(R.drawable.bg_edittext)
             errorText.visibility = View.GONE
         }
+
+
     }
 }

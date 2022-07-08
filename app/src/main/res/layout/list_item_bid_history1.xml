@@ -243,23 +243,51 @@
             android:textSize="@dimen/_15sdp"
             tool:text="$0.00" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSeeMore"
-            style="@style/medium"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/bg_button3"
-            android:gravity="center_horizontal"
-            android:paddingStart="@dimen/_30sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_30sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:text="@string/see_details"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_13sdp" />
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDealerReceipt"
+                style="@style/medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button3"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/_30sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_30sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:text="@string/dealer_receipt"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSeeMore"
+                style="@style/medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_button3"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/_30sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_30sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:text="@string/my_receipt"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>

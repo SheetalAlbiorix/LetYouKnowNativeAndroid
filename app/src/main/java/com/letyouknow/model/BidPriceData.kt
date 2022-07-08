@@ -22,6 +22,18 @@ data class BidPriceData(
     val vehicleInStockCheckInput: VehicleInStockCheckInput? = VehicleInStockCheckInput(),
     val isPackageNone: Boolean? = false,
     val searchRadius: String? = "",
+    val adjustedLYKPrice: Double? = 0.0,
+    val carSalesTax: Double? = 0.0,
+    val nonTaxRegFee: Double? = 0.0,
+    val estimatedTotalRemainingBalance: Double? = 0.0,
+    val documentationFee: Double? = 0.0,
+    val discount: Double? = 0.0,
+    val lykDollar: Double? = 0.0,
+    val prePaymentToDealer: Double? = 0.0,
+    val remainingBalance: Double? = 0.0,
+    val lykFee: Double? = 0.0,
+    val reservationPrepayment: Double? = 0.0,
+    val buyerState: String? = "",
 ) : Serializable
 
 data class VehicleInStockCheckInput(

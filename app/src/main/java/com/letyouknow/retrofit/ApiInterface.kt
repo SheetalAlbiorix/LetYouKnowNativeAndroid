@@ -263,4 +263,25 @@ interface ApiInterface {
 
     @GET("activematching/deal/{dealId}")
     fun activeMatchingDeal(@Path(value = "dealId") token: String?): Call<ActiveMatchingData>
+
+    @GET("tax/calculateTax")
+    fun calculateTax(
+        @Query("priceBid") priceBid: Double?,
+        @Query("promocodeDiscount") promoCodeDiscount: Double?,
+        @Query("lykDollars") lykDollars: Double?,
+        @Query("abbrev") abbrev: String?
+    ): Call<CalculateTaxData>
+
+    @POST("rebate")
+    fun rebate(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/reset")
+    fun rebateReset(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/getlist")
+    fun rebateGetList(@Body request: HashMap<String, Any>): Call<ArrayList<RebateListData>>
+
+    @POST("rebate/CheckAvailability")
+    fun checkRebate(@Body request: HashMap<String, Any>): Call<RebateCheckedData>
+
 }
