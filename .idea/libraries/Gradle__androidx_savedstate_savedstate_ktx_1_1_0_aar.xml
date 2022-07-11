@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.savedstate:savedstate-ktx:1.1.0@aar">
     <CLASSES>
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e24af5e9ed2a21df6e6adb9350bc5361/transformed/jetified-savedstate-ktx-1.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e24af5e9ed2a21df6e6adb9350bc5361/transformed/jetified-savedstate-ktx-1.1.0/res" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/be7419c7a6e48a1d6e0ba1f5b7748a07/transformed/jetified-savedstate-ktx-1.1.0/res" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/f1abd50de3033cbfa7c1a2f6e6c10e3f/transformed/jetified-savedstate-ktx-1.1.0/AndroidManifest.xml" />
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/f1abd50de3033cbfa7c1a2f6e6c10e3f/transformed/jetified-savedstate-ktx-1.1.0/jars/classes.jar!/" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/f1abd50de3033cbfa7c1a2f6e6c10e3f/transformed/jetified-savedstate-ktx-1.1.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/f1abd50de3033cbfa7c1a2f6e6c10e3f/transformed/jetified-savedstate-ktx-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

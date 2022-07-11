@@ -4,9 +4,9 @@
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/57e60a76682ce722f375f4167ebe6d07/transformed/browser-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/57e60a76682ce722f375f4167ebe6d07/transformed/browser-1.0.0/jars/classes.jar!/" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/57e60a76682ce722f375f4167ebe6d07/transformed/browser-1.0.0/res" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/57e60a76682ce722f375f4167ebe6d07/transformed/browser-1.0.0/AndroidManifest.xml" />
-      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/57e60a76682ce722f375f4167ebe6d07/transformed/browser-1.0.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

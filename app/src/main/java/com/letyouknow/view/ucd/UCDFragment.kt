@@ -453,6 +453,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         prefSearchDealData.isUCDSelZipCode = true
                         setPrefZipCodeData()
                         setLCDPrefData()
+                        setPrefLYKLCDData()
                     } catch (e: Exception) {
                     }
                 }
@@ -1093,6 +1094,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    setPrefLYKLCDData()
 //                    setRadius()
                 }
                 setSpinnerLayoutPos(position, spYear, requireActivity())
@@ -1123,6 +1125,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    setPrefLYKLCDData()
 //                    setRadius()
                 }
             }
@@ -1149,6 +1152,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    setPrefLYKLCDData()
 //                    setRadius()
                 }
             }
@@ -1172,6 +1176,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     else
                         setExteriorColor()
                     setInteriorColor()
+                    setPrefLYKLCDData()
 //                    setRadius()
                 }
             }
@@ -1194,6 +1199,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     else
                         setInteriorColor()
 
+                    setPrefLYKLCDData()
 //                    setRadius()
                 }
             }
@@ -1210,6 +1216,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setErrorVisibleGone()
                     callRadiusAPI()
                 }
+                setPrefLYKLCDData()
 
             }
             R.id.spRadius -> {
@@ -1221,6 +1228,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setPrefData()
                     setErrorVisibleGone()
                 }
+                setPrefLYKLCDData()
             }
         }
     }
@@ -1667,38 +1675,27 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun setLCDPrefData() {
         val prefUCD = pref?.getSearchDealData()
         val lcdData = pref?.getOneDealNearYouData()
-        if (isValidZipCode && !prefUCD?.isUCDSel!! && prefUCD.isUCDSelZipCode!!) {
-            if ((TextUtils.isEmpty(lcdData?.zipCode) || prefUCD.zipCode == lcdData?.zipCode) && !lcdData?.isLCD!!) {
+        val prefLYK = pref?.getSubmitPriceData()
+        if (!lcdData?.isLCD!! && !prefUCD?.isUCDSel!! && prefUCD.isUCDSelZipCode!!) {
+            if (isValidZipCode) {
                 lcdData.zipCode = prefUCD.zipCode
                 lcdData.isZipCode = true
-            }
-            if ((TextUtils.isEmpty(lcdData?.yearId) || prefUCD.yearId == lcdData?.yearId) && !lcdData?.isLCD!!) {
                 lcdData.yearId = prefUCD.yearId
                 lcdData.yearStr = prefUCD.yearStr
-            }
-            if ((TextUtils.isEmpty(lcdData?.makeId) || prefUCD.makeId == lcdData?.makeId) && !lcdData?.isLCD!!) {
                 lcdData.makeId = prefUCD.makeId
                 lcdData.makeStr = prefUCD.makeStr
-            }
-            if ((TextUtils.isEmpty(lcdData?.modelId) || prefUCD.modelId == lcdData?.modelId) && !lcdData?.isLCD!!) {
                 lcdData.modelId = prefUCD.modelId
                 lcdData.modelStr = prefUCD.modelStr
-            }
-            if ((TextUtils.isEmpty(lcdData?.trimId) || prefUCD.trimId == lcdData?.trimId) && !lcdData?.isLCD!!) {
                 lcdData.trimId = prefUCD.trimId
                 lcdData.trimStr = prefUCD.trimStr
-            }
-
-            if ((TextUtils.isEmpty(lcdData?.extColorId) || prefUCD.extColorId == lcdData?.extColorId) && !lcdData?.isLCD!!) {
                 lcdData.extColorId = prefUCD.extColorId
                 lcdData.extColorStr = prefUCD.extColorStr
-            }
-
-            if ((TextUtils.isEmpty(lcdData?.intColorId) || prefUCD.intColorId == lcdData?.intColorId) && !lcdData?.isLCD!!) {
                 lcdData.intColorId = prefUCD.intColorId
                 lcdData.intColorStr = prefUCD.intColorStr
+                lcdData.packagesData = prefLYK?.packagesData
+                lcdData.optionsData = prefLYK?.optionsData
+                setLCDPrefData(lcdData!!)
             }
-            setLCDPrefData(lcdData!!)
         } else {
             if (!lcdData?.isLCD!!) {
                 setLCDPrefData(PrefOneDealNearYouData())
@@ -1715,6 +1712,71 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
         pref?.setOneDealNearYou(date)
-        startHandler()
+    }
+
+    private fun setPrefLYKLCDData() {
+        setPrefUCDtoLCD()
+        setPrefUCDtoLYK()
+    }
+
+    private fun setPrefUCDtoLCD() {
+        val prefUCD = pref?.getSearchDealData()
+        val prefLCD = pref?.getOneDealNearYouData()
+        val prefLYK = pref?.getSubmitPriceData()
+
+        if (!prefLYK?.isLYK!! && !prefLCD?.isLCD!!) {
+            if (isValidZipCode) {
+                prefLCD.zipCode = prefUCD?.zipCode
+                prefLCD.isZipCode = true
+                prefLCD.yearId = prefUCD?.yearId
+                prefLCD.yearStr = prefUCD?.yearStr
+                prefLCD.makeId = prefUCD?.makeId
+                prefLCD.makeStr = prefUCD?.makeStr
+                prefLCD.modelId = prefUCD?.modelId
+                prefLCD.modelStr = prefUCD?.modelStr
+                prefLCD.trimId = prefUCD?.trimId
+                prefLCD.trimStr = prefUCD?.trimStr
+                prefLCD.extColorId = prefUCD?.extColorId
+                prefLCD.extColorStr = prefUCD?.extColorStr
+                prefLCD.intColorId = prefUCD?.intColorId
+                prefLCD.intColorStr = prefUCD?.intColorStr
+                setLCDPrefData(prefLCD)
+            }
+        }
+    }
+
+    private fun setPrefUCDtoLYK() {
+        val prefUCD = pref?.getSearchDealData()
+        val prefLCD = pref?.getOneDealNearYouData()
+        val prefLYK = pref?.getSubmitPriceData()
+
+        if (!prefLYK?.isLYK!! && !prefLCD?.isLCD!!) {
+            prefLYK.zipCode = prefUCD?.zipCode
+            prefLYK.yearId = prefUCD?.yearId
+            prefLYK.yearStr = prefUCD?.yearStr
+            prefLYK.makeId = prefUCD?.makeId
+            prefLYK.makeStr = prefUCD?.makeStr
+            prefLYK.modelId = prefUCD?.modelId
+            prefLYK.modelStr = prefUCD?.modelStr
+            prefLYK.trimId = prefUCD?.trimId
+            prefLYK.trimStr = prefUCD?.trimStr
+            prefLYK.extColorId = prefUCD?.extColorId
+            prefLYK.extColorStr = prefUCD?.extColorStr
+            prefLYK.intColorId = prefUCD?.intColorId
+            prefLYK.intColorStr = prefUCD?.intColorStr
+            prefLYK.radius = prefUCD?.searchRadius
+            setUCDtoLYKPrefData(prefLYK)
+        }
+    }
+
+    private fun setUCDtoLYKPrefData(lykData: PrefSubmitPriceData) {
+        pref?.setSubmitPriceData(Gson().toJson(lykData))
+        setLYKCurrentTime()
+    }
+
+    private fun setLYKCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
     }
 }

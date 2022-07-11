@@ -1,11 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-crashlytics-ndk:18.2.10@aar">
     <CLASSES>
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/c45182f1ff785167c066e8e6cd6643a2/transformed/jetified-firebase-crashlytics-ndk-18.2.10/res" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/877ebf058a05fdf6afca08b93299a3e0/transformed/jetified-firebase-crashlytics-ndk-18.2.10/res" />
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/35caf0a238dde4cdbbad634ff51b2ea3/transformed/jetified-firebase-crashlytics-ndk-18.2.10/jars/classes.jar!/" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/35caf0a238dde4cdbbad634ff51b2ea3/transformed/jetified-firebase-crashlytics-ndk-18.2.10/AndroidManifest.xml" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/35caf0a238dde4cdbbad634ff51b2ea3/transformed/jetified-firebase-crashlytics-ndk-18.2.10/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/35caf0a238dde4cdbbad634ff51b2ea3/transformed/jetified-firebase-crashlytics-ndk-18.2.10/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.google.firebase/firebase-crashlytics-ndk/18.2.10/e5017ec5f8a7853ba7fd8fee9fe782d8136d6a1c/firebase-crashlytics-ndk-18.2.10-javadoc.jar!/" />

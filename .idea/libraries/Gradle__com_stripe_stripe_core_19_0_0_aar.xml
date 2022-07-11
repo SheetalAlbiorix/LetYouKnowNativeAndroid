@@ -1,9 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: com.stripe:stripe-core:19.0.0@aar">
     <CLASSES>
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/35924039020f14f8ec1c578e5f421316/transformed/jetified-stripe-core-19.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/35924039020f14f8ec1c578e5f421316/transformed/jetified-stripe-core-19.0.0/res" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/9d9c913ee66f871b3dc9b3c91de51172/transformed/jetified-stripe-core-19.0.0/res" />
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/10a5a339f11d0a823b09aad8b61260db/transformed/jetified-stripe-core-19.0.0/jars/classes.jar!/" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/10a5a339f11d0a823b09aad8b61260db/transformed/jetified-stripe-core-19.0.0/res" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/10a5a339f11d0a823b09aad8b61260db/transformed/jetified-stripe-core-19.0.0/AndroidManifest.xml" />
