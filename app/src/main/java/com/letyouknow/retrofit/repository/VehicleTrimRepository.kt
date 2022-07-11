@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.VehicleTrimData
 import com.letyouknow.retrofit.RetrofitClient
@@ -19,15 +20,48 @@ object VehicleTrimRepository {
         yearId: String?,
         makeId: String?,
         modelId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): MutableLiveData<ArrayList<VehicleTrimData>> {
+        var lowPriceParam = lowPrice
+        var highPriceParam = highPrice
+
+        if (type == 3) {
+            if (lowPrice != "ANY PRICE") {
+                lowPriceParam =
+                    if (TextUtils.isEmpty(
+                            lowPrice
+                        )
+                    ) "0" else lowPrice!!
+                highPriceParam =
+                    if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            } else {
+                lowPriceParam = null
+                highPriceParam = null
+            }
+        } else {
+            lowPriceParam = null
+            highPriceParam = null
+        }
         AppGlobal.printRequestAuth(
             "Trim req",
             "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", zipCode: " + zipCode
+                    + ", Type: " + type + " LowPrice: " + lowPriceParam + " HighPrice: " + highPriceParam
         )
+
         val getVehicleTrimData = MutableLiveData<ArrayList<VehicleTrimData>>()
         val call =
-            RetrofitClient.apiInterface.getVehicleTrims(productId, yearId, makeId, modelId, zipCode)
+            RetrofitClient.apiInterface.getVehicleTrims(
+                productId,
+                yearId,
+                makeId,
+                modelId,
+                zipCode,
+                lowPriceParam,
+                highPriceParam
+            )
 
         call.enqueue(object : Callback<ArrayList<VehicleTrimData>> {
             override fun onFailure(call: Call<ArrayList<VehicleTrimData>>, t: Throwable) {
