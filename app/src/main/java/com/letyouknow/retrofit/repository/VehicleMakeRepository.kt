@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.VehicleMakeData
 import com.letyouknow.retrofit.RetrofitClient
@@ -17,14 +18,44 @@ object VehicleMakeRepository {
         context: Context,
         productId: String?,
         yearId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): MutableLiveData<ArrayList<VehicleMakeData>> {
+        var lowPriceParam = lowPrice
+        var highPriceParam = highPrice
+
+        if (type == 3) {
+            if (lowPrice != "ANY PRICE") {
+                lowPriceParam =
+                    if (TextUtils.isEmpty(
+                            lowPrice
+                        )
+                    ) "0" else lowPrice!!
+                highPriceParam =
+                    if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            } else {
+                lowPriceParam = null
+                highPriceParam = null
+            }
+        } else {
+            lowPriceParam = null
+            highPriceParam = null
+        }
         AppGlobal.printRequestAuth(
             "make req",
             "productId: " + productId + ", yearId: " + yearId + ", zipCode: " + zipCode
+                    + ", Type: " + type + " LowPrice: " + lowPriceParam + " HighPrice: " + highPriceParam
         )
         val getVehicleMakeData = MutableLiveData<ArrayList<VehicleMakeData>>()
-        val call = RetrofitClient.apiInterface.getVehicleMake(productId, yearId, zipCode)
+        val call = RetrofitClient.apiInterface.getVehicleMake(
+            productId,
+            yearId,
+            zipCode,
+            lowPriceParam,
+            highPriceParam
+        )
 
         call.enqueue(object : Callback<ArrayList<VehicleMakeData>> {
             override fun onFailure(call: Call<ArrayList<VehicleMakeData>>, t: Throwable) {

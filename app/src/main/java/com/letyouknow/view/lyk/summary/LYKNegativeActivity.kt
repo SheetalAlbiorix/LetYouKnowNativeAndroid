@@ -25,21 +25,32 @@ import com.letyouknow.retrofit.viewmodel.RefreshTokenViewModel
 import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
+import com.letyouknow.utils.Constant.Companion.ARG_IS_FROM_LYK
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LYK_SHOW
+import com.letyouknow.utils.Constant.Companion.ARG_IS_UCD
 import com.letyouknow.utils.Constant.Companion.ARG_SUBMIT_DEAL
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
+import com.letyouknow.view.ucd.Items_LinearRVAdapter
+import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import kotlinx.android.synthetic.main.activity_lyk_negative.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.dialog_option_accessories.ivDialogClose
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogDisclosure
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogExteriorColor
+import kotlinx.android.synthetic.main.dialog_option_accessories.tvDialogOptions
+import kotlinx.android.synthetic.main.dialog_option_accessories_unlocked.*
 import kotlinx.android.synthetic.main.layout_lyk_negative.*
+import kotlinx.android.synthetic.main.layout_lyk_negative.tvPrice
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,6 +67,9 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
 
     private lateinit var isSoldViewModel: IsSoldViewModel
+
+    private lateinit var adapterUCD: Items_LinearRVAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lyk_negative)
@@ -103,6 +117,8 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             )
 
             yearModelMakeData.firstName = pref?.getUserData()?.firstName
+
+            binding.radius = yearModelMakeData.radius?.replace(" mi", "")
             binding.data = yearModelMakeData
             binding.dealData = submitDealData
             if (imageId == "0") {
@@ -115,16 +131,27 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             } else {
                 tvPriceMSRP.visibility = View.GONE
             }
+            ucdList()
         }
         llGallery.setOnClickListener(this)
         ll360.setOnClickListener(this)
-        tvViewOptions.setOnClickListener(this)
+        tvViewOptionsLYK.setOnClickListener(this)
         btnModify.setOnClickListener(this)
         btnWait.setOnClickListener(this)
         tvLightingCar.setOnClickListener(this)
         tvStep2.setOnClickListener(this)
         ivBack.visibility = View.GONE
         tvTitleTool.visibility = View.GONE
+    }
+
+    private fun ucdList() {
+        if (::submitDealData.isInitialized && !submitDealData.negativeResult?.ucdDeals.isNullOrEmpty()) {
+            val arUcd: ArrayList<FindUcdDealData?> = ArrayList()
+            arUcd.addAll(submitDealData.negativeResult?.ucdDeals!!)
+            adapterUCD = Items_LinearRVAdapter(arUcd, this, false)
+            adapterUCD.notifyDataSetChanged()
+            rvUnlockedCar.adapter = adapterUCD
+        }
     }
 
     override fun getViewActivity(): Activity {
@@ -148,9 +175,10 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
             R.id.btnWait -> {
                 callCheckVehicleStockAPI(false)
             }
-            R.id.tvViewOptions -> {
+            R.id.tvViewOptionsLYK -> {
                 popupOption()
             }
+
             R.id.llGallery -> {
                 startActivity<Gallery360TabActivity>(
                     Constant.ARG_TYPE_VIEW to 0,
@@ -162,6 +190,14 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
                     Constant.ARG_TYPE_VIEW to 2,
                     Constant.ARG_IMAGE_ID to imageId
                 )
+            }
+            R.id.tvSelectDeal -> {
+                val pos = v.tag as Int
+                callCheckVehicleStockUCDAPI(adapterUCD.getItem(pos))
+            }
+            R.id.tvViewOptions -> {
+                val pos = v.tag as Int
+                popupOptionUCD(adapterUCD.getItem(pos))
             }
         }
     }
@@ -218,6 +254,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         setLayoutParam(dialog)
         dialog.show()
     }
+
 
     private fun setLayoutParam(dialog: Dialog) {
         val layoutParams: WindowManager.LayoutParams = dialog.window?.attributes!!
@@ -430,5 +467,162 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun callCheckVehicleStockUCDAPI(data: FindUcdDealData) {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val pkgList = JsonArray()
+            for (i in 0 until data.vehiclePackages?.size!!) {
+                pkgList.add(data.vehiclePackages!![i].vehiclePackageID)
+            }
+            val accList = JsonArray()
+            for (i in 0 until data.vehicleAccessories?.size!!) {
+                accList.add(data.vehicleAccessories!![i].dealerAccessoryID)
+            }
+
+            val request = HashMap<String, Any>()
+            request[ApiConstant.Product] = 3
+            request[ApiConstant.YearId1] = data.yearId!!
+            request[ApiConstant.MakeId1] = data.makeId!!
+            request[ApiConstant.ModelID] = data.modelId!!
+            request[ApiConstant.TrimID] = data.trimId!!
+            request[ApiConstant.ExteriorColorID] = data.exteriorColorId!!
+            request[ApiConstant.InteriorColorID] = data.interiorColorId!!
+
+            request[ApiConstant.ZipCode1] = data.zipCode!!
+            request[ApiConstant.SearchRadius1] =
+                data.searchRadius!!
+
+            request[ApiConstant.AccessoryList] = accList
+            request[ApiConstant.PackageList1] = pkgList
+            //Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
+                .observe(this, Observer { dataStock ->
+                    Constant.dismissLoader()
+                    if (dataStock) {
+                        setUCDStock(data)
+                    } else {
+                        pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
+                        setCurrentUCDTime()
+                        startActivity(
+                            intentFor<MainActivity>(
+                                Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL,
+                                ARG_IS_UCD to true
+                            ).clearTask()
+                                .newTask()
+                        )
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setUCDStock(data: FindUcdDealData) {
+        yearModelMakeData.vehicleExtColorID = data.exteriorColorId
+        yearModelMakeData.vehicleExtColorID = data.interiorColorId
+        setPrefUcdDealData(data)
+        startActivity<UCDDealSummaryStep2Activity>(
+            Constant.ARG_UCD_DEAL to Gson().toJson(data),
+            ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
+            ARG_IMAGE_ID to imageId,
+            ARG_IS_FROM_LYK to true
+        )
+    }
+
+    private fun setPrefUcdDealData(data: FindUcdDealData) {
+        val prefSearchDealData = PrefSearchDealData()
+        prefSearchDealData.yearId = data.yearId
+        prefSearchDealData.yearStr = data.vehicleYear
+        prefSearchDealData.makeId = data.makeId
+        prefSearchDealData.makeStr = data.vehicleMake
+        prefSearchDealData.modelId = data.modelId
+        prefSearchDealData.modelStr = data.vehicleModel
+        prefSearchDealData.trimId = data.trimId
+        prefSearchDealData.trimStr = data.vehicleTrim
+        prefSearchDealData.extColorId = data.exteriorColorId
+        prefSearchDealData.extColorStr = data.vehicleExteriorColor
+        prefSearchDealData.intColorId = data.vehicleInventoryID
+        prefSearchDealData.intColorStr = data.vehicleInteriorColor
+        prefSearchDealData.zipCode = data.zipCode
+        prefSearchDealData.searchRadius = yearModelMakeData.radius
+        pref?.setSearchDealData(Gson().toJson(prefSearchDealData))
+        setCurrentUCDTime()
+    }
+
+    private fun setCurrentUCDTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSearchDealTime(date)
+    }
+
+    private fun popupOptionUCD(data: FindUcdDealData) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_option_accessories_unlocked)
+        dialog.run {
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+            data.run {
+                tvDialogVehicle.text = "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
+                tvDialogExteriorColor.text = vehicleExteriorColor
+                tvDialogInterior.text = vehicleInteriorColor
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+                if (packages.isEmpty())
+                    tvDialogPackages.visibility = View.GONE
+                tvDialogPackages.text = packages
+
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+                if (accessories.isEmpty())
+                    tvDialogOptions.visibility = View.GONE
+                tvDialogOptions.text = accessories
+                tvPrice.text = "Price: " + NumberFormat.getCurrencyInstance(Locale.US).format(price)
+
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosure.text =
+                            getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosure.text = condition
+                        } else {
+                            tvDialogDisclosure.text =
+                                tvDialogDisclosure.text.toString().trim() + ", " + condition
+                        }
+                    }
+                    tvDialogDisclosure.visibility = View.VISIBLE
+                    tvTitleDisclosure.visibility = View.VISIBLE
+                } else {
+                    tvDialogDisclosure.visibility = View.GONE
+                    tvTitleDisclosure.visibility = View.GONE
+                }
+            }
+
+        }
+        setLayoutParam(dialog)
+        dialog.show()
     }
 }

@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
 import com.letyouknow.model.LoginData
@@ -53,6 +54,7 @@ class AppGlobal {
 
         fun printRequestAuth(key: String, request: String) {
             Log.e("Auth", getAuthToken())
+            Log.e(key, Gson().toJson(request))
         }
 
         fun isNotEmpty(str: String?): Boolean {

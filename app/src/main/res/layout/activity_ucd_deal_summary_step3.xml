@@ -23,6 +23,14 @@
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
         <variable
+            name="selectState"
+            type="String" />
+
+        <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
             name="isCheck"
             type="Boolean" />
 
@@ -189,6 +197,8 @@
                     app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
                     app:pendingUCDShippingData="@{pendingUCDShippingData}"
                     layout="@layout/layout_ucd_deal_summary_step3"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"

@@ -21,4 +21,7 @@ data class PrefSearchDealData(
     var searchRadius: String? = "",
     var isUCDSel: Boolean? = false,
     var isUCDSelZipCode: Boolean? = false,
+    var ucdPriceRangeID: String? = "",
+    var lowerBorder: String? = "ANY PRICE",
+    var upperBorder: String? = "",
 ) : Serializable

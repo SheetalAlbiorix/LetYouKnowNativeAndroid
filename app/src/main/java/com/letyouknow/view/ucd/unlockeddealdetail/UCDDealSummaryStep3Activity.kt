@@ -15,10 +15,8 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.AdapterView
-import android.widget.CompoundButton
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.core.text.isDigitsOnly
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +33,7 @@ import com.letyouknow.retrofit.viewmodel.*
 import com.letyouknow.utils.*
 import com.letyouknow.utils.AppGlobal.Companion.arState
 import com.letyouknow.utils.AppGlobal.Companion.getTimeZoneOffset
+import com.letyouknow.utils.Constant.Companion.ARG_CAL_TAX_DATA
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IMAGE_URL
 import com.letyouknow.utils.Constant.Companion.ARG_IS_SHOW_PER
@@ -47,6 +46,7 @@ import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.DeliveryPreferenceAdapter
+import com.letyouknow.view.spinneradapter.RebateDiscAdapter
 import com.letyouknow.view.spinneradapter.StateSpinnerAdapter
 import com.letyouknow.view.ucd.submitdealsummary.SubmitDealSummaryActivity
 import com.microsoft.signalr.HubConnection
@@ -68,6 +68,7 @@ import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
+import kotlinx.android.synthetic.main.dialog_rebate_disc.*
 import kotlinx.android.synthetic.main.layout_dealer_shipping_info.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import kotlinx.android.synthetic.main.layout_ucd_deal_summary_step3.*
@@ -75,6 +76,7 @@ import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
+import java.lang.reflect.Type
 import java.text.NumberFormat
 import java.util.*
 
@@ -108,8 +110,27 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private var imageId = "0"
     private lateinit var submitPendingUCDDealViewModel: SubmitPendingUCDDealViewModel
     private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+
     var hubConnection: HubConnection? = null
     var isPercentShow = false
+
+    private lateinit var calculateTaxViewModel: CalculateTaxViewModel
+    private lateinit var rebateViewModel: RebateViewModel
+    private lateinit var rebateResetViewModel: RebateResetViewModel
+    private lateinit var rebateListViewModel: RebateListViewModel
+    private lateinit var rebateCheckedViewModel: RebateCheckedViewModel
+
+    var dollar = 0.0
+
+    private var isFirstName = false
+    private var isMiddleName = false
+    private var isLastName = false
+    private var isAddress1 = false
+    private var isCity = false
+    private var isZipCode = false
+    private var isState = false
+    private var isBuyerEmail = false
+    private var isBuyerMNo = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,8 +150,13 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         buyerViewModel = ViewModelProvider(this)[BuyerViewModel::class.java]
         submitDealUCDViewModel = ViewModelProvider(this)[SubmitDealUCDViewModel::class.java]
         submitPendingUCDDealViewModel =
-            ViewModelProvider(this).get(SubmitPendingUCDDealViewModel::class.java)
-
+            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
+        calculateTaxViewModel =
+            ViewModelProvider(this)[CalculateTaxViewModel::class.java]
+        rebateViewModel = ViewModelProvider(this)[RebateViewModel::class.java]
+        rebateResetViewModel = ViewModelProvider(this)[RebateResetViewModel::class.java]
+        rebateListViewModel = ViewModelProvider(this)[RebateListViewModel::class.java]
+        rebateCheckedViewModel = ViewModelProvider(this)[RebateCheckedViewModel::class.java]
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -162,6 +188,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             )
 
             binding.ucdData = ucdData
+            binding.selectState = state
             binding.pendingUcdData = pendingUCDData
             binding.pendingUCDShippingData = pendingUCDData
 //            callRefreshTokenApi()
@@ -213,6 +240,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         ivBack.setOnClickListener(this)
         ll360.setOnClickListener(this)
         llGallery.setOnClickListener(this)
+        tvRebatesDisc.setOnClickListener(this)
 //        startTimer()
 //        backButton()
         onStateChange()
@@ -233,6 +261,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         broadcastIntent()
         edtZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
+
+        checkEmptyData()
+        callRebateListAPI()
         setDeliveryOptions()
     }
 
@@ -423,6 +454,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
+                    callCalculateTaxAPI()
                 }
                 )
         } else {
@@ -591,7 +623,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 ARG_SUBMIT_DEAL to Gson().toJson(
                                     data
                                 ),
-                                ARG_TYPE_PRODUCT to "UnlockedCarDeals"
+                                ARG_TYPE_PRODUCT to "UnlockedCarDeals",
+                                ARG_CAL_TAX_DATA to Gson().toJson(calculateTaxData)
                             )
                             finish()
                         } else if (!data.foundMatch && data.isBadRequest!! && !data.isDisplayedPriceValid && data.somethingWentWrong) {
@@ -630,24 +663,6 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     }
                     dialogProgress?.dismiss()
 //                    }
-
-                    /* if (!data.isDisplayedPriceValid!! || !data.foundMatch!! || data.isBadRequest!! || data.somethingWentWrong!! || !data.canDisplaySuccessResult!!) {
-                         startActivity<UCDNegativeActivity>(
-                             ARG_UCD_DEAL to Gson().toJson(ucdData),
-                             ARG_YEAR_MAKE_MODEL to Gson().toJson(yearModelMakeData),
-                             ARG_IMAGE_URL to Gson().toJson(arImage),
-                             ARG_IMAGE_ID to imageId,
-                             ARG_IS_SHOW_PER to isPercentShow
-                         )
-                     } else {
-                         clearPrefSearchDealData()
-                         startActivity<SubmitDealSummaryActivity>(
-                             ARG_SUBMIT_DEAL to Gson().toJson(
-                                 data
-                             )
-                         )
-                     }
-                     finish()*/
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -713,7 +728,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 edtGiftCard.text.toString().trim(),
                 pendingUCDData.dealID
             )!!
-                .observe(this, { data ->
+                .observe(
+                    this
+                ) { data ->
                     Constant.dismissLoader()
                     if (data.discount!! > 0) {
                         tvPromoData.visibility = View.VISIBLE
@@ -722,6 +739,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                         ucdData.discount = data.discount!!
                         ucdData.promotionId = data.promotionID!!
                         binding.ucdData = ucdData
+                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         ucdData.discount = 0.0f
@@ -733,9 +751,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
+                        callCalculateTaxAPI()
                     }
                 }
-                )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
@@ -758,16 +776,15 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     }
 
     private fun onStateChange() {
-        Constant.onTextChangeFirstName(this, edtFirstName, tvErrorFirstName)
-        Constant.onTextChangeMiddleName(this, edtMiddleName)
-        Constant.onTextChangeLastName(this, edtLastName, tvErrorLastName)
-        Constant.onTextChangeAddress1(this, edtAddress1, tvErrorAddress1)
-        Constant.onTextChange(this, edtEmail, tvErrorEmailAddress)
-        Constant.onTextChange(this, edtPhoneNumber, tvErrorPhoneNo)
-        Constant.onTextChange(this, edtAddress1, tvErrorAddress1)
+        onTextChangeFirstName1(edtFirstName, tvErrorFirstName)
+        onTextChangeMiddleName1(edtMiddleName)
+        onTextChangeLastName1(edtLastName, tvErrorLastName)
+        onTextChangeAddress11(edtAddress1, tvErrorAddress1)
+        onTextChangeEmail(edtEmail, tvErrorEmailAddress)
+        onTextChangePhoneNo(edtPhoneNumber, tvErrorPhoneNo)
         Constant.onTextChange(this, edtAddress2, tvErrorAddress2)
-        Constant.onTextChangeCity(this, edtCity, tvErrorCity)
-        Constant.onTextChange(this, edtZipCode, tvErrorZipCode)
+        onTextChangeCity1(edtCity, tvErrorCity)
+        onTextChangeZipCode(edtZipCode, tvErrorZipCode)
 
         edtGiftCard.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -1040,7 +1057,45 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     Constant.ARG_IMAGE_ID to imageId
                 )
             }
+            R.id.tvRebatesDisc -> {
+                if (arRebate.isNullOrEmpty()) {
+                    AppGlobal.alertError(
+                        this,
+                        getString(R.string.no_rebates_found, " " + yearModelMakeData.zipCode)
+                    )
+                } else {
+                    strRebate = Gson().toJson(arRebate)
+                    dialogRebate.show()
+                }
+            }
+            R.id.llRebate -> {
+                val pos = v.tag as Int
+                val data = adapterRebateDisc.getItem(pos)
+                data.isSelect = !data.isSelect!!
+                adapterRebateDisc.update(pos, data)
+                callCheckedRebateAPI()
+            }
+            R.id.tvCancelRebate -> {
+                val type: Type = object : TypeToken<ArrayList<RebateListData>?>() {}.type
+                arRebate = Gson().fromJson(strRebate, type)
+                for (i in 0 until arRebate.size) {
+                    adapterRebateDisc.update(i, arRebate[i])
+                }
+                dialogRebate.dismiss()
+            }
+            R.id.tvResetRebate -> {
+                callRebateResetAPI()
 
+            }
+            R.id.tvApplyRebate -> {
+                val arData = adapterRebateDisc.getAll()
+                val arFilter = arData.filter { data -> data.isSelect == true }
+                if (arFilter.isNullOrEmpty()) {
+                    showApplyEmptyDialog()
+                } else {
+                    callApplyRebateAPI()
+                }
+            }
         }
     }
 
@@ -1360,6 +1415,9 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             R.id.spState -> {
                 val data = adapterState.getItem(position) as String
                 state = data
+                binding.selectState = state
+                isState = true
+                callCalculateTaxAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -1670,6 +1728,628 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 }
             }
         }.start()
+    }
+
+    private var calculateTaxData = CalculateTaxData()
+    private fun callCalculateTaxAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            calculateTaxViewModel.getCalculateTax(
+                this,
+                ucdData.price!!.toDouble(),
+                ucdData.discount!!.toDouble(),
+                dollar,
+                state
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    if (calculateTaxData.estimatedRebates != 0.0)
+                        data.estimatedRebates = calculateTaxData.estimatedRebates
+                    binding.taxData = data
+                    calculateTaxData = data
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkEmptyData() {
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.firstName)) {
+            isFirstName = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.middleName)) {
+            isMiddleName = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.lastName)) {
+            isLastName = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.address1)) {
+            isAddress1 = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.city)) {
+            isCity = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.zipcode)) {
+            isZipCode = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.phoneNumber)) {
+            isBuyerMNo = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.email)) {
+            isBuyerEmail = true
+        }
+        if (!TextUtils.isEmpty(pendingUCDData.buyer?.state)) {
+            isState = true
+        }
+    }
+
+    private fun onTextChangeFirstName1(
+        edtText: EditText,
+        errorText: TextView,
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.firstNameValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_first_name)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isFirstName = true
+                    setDisableVar()
+                } else {
+                    isFirstName = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangeMiddleName1(edtText: EditText) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                /*  val str = s?.toString()
+                  if (str?.length!! >= 0) {
+                      isMiddleName = true
+                      setDisableVar()
+                  } else {
+                      isMiddleName = false
+                      setDisableVar()
+                  }*/
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val str = edtText.text.toString().trim()
+
+                if (s != null) {
+                    if (str.length > 0) {
+                        if (!str.substring(s.length - 1)
+                                .isDigitsOnly() && Constant.middleNameValidatorText(str)
+                        ) {
+                            if (s.length > 1) {
+                                edtText.setText(s.subSequence(1, s.length))
+                                edtText.setSelection(1)
+                            }
+                        } else {
+                            edtText.setText("")
+                        }
+                        /* isMiddleName = true
+                         setDisableVar()*/
+                    } else {
+                        /*isMiddleName = false
+                        setDisableVar()*/
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun onTextChangeLastName1(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.lastNameValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_last_name)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isLastName = true
+                    setDisableVar()
+                } else {
+                    isLastName = false
+                    setDisableVar()
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangeAddress11(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (str.length == 0) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_addressline1)
+                    } else if (str.length > 1 && str.length < 3) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text =
+                            getString(R.string.address1_must_be_minimum_three_characters)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isAddress1 = true
+                    setDisableVar()
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
+                } else {
+                    isAddress1 = false
+                    setDisableVar()
+                    Constant.setErrorBorder(edtText, errorText)
+                    errorText.text = getString(R.string.enter_addressline1)
+                    //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,deActiveDrawable),null, null,  null)
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangeCity1(
+        edtText: EditText,
+        errorText: TextView
+    ) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    if (Constant.cityValidator(str)) {
+                        Constant.setErrorBorder(edtText, errorText)
+                        errorText.text = getString(R.string.enter_valid_City)
+                        errorText.visibility = View.VISIBLE
+                    } else {
+                        edtText.setBackgroundResource(R.drawable.bg_edittext)
+                        errorText.visibility = View.GONE
+                    }
+                    isCity = true
+                    setDisableVar()
+                } else {
+                    isCity = false
+                    setDisableVar()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangeEmail(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isBuyerEmail = true
+                    setDisableVar()
+                } else {
+                    isBuyerEmail = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangePhoneNo(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isBuyerMNo = true
+                    setDisableVar()
+                } else {
+                    isBuyerMNo = false
+                    setDisableVar()
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    private fun onTextChangeZipCode(edtText: EditText, errorText: TextView) {
+        edtText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val str = s?.toString()
+                if (str?.length!! > 0) {
+                    edtText.setBackgroundResource(R.drawable.bg_edittext)
+                    errorText.visibility = View.GONE
+                    isZipCode = true
+                    setDisableVar()
+                } else {
+                    isZipCode = false
+                    setDisableVar()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+
+    fun setDisableVar() {
+        if (isFirstName && isLastName && isAddress1 && isCity && isBuyerEmail && isBuyerMNo && isZipCode && isState) {
+            tvRebatesDisc.isEnabled = true
+            tvRebatesDisc.setBackgroundResource(R.drawable.bg_button)
+        } else {
+            tvRebatesDisc.isEnabled = false
+            tvRebatesDisc.setBackgroundResource(R.drawable.bg_button_disable)
+        }
+    }
+
+    private lateinit var adapterRebateDisc: RebateDiscAdapter
+    private lateinit var dialogRebate: Dialog
+    private var arRebate: ArrayList<RebateListData> = ArrayList()
+    private var strRebate = ""
+
+    private fun dialogRebateDisc(arData: ArrayList<RebateListData>) {
+        dialogRebate = Dialog(this, R.style.FullScreenDialog)
+        dialogRebate.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogRebate.setCancelable(false)
+        dialogRebate.setCanceledOnTouchOutside(false)
+        dialogRebate.setContentView(R.layout.dialog_rebate_disc)
+        dialogRebate.run {
+            adapterRebateDisc =
+                RebateDiscAdapter(R.layout.list_item_rebate_disc, this@UCDDealSummaryStep3Activity)
+            dialogRebate.rvRebate.adapter = adapterRebateDisc
+            adapterRebateDisc.addAll(arData)
+
+            tvCancelRebate.setOnClickListener(this@UCDDealSummaryStep3Activity)
+            tvResetRebate.setOnClickListener(this@UCDDealSummaryStep3Activity)
+            tvApplyRebate.setOnClickListener(this@UCDDealSummaryStep3Activity)
+        }
+        setLayoutParam(dialogRebate)
+    }
+
+
+    private fun showApplyEmptyDialog() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_inventory_availability)
+        dialog.run {
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+        }
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
+    //rebate api
+    private fun callApplyRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
+            map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
+            map[ApiConstant.lykDollars] = dollar
+            map[ApiConstant.stateAbbr] = state
+            rebateViewModel.rebateApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                    strRebate = Gson().toJson(arRebate)
+                    dialogRebate.dismiss()
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //reset rebate Reset api
+    private fun callRebateResetAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
+            map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
+            map[ApiConstant.lykDollars] = dollar
+            map[ApiConstant.stateAbbr] = state
+            rebateResetViewModel.rebateResetApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    binding.taxData = data
+                    calculateTaxData = data
+                    strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                    for (i in 0 until arRebate.size) {
+                        arRebate[i].isSelect = false
+                        arRebate[i].isOtherSelect = false
+                        arRebate[i].isGray = false
+                        adapterRebateDisc.update(i, arRebate[i])
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //rebate list api
+    private fun callRebateListAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+
+            rebateListViewModel.rebateListApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    arRebate = ArrayList()
+                    if (data.isNotEmpty()) {
+                        arRebate = data
+                        dialogRebateDisc(data)
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //checked rebate api
+    private fun callCheckedRebateAPI() {
+        if (Constant.isOnline(this)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+
+            val jsonRebate = JsonArray()
+            for (i in 0 until adapterRebateDisc.itemCount) {
+                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                }
+            }
+            val map: HashMap<String, Any> = HashMap()
+            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
+            map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
+            map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
+            map[ApiConstant.VehicleTrimId1] = yearModelMakeData.vehicleTrimID!!
+            map[ApiConstant.GuestId] = "0"
+            map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
+            map[ApiConstant.DealId] = ucdData.dealID!!
+            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.RebateList] = jsonRebate
+            rebateCheckedViewModel.rebateCheckApi(
+                this,
+                map
+            )!!
+                .observe(
+                    this
+                ) { data ->
+                    Constant.dismissLoader()
+                    if (!data.autoCheckList.isNullOrEmpty()) {
+                        for (i in 0 until data.autoCheckList.size) {
+                            for (j in 0 until adapterRebateDisc.itemCount) {
+                                if (adapterRebateDisc.getItem(j).rebateId == data.autoCheckList[i]) {
+                                    val dataCheck = adapterRebateDisc.getItem(j)
+                                    dataCheck.isGray = false
+                                    dataCheck.isOtherSelect = true
+                                    adapterRebateDisc.update(j, dataCheck)
+                                }
+                            }
+                        }
+                    }
+                    if (!data.grayOutList.isNullOrEmpty()) {
+                        for (i in 0 until data.grayOutList.size) {
+                            for (j in 0 until adapterRebateDisc.itemCount) {
+                                if (adapterRebateDisc.getItem(j).rebateId == data.grayOutList[i]) {
+                                    val dataGray = adapterRebateDisc.getItem(j)
+                                    dataGray.isGray = true
+                                    adapterRebateDisc.update(j, dataGray)
+                                }
+                            }
+                        }
+                    }
+                }
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter

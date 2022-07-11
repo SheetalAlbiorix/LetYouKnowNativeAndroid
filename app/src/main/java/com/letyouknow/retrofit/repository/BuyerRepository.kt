@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.letyouknow.model.BuyerInfoData
@@ -45,14 +46,33 @@ object BuyerRepository {
                     AppGlobal.isAuthorizationFailed(context)
                 } else if (response.code() == 400) {
                     // Log.v("buyer Resp ", response.toString())
-                    val dataError = Gson().fromJson(
-                        response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
-                        SubmitPriceErrorData::class.java
-                    )
-                    AppGlobal.alertError(
-                        context,
-                        dataError.title
-                    )
+                    if (!TextUtils.isEmpty(
+                            response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                        )
+                    ) {
+                        if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8()!!
+                                .contains("{")
+                        ) {
+                            val dataError = Gson().fromJson(
+                                response.errorBody()?.source()?.buffer?.snapshot()?.utf8(),
+                                SubmitPriceErrorData::class.java
+                            )
+                            AppGlobal.alertError(
+                                context,
+                                dataError.title
+                            )
+                        } else {
+                            AppGlobal.alertError(
+                                context,
+                                response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                            )
+                        }
+                    } else {
+                        AppGlobal.alertError(
+                            context,
+                            "Bad Request"
+                        )
+                    }
                 } else {
                     // Log.v("buyer Resp ", response.toString())
                     Constant.dismissLoader()

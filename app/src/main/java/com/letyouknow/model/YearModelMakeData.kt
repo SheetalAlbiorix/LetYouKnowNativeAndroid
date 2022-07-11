@@ -24,6 +24,8 @@ data class YearModelMakeData(
     var discount: Float? = 0.0f,
     var promotionId: String? = "",
     var initials: String? = "",
+    var LowPrice: String? = "",
+    var HighPrice: String? = "",
     var arPackages: ArrayList<VehiclePackagesData>? = ArrayList(),
     var arOptions: ArrayList<VehicleAccessoriesData>? = ArrayList()
 ) : Serializable

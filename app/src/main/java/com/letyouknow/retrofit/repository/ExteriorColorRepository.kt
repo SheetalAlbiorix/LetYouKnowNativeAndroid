@@ -1,6 +1,7 @@
 package com.letyouknow.retrofit.repository
 
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.letyouknow.model.ExteriorColorData
 import com.letyouknow.retrofit.RetrofitClient
@@ -12,7 +13,6 @@ import retrofit2.Response
 
 
 object ExteriorColorRepository {
-
     fun getExteriorColorCall(
         context: Context,
         productId: String?,
@@ -20,11 +20,33 @@ object ExteriorColorRepository {
         makeId: String?,
         modelId: String?,
         trimId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): MutableLiveData<ArrayList<ExteriorColorData>> {
+        var lowPriceParam = lowPrice
+        var highPriceParam = highPrice
+        if (type == 3) {
+            if (lowPrice != "ANY PRICE") {
+                lowPriceParam =
+                    if (TextUtils.isEmpty(
+                            lowPrice
+                        )
+                    ) "0" else lowPrice!!
+                highPriceParam =
+                    if (TextUtils.isEmpty(highPrice)) "9999999" else highPrice
+            } else {
+                lowPriceParam = null
+                highPriceParam = null
+            }
+        } else {
+            lowPriceParam = null
+            highPriceParam = null
+        }
         AppGlobal.printRequestAuth(
             "Ext req",
-            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "zipCode: " + zipCode
+            "ProductId: " + productId + ", " + "yearId: " + yearId + ", " + "makeId: " + makeId + ", " + "modelId: " + modelId + ", " + "trimId: " + trimId + ", " + "zipCode: " + zipCode + ", Type: " + type + " LowPrice: " + lowPriceParam + " HighPrice: " + highPriceParam
         )
         val getExteriorColorData = MutableLiveData<ArrayList<ExteriorColorData>>()
         val call = RetrofitClient.apiInterface.getVehicleExteriorColors(
@@ -33,7 +55,9 @@ object ExteriorColorRepository {
             makeId,
             modelId,
             trimId,
-            zipCode
+            zipCode,
+            lowPriceParam,
+            highPriceParam
         )
 
         call.enqueue(object : Callback<ArrayList<ExteriorColorData>> {

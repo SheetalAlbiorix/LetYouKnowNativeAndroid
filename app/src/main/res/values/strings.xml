@@ -236,6 +236,7 @@
     <string name="unlockedcardeals">UnlockedCarDeals:</string>
     <string name="search_summary">Search Summary</string>
     <string name="price_colon">Price : %1s$$</string>
+    <string name="price_colon1">Price:</string>
     <string name="miles_approximate_odometer_reading">%1s miles (approximate odometer reading)</string>
     <string name="proceed_to_review_page">PROCEED TO REVIEW PAGE</string>
     <string name="price_data">$%1$.2f</string>
@@ -410,5 +411,39 @@
     <string name="shipping_info_same_as_buyer_info">Shipping info same as buyer info</string>
     <string name="delivery_options">Delivery Options</string>
     <string name="shipping_info">Shipping Info</string>
+    <string name="any_price">ANY PRICE</string>
+    <string name="price_range_required">Price Range Required</string>
 
+    <string name="miles_within"><i>(%1s miles within %2s)</i></string>
+    <string name="year_new_cars">YEAR - NEW CARS</string>
+    <string name="make_title">MAKE</string>
+    <string name="model_title">MODEL</string>
+    <string name="trim_title">TRIM</string>
+    <string name="exterior_color_title">EXTERIOR COLOR</string>
+    <string name="interior_color_title">INTERIOR COLOR</string>
+    <string name="packages_title">PACKAGES</string>
+    <string name="options_accessories_title">OPTIONS &amp; ACCESSORIES </string>
+
+    <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
+    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
+    <string name="based_on_selected_state_of"> <![CDATA[<sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font>]]></string>
+    <string name="based_on_selected_state_of_italic"><![CDATA[<i><sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font></i>]]></string>
+    <string name="adjusted_lyk_price">Adjusted LYK Price:</string>
+    <string name="doc_fee">Doc Fee:</string>
+    <string name="prepayment_by_lyk">Prepayment (by LYK):</string>
+    <string name="prepayment">Prepayment</string>
+    <string name="prepayment_colon">Prepayment:</string>
+    <string name="registration_licensing_titling_fees">(registration, licensing &amp; titling fees)</string>
+    <string name="dealer_receipt">Dealer Receipt</string>
+    <string name="my_receipt">My\nReceipt</string>
+    <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
+    <string name="rebatesDisc">Rebates/Disc</string>
+    <string name="estimated_discount">Estimated Discount<font size="10"><sup>‡</sup></font>:</string>
+    <string name="no_rebates_found">No Rebates Found For Your Zip Code of %1s</string>
+    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.]]></string>
 </resources>

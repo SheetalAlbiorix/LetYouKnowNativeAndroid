@@ -172,6 +172,7 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvPriceBid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -100,6 +100,24 @@ class ApiConstant {
         var DeviceType = "DeviceType"
         var promotionID = "promotionID"
         var UserProfileId = "UserProfileId"
+        var priceBid = "priceBid"
+        var promocodeDiscount = "promocodeDiscount"
+        var lykDollars = "lykDollars"
+        var abbrev = "abbrev"
+        var VehicleYearID1 = "VehicleYearID"
+        var VehicleMakeID1 = "VehicleMakeID"
+        var VehicleModelID1 = "VehicleModelID"
+        var VehicleTrimID1 = "VehicleTrimID"
+        var GuestId = "GuestId"
+        var DealId = "DealId"
+        var ProductId1 = "ProductId"
+        var RebateList = "RebateList"
+        var Zipcode1 = "Zipcode"
+        var VehicleYearId1 = "VehicleYearId"
+        var VehicleMakeId1 = "VehicleMakeId"
+        var VehicleModelId1 = "VehicleModelId"
+        var VehicleTrimId1 = "VehicleTrimId"
+        var stateAbbr = "stateAbbr"
         var ShipToFirstName = "ShipToFirstName"
         var ShipToMiddleName = "ShipToMiddleName"
         var ShipToLastName = "ShipToLastName"
@@ -112,6 +130,12 @@ class ApiConstant {
         var ShipToZipcode = "ShipToZipcode"
         var ShipToCountry = "ShipToCountry"
         var ShipIt = "ShipIt"
-
+        var LowPrice = "LowPrice"
+        var HighPrice = "HighPrice"
+        var lowprice1 = "lowprice"
+        var highprice1 = "highprice"
     }
 }
+
+
+

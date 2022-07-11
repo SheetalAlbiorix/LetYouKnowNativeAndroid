@@ -32,6 +32,7 @@ import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_DEAL_ID
 import com.letyouknow.utils.Constant.Companion.ARG_IS_LCD
 import com.letyouknow.utils.Constant.Companion.ARG_IS_NOTIFICATION
+import com.letyouknow.utils.Constant.Companion.ARG_IS_UCD
 import com.letyouknow.utils.Constant.Companion.ARG_SEL_TAB
 import com.letyouknow.utils.Constant.Companion.ARG_TITLE
 import com.letyouknow.utils.Constant.Companion.ARG_TRANSACTION_CODE
@@ -571,6 +572,9 @@ class MainActivity : BaseActivity(),
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom3)
                     item.isChecked = true
                     loadFragment(UCDFragment(), getString(R.string.search_deals))
+                    if (intent.hasExtra(ARG_IS_UCD)) {
+                        showWarningDialog()
+                    }
                 }
             }
         } else {

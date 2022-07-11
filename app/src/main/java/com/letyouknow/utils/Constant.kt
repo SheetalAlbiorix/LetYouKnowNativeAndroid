@@ -61,10 +61,10 @@ class Constant {
         var PRIVACY_POLICY_LINK = "https://demo.letyouknow.com/privacypolicy"
 
         //        var PRIVACY_POLICY_LINK = "https://letyouknow.com/privacypolicy"
-        /*var HUB_CONNECTION_URL =
-            "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"*/
         var HUB_CONNECTION_URL =
-            "https://lyksignalrapi.azurewebsites.net/buyerhub"
+            "https://lyksignalrwebapidemo.azurewebsites.net/buyerhub"
+        /*var HUB_CONNECTION_URL =
+            "https://lyksignalrapi.azurewebsites.net/buyerhub"*/
 
         //            "https://lyksignalrwebapiprofessionaldev.azurewebsites.net/buyerhub"
         var REFERRAL_LINK = "https://www.lyk.com/user1/referral"
@@ -107,10 +107,13 @@ class Constant {
         var ARG_IS_SHOW_PER = "ARG_IS_SHOW_PER"
         var ARG_IS_BID = "ARG_IS_BID"
         var ARG_IS_LCD = "ARG_IS_LCD"
+        var ARG_IS_UCD = "ARG_IS_UCD"
         var ARG_TYPE_PRODUCT = "ARG_TYPE_PRODUCT"
         var ARG_IS_LYK_SHOW = "ARG_IS_LYK_SHOW"
         var ARG_MSRP_RANGE = "ARG_MSRP_RANGE"
         var ARG_DEAL_ID = "ARG_DEAL_ID"
+        var ARG_CAL_TAX_DATA = "ARG_CAL_TAX_DATA"
+        var ARG_IS_FROM_LYK = "ARG_IS_FROM_LYK"
 
         var TYPE_DEBIT_CREDIT_CARD = 1
         var TYPE_PAYPAL = 2
@@ -293,7 +296,7 @@ class Constant {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     val str = s?.toString()
-                    if (str?.length!! >= 0) {
+                    if (str?.length!! > 0) {
                         edtText.setBackgroundResource(R.drawable.bg_edittext)
                         errorText.visibility = View.GONE
                         //edtText.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(context,activeDrawable),null, null,  null)
@@ -512,6 +515,10 @@ class Constant {
             })
         }
 
+
+
+
+
         fun setErrorBorder(edtView: EditText, tvError: TextView) {
             edtView.requestFocus()
             edtView.setBackgroundResource(R.drawable.bg_edittext_error)
@@ -522,5 +529,7 @@ class Constant {
             edtText.setBackgroundResource(R.drawable.bg_edittext)
             errorText.visibility = View.GONE
         }
+
+
     }
 }

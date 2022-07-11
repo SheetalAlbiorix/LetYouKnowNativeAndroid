@@ -25,7 +25,7 @@ class TrimsSpinnerAdapter(val context: Context, var arList: ArrayList<VehicleTri
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val v = inflater.inflate(R.layout.list_item_spinner, null) as LinearLayoutCompat
-        if (position == 0) {
+        if (position == 0 && arList[0].trim == "TRIM") {
             v.llSpinner.visibility = View.GONE
         }
         v.tvTitle.text = arList[position].trim
