@@ -48,9 +48,5 @@ data class FindUcdDealData(
     val interiorColorId: String? = "",
     var discount: Float? = 0.0f,
     var imageUrl: String? = "",
-    var yearId: String? = "",
-    var makeId: String? = "",
-    var modelId: String? = "",
-    var trimId: String? = "",
     var isSelect: Boolean? = false
 ) : Serializable

@@ -1638,7 +1638,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     }
 
     private fun setClearData() {
-        tvYear.visibility = View.GONE
+//        tvYear.visibility = View.GONE
         spYear.visibility = View.VISIBLE
         setYear()
         setMake()

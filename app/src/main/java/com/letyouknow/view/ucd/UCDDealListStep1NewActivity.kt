@@ -184,7 +184,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                         adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
                         Log.e("data_length", data.size.toString())
                         arUnlocked.addAll(data)
-                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this)
+                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
                         adapterLinear.notifyDataSetChanged()
                         rvUnlockedCar.adapter = adapterLinear
                         callImageIdAPI()
