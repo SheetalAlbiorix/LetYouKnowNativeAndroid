@@ -38,6 +38,8 @@ data class TransactionHistoryData(
     var carSalesTax: Double? = 0.0,
     var nonTaxRegFee: Double? = 0.0,
     var estimatedTotalRemainingBalance: Double? = 0.0,
+    var estimatedRebates: Double? = 0.0,
+    var rebateDetails: String? = "",
     var documentationFee: Double? = 0.0,
     var discount: Double? = 0.0,
     var lykDollar: Double? = 0.0,
@@ -48,4 +50,5 @@ data class TransactionHistoryData(
     var vehiclePrice: Double? = 0.0,
     var remainingBalance: Double? = 0.0,
     var buyerState: String? = "",
-)
+
+    )

@@ -520,8 +520,6 @@ class AppGlobal {
             dialog.show()
         }
 
-    }
-
         fun setNoData(context: Context, spinner: Spinner) {
             Constant.dismissLoader()
             spinner.isEnabled = false

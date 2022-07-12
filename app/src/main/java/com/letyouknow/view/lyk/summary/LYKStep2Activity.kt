@@ -60,8 +60,8 @@ import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
+import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.layout_dealer_shipping_info.*
 import kotlinx.android.synthetic.main.layout_lyk_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
@@ -344,7 +344,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
                     dollar = data.toDouble()
-                    callCalculateTaxAPI()
+//                    callCalculateTaxAPI()
+                    callApplyRebateAPI()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -639,7 +640,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                         yearModelMakeData.discount = data.discount!!
                         yearModelMakeData.promotionId = data.promotionID!!
                         binding.data = yearModelMakeData
-                        callCalculateTaxAPI()
+//                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         yearModelMakeData.discount = 0.0f
@@ -651,7 +653,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
-                        callCalculateTaxAPI()
+//                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
                     }
                 }
         } else {
@@ -908,6 +911,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    isShowRebateDis = true
                     callApplyRebateAPI()
                 }
             }
@@ -1126,7 +1130,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 state = data
                 binding.selectState = state
                 isState = true
-                callCalculateTaxAPI()
+//                callCalculateTaxAPI()
+                callApplyRebateAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -1728,15 +1733,13 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     isBuyerEmail = false
                     setDisableVar()
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-
             }
-
         })
     }
+
 
     private fun onTextChangePhoneNo(edtText: EditText, errorText: TextView) {
         edtText.addTextChangedListener(object : TextWatcher {
@@ -1760,13 +1763,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     isBuyerMNo = false
                     setDisableVar()
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-
             }
-
         })
     }
 
@@ -1851,6 +1851,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
 
     //rebate api
+    private var isShowRebateDis = false
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -1889,10 +1890,13 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    if (!isShowRebateDis)
+                        data.estimatedRebates = 0.0
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
-                    dialogRebate.dismiss()
+                    if (::dialogRebate.isInitialized)
+                        dialogRebate.dismiss()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -2051,7 +2055,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter
     private var arDeliveryPref = arrayListOf("Pick up at dealer", "Ship it to me")
@@ -2282,5 +2285,5 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             }
         }
     }
-
 }
+

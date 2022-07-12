@@ -476,6 +476,27 @@
 
                     </TableRow>
 
+                    <TableRow android:visibility="@{taxData.estimatedRebates > 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_discount"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            style="@style/bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(taxData.estimatedRebates)}"
+                            android:textColor="@color/color3e5365"
+                            android:textSize="@dimen/_12sdp"
+                            tool:text="2011" />
+
+                    </TableRow>
                     <TableRow>
 
                         <TextView

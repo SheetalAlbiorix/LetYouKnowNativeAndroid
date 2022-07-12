@@ -589,6 +589,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal"
+                        android:visibility="@{data.estimatedRebates > 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_discount"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:text="@{'-'+NumberFormat.getCurrencyInstance(Locale.US).format(data.estimatedRebates)}"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:orientation="horizontal">
 
                         <TextView

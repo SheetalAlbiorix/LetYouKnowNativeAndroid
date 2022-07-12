@@ -76,8 +76,8 @@ import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
-import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
+import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.layout_dealer_shipping_info.*
 import kotlinx.android.synthetic.main.layout_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
@@ -492,7 +492,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
 
-
     private fun callDollarAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -512,7 +511,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
                     dollar = data.toDouble()
-                    callCalculateTaxAPI()
+//                    callCalculateTaxAPI()
+                    callApplyRebateAPI()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -783,7 +783,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         dataLCDDeal.discount = data.discount!!
                         dataLCDDeal.promotionId = data.promotionID!!
                         binding.ucdData = dataLCDDeal
-                        callCalculateTaxAPI()
+//                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         dataLCDDeal.discount = 0.0f
@@ -795,7 +796,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
-                        callCalculateTaxAPI()
+//                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
                     }
                 }
         } else {
@@ -1089,6 +1091,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    isShowRebateDis = true
                     callApplyRebateAPI()
                 }
             }
@@ -1393,7 +1396,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 state = data
                 binding.selectState = state
                 isState = true
-                callCalculateTaxAPI()
+//                callCalculateTaxAPI()
+                callApplyRebateAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -1868,40 +1872,6 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    private fun callRebateAPI() {
-        if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
-
-            val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.VehicleYearID1] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.VehicleMakeID1] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.VehicleModelID1] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.VehicleTrimID1] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.GuestId] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.DealId] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.ProductId1] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.RebateList] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.priceBid] = dataLCDDeal.price!!.toDouble()
-            map[ApiConstant.promocodeDiscount] = dataLCDDeal.discount!!.toDouble()
-            map[ApiConstant.lykDollars] = dollar
-            map[ApiConstant.abbrev] = state
-            rebateViewModel.rebateApi(
-                this,
-                map
-            )!!
-                .observe(
-                    this
-                ) { data ->
-                    Constant.dismissLoader()
-                }
-        } else {
-            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private fun checkEmptyData() {
         if (!TextUtils.isEmpty(dataPendingDeal.buyer?.firstName)) {
@@ -2089,6 +2059,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         tvSaveShipping.setOnClickListener(this)
         onStateChangeShipping()
     }
+
     private fun setDeliveryPref() {
         adapterDeliveryPref = DeliveryPreferenceAdapter(
             this,
@@ -2470,6 +2441,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     }
 
     //rebate api
+    private var isShowRebateDis = false
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -2478,9 +2450,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             val jsonRebate = JsonArray()
-            for (i in 0 until adapterRebateDisc.itemCount) {
-                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
-                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+            if (::adapterRebateDisc.isInitialized) {
+                for (i in 0 until adapterRebateDisc.itemCount) {
+                    if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                        jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                    }
                 }
             }
             val map: HashMap<String, Any> = HashMap()
@@ -2507,10 +2481,13 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    if (!isShowRebateDis)
+                        data.estimatedRebates = 0.0
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
-                    dialogRebate.dismiss()
+                    if (::dialogRebate.isInitialized)
+                        dialogRebate.dismiss()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()

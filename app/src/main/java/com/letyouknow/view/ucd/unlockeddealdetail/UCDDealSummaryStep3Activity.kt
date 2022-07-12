@@ -474,7 +474,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
-                    callCalculateTaxAPI()
+                    callApplyRebateAPI()
+//                    callCalculateTaxAPI()
                 }
                 )
         } else {
@@ -760,7 +761,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                         ucdData.discount = data.discount!!
                         ucdData.promotionId = data.promotionID!!
                         binding.ucdData = ucdData
-                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
+//                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         ucdData.discount = 0.0f
@@ -772,7 +774,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
-                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
+//                        callCalculateTaxAPI()
                     }
                 }
         } else {
@@ -1141,6 +1144,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.tvResetRebate -> {
                 callRebateResetAPI()
+            }
             R.id.llCreditCard -> {
                 isStripe = true
                 isGooglePay = false
@@ -1160,14 +1164,13 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 isSamsungPay = true
                 setGoogleSamsung()
             }
-
-            }
             R.id.tvApplyRebate -> {
                 val arData = adapterRebateDisc.getAll()
                 val arFilter = arData.filter { data -> data.isSelect == true }
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    isShowRebateDis = true
                     callApplyRebateAPI()
                 }
             }
@@ -1228,16 +1231,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 .newTask()
                         )
                     }
-
                 }
                 )
-
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun clearPrefSearchDealData() {
         pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
@@ -1503,7 +1502,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 state = data
                 binding.selectState = state
                 isState = true
-                callCalculateTaxAPI()
+//                callCalculateTaxAPI()
+                callApplyRebateAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -2239,6 +2239,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     }
 
     //rebate api
+    private var isShowRebateDis = false
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -2247,9 +2248,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             val jsonRebate = JsonArray()
-            for (i in 0 until adapterRebateDisc.itemCount) {
-                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
-                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+            if (::adapterRebateDisc.isInitialized) {
+                for (i in 0 until adapterRebateDisc.itemCount) {
+                    if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                        jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                    }
                 }
             }
             val map: HashMap<String, Any> = HashMap()
@@ -2275,10 +2278,13 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    if (!isShowRebateDis)
+                        data.estimatedRebates = 0.0
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
-                    dialogRebate.dismiss()
+                    if (::dialogRebate.isInitialized)
+                        dialogRebate.dismiss()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
