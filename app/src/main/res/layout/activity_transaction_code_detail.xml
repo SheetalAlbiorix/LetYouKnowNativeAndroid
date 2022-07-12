@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.Html" />
 
         <import type="android.view.View" />
 
@@ -527,6 +528,92 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_taxes"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(data.carSalesTax)}"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_reg_nontax_fees"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(data.nonTaxRegFee)}"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <TextView
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/registration_licensing_titling_fees"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/estimated_total_remaining_balance"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            style="@style/regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(data.estimatedTotalRemainingBalance)}"
+                            android:textColor="@color/color545d64"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:orientation="horizontal">
 
@@ -565,6 +652,32 @@
                             android:textSize="@dimen/_10sdp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <TextView
+                        android:id="@+id/tvBasedState"
+                        style="@style/regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of_italic,data.buyerState))}"
+                        android:textColor="@color/color545d64"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/tvDealerReceipt"
+                        style="@style/bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/bg_button3"
+                        android:paddingStart="@dimen/_25sdp"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_25sdp"
+                        android:paddingBottom="@dimen/_8sdp"
+                        android:text="@string/dealer_receipt"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat

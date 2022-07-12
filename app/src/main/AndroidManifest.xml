@@ -35,6 +35,9 @@
             android:name=".view.demo.DemoActivity"
             android:exported="false" />
         <activity
+            android:name=".view.ucd.ucdstep1.UCDStep1Activity"
+            android:exported="false" />
+        <activity
             android:name=".view.ucd.UCDDealListStep1NewActivity"
             android:exported="false" />
         <activity

@@ -19,6 +19,10 @@
             type="com.letyouknow.model.SubmitPendingUcdData" />
 
         <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
             name="dollar"
             type="Float" />
 
@@ -49,6 +53,10 @@
         <variable
             name="pendingUCDShippingData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
+        <variable
+            name="selectState"
+            type="String" />
+
 
     </data>
 
@@ -209,6 +217,8 @@
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
                     app:isStripe="@{isStripe}"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:isCheck="@{isCheck}"
                     app:isShowShippingCheckBox="@{isShowShippingCheckBox}"

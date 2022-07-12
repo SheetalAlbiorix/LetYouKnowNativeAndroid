@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.letyouknow.LetYouKnowApp
 import com.letyouknow.R
 import com.letyouknow.model.LoginData
@@ -53,6 +54,7 @@ class AppGlobal {
 
         fun printRequestAuth(key: String, request: String) {
             Log.e("Auth", getAuthToken())
+            Log.e(key, Gson().toJson(request))
         }
 
         fun isNotEmpty(str: String?): Boolean {
@@ -489,6 +491,19 @@ class AppGlobal {
             edtView.filters = EmojiFilter.getFilter()
         }
 
+        fun showWarningDialog(context: Context) {
+            val dialog = Dialog(context, R.style.FullScreenDialog)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dialog_car_not_available)
+            dialog.run {
+                Handler().postDelayed({
+                    dismiss()
+                }, 3000)
+            }
+            setLayoutParam(dialog)
+            dialog.show()
+        }
         fun alertPaymentError(context: Context, message: String?) {
             val dialog = Dialog(context, R.style.FullScreenDialog)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -507,4 +522,10 @@ class AppGlobal {
 
     }
 
+        fun setNoData(context: Context, spinner: Spinner) {
+            Constant.dismissLoader()
+            spinner.isEnabled = false
+            showWarningDialog(context)
+        }
+    }
 }

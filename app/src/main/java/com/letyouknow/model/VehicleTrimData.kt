@@ -4,7 +4,7 @@ import java.io.Serializable
 
 
 data class VehicleTrimData(
-    val vehicleTrimID: String? = "",
+    var vehicleTrimID: String? = "",
     var trim: String? = "",
     val msrp: String? = "",
     val isInInventory: String? = "",

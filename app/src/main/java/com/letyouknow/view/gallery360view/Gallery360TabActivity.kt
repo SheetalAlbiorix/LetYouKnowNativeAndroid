@@ -183,7 +183,6 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getInteriorAPI(imageId: String?) {
-
         val request = HashMap<String, Any>()
         request[ApiConstant.ImageId] = imageId!!
         request[ApiConstant.ImageProduct] = ApiConstant.stillSet
@@ -197,7 +196,5 @@ class Gallery360TabActivity : BaseActivity(), View.OnClickListener {
                     arImages.addAll(data)
             }
             )
-
     }
-
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -21,6 +22,7 @@ import com.letyouknow.databinding.ActivityBidHistoryBinding
 import com.letyouknow.model.*
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.*
+import com.letyouknow.utils.AppGlobal
 import com.letyouknow.utils.Constant
 import com.letyouknow.utils.Constant.Companion.ARG_IS_BID
 import com.letyouknow.utils.Constant.Companion.ARG_TRANSACTION_CODE
@@ -29,6 +31,9 @@ import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
 import kotlinx.android.synthetic.main.activity_bid_history.*
 import kotlinx.android.synthetic.main.dialog_bid_history.*
+import kotlinx.android.synthetic.main.dialog_bid_history.ivDialogClose
+import kotlinx.android.synthetic.main.dialog_dealer_receipt.*
+import kotlinx.android.synthetic.main.dialog_my_receipt.*
 import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
@@ -97,7 +102,8 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
             R.id.tvSeeMore -> {
                 val pos = v.tag as Int
                 val data = adapterBidHistory.getItem(pos)
-                popupBidHistory(data)
+//                popupBidHistory(data)
+                popupMyReceipt(data)
             }
             R.id.llBidDetail -> {
                 val pos = v.tag as Int
@@ -107,6 +113,10 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     callVehiclePackagesAPI(data)
                 }
+            }
+            R.id.tvDealerReceipt -> {
+                val pos = v.tag as Int
+                showDealerReceiptDialog(adapterBidHistory.getItem(pos))
             }
         }
     }
@@ -454,5 +464,150 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
         }
 
         return productType
+    }
+
+    private fun showDealerReceiptDialog(transData: BidPriceData) {
+        val dialogReceipt = Dialog(this, R.style.FullScreenDialog)
+        dialogReceipt.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogReceipt.setCancelable(false)
+        dialogReceipt.setContentView(R.layout.dialog_dealer_receipt)
+        dialogReceipt.run {
+            tvAdjustLYKPrice.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.adjustedLYKPrice)
+            tvDocFee.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.documentationFee)
+                }"
+            tvPrePayment.text =
+                "-${
+                    NumberFormat.getCurrencyInstance(Locale.US)
+                        .format(transData?.prePaymentToDealer)
+                }"
+            tvRemainingBal.text =
+                NumberFormat.getCurrencyInstance(Locale.US).format(transData?.remainingBalance)
+
+            tvEstimatedTax.text =
+                "+${NumberFormat.getCurrencyInstance(Locale.US).format(transData?.carSalesTax)}"
+            tvEstimatedReg.text =
+                "+${
+                    NumberFormat.getCurrencyInstance(Locale.US).format(transData?.nonTaxRegFee)
+                }"
+            tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
+                .format(transData?.estimatedTotalRemainingBalance)
+            tvBasedState.text =
+                Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
+            ivDialogClose.setOnClickListener {
+                dismiss()
+            }
+        }
+        setLayoutParam(dialogReceipt)
+        dialogReceipt.show()
+    }
+
+    private fun popupMyReceipt(data: BidPriceData) {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setContentView(R.layout.dialog_my_receipt)
+        dialog.run {
+            ivDialogCloseRec.setOnClickListener {
+                dismiss()
+            }
+            data.run {
+                tvDialogSuccessUnSuccessRec.text =
+                    if (TextUtils.isEmpty(transactionCode)) resources.getString(R.string.un_successful_match) else resources.getString(
+                        R.string.successful_match
+                    )
+                tvDialogTitleRec.text =
+                    "$vehicleYear $vehicleMake $vehicleModel $vehicleTrim"
+                tvDialogExteriorColorRec.text =
+                    if (TextUtils.isEmpty(vehicleExteriorColor)) "ANY" else vehicleExteriorColor
+                tvDialogInteriorColorRec.text =
+                    if (TextUtils.isEmpty(vehicleInteriorColor)) "ANY" else vehicleInteriorColor
+                var accessories = ""
+                for (i in 0 until vehicleAccessories?.size!!) {
+                    accessories = if (i == 0) {
+                        vehicleAccessories[i].accessory!!
+                    } else {
+                        accessories + ",\n" + vehicleAccessories[i].accessory!!
+                    }
+                }
+
+                var packages = ""
+                for (i in 0 until vehiclePackages?.size!!) {
+                    packages = if (i == 0) {
+                        vehiclePackages[i].packageName!!
+                    } else {
+                        packages + ",\n" + vehiclePackages[i].packageName!!
+                    }
+                }
+
+
+                tvDialogPackageRec.text = if (packages.isEmpty()) "ANY" else packages
+                tvDialogOptionsRec.text = if (accessories.isEmpty()) "ANY" else accessories
+                tvDialogZipCodeRec.text = zipCode
+                tvDialogRadiusRec.text = if (searchRadius == "6000") "All" else searchRadius
+                tvDialogSubmittedDateRec.text = timeStampFormatted
+                if (AppGlobal.isNotEmpty(miles) || AppGlobal.isNotEmpty(condition)) {
+                    if (AppGlobal.isNotEmpty(miles))
+                        tvDialogDisclosureRec.text =
+                            context.getString(R.string.miles_approximate_odometer_reading, miles)
+                    if (AppGlobal.isNotEmpty(condition)) {
+                        if (AppGlobal.isEmpty(miles)) {
+                            tvDialogDisclosureRec.text = condition
+                        } else {
+                            tvDialogDisclosureRec.text =
+                                tvDialogDisclosureRec.text.toString().trim() + ", " + condition
+                        }
+
+                    }
+                    llDiscRec.visibility = View.VISIBLE
+                } else {
+                    llDiscRec.visibility = View.GONE
+                }
+
+                tvPriceRec.text =
+                    NumberFormat.getCurrencyInstance(Locale.US).format(data?.price)
+                tvPrePaymentRec.text =
+                    "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.reservationPrepayment)
+                    }"
+                tvRemainingBalRec.text =
+                    NumberFormat.getCurrencyInstance(Locale.US).format(data?.remainingBalance)
+
+                tvEstimatedTaxRec.text =
+                    "+${NumberFormat.getCurrencyInstance(Locale.US).format(data?.carSalesTax)}"
+                tvEstimatedRegRec.text =
+                    "+${
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data?.nonTaxRegFee)
+                    }"
+                tvEstimatedTotalRec.text = NumberFormat.getCurrencyInstance(Locale.US)
+                    .format(data?.estimatedTotalRemainingBalance)
+                if (data.discount != null && data.discount != 0.0) {
+                    tvPromoRec.text = "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.discount)
+                    }"
+                    llPromoRec.visibility = View.VISIBLE
+                } else {
+                    llPromoRec.visibility = View.GONE
+                }
+                if (data.lykDollar != null && data.lykDollar != 0.0) {
+                    tvDollarsRec.text = "-${
+                        NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(data?.lykDollar)
+                    }"
+                    llDollarRec.visibility = View.VISIBLE
+                } else {
+                    llDollarRec.visibility = View.GONE
+                }
+                tvBasedStateRec.text =
+                    Html.fromHtml(getString(R.string.based_on_selected_state_of, data?.buyerState))
+            }
+        }
+        setLayoutParam(dialog)
+        dialog.show()
     }
 }

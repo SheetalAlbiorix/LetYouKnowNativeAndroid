@@ -7,7 +7,6 @@ import com.letyouknow.view.gallery360view.gallery.ExteriorFragment
 import com.letyouknow.view.gallery360view.view360.View360Fragment
 
 class Gallery360PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
     override fun getCount(): Int = 2
     private var arTitle = arrayListOf("IMAGES", "360 VIEW")
 
@@ -28,5 +27,4 @@ class Gallery360PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm
             }
         }
     }
-
 }

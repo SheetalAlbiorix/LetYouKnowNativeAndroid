@@ -17,7 +17,10 @@ class ExteriorColorViewModel : ViewModel() {
         makeId: String?,
         modelId: String?,
         trimId: String?,
-        zipCode: String?
+        zipCode: String?,
+        type: Int? = 1,
+        lowPrice: String? = "",
+        highPrice: String? = ""
     ): LiveData<ArrayList<ExteriorColorData>>? {
         liveData = ExteriorColorRepository.getExteriorColorCall(
             context,
@@ -26,7 +29,10 @@ class ExteriorColorViewModel : ViewModel() {
             makeId,
             modelId,
             trimId,
-            zipCode
+            zipCode,
+            type,
+            lowPrice,
+            highPrice
         )
         return liveData
     }

@@ -18,11 +18,21 @@ class BidHistoryAdapter(layout: Int, val clickListener: View.OnClickListener) :
 
     override fun onBind(view: View, position: Int, data: BidPriceData) {
         view.run {
+
+            tvDealerReceipt.tag = position
+            tvDealerReceipt.setOnClickListener(clickListener)
             tvSeeMore.tag = position
             tvSeeMore.setOnClickListener(clickListener)
             llBidDetail.tag = position
             llBidDetail.setOnClickListener(clickListener)
             data.run {
+                if (TextUtils.isEmpty(transactionCode)) {
+                    tvDealerReceipt.visibility = View.GONE
+                    tvSeeMore.visibility = View.GONE
+                } else {
+                    tvDealerReceipt.visibility = View.VISIBLE
+                    tvSeeMore.visibility = View.VISIBLE
+                }
                 tvSuccessUnSuccess.text =
                     if (TextUtils.isEmpty(transactionCode)) resources.getString(R.string.un_successful_match) else resources.getString(
                         R.string.successful_match

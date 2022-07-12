@@ -39,6 +39,14 @@
             type="Boolean" />
 
         <variable
+            name="selectState"
+            type="String" />
+
+        <variable
+            name="taxData"
+            type="com.letyouknow.model.CalculateTaxData" />
+
+        <variable
             name="isCheck"
             type="Boolean" />
 
@@ -209,6 +217,8 @@
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
                     app:isStripe="@{isStripe}"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}"
                     app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"

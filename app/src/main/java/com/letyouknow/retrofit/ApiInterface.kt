@@ -22,14 +22,23 @@ interface ApiInterface {
     @GET("vehiclecriteria/getvehicleyears")
     fun getVehicleYears(
         @Query("productId") productId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): Call<ArrayList<VehicleYearData>>
+
+    @GET("vehiclecriteria/getvehicleyears")
+    fun getVehicleYears1(
+        @FieldMap options: Map<String, String>?
     ): Call<ArrayList<VehicleYearData>>
 
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleMakeData>>
 
     @GET("vehiclecriteria/getvehiclemodels")
@@ -37,7 +46,9 @@ interface ApiInterface {
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleModelData>>
 
     @GET("vehiclecriteria/getvehicletrims")
@@ -46,7 +57,9 @@ interface ApiInterface {
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleTrimData>>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
@@ -56,7 +69,9 @@ interface ApiInterface {
         @Query("makeId") makeId: String?,
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<ExteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleinteriorcolors")
@@ -67,7 +82,9 @@ interface ApiInterface {
         @Query("modelId") modelId: String?,
         @Query("trimId") trimId: String?,
         @Query("exteriorColorId") exteriorColorId: String?,
-        @Query("zipCode") zipCode: String?
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
     ): Call<ArrayList<InteriorColorData>>
 
 
@@ -263,4 +280,28 @@ interface ApiInterface {
 
     @GET("activematching/deal/{dealId}")
     fun activeMatchingDeal(@Path(value = "dealId") token: String?): Call<ActiveMatchingData>
+
+    @GET("tax/calculateTax")
+    fun calculateTax(
+        @Query("priceBid") priceBid: Double?,
+        @Query("promocodeDiscount") promoCodeDiscount: Double?,
+        @Query("lykDollars") lykDollars: Double?,
+        @Query("abbrev") abbrev: String?
+    ): Call<CalculateTaxData>
+
+    @POST("rebate")
+    fun rebate(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/reset")
+    fun rebateReset(@Body request: HashMap<String, Any>): Call<CalculateTaxData>
+
+    @POST("rebate/getlist")
+    fun rebateGetList(@Body request: HashMap<String, Any>): Call<ArrayList<RebateListData>>
+
+    @POST("rebate/CheckAvailability")
+    fun checkRebate(@Body request: HashMap<String, Any>): Call<RebateCheckedData>
+
+
+    @GET("vehiclecriteria/PriceRange")
+    fun priceRange(): Call<ArrayList<PriceRangeData>>
 }
