@@ -65,7 +65,7 @@ object VehicleYearRepository {
 
                 val data = response.body()
                 if (response.code() == 200 || response.code() == 201) {
-                    //  Log.v("year Resp : ", Gson().toJson(response.body()))
+                    //  Log.v("year Resp : ", Gson().toJSon(response.body()))
                     getVehicleYearData.value = data!!
                 } else {
                     // Log.v("year Resp : ", response.toString())

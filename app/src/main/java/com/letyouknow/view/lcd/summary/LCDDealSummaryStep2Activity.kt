@@ -1586,7 +1586,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     paymentIntentId = paymentIntent.id!!
                     callSubmitDealLCDAPI(true)
                 } else {
-                    Toast.makeText(this, "Payment Processing", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Patment Processing", Toast.LENGTH_LONG).show()
                 }
             }
             StripeIntent.Status.RequiresConfirmation -> {

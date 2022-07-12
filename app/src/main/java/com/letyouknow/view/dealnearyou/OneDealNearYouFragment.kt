@@ -220,7 +220,8 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
 
     private lateinit var handler: Handler
     private fun setPrefData() {
-        pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
+        prefOneDealNearYouData.isLCD = isValidZipCode
+        pref?.setOneDealNearYouData(Gson().toJson(if (isValidZipCode) prefOneDealNearYouData else PrefOneDealNearYouData()))
         setCurrentTime()
     }
 
@@ -414,6 +415,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                             }
                             isValidZipCode = data
                             prefOneDealNearYouData.isZipCode = isValidZipCode!!
+                            setPrefLykUcdData()
                         } catch (e: Exception) {
                         }
                     }
@@ -1532,7 +1534,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLykUcdData()
                 }
                 AppGlobal.setSpinnerLayoutPos(position, spYear, requireActivity())
             }
@@ -1563,7 +1565,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLykUcdData()
                 }
             }
             R.id.spModel -> {
@@ -1590,7 +1592,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLykUcdData()
                 }
             }
             R.id.spTrim -> {
@@ -1600,6 +1602,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 AppGlobal.setSpinnerLayoutPos(position, spTrim, requireActivity())
                 if (data.trim != "TRIM") {
                     prefOneDealNearYouData.trimId = data.vehicleTrimID
+                    prefOneDealNearYouData.trimStr = data.trim
                     prefOneDealNearYouData.trimStr = data.trim
                     prefOneDealNearYouData.extColorId = ""
                     prefOneDealNearYouData.intColorId = ""
@@ -1614,7 +1617,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     setInteriorColor()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLykUcdData()
                 }
             }
             R.id.spExteriorColor -> {
@@ -1636,7 +1639,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     callInteriorColorAPI()
                     setPackages(false)
                     setOptions(false)
-
+                    setPrefLykUcdData()
                 }
             }
             R.id.spInteriorColor -> {
@@ -1653,11 +1656,11 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     prefOneDealNearYouData.optionsData = ArrayList()
                     Constant.dismissLoader()
                     setPrefData()
+                    setPrefLykUcdData()
                     setErrorVisibleGone()
                     setPackages(true)
                     callVehiclePackagesAPI()
                     setOptions(false)
-
                 }
             }
         }
@@ -2097,7 +2100,6 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-
     private fun setClearData() {
         edtZipCode.setText("")
         setYear()
@@ -2108,4 +2110,84 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
         pref?.setOneDealNearYouData(Gson().toJson(prefOneDealNearYouData))
     }
 
+    private fun setPrefLykUcdData() {
+        setPrefLCDtoLYK()
+        setPrefLCDtoUCD()
+    }
+
+    private fun setPrefLCDtoLYK() {
+        val prefLCD = pref?.getOneDealNearYouData()
+        val prefUCD = pref?.getSearchDealData()
+        val prefLYK = pref?.getSubmitPriceData()
+
+        if (!prefLYK?.isLYK!! && !prefUCD?.isUCDSel!!) {
+            if (isValidZipCode) {
+                prefLYK.zipCode = prefLCD?.zipCode
+            }
+            prefLYK.yearId = prefLCD?.yearId
+            prefLYK.yearStr = prefLCD?.yearStr
+            prefLYK.makeId = prefLCD?.makeId
+            prefLYK.makeStr = prefLCD?.makeStr
+            prefLYK.modelId = prefLCD?.modelId
+            prefLYK.modelStr = prefLCD?.modelStr
+            prefLYK.trimId = prefLCD?.trimId
+            prefLYK.trimStr = prefLCD?.trimStr
+            prefLYK.extColorId = prefLCD?.extColorId
+            prefLYK.extColorStr = prefLCD?.extColorStr
+            prefLYK.intColorId = prefLCD?.intColorId
+            prefLYK.intColorStr = prefLCD?.intColorStr
+            prefLYK.packagesData = prefLCD?.packagesData
+            prefLYK.optionsData = prefLCD?.optionsData
+            setLCDtoLYKPrefData(prefLYK)
+        }
+    }
+
+    private fun setLCDtoLYKPrefData(lykData: PrefSubmitPriceData) {
+        pref?.setSubmitPriceData(Gson().toJson(lykData))
+        setLYKCurrentTime()
+    }
+
+    private fun setLYKCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
+    }
+
+    private fun setPrefLCDtoUCD() {
+        val prefLCD = pref?.getOneDealNearYouData()
+        val prefUCD = pref?.getSearchDealData()
+        val prefLYK = pref?.getSubmitPriceData()
+        prefLCD?.let {
+
+            if (!prefLYK?.isLYK!! && !prefUCD?.isUCDSel!!) {
+                if (isValidZipCode) {
+                    prefUCD.zipCode = it.zipCode
+                }
+                prefUCD.yearId = it.yearId
+                prefUCD.yearStr = it.yearStr
+                prefUCD.makeId = it.makeId
+                prefUCD.makeStr = it.makeStr
+                prefUCD.modelId = it.modelId
+                prefUCD.modelStr = it.modelStr
+                prefUCD.trimId = it.trimId
+                prefUCD.trimStr = it.trimStr
+                prefUCD.extColorId = it.extColorId
+                prefUCD.extColorStr = it.extColorStr
+                prefUCD.intColorId = it.intColorId
+                prefUCD.intColorStr = it.intColorStr
+                setLCDtoUCDPrefData(prefUCD)
+            }
+        }
+    }
+
+    private fun setLCDtoUCDPrefData(ucdData: PrefSearchDealData) {
+        pref?.setSearchDealData(Gson().toJson(ucdData))
+        setUCDCurrentTime()
+    }
+
+    private fun setUCDCurrentTime() {
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSearchDealTime(date)
+    }
 }

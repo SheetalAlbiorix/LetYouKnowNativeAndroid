@@ -4,9 +4,9 @@
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/150f27f997e3b13758dc9a67c9ca5f69/transformed/appcompat-1.4.1/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/150f27f997e3b13758dc9a67c9ca5f69/transformed/appcompat-1.4.1/AndroidManifest.xml" />
       <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/150f27f997e3b13758dc9a67c9ca5f69/transformed/appcompat-1.4.1/jars/classes.jar!/" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/150f27f997e3b13758dc9a67c9ca5f69/transformed/appcompat-1.4.1/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/150f27f997e3b13758dc9a67c9ca5f69/transformed/appcompat-1.4.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

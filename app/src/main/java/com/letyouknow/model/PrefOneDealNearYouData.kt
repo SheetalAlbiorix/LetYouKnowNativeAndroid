@@ -19,5 +19,6 @@ data class PrefOneDealNearYouData(
     var extColorStr: String? = "",
     var intColorStr: String? = "",
     var packagesData: ArrayList<VehiclePackagesData>? = ArrayList(),
-    var optionsData: ArrayList<VehicleAccessoriesData>? = ArrayList()
+    var optionsData: ArrayList<VehicleAccessoriesData>? = ArrayList(),
+    var isLCD: Boolean? = false
 ) : Serializable

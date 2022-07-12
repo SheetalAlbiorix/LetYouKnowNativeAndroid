@@ -205,6 +205,8 @@ class MainActivity : BaseActivity(),
         dataUcd.intColorStr = "ANY"
         dataUcd.searchRadius =
             dataUCDNoti.Distance!!.replace("miles", "mi").trim()
+        dataUcd.isUCDSel = true
+        dataUcd.isUCDSelZipCode = true
         pref?.setSearchDealData(Gson().toJson(dataUcd))
         setCurrentTime()
 
@@ -272,6 +274,8 @@ class MainActivity : BaseActivity(),
                     dataUcd.intColorStr = "ANY"
                     dataUcd.searchRadius =
                         dataUCDNoti.UCDCriteria.SearchRadius!!.replace("miles", "mi").trim()
+                    dataUcd.isUCDSel = true
+                    dataUcd.isUCDSelZipCode = true
                     pref?.setSearchDealData(Gson().toJson(dataUcd))
                     setCurrentTime()
 

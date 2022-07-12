@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: org.jetbrains.anko:anko:0.10.8@aar">
     <CLASSES>
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/60328b562cc65e2f44488e39f204716a/transformed/jetified-anko-0.10.8/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/60328b562cc65e2f44488e39f204716a/transformed/jetified-anko-0.10.8/res" />
-      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/a774decbf15337e846973464eddd10c4/transformed/jetified-anko-0.10.8/res" />
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/87ce7b022ab17a7ea091d19c3a0cc6f9/transformed/jetified-anko-0.10.8/jars/classes.jar!/" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/87ce7b022ab17a7ea091d19c3a0cc6f9/transformed/jetified-anko-0.10.8/res" />
       <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/87ce7b022ab17a7ea091d19c3a0cc6f9/transformed/jetified-anko-0.10.8/AndroidManifest.xml" />
-      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/87ce7b022ab17a7ea091d19c3a0cc6f9/transformed/jetified-anko-0.10.8/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
