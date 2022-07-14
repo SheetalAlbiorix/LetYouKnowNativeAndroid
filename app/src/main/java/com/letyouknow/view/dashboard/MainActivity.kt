@@ -663,9 +663,11 @@ class MainActivity : BaseActivity(),
                     0 -> {
                         startActivity<BidHistoryActivity>()
 //                        startActivity<GooglePaymentActivity>()
+//                        startActivity<SamsungPaymentActivity>()
                     }
                     1 -> {
                         startActivity<TransactionHistoryActivity>()
+//                        startActivity<SamPaymentActivity>()
                     }
                     2 -> {
                         startActivity<HowItWorkHelpWebViewActivity>(

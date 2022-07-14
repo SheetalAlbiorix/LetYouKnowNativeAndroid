@@ -54,6 +54,7 @@ data class TransactionCodeData(
     val adjustedLYKPrice: Double? = 0.0,
     val carSalesTax: Double? = 0.0,
     val nonTaxRegFee: Double? = 0.0,
+    val estimatedRebates: Double? = 0.0,
     val estimatedTotalRemainingBalance: Double? = 0.0,
 ) : Serializable
 

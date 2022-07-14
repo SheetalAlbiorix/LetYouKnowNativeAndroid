@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/control_title_text"
+                    android:text="@string/extra_option_controls" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/extra_control_sheet_desc" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/enable" />
+
+            <CheckBox
+                android:id="@+id/extra_control_sheet_enable"
+                android:layout_gravity="center|end" />
+        </TableRow>
+
+        <LinearLayout
+            android:id="@+id/extra_control_sheet_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/plain_text_pre_defined_check_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="@string/plain_text_pre_defined_example" />
+            </TableRow>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_background"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/plain_text_editable_check_box"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/plain_text_editable_example" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/plain_text_message_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/plain_text_with_title_checkbox_title_edit_box"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/plain_text_control_title_hint"
+                        android:inputType="text|textNoSuggestions|textVisiblePassword" />
+
+                    <EditText
+                        android:id="@+id/plain_text_with_title_checkbox_text_edit_box"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/plain_text_control_message_hint"
+                        android:inputType="text|textNoSuggestions|textVisiblePassword" />
+                </TableRow>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_5dp"
+                android:background="@drawable/rectangle_background"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/update_sheet_with_message_checkbox"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="@string/update_sheet_with_message" />
+
+
+                <LinearLayout
+                    android:id="@+id/custom_error_message_edit_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_8dp"
+                        android:text="@string/custom_error_message_on_card_info_updated_guide" />
+
+                    <EditText
+                        android:id="@+id/custom_error_message_edit_text"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text|textNoSuggestions|textVisiblePassword"
+                        android:text="@string/custom_error_message_for_card_info_changed" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <include layout="@layout/category_divider" />
+    </TableLayout>
+
+</layout>

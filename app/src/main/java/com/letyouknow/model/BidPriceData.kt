@@ -26,6 +26,8 @@ data class BidPriceData(
     val carSalesTax: Double? = 0.0,
     val nonTaxRegFee: Double? = 0.0,
     val estimatedTotalRemainingBalance: Double? = 0.0,
+    var estimatedRebates: Double? = 0.0,
+    var rebateDetails: String? = "",
     val documentationFee: Double? = 0.0,
     val discount: Double? = 0.0,
     val lykDollar: Double? = 0.0,

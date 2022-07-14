@@ -3,6 +3,7 @@ package com.letyouknow.view.ucd.unlockeddealdetail
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.ColorStateList
@@ -44,6 +45,7 @@ import com.letyouknow.utils.Constant.Companion.ARG_UCD_DEAL_PENDING
 import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.gallery360view.Gallery360TabActivity
+import com.letyouknow.view.samsungpay.*
 import com.letyouknow.view.signup.CardListAdapter
 import com.letyouknow.view.spinneradapter.DeliveryPreferenceAdapter
 import com.letyouknow.view.spinneradapter.RebateDiscAdapter
@@ -53,9 +55,21 @@ import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
 import com.microsoft.signalr.TransportEnum
+import com.samsung.android.sdk.samsungpay.v2.SamsungPay
+import com.samsung.android.sdk.samsungpay.v2.SpaySdk
+import com.samsung.android.sdk.samsungpay.v2.StatusListener
+import com.samsung.android.sdk.samsungpay.v2.payment.CardInfo
+import com.samsung.android.sdk.samsungpay.v2.payment.CustomSheetPaymentInfo
+import com.samsung.android.sdk.samsungpay.v2.payment.PaymentManager
+import com.samsung.android.sdk.samsungpay.v2.payment.sheet.AddressControl
+import com.samsung.android.sdk.samsungpay.v2.payment.sheet.CustomSheet
+import com.samsung.android.sdk.samsungpay.v2.payment.sheet.SheetUpdatedListener
+import com.samsung.android.sdk.samsungpay.v2.payment.sheet.SpinnerControl
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.PaymentIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.googlepaylauncher.GooglePayEnvironment
+import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher
 import com.stripe.android.model.PaymentIntent
 import com.stripe.android.model.Source
 import com.stripe.android.model.SourceParams
@@ -69,6 +83,7 @@ import kotlinx.android.synthetic.main.dialog_error.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
+import kotlinx.android.synthetic.main.layout_card_google_samsung.*
 import kotlinx.android.synthetic.main.layout_dealer_shipping_info.*
 import kotlinx.android.synthetic.main.layout_toolbar_timer.*
 import kotlinx.android.synthetic.main.layout_ucd_deal_summary_step3.*
@@ -82,7 +97,7 @@ import java.util.*
 
 class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     AdapterView.OnItemSelectedListener, ApiResultCallback<PaymentIntentResult>,
-    CompoundButton.OnCheckedChangeListener {
+    CompoundButton.OnCheckedChangeListener, DialogInterface.OnClickListener {
     lateinit var myReceiver: MyReceiver
     lateinit var binding: ActivityUcdDealSummaryStep3Binding
     private lateinit var adapterCardList: CardListAdapter
@@ -132,6 +147,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private var isBuyerEmail = false
     private var isBuyerMNo = false
 
+    private var isStripe = true
+    private var isGooglePay = false
+    private var isSamsungPay = false
+    private var isShowSamsungPay = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ucd_deal_summary_step3)
@@ -157,6 +177,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         rebateResetViewModel = ViewModelProvider(this)[RebateResetViewModel::class.java]
         rebateListViewModel = ViewModelProvider(this)[RebateListViewModel::class.java]
         rebateCheckedViewModel = ViewModelProvider(this)[RebateCheckedViewModel::class.java]
+            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
+
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
             ) && intent.hasExtra(
@@ -264,7 +286,18 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
 
         checkEmptyData()
         callRebateListAPI()
+
+        binding.isStripe = isStripe
+        binding.isGooglePay = isGooglePay
+        binding.isSamsungPay = isSamsungPay
+        binding.isShowSamsungPay = isShowSamsungPay
+        llCreditCard.setOnClickListener(this)
+        llAndroidPay.setOnClickListener(this)
+        llSamsungPay.setOnClickListener(this)
+        btnGooglePayProceedDeal.setOnClickListener(this)
+        initLiveGoogle()
         setDeliveryOptions()
+        initSPay()
     }
 
     private fun broadcastIntent() {
@@ -454,7 +487,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     tvDollar.text =
                         "-" + NumberFormat.getCurrencyInstance(Locale.US).format(data.toFloat())
                     binding.dollar = data.toFloat()
-                    callCalculateTaxAPI()
+                    callApplyRebateAPI()
+//                    callCalculateTaxAPI()
                 }
                 )
         } else {
@@ -643,7 +677,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                     this,
                                     data.paymentResponse.errorMessage
                                 )
-                            setClearCardData()
+                            if (!isGooglePay && !isSamsungPay)
+                                setClearCardData()
                         } else if (!data.foundMatch && !data.paymentResponse?.hasError!!) {
                             if (data.paymentResponse.requires_action!!)
                                 initStripe(data.paymentResponse.payment_intent_client_secret!!)
@@ -739,7 +774,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                         ucdData.discount = data.discount!!
                         ucdData.promotionId = data.promotionID!!
                         binding.ucdData = ucdData
-                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
+//                        callCalculateTaxAPI()
                     } else {
                         tvPromoData.visibility = View.GONE
                         ucdData.discount = 0.0f
@@ -751,7 +787,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 getString(R.string.promo_code_cannot_be_applied_due_to_negative_balance)
                         }
                         tvErrorPromo.visibility = View.VISIBLE
-                        callCalculateTaxAPI()
+                        callApplyRebateAPI()
+//                        callCalculateTaxAPI()
                     }
                 }
         } else {
@@ -869,8 +906,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             countPer += 1
             if (tvPerc.text.toString().trim() != "0%")
                 handlerPer.postDelayed(this, 30000)
-            else
+            else {
+                btnProceedDeal.visibility = View.VISIBLE
+                btnGooglePayProceedDeal.visibility = View.VISIBLE
                 tvSubmitStartOver.text = getString(R.string.start_over)
+            }
+
         }
     }
 
@@ -1018,28 +1059,59 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     removeHubConnection()
                     callCheckVehicleStockAPI()
                 } else {
-                    if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
-                        if (isValidCard()) {
-                            if (isValidShipping() && isValid()) {
-                                callPaymentMethodAPI(true)
+                    if (isGooglePay || isSamsungPay) {
+                        if (!TextUtils.isEmpty(cardStripeData.id)) {
+                            if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                                if (isValidShipping() && isValid()) {
+                                    callPaymentMethodAPI(true)
+                                }
+                            } else {
+                                if (isValid()) {
+                                    callBuyerAPI()
+                                }
                             }
+                        } else {
+                            AppGlobal.alertPaymentError(this, "Select Proper Card")
                         }
                     } else {
-                        if (isValidCard()) {
-                            if (isValid()) {
-                                callPaymentMethodAPI(true)
+                        if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                            if (isValidCard()) {
+                                if (isValidShipping() && isValid()) {
+                                    callPaymentMethodAPI(true)
+                                }
+                            }
+                        } else {
+                            if (isValidCard()) {
+                                if (isValid()) {
+                                    callPaymentMethodAPI(true)
+                                }
                             }
                         }
                     }
                 }
-                /*if (isTimeOver) {
-                    onBackPressed()x
-                } else if (isValidCard()) {
-                    if (isValid()) {
-                        callBuyerAPI()
+            }
+            R.id.btnGooglePayProceedDeal -> {
+                setErrorVisible()
+                if (tvSubmitStartOver.text == getString(R.string.start_over)) {
+                    removeHubConnection()
+                    callCheckVehicleStockAPI()
+                } else {
+                    if (isGooglePay || isSamsungPay) {
+                        if (!TextUtils.isEmpty(cardStripeData.id)) {
+                            if (spDeliveryPreference.selectedItemPosition == 1 && !chkSameAsBuyer.isChecked) {
+                                if (isValidShipping() && isValid()) {
+                                    callPaymentMethodAPI(true)
+                                }
+                            } else {
+                                if (isValid()) {
+                                    callBuyerAPI()
+                                }
+                            }
+                        } else {
+                            AppGlobal.alertPaymentError(this, "Select Proper Card")
+                        }
                     }
-                }*/
-//
+                }
             }
             R.id.tvAddMin -> {
                 add2Min()
@@ -1085,7 +1157,26 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             }
             R.id.tvResetRebate -> {
                 callRebateResetAPI()
-
+            }
+            R.id.llCreditCard -> {
+                isStripe = true
+                isGooglePay = false
+                isSamsungPay = false
+                setGoogleSamsung()
+            }
+            R.id.llAndroidPay -> {
+                isStripe = false
+                isGooglePay = true
+                isSamsungPay = false
+                setGoogleSamsung()
+                onClickGooglePayment()
+            }
+            R.id.llSamsungPay -> {
+                isStripe = false
+                isGooglePay = false
+                isSamsungPay = true
+                setGoogleSamsung()
+                startInAppPayWithCustomSheet()
             }
             R.id.tvApplyRebate -> {
                 val arData = adapterRebateDisc.getAll()
@@ -1093,12 +1184,18 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    isShowRebateDis = true
                     callApplyRebateAPI()
                 }
             }
         }
     }
 
+    private fun setGoogleSamsung() {
+        binding.isStripe = isStripe
+        binding.isGooglePay = isGooglePay
+        binding.isSamsungPay = isSamsungPay
+    }
 
     private fun callCheckVehicleStockAPI() {
         if (Constant.isOnline(this)) {
@@ -1148,16 +1245,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                                 .newTask()
                         )
                     }
-
                 }
                 )
-
-
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun clearPrefSearchDealData() {
         pref?.setSearchDealData(Gson().toJson(PrefSearchDealData()))
@@ -1193,6 +1286,12 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
               return false
           }*/
         when {
+            edtCardZipCode.text.toString()
+                .trim().length != 5 && (!isGooglePay && !isSamsungPay) -> {
+                tvErrorCardZip.visibility = View.VISIBLE
+                tvErrorCardZip.text = getString(R.string.zipcode_must_be_valid_digits)
+                return false
+            }
             TextUtils.isEmpty(edtFirstName.text.toString().trim()) -> {
                 Constant.setErrorBorder(edtFirstName, tvErrorFirstName)
                 tvErrorFirstName.text = getString(R.string.first_name_required)
@@ -1417,7 +1516,8 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 state = data
                 binding.selectState = state
                 isState = true
-                callCalculateTaxAPI()
+//                callCalculateTaxAPI()
+                callApplyRebateAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -2153,6 +2253,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     }
 
     //rebate api
+    private var isShowRebateDis = false
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -2161,9 +2262,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             val jsonRebate = JsonArray()
-            for (i in 0 until adapterRebateDisc.itemCount) {
-                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
-                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+            if (::adapterRebateDisc.isInitialized) {
+                for (i in 0 until adapterRebateDisc.itemCount) {
+                    if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                        jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                    }
                 }
             }
             val map: HashMap<String, Any> = HashMap()
@@ -2189,10 +2292,13 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    if (!isShowRebateDis)
+                        data.estimatedRebates = 0.0
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
-                    dialogRebate.dismiss()
+                    if (::dialogRebate.isInitialized)
+                        dialogRebate.dismiss()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -2525,4 +2631,403 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         Constant.onTextChangeCity(this, edtShippingCity, tvShippingErrorCity)
         Constant.onTextChange(this, edtShippingZipCode, tvShippingErrorZipCode)
     }
+
+
+    private lateinit var googlePayLauncher: GooglePayPaymentMethodLauncher
+    private fun initLiveGoogle() {
+        googlePayLauncher = GooglePayPaymentMethodLauncher(
+            activity = this,
+            config = GooglePayPaymentMethodLauncher.Config(
+                environment = GooglePayEnvironment.Test,
+                merchantCountryCode = "US",
+                merchantName = "Widget Store",
+                isEmailRequired = false,
+                existingPaymentMethodRequired = false
+            ),
+            readyCallback = ::onGooglePayReady,
+            resultCallback = ::onGooglePayResult
+        )
+    }
+
+    private fun onClickGooglePayment() {
+        googlePayLauncher.present(
+            currencyCode = "USD",
+            amount = 2500
+        )
+    }
+
+    private fun onGooglePayReady(isReady: Boolean) {
+        llAndroidPay.isEnabled = isReady
+    }
+
+    private fun onGooglePayResult(
+        result: GooglePayPaymentMethodLauncher.Result
+    ) {
+        when (result) {
+            is GooglePayPaymentMethodLauncher.Result.Completed -> {
+                result.paymentMethod.id?.let { Log.e("PaymentId", it) }
+                paymentIntentId = result.paymentMethod.id!!
+                result.paymentMethod.card?.let {
+                    cardStripeData = CardStripeData()
+                    cardStripeData.id = paymentIntentId
+                    cardStripeData.card?.last4 = result.paymentMethod.card?.last4
+                    cardStripeData.card?.brand = result.paymentMethod.card?.brand?.name
+                }
+            }
+            GooglePayPaymentMethodLauncher.Result.Canceled -> {
+                // User canceled the operation
+                Log.e("Canceled", "Canceled")
+                AppGlobal.alertPaymentError(this, getString(R.string.google_payment_canceled))
+                cardStripeData = CardStripeData()
+            }
+            is GooglePayPaymentMethodLauncher.Result.Failed -> {
+                result.error.message?.let { Log.e("Failed", it) }
+                AppGlobal.alertPaymentError(this, result.error.message)
+                cardStripeData = CardStripeData()
+                // Operation failed; inspect `result.error` for the exception
+            }
+        }
+    }
+
+    //SamsungPayment
+    var mSampleAppPartnerInfoHolder: SampleAppPartnerInfoHolder? = null
+    private var mPaymentManager: PaymentManager? = null
+    private var mActivityResumed = false
+
+    private var mAmountDetailControls: AmountDetailNewControls? = null
+    private var mBillingAddressControls: BillingAddressControls? = null
+    private var mShippingAddressControls: ShippingAddressControls? = null
+
+
+    fun initSPay() {
+        mSampleAppPartnerInfoHolder = SampleAppPartnerInfoHolder(this)
+
+        val orderDetailsListener = OrderDetailsListener { bool ->
+            if (bool) {
+                enableSamsungPayButton()
+            } else {
+                disableSamsungPayButton()
+            }
+        }
+
+        //   mAmountDetailControls = AmountDetailControls(mContext, mBinding!!.amountDetails, orderDetailsListener)
+        mAmountDetailControls = AmountDetailNewControls(this, orderDetailsListener)
+
+        val addressRequestListener =
+            AddressRequestListener { type: CustomSheetPaymentInfo.AddressInPaymentSheet ->
+                if (type == CustomSheetPaymentInfo.AddressInPaymentSheet.DO_NOT_SHOW || type == CustomSheetPaymentInfo.AddressInPaymentSheet.NEED_BILLING_SPAY) {
+                    mAmountDetailControls!!.setAddedShippingAmount(0.0)
+                    mAmountDetailControls!!.updateAndCheckAmountValidation()
+                }
+                mShippingAddressControls!!.setNeedAllShippingMethodItems(
+                    type == CustomSheetPaymentInfo.AddressInPaymentSheet.NEED_SHIPPING_SPAY
+                            || type == CustomSheetPaymentInfo.AddressInPaymentSheet.NEED_BILLING_AND_SHIPPING
+                )
+                mBillingAddressControls!!.updateBillingLayoutVisibility(type)
+                mShippingAddressControls!!.updateShippingAddressLayout(type)
+            }
+        updateSamsungPayButton()
+    }
+
+    private fun enableSamsungPayButton() {
+        binding.isShowSamsungPay = true
+    }
+
+    private fun disableSamsungPayButton() {
+        binding.isShowSamsungPay = false
+    }
+
+    protected fun updateSamsungPayButton() {
+        val samsungPay = SamsungPay(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
+        try {
+            samsungPay.getSamsungPayStatus(object : StatusListener {
+                override fun onSuccess(status: Int, bundle: Bundle) {
+                    when (status) {
+                        SpaySdk.SPAY_READY -> {
+                            binding.isShowSamsungPay = true
+                            if (mPaymentManager == null) {
+                                mPaymentManager = PaymentManager(
+                                    this@UCDDealSummaryStep3Activity,
+                                    mSampleAppPartnerInfoHolder!!.partnerInfo
+                                )
+                                // Get Card List.
+                            }
+                        }
+                        SpaySdk.SPAY_NOT_SUPPORTED, SpaySdk.SPAY_NOT_READY, SpaySdk.SPAY_NOT_ALLOWED_TEMPORALLY -> binding.isShowSamsungPay =
+                            false
+                        else -> binding.isShowSamsungPay = false
+                    }
+                    showOnSuccessLog(status, bundle) // Print log
+                    showOnSuccessMessage(status, bundle) // Print messages.
+                }
+
+                override fun onFail(errorCode: Int, bundle: Bundle) {
+                    binding.isShowSamsungPay = false
+                    showOnFailLogAndMessage(errorCode, bundle) // Print log and messages.
+                }
+            })
+        } catch (e: NullPointerException) {
+            Log.e(
+                TAG, e.message!!
+            )
+        }
+    }
+
+    private fun showOnSuccessLog(status: Int, bundle: Bundle) {
+        Log.d(TAG, "getSamsungPayStatus status : $status")
+        val extraError = bundle.getInt(SpaySdk.EXTRA_ERROR_REASON)
+        Log.d(
+            TAG,
+            TAG + extraError + " / " + ErrorCode.getInstance()
+                .getErrorCodeName(extraError)
+        )
+    }
+
+    private fun showOnSuccessMessage(status: Int, bundle: Bundle) {
+        Log.d(TAG, "showOnSuccessMessage")
+        /* if (!getUserVisibleHint()) {
+             return
+         }*/
+        when (status) {
+            SpaySdk.SPAY_NOT_SUPPORTED -> {
+                displayToastMessageIfRequired(getString(R.string.spay_not_supported))
+            }
+            SpaySdk.SPAY_NOT_READY -> {
+                val extraError = bundle.getInt(SpaySdk.EXTRA_ERROR_REASON)
+                displayToastMessageIfRequired(getString(R.string.spay_not_ready))
+                mSampleAppPartnerInfoHolder!!.spayNotReadyStatus = extraError
+                SamsungPayStatusDialog.getInstance()
+                    .showSamsungPayStatusErrorDialog(this, extraError, this)
+            }
+            SpaySdk.SPAY_READY -> {
+                displayToastMessageIfRequired(getString(R.string.spay_ready))
+            }
+            SpaySdk.SPAY_NOT_ALLOWED_TEMPORALLY -> {
+                val extraError = bundle.getInt(SpaySdk.EXTRA_ERROR_REASON)
+                displayToastMessageIfRequired(getString(R.string.spay_not_allowed_temporally) + " / " + extraError)
+            }
+            else -> {
+                displayToastMessageIfRequired(getString(R.string.get_samsung_pay_status_result) + ": " + status)
+            }
+        }
+    }
+
+    private fun showOnFailLogAndMessage(errorCode: Int, bundle: Bundle?) {
+        var extraReason = SpaySdk.ERROR_NONE
+        if (bundle != null && bundle.containsKey(SpaySdk.EXTRA_ERROR_REASON)) {
+            extraReason = bundle.getInt(SpaySdk.EXTRA_ERROR_REASON)
+        }
+        if (this == null || this.isFinishing()) {
+            Log.e(
+                TAG,
+                "showOnFailLogAndMessage " + ErrorCode.getInstance().getErrorCodeName(errorCode)
+                    .toString() + ", extraReason = " + extraReason
+            )
+        } else {
+            displayToastMessageIfRequired(
+                getString(R.string.get_samsung_pay_status_on_fail) + errorCode
+                        + " " + ErrorCode.getInstance().getErrorCodeName(errorCode)
+                        + ", extraReason = " + extraReason
+            )
+        }
+    }
+
+    private fun displayToastMessageIfRequired(msg: String) {
+        displayToastMessageIfRequired(msg, false)
+    }
+
+    private fun displayToastMessageIfRequired(msg: String, isRetry: Boolean) {
+        if (mActivityResumed) {
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+        } else if (!isRetry) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                displayToastMessageIfRequired(
+                    msg,
+                    true
+                )
+            }, 1000)
+        }
+    }
+
+    private fun doActivateSamsungPay() {
+        val samsungPay = SamsungPay(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
+        samsungPay.activateSamsungPay()
+    }
+
+    private fun doUpdateSamsungPay() {
+        val samsungPay = SamsungPay(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
+        samsungPay.goToUpdatePage()
+    }
+
+    protected fun startInAppPayWithCustomSheet() {
+        Log.d(
+            TAG, "startInAppPayWithCustomSheet"
+        )
+        // PaymentManager.startInAppPayWithCustomSheet method to show custom payment sheet.
+//        disableSamsungPayButton()
+        mPaymentManager = PaymentManager(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
+
+        mPaymentManager!!.startInAppPayWithCustomSheet(
+            makeTransactionDetailsWithSheet(),
+            transactionListener
+        )
+
+    }
+
+    private fun makeTransactionDetailsWithSheet(): CustomSheetPaymentInfo? {
+        val customSheetPaymentInfo: CustomSheetPaymentInfo
+        val customSheetPaymentInfoBuilder = CustomSheetPaymentInfo.Builder()
+        val extraPaymentInfo = Bundle()
+
+        customSheetPaymentInfo = customSheetPaymentInfoBuilder
+            .setMerchantId("")
+            .setMerchantName(mSampleAppPartnerInfoHolder!!.sampleAppName)
+            .setOrderNumber("1")
+            .setCustomSheet(makeUpCustomSheet())
+            .setExtraPaymentInfo(extraPaymentInfo)
+            .build()
+        return customSheetPaymentInfo
+    }
+
+    private fun makeUpCustomSheet(): CustomSheet? {
+        val sheetUpdatedListener = SheetUpdatedListener { controlId: String, sheet: CustomSheet? ->
+            Log.d(TAG, "onResult control id : $controlId")
+            updateControlId(controlId, sheet!!)
+        }
+
+        val customSheet = CustomSheet()
+        customSheet.addControl(mAmountDetailControls!!.makeAmountControl())
+        return customSheet
+    }
+
+    private fun updateControlId(controlId: String, sheet: CustomSheet) {
+        Log.d(
+            TAG, "updateSheet : $controlId"
+        )
+        when (controlId) {
+            BillingAddressControls.BILLING_ADDRESS_ID ->                 // Call updateSheet with AmountBoxControl. This is mandatory
+                receivedBillingAddress(controlId, sheet)
+            ShippingAddressControls.SHIPPING_ADDRESS_ID ->                 // Call updateSheet with AmountBoxControl. This is mandatory
+                receivedBillingAddress(controlId, sheet)
+            ShippingAddressControls.SHIPPING_METHOD_SPINNER_ID -> receivedShippingMethodSpinner(
+                controlId,
+                sheet
+            )
+            else -> Log.e(
+                TAG, "sheetUpdatedListener default called:"
+            )
+        }
+    }
+
+    protected fun receivedBillingAddress(updatedControlId: String?, sheet: CustomSheet) {
+        val addressControl = sheet.getSheetControl(updatedControlId) as AddressControl
+        if (addressControl == null) {
+            Log.e(TAG, "receivedBillingAddress addressControl  : null ")
+            return
+        }
+        val billAddress = addressControl.address
+        val errorCode = 201
+        addressControl.errorCode = errorCode
+        sheet.updateControl(addressControl)
+        val needCustomErrorMessage = mBillingAddressControls!!.needCustomErrorMessage()
+        Log.d(
+            TAG,
+            "onResult receivedBillingAddress  errorCode: $errorCode, customError: $needCustomErrorMessage"
+        )
+        updateSheetToSdk(mAmountDetailControls!!.updateAmountControl(sheet))
+
+    }
+
+    private fun receivedShippingMethodSpinner(updatedControlId: String, sheet: CustomSheet) {
+        val shippingMethodSpinnerControl = sheet.getSheetControl(updatedControlId) as SpinnerControl
+        if (shippingMethodSpinnerControl == null) {
+            Log.e(TAG, "onResult shippingMethodSpinnerControl: null")
+            return
+        }
+        if (shippingMethodSpinnerControl.selectedItemId == null) {
+            Log.e(TAG, "onResult shippingMethodSpinnerControl  getSelectedItemId : null")
+            return
+        }
+
+        updateSheetToSdk(mAmountDetailControls!!.updateAmountControl(sheet))
+    }
+
+    private val transactionListener: PaymentManager.CustomSheetTransactionInfoListener =
+        object : PaymentManager.CustomSheetTransactionInfoListener {
+            // This callback is received when the user changes card on the custom payment sheet in Samsung Pay.
+            override fun onCardInfoUpdated(selectedCardInfo: CardInfo, customSheet: CustomSheet) {
+                Log.d(TAG, "onCardInfoUpdated $selectedCardInfo")
+                displayToastMessageIfRequired("onCardInfoUpdated")
+                updateSheetToSdk(customSheet)
+            }
+
+            override fun onSuccess(
+                response: CustomSheetPaymentInfo, paymentCredential: String,
+                extraPaymentData: Bundle
+            ) {
+                Log.d(TAG, "Transaction : onSuccess $extraPaymentData")
+                val fragmentActivity: Activity = this@UCDDealSummaryStep3Activity
+                if (fragmentActivity == null || fragmentActivity.isFinishing || fragmentActivity.isDestroyed) {
+                    return
+                }
+                val mPaymentResultDialog = PaymentResultDialog(this@UCDDealSummaryStep3Activity)
+                mPaymentResultDialog.onSuccessDialog(response, paymentCredential, extraPaymentData)
+                displayToastMessageIfRequired("Transaction : onSuccess")
+                enableSamsungPayButton()
+            }
+
+            // This callback is received when the online payment transaction has failed.
+            override fun onFailure(errorCode: Int, errorData: Bundle) {
+                try {
+                    val errorName: String = ErrorCode.getInstance().getErrorCodeName(errorCode)
+                    var extraReason = 0
+                    var extraReasonMsg: String? = null
+                    if (errorData != null) {
+                        extraReason = errorData.getInt(SpaySdk.EXTRA_ERROR_REASON)
+                        extraReasonMsg = errorData.getString(SpaySdk.EXTRA_ERROR_REASON_MESSAGE)
+                    }
+                    Log.d(TAG, "Transaction : onFailure $errorCode / $errorName / $extraReason")
+                    displayToastMessageIfRequired(
+                        "Transaction : onFailure - " + errorCode + " / " + errorName
+                                + " / " + extraReasonMsg
+                    )
+                    // Called when some error occurred during in-app cryptogram generation.
+                    enableSamsungPayButton()
+                } catch (e: java.lang.NullPointerException) {
+                    Log.e(
+                        TAG, (e.message)!!
+                    )
+                }
+            }
+        }
+
+    protected fun updateSheetToSdk(sheet: CustomSheet?) {
+        Handler().postDelayed({
+            try {
+                Log.d(TAG, "updateSheetToSdk")
+                mPaymentManager!!.updateSheet(mAmountDetailControls!!.updateAmountControl(sheet))
+            } catch (e: IllegalStateException) {
+                //Service is disconnected.
+                e.printStackTrace()
+            } catch (e: java.lang.NullPointerException) {
+                e.printStackTrace()
+            }
+        }, 0)
+    }
+
+    override fun onClick(dialogInterface: DialogInterface, which: Int) {
+        when (which) {
+            DialogInterface.BUTTON_POSITIVE -> {
+                if (SpaySdk.ERROR_SPAY_APP_NEED_TO_UPDATE == mSampleAppPartnerInfoHolder!!.spayNotReadyStatus) {
+                    doUpdateSamsungPay()
+                } else if (SpaySdk.ERROR_SPAY_SETUP_NOT_COMPLETED == mSampleAppPartnerInfoHolder!!.spayNotReadyStatus) {
+                    doActivateSamsungPay()
+                }
+                dialogInterface.dismiss()
+            }
+            DialogInterface.BUTTON_NEGATIVE -> dialogInterface.cancel()
+            else -> dialogInterface.dismiss()
+        }
+    }
+
 }

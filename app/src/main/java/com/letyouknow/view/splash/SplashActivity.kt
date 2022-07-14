@@ -42,9 +42,19 @@ class SplashActivity : BaseActivity() {
      "password": "WH&ry9MegCbw3FPG"
      }
 
+      "Username": "e36328is98@gmail.com",
+     "password": "WH&ry9MegCbw3FPG"
+
      Albiorix12@gmail.com
      Albiorix@1234
+
+     finite7509@tebyy.com
+Test@123
+
+lorefo7352@satedly.com
+Test@123
     */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -65,7 +75,6 @@ class SplashActivity : BaseActivity() {
         }, 3000)
         getFBToken()
     }
-
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)

@@ -106,6 +106,7 @@ data class TransactionInfo(
     val carSalesTax: Double? = 0.0,
     val nonTaxRegFee: Double? = 0.0,
     val estimatedTotalRemainingBalance: Double? = 0.0,
+    val estimatedRebates: Double? = 0.0,
     val shipToName: String? = "",
     val shipToAddress1: String? = "",
     val shipToAddress2: String? = "",

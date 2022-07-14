@@ -20,6 +20,7 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_lyk_negative.xml" value="0.13861386138613863" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_lyk_step1.xml" value="0.22" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_lyk_step2.xml" value="0.1" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_sam_payment.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_submit_deal_summary.xml" value="0.1" />
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/layout/activity_transaction_code_detail.xml" value="0.10512820512820513" />
@@ -75,6 +76,7 @@
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

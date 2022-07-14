@@ -265,6 +265,14 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
 
                 tvPriceRec.text =
                     NumberFormat.getCurrencyInstance(Locale.US).format(data?.price)
+                if (data?.estimatedRebates!! > 0) {
+                    llRebateDiscount.visibility = View.VISIBLE
+                    tvEstimatedTaxDiscRec.text =
+                        NumberFormat.getCurrencyInstance(Locale.US).format(data?.estimatedRebates)
+                } else {
+                    llRebateDiscount.visibility = View.GONE
+                }
+
                 tvPrePaymentRec.text =
                     "-${
                         NumberFormat.getCurrencyInstance(Locale.US)
@@ -345,6 +353,14 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
                 }"
             tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
                 .format(transData?.estimatedTotalRemainingBalance)
+
+            if (transData?.estimatedRebates!! > 0) {
+                llRebateDisc.visibility = View.VISIBLE
+                tvEstimatedTaxDiscount.text = NumberFormat.getCurrencyInstance(Locale.US)
+                    .format(transData?.estimatedRebates)
+            } else {
+                llRebateDisc.visibility = View.GONE
+            }
             tvBasedState.text =
                 Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
             ivDialogClose.setOnClickListener {

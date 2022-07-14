@@ -34,6 +34,9 @@ class GooglePaymentActivity : BaseActivity(), View.OnClickListener {
 
     private val model: CheckoutViewModel by viewModels()
 
+    var a = "aa"
+    var b = "aaa"
+    var c = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,12 @@ class GooglePaymentActivity : BaseActivity(), View.OnClickListener {
         init()
 //        initGoogle()
         initLiveGoogle()
+        if (a === b) {
+            Log.e("tripple", "equal")
+        }
+        if (a == b) {
+            Log.e("double", "equal")
+        }
     }
 
     private fun init() {
