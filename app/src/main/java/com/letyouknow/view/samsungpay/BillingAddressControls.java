@@ -16,8 +16,8 @@ import com.samsung.android.sdk.samsungpay.v2.payment.sheet.AddressControl;
 import com.samsung.android.sdk.samsungpay.v2.payment.sheet.SheetItemType;
 import com.samsung.android.sdk.samsungpay.v2.payment.sheet.SheetUpdatedListener;
 
-class BillingAddressControls {
-    static final String BILLING_ADDRESS_ID = "billingAddressControlId";
+public class BillingAddressControls {
+    public static final String BILLING_ADDRESS_ID = "billingAddressControlId";
 
     private final Context mContext;
     CustomBillingAddressControlBinding mBinding;
@@ -86,7 +86,7 @@ class BillingAddressControls {
         return ret;
     }
 
-    void updateBillingLayoutVisibility(CustomSheetPaymentInfo.AddressInPaymentSheet type) {
+    public void updateBillingLayoutVisibility(CustomSheetPaymentInfo.AddressInPaymentSheet type) {
         switch (type) {
             case NEED_BILLING_SPAY:
             case NEED_BILLING_AND_SHIPPING:
@@ -103,7 +103,7 @@ class BillingAddressControls {
         }
     }
 
-    boolean needCustomErrorMessage() {
+    public boolean needCustomErrorMessage() {
         return mNeedCustomErrorMessage;
     }
 

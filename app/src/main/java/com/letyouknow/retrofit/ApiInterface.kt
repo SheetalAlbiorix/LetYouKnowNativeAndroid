@@ -304,4 +304,8 @@ interface ApiInterface {
 
     @GET("vehiclecriteria/PriceRange")
     fun priceRange(): Call<ArrayList<PriceRangeData>>
+
+    @POST("vehiclecriteria/checkVehicleStock")
+    fun checkVehicleStockPriceBid(@Body request: HashMap<String, Any>): Call<Boolean>
+
 }

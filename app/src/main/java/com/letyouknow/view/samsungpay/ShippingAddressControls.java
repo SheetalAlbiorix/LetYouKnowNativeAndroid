@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-class ShippingAddressControls {
+public class ShippingAddressControls {
 
-    static final String SHIPPING_ADDRESS_ID = "shippingAddressControlId";
-    static final String SHIPPING_METHOD_SPINNER_ID = "shippingMethodSpinnerControlId";
+    public static final String SHIPPING_ADDRESS_ID = "shippingAddressControlId";
+    public static final String SHIPPING_METHOD_SPINNER_ID = "shippingMethodSpinnerControlId";
     static final String SHIPPING_METHOD_1 = "shipping_method1";
     static final String SHIPPING_METHOD_2 = "shipping_method2";
     static final String SHIPPING_METHOD_3 = "shipping_method3";
@@ -161,7 +161,7 @@ class ShippingAddressControls {
                 .build();
     }
 
-    void updateShippingAddressLayout(CustomSheetPaymentInfo.AddressInPaymentSheet type) {
+    public void updateShippingAddressLayout(CustomSheetPaymentInfo.AddressInPaymentSheet type) {
         switch (type) {
             case DO_NOT_SHOW:
             case NEED_BILLING_SPAY:
@@ -220,7 +220,7 @@ class ShippingAddressControls {
         return mBinding.customErrorMessageForShipping.getText().toString();
     }
 
-    void setNeedAllShippingMethodItems(boolean needAll) {
+    public void setNeedAllShippingMethodItems(boolean needAll) {
         mNeedAllShippingMethodItems = needAll;
     }
 

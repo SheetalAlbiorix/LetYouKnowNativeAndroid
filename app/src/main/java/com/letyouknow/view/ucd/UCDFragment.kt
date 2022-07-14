@@ -251,6 +251,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 makeData.make = "ANY"
                 makeData.vehicleMakeID = "0"
             }
+            makeStr = makeData.make!!
+            makeId = makeData.vehicleMakeID!!
             arData.add(0, makeData)
             adapterMake = MakeSpinnerAdapter(requireActivity(), arData)
             spMake.adapter = adapterMake
@@ -271,6 +273,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 modelData.model = "ANY"
                 modelData.vehicleModelID = "0"
             }
+            modelStr = modelData.model!!
+            modelId = modelData.vehicleModelID!!
             arData.add(0, modelData)
             adapterModel = ModelSpinnerAdapter(requireActivity(), arData)
             spModel.adapter = adapterModel
@@ -291,6 +295,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 trimData.trim = "ANY"
                 trimData.vehicleTrimID = "0"
             }
+            trimStr = trimData.trim!!
+            trimId = trimData.vehicleTrimID!!
             arData.add(0, trimData)
             adapterTrim = TrimsSpinnerAdapter(requireActivity(), arData)
             spTrim.adapter = adapterTrim
@@ -311,6 +317,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 extData.exteriorColor = "ANY"
                 extData.vehicleExteriorColorID = "0"
             }
+            extColorId = extData.vehicleExteriorColorID!!
+            extColorStr = extData.exteriorColor!!
             arData.add(0, extData)
             adapterExterior = ExteriorSpinnerAdapter(requireActivity(), arData)
             spExteriorColor.adapter = adapterExterior
@@ -331,6 +339,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 interiorData.interiorColor = "ANY"
                 interiorData.vehicleInteriorColorID = "0"
             }
+            intColorStr = interiorData.interiorColor!!
+            intColorId = interiorData.vehicleInteriorColorID!!
             arData.add(0, interiorData)
             adapterInterior = InteriorSpinnerAdapter(requireActivity(), arData)
             spInteriorColor.adapter = adapterInterior
@@ -496,10 +506,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                                             spPriceRange,
                                             requireActivity()
                                         )
-//                                        callVehicleYearAPI()
                                     }
                                 }
-                                callVehicleYearAPI()
+//                                callVehicleYearAPI()
                                 spPriceRange.onItemSelectedListener = this
                             } else {
                                 val arData = ArrayList<PriceRangeData>()
@@ -523,6 +532,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         } catch (e: Exception) {
 
         }
+        callVehicleYearAPI()
     }
 
     private fun callVehicleYearAPI() {

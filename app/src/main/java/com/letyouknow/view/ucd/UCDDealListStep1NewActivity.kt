@@ -68,7 +68,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
     lateinit var adapterLinear: Items_LinearRVAdapter
     lateinit var scrollListener: RecyclerViewLoadMoreScroll
     lateinit var mLayoutManager: RecyclerView.LayoutManager
-    private lateinit var checkVehicleStockViewModel: CheckVehicleStockViewModel
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockPriceBidViewModel
     private var isFromLYK = false
     private lateinit var dataUCDDeal: FindUcdDealData
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +82,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         imageIdViewModel = ViewModelProvider(this)[ImageIdViewModel::class.java]
         imageUrlViewModel = ViewModelProvider(this)[ImageUrlViewModel::class.java]
         checkVehicleStockViewModel =
-            ViewModelProvider(this)[CheckVehicleStockViewModel::class.java]
+            ViewModelProvider(this)[CheckVehicleStockPriceBidViewModel::class.java]
         findUCDDealGuestViewModel =
             ViewModelProvider(this)[FindUCDDealViewModel::class.java]
         tokenModel = ViewModelProvider(this)[RefreshTokenViewModel::class.java]
@@ -513,22 +513,20 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             }
 
             val request = HashMap<String, Any>()
-            request[ApiConstant.Product] = 3
-            request[ApiConstant.YearId1] = yearModelMakeData.vehicleYearID!!
-            request[ApiConstant.MakeId1] = yearModelMakeData.vehicleMakeID!!
-            request[ApiConstant.ModelID] = yearModelMakeData.vehicleModelID!!
-            request[ApiConstant.TrimID] = yearModelMakeData.vehicleTrimID!!
-            request[ApiConstant.ExteriorColorID] = dataFind.exteriorColorId!!
-            request[ApiConstant.InteriorColorID] = dataFind.interiorColorId!!
-            request[ApiConstant.ZipCode1] = yearModelMakeData.zipCode!!
-            request[ApiConstant.SearchRadius1] =
+            request[ApiConstant.product1] = 3
+            request[ApiConstant.yearID] = dataFind.yearId!!
+            request[ApiConstant.makeID] = dataFind.makeId!!
+            request[ApiConstant.modelID1] = dataFind.modelId!!
+            request[ApiConstant.trimID1] = dataFind.trimId!!
+            request[ApiConstant.interiorColorID1] = dataFind.interiorColorId!!
+            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
+            request[ApiConstant.searchRadius] =
                 if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
                     "mi",
                     ""
                 ).trim()
 
-            request[ApiConstant.AccessoryList] = accList
-            request[ApiConstant.PackageList1] = pkgList
+
             Log.e("RequestStock", Gson().toJson(request))
             checkVehicleStockViewModel.checkVehicleStockCall(this, request)!!
                 .observe(this, Observer { data ->
@@ -569,10 +567,10 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         pref?.setSubmitPriceTime(date)
 
         val submitData = PrefSubmitPriceData()
-        submitData.yearId = yearModelMakeData.vehicleYearID!!
-        submitData.makeId = yearModelMakeData.vehicleMakeID!!
-        submitData.modelId = yearModelMakeData.vehicleModelID!!
-        submitData.trimId = yearModelMakeData.vehicleTrimID!!
+        submitData.yearId = data.yearId!!
+        submitData.makeId = data.makeId!!
+        submitData.modelId = data.modelId!!
+        submitData.trimId = data.trimId!!
         submitData.extColorId = data.exteriorColorId!!
         submitData.intColorId = data.interiorColorId!!
         submitData.yearStr = data.vehicleYear!!
@@ -580,18 +578,18 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
         submitData.modelStr = data.vehicleModel!!
         submitData.trimStr = data.vehicleTrim!!
         submitData.extColorStr =
-            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor!!
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
         submitData.intColorStr =
-            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor!!
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
         submitData.packagesData = arSelectPackages
         submitData.optionsData = arSelectAccessories
         pref?.setSubmitPriceData(Gson().toJson(submitData))
 
         val yearMakeData = YearModelMakeData()
-        yearMakeData.vehicleYearID = yearModelMakeData.vehicleYearID
-        yearMakeData.vehicleMakeID = yearModelMakeData.vehicleMakeID
-        yearMakeData.vehicleModelID = yearModelMakeData.vehicleModelID
-        yearMakeData.vehicleTrimID = yearModelMakeData.vehicleTrimID
+        yearMakeData.vehicleYearID = data.yearId
+        yearMakeData.vehicleMakeID = data.makeId
+        yearMakeData.vehicleModelID = data.modelId
+        yearMakeData.vehicleTrimID = data.trimId
         yearMakeData.vehicleExtColorID = data.exteriorColorId
         yearMakeData.vehicleIntColorID = data.interiorColorId
         yearMakeData.vehicleYearStr = data.vehicleYear

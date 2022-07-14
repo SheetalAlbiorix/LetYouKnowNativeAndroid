@@ -134,6 +134,12 @@ class ApiConstant {
         var HighPrice = "HighPrice"
         var lowprice1 = "lowprice"
         var highprice1 = "highprice"
+        var product1 = "product"
+        var yearID = "yearID"
+        var makeID = "makeID"
+        var modelID1 = "modelID"
+        var trimID1 = "trimID"
+        var interiorColorID1 = "interiorColorID"
     }
 }
 

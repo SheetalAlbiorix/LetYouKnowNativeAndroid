@@ -28,7 +28,7 @@ public class AmountDetailNewControls implements TextWatcher {
     private double mAddedBillingAmount = 0;
     private double mProductAmount = 1000;
 
-    AmountDetailNewControls(Context context, OrderDetailsListener orderDetailsListener) {
+    public AmountDetailNewControls(Context context, OrderDetailsListener orderDetailsListener) {
         mContext = context;
         mOrderDetailsListener = orderDetailsListener;
         init();
@@ -38,7 +38,7 @@ public class AmountDetailNewControls implements TextWatcher {
         this.mProductAmount = productAmount;
     }
 
-    void setAddedShippingAmount(double amount) {
+    public void setAddedShippingAmount(double amount) {
         mAddedShippingAmount = amount;
     }
 
@@ -61,7 +61,7 @@ public class AmountDetailNewControls implements TextWatcher {
         return mProductAmount + mTaxAmount + mAddedBillingAmount + mShippingAmount + mAddedShippingAmount;
     }
 
-    void updateAndCheckAmountValidation() {
+    public void updateAndCheckAmountValidation() {
         setProductAmount(Double.parseDouble("1.0"));
         mDiscountedProductAmount = mProductAmount;
 
@@ -72,7 +72,7 @@ public class AmountDetailNewControls implements TextWatcher {
         return selectedString;
     }
 
-    AmountBoxControl makeAmountControl() {
+    public AmountBoxControl makeAmountControl() {
         AmountBoxControl amountBoxControl = new AmountBoxControl(AMOUNT_CONTROL_ID, "INR");
 
         amountBoxControl.addItem(PRODUCT_ITEM_ID, mContext.getString(R.string.amount_control_name_item), mDiscountedProductAmount, "");
@@ -83,7 +83,7 @@ public class AmountDetailNewControls implements TextWatcher {
         return amountBoxControl;
     }
 
-    CustomSheet updateAmountControl(CustomSheet sheet) {
+    public CustomSheet updateAmountControl(CustomSheet sheet) {
         AmountBoxControl amountBoxControl = (AmountBoxControl) sheet.getSheetControl(AMOUNT_CONTROL_ID);
         if (amountBoxControl == null) {
             Log.e(TAG, "updateAmountControl amountBoxControl : null");

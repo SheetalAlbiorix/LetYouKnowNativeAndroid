@@ -19,7 +19,7 @@ public class SampleAppPartnerInfoHolder {
     private PartnerInfo mPartnerInfo;
     private int mSpayNotReadyReason;
 
-    SampleAppPartnerInfoHolder(Context context) {
+    public SampleAppPartnerInfoHolder(Context context) {
         mContext = context;
         Bundle bundle = new Bundle();
         bundle.putString(SamsungPay.PARTNER_SERVICE_TYPE, SpaySdk.ServiceType.INAPP_PAYMENT.toString());
@@ -40,15 +40,15 @@ public class SampleAppPartnerInfoHolder {
         return mPartnerInfo;
     }
 
-    String getSampleAppName() {
+    public String getSampleAppName() {
         return mContext.getString(R.string.app_name);
     }
 
-    int getSpayNotReadyStatus() {
+    public int getSpayNotReadyStatus() {
         return mSpayNotReadyReason;
     }
 
-    void setSpayNotReadyStatus(int reason) {
+    public void setSpayNotReadyStatus(int reason) {
         mSpayNotReadyReason = reason;
     }
 }

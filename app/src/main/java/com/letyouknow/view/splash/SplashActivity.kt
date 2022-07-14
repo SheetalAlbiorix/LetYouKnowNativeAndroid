@@ -50,6 +50,9 @@ class SplashActivity : BaseActivity() {
 
      finite7509@tebyy.com
 Test@123
+
+lorefo7352@satedly.com
+Test@123
     */
 
     override fun onCreate(savedInstanceState: Bundle?) {
