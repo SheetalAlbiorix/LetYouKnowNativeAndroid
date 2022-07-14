@@ -330,7 +330,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
 
     private fun setInteriorColor() {
         try {
-            spInteriorColor.isEnabled = false
+//            spInteriorColor.isEnabled = false
+            spInteriorColor.isEnabled =
+                ((prefSearchDealData.trimStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE") && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
             val arData = ArrayList<InteriorColorData>()
             val interiorData = InteriorColorData()
             if (prefSearchDealData.lowerBorder == "ANY PRICE")
@@ -928,7 +930,7 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
     private fun callInteriorColorAPI() {
         try {
             spInteriorColor.isEnabled =
-                ((prefSearchDealData.extColorStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE") && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
+                ((prefSearchDealData.trimStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE") && prefSearchDealData.extColorStr != "EXTERIOR COLOR")
 //            spInteriorColor.isEnabled = true
             if (Constant.isOnline(requireActivity())) {
                 if (isEmpty(prefSearchDealData.intColorId)) {
@@ -1733,6 +1735,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         val prefUCD = pref?.getSearchDealData()
         val prefLCD = pref?.getOneDealNearYouData()
         val prefLYK = pref?.getSubmitPriceData()
+        val packagesData = VehiclePackagesData()
+        packagesData.vehiclePackageID = "0"
+        packagesData.packageName = "ANY"
+        val optionsData = VehicleAccessoriesData()
+        optionsData.dealerAccessoryID = "0"
+        optionsData.accessory = "ANY"
 
         if (!prefLYK?.isLYK!! && !prefLCD?.isLCD!!) {
             if (isValidZipCode) {
@@ -1750,6 +1758,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 prefLCD.extColorStr = prefUCD?.extColorStr
                 prefLCD.intColorId = prefUCD?.intColorId
                 prefLCD.intColorStr = prefUCD?.intColorStr
+                prefLCD.packagesData = arrayListOf(packagesData)
+                prefLCD.optionsData = arrayListOf(optionsData)
                 setLCDPrefData(prefLCD)
             }
         }
@@ -1759,7 +1769,12 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         val prefUCD = pref?.getSearchDealData()
         val prefLCD = pref?.getOneDealNearYouData()
         val prefLYK = pref?.getSubmitPriceData()
-
+        val packagesData = VehiclePackagesData()
+        packagesData.vehiclePackageID = "0"
+        packagesData.packageName = "ANY"
+        val optionsData = VehicleAccessoriesData()
+        optionsData.dealerAccessoryID = "0"
+        optionsData.accessory = "ANY"
         if (!prefLYK?.isLYK!! && !prefLCD?.isLCD!!) {
             prefLYK.zipCode = prefUCD?.zipCode
             prefLYK.yearId = prefUCD?.yearId
@@ -1775,6 +1790,8 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
             prefLYK.intColorId = prefUCD?.intColorId
             prefLYK.intColorStr = prefUCD?.intColorStr
             prefLYK.radius = prefUCD?.searchRadius
+            prefLYK.packagesData = arrayListOf(packagesData)
+            prefLYK.optionsData = arrayListOf(optionsData)
             setUCDtoLYKPrefData(prefLYK)
         }
     }

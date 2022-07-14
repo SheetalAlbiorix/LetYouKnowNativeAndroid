@@ -587,10 +587,17 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
             val request = java.util.HashMap<String, Any>()
             yearModelMakeData.run {
-                request[ApiConstant.vehicleYearID] = vehicleYearID!!
-                request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
-                request[ApiConstant.vehicleModelID] = vehicleModelID!!
-                request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                if (isFromLYKNegative) {
+                    request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
+                    request[ApiConstant.vehicleMakeID] = dataUCDDeal.makeId!!
+                    request[ApiConstant.vehicleModelID] = dataUCDDeal.modelId!!
+                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!
+                } else {
+                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
+                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
+                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
+                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                }
             }
             Log.e("ImageId Request", Gson().toJson(request))
             imageIdViewModel.imageIdCall(this, request)!!

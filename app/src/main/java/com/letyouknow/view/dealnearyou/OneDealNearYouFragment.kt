@@ -2175,6 +2175,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                 prefUCD.extColorStr = it.extColorStr
                 prefUCD.intColorId = it.intColorId
                 prefUCD.intColorStr = it.intColorStr
+                prefUCD.searchRadius = "100 mi"
                 setLCDtoUCDPrefData(prefUCD)
             }
         }

@@ -21,12 +21,13 @@
         tools:listitem="@layout/list_item_packages" />
 
     <TextView
+        android:id="@+id/tvDesc"
         style="@style/regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/_8sdp"
-        android:text="@string/subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"
+        android:text="@string/subject_to_eligibility_verification"
         android:textColor="@color/color545d64"
         android:textSize="@dimen/_10sdp" />
     <!--        android:text="†Subject to the verification process by a matched dealer"-->

@@ -428,6 +428,7 @@
     <string name="packages_title">PACKAGES</string>
     <string name="options_accessories_title">OPTIONS &amp; ACCESSORIES </string>
 
+    <string name="rebate_name_cross">%1s<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
     <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
@@ -446,10 +447,11 @@
     <string name="dealer_receipt">Dealer Receipt</string>
     <string name="my_receipt">My\nReceipt</string>
     <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
-    <string name="rebatesDisc">Rebates/Disc</string>
+    <string name="rebatesDisc">CHECK ADDT’L REBATES/DISC</string>
     <string name="estimated_discount">Estimated Discount<font size="10"><sup>‡</sup></font>:</string>
     <string name="no_rebates_found">No Rebates Found For Your Zip Code of %1s</string>
-    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.]]></string>
+    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">‡</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable. Selected Rebates: %1s</font>]]></string>
+    <string name="subject_to_eligibility_verification"><![CDATA[<sup><font size="6">‡</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
 
     //samsungpay
     <string name="merchant_sdk_test">Merchant SDK test</string>

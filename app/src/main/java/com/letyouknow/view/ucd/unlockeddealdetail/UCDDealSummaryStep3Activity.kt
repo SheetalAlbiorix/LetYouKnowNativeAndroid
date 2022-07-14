@@ -1137,6 +1137,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     )
                 } else {
                     strRebate = Gson().toJson(arRebate)
+                    setRebateSelection()
                     dialogRebate.show()
                 }
             }
@@ -1153,6 +1154,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 for (i in 0 until arRebate.size) {
                     adapterRebateDisc.update(i, arRebate[i])
                 }
+                setRebateSelection()
                 dialogRebate.dismiss()
             }
             R.id.tvResetRebate -> {
@@ -2292,8 +2294,25 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
-                    if (!isShowRebateDis)
+                    if (!isShowRebateDis) {
                         data.estimatedRebates = 0.0
+                        if (::dialogRebate.isInitialized)
+                            dialogRebate.tvDesc.text = Html.fromHtml(
+                                getString(
+                                    R.string.subject_to_eligibility_verification
+                                )
+                            )
+                    } else {
+                        if (::dialogRebate.isInitialized)
+                            dialogRebate.tvDesc.text = Html.fromHtml(
+                                if (!TextUtils.isEmpty(data.rebateDetails)) getString(
+                                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
+                                    data.rebateDetails
+                                ) else getString(
+                                    R.string.subject_to_eligibility_verification
+                                )
+                            )
+                    }
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
@@ -2351,6 +2370,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                         arRebate[i].isGray = false
                         adapterRebateDisc.update(i, arRebate[i])
                     }
+                    setRebateSelection()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -2452,10 +2472,37 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
+                    setRebateSelection()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setRebateSelection() {
+        var selectStr = ""
+        for (i in 0 until adapterRebateDisc.itemCount) {
+            if (adapterRebateDisc.getItem(i).isSelect == true || adapterRebateDisc.getItem(
+                    i
+                ).isOtherSelect == true
+            ) {
+                selectStr =
+                    selectStr + " " + adapterRebateDisc.getItem(i).rebateName + "(" + NumberFormat.getCurrencyInstance(
+                        Locale.US
+                    ).format(adapterRebateDisc.getItem(i).rebatePrice)!!
+                        .replace(".00", "") + ")"
+            }
+        }
+
+        if (::dialogRebate.isInitialized)
+            dialogRebate.tvDesc.text = Html.fromHtml(
+                if (!TextUtils.isEmpty(selectStr)) getString(
+                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
+                    selectStr
+                ) else getString(
+                    R.string.subject_to_eligibility_verification
+                )
+            )
     }
 
     private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter

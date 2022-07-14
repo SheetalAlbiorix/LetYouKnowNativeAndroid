@@ -1,5 +1,6 @@
 package com.letyouknow.view.spinneradapter
 
+import android.text.Html
 import android.view.View
 import com.letyouknow.R
 import com.letyouknow.model.RebateListData
@@ -35,7 +36,8 @@ class RebateDiscAdapter(layout: Int, val clickListener: View.OnClickListener) :
                             ivSelect.setImageResource(R.drawable.ic_checkbox_unchecked_border_gray)
                     }
                 }
-                chkRebate.text = rebateName
+                chkRebate.text =
+                    Html.fromHtml(resources.getString(R.string.rebate_name_cross, rebateName))
                 tvRebatePrice.text =
                     NumberFormat.getCurrencyInstance(Locale.US).format(rebatePrice)!!
                         .replace(".00", "")

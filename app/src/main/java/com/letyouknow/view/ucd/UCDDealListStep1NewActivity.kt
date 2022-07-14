@@ -396,14 +396,10 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             val request = HashMap<String, Any>()
             yearModelMakeData.run {
                 if (isFromLYK) {
-                    /*request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
+                    request[ApiConstant.vehicleYearID] = dataUCDDeal.yearId!!
                     request[ApiConstant.vehicleMakeID] = dataUCDDeal.makeId!!
                     request[ApiConstant.vehicleModelID] = dataUCDDeal.modelId!!
-                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!*/
-                    request[ApiConstant.vehicleYearID] = vehicleYearID!!
-                    request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
-                    request[ApiConstant.vehicleModelID] = vehicleModelID!!
-                    request[ApiConstant.vehicleTrimID] = vehicleTrimID!!
+                    request[ApiConstant.vehicleTrimID] = dataUCDDeal.trimId!!
                 } else {
                     request[ApiConstant.vehicleYearID] = vehicleYearID!!
                     request[ApiConstant.vehicleMakeID] = vehicleMakeID!!
@@ -414,7 +410,8 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
             Log.e("ImageId Request", Gson().toJson(request))
             imageIdViewModel.imageIdCall(this, request)!!
                 .observe(this, Observer { data ->
-                    Constant.dismissLoader()
+                    if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                        Constant.dismissLoader()
                     imageId = data
                     callImageUrlAPI(data)
                 }
