@@ -21,17 +21,17 @@ public class AmountDetailNewControls implements TextWatcher {
     private static final String DECIMAL_VALUE_ZERO = "00";
     private final Context mContext;
     private final OrderDetailsListener mOrderDetailsListener;
-    private double mDiscountedProductAmount = 1000;
-    private double mTaxAmount = 50;
-    private double mShippingAmount = 10;
+    private double mDiscountedProductAmount = 0;
+    private double mTaxAmount = 0;
+    private double mShippingAmount = 0;
     private double mAddedShippingAmount = 0;
     private double mAddedBillingAmount = 0;
-    private double mProductAmount = 1000;
+    private double mProductAmount = 0;
 
-    public AmountDetailNewControls(Context context, OrderDetailsListener orderDetailsListener) {
+    public AmountDetailNewControls(Context context, Double totalAmount, OrderDetailsListener orderDetailsListener) {
         mContext = context;
         mOrderDetailsListener = orderDetailsListener;
-        init();
+        init(totalAmount);
     }
 
     private void setProductAmount(double productAmount) {
@@ -42,23 +42,23 @@ public class AmountDetailNewControls implements TextWatcher {
         mAddedShippingAmount = amount;
     }
 
-    private void init() {
-
-        mDiscountedProductAmount = 1000;
-        mTaxAmount = 50;
-        mShippingAmount = 10;
+    private void init(Double totalAmount) {
+        mDiscountedProductAmount = 0;
+        mTaxAmount = 0;
+        mShippingAmount = 0;
         mAddedShippingAmount = 0;
         mAddedBillingAmount = 0;
-        mProductAmount = 1000;
+        mProductAmount = totalAmount;
 
     }
 
     private double getTotalAmount() {
-        mProductAmount = Double.parseDouble("1.0");
-        mTaxAmount = Double.parseDouble("1.0");
-        mShippingAmount = Double.parseDouble("1.0");
+//        mProductAmount = Double.parseDouble("1.0");
+//        mTaxAmount = Double.parseDouble("1.0");
+//        mShippingAmount = Double.parseDouble("1.0");
 
-        return mProductAmount + mTaxAmount + mAddedBillingAmount + mShippingAmount + mAddedShippingAmount;
+//        return mProductAmount + mTaxAmount + mAddedBillingAmount + mShippingAmount + mAddedShippingAmount;
+        return mProductAmount;
     }
 
     public void updateAndCheckAmountValidation() {
@@ -73,7 +73,7 @@ public class AmountDetailNewControls implements TextWatcher {
     }
 
     public AmountBoxControl makeAmountControl() {
-        AmountBoxControl amountBoxControl = new AmountBoxControl(AMOUNT_CONTROL_ID, "INR");
+        AmountBoxControl amountBoxControl = new AmountBoxControl(AMOUNT_CONTROL_ID, "USD");
 
         amountBoxControl.addItem(PRODUCT_ITEM_ID, mContext.getString(R.string.amount_control_name_item), mDiscountedProductAmount, "");
         amountBoxControl.addItem(PRODUCT_TAX_ID, mContext.getString(R.string.amount_control_name_tax), mTaxAmount + mAddedBillingAmount, "");
@@ -116,6 +116,6 @@ public class AmountDetailNewControls implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        updateAndCheckAmountValidation();
+        //updateAndCheckAmountValidation();
     }
 }

@@ -80,6 +80,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_ucd_deal_summary_step3.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_inventory_availability.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
@@ -177,7 +178,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         rebateResetViewModel = ViewModelProvider(this)[RebateResetViewModel::class.java]
         rebateListViewModel = ViewModelProvider(this)[RebateListViewModel::class.java]
         rebateCheckedViewModel = ViewModelProvider(this)[RebateCheckedViewModel::class.java]
-            ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
+        ViewModelProvider(this)[SubmitPendingUCDDealViewModel::class.java]
 
         if (intent.hasExtra(ARG_UCD_DEAL) && intent.hasExtra(ARG_UCD_DEAL_PENDING) && intent.hasExtra(
                 ARG_YEAR_MAKE_MODEL
@@ -2246,6 +2247,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_inventory_availability)
         dialog.run {
+            tvMessageEmpty.text = getString(R.string.one_or_more_rebates_need_to_be_applied)
             Handler().postDelayed({
                 dismiss()
             }, 3000)
@@ -2758,7 +2760,11 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         }
 
         //   mAmountDetailControls = AmountDetailControls(mContext, mBinding!!.amountDetails, orderDetailsListener)
-        mAmountDetailControls = AmountDetailNewControls(this, orderDetailsListener)
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            ucdData.price!!.toDouble() - (799.0f + ucdData.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
 
         val addressRequestListener =
             AddressRequestListener { type: CustomSheetPaymentInfo.AddressInPaymentSheet ->
@@ -2912,6 +2918,19 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
         )
         // PaymentManager.startInAppPayWithCustomSheet method to show custom payment sheet.
 //        disableSamsungPayButton()
+        val orderDetailsListener = OrderDetailsListener { bool ->
+            if (bool) {
+                enableSamsungPayButton()
+            } else {
+                disableSamsungPayButton()
+            }
+        }
+
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            ucdData.price!!.toDouble() - (799.0f + ucdData.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
         mPaymentManager = PaymentManager(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
 
         mPaymentManager!!.startInAppPayWithCustomSheet(
@@ -3076,5 +3095,4 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             else -> dialogInterface.dismiss()
         }
     }
-
 }

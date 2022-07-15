@@ -72,6 +72,7 @@ import com.stripe.android.model.StripeIntent
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_inventory_availability.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
 import kotlinx.android.synthetic.main.layout_card_google_samsung.*
@@ -1858,6 +1859,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_inventory_availability)
         dialog.run {
+            tvMessageEmpty.text = getString(R.string.one_or_more_rebates_need_to_be_applied)
             Handler().postDelayed({
                 dismiss()
             }, 3000)
@@ -2374,7 +2376,11 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         }
 
         //   mAmountDetailControls = AmountDetailControls(mContext, mBinding!!.amountDetails, orderDetailsListener)
-        mAmountDetailControls = AmountDetailNewControls(this, orderDetailsListener)
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            yearModelMakeData.price!!.toDouble() - (799.0f + yearModelMakeData.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
 
         val addressRequestListener =
             AddressRequestListener { type: CustomSheetPaymentInfo.AddressInPaymentSheet ->
@@ -2528,6 +2534,19 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         )
         // PaymentManager.startInAppPayWithCustomSheet method to show custom payment sheet.
 //        disableSamsungPayButton()
+        val orderDetailsListener = OrderDetailsListener { bool ->
+            if (bool) {
+                enableSamsungPayButton()
+            } else {
+                disableSamsungPayButton()
+            }
+        }
+
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            yearModelMakeData.price!!.toDouble() - (799.0f + yearModelMakeData.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
         mPaymentManager = PaymentManager(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
 
         mPaymentManager!!.startInAppPayWithCustomSheet(

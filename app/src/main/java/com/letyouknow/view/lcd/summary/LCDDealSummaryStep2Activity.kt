@@ -86,6 +86,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_inventory_availability.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
@@ -2446,6 +2447,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_inventory_availability)
         dialog.run {
+            tvMessageEmpty.text = getString(R.string.one_or_more_rebates_need_to_be_applied)
             Handler().postDelayed({
                 dismiss()
             }, 3000)
@@ -2729,7 +2731,11 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         }
 
         //   mAmountDetailControls = AmountDetailControls(mContext, mBinding!!.amountDetails, orderDetailsListener)
-        mAmountDetailControls = AmountDetailNewControls(this, orderDetailsListener)
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            dataLCDDeal.price!!.toDouble() - (799.0f + dataLCDDeal.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
 
         val addressRequestListener =
             AddressRequestListener { type: CustomSheetPaymentInfo.AddressInPaymentSheet ->
@@ -2883,6 +2889,20 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         )
         // PaymentManager.startInAppPayWithCustomSheet method to show custom payment sheet.
 //        disableSamsungPayButton()
+
+        val orderDetailsListener = OrderDetailsListener { bool ->
+            if (bool) {
+                enableSamsungPayButton()
+            } else {
+                disableSamsungPayButton()
+            }
+        }
+
+        mAmountDetailControls = AmountDetailNewControls(
+            this,
+            dataLCDDeal.price!!.toDouble() - (799.0f + dataLCDDeal.discount!!.toDouble() + dollar),
+            orderDetailsListener
+        )
         mPaymentManager = PaymentManager(this, mSampleAppPartnerInfoHolder!!.partnerInfo)
 
         mPaymentManager!!.startInAppPayWithCustomSheet(

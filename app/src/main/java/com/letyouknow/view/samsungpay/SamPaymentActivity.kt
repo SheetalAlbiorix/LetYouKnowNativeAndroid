@@ -59,7 +59,7 @@ class SamPaymentActivity : AppCompatActivity(), DialogInterface.OnClickListener 
         }
 
         //   mAmountDetailControls = AmountDetailControls(mContext, mBinding!!.amountDetails, orderDetailsListener)
-        mAmountDetailControls = AmountDetailNewControls(mContext, orderDetailsListener)
+        mAmountDetailControls = AmountDetailNewControls(mContext, 1000.0, orderDetailsListener)
 
         val addressRequestListener =
             AddressRequestListener { type: CustomSheetPaymentInfo.AddressInPaymentSheet ->

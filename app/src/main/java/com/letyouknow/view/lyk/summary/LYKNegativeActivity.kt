@@ -538,6 +538,8 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
 
     private fun setPrefUcdDealData(data: FindUcdDealData) {
         val prefSearchDealData = PrefSearchDealData()
+        prefSearchDealData.ucdPriceRangeID = "0"
+        prefSearchDealData.lowerBorder = "ANY PRICE"
         prefSearchDealData.yearId = data.yearId
         prefSearchDealData.yearStr = data.vehicleYear
         prefSearchDealData.makeId = data.makeId

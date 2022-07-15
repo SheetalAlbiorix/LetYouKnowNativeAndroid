@@ -80,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <!--goneeeee-->
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -716,16 +717,44 @@
             app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
             app:pendingUCDData="@{pendingUCDShippingData}" />
 
-        <TextView
-            style="@style/bold"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_25sdp"
-            android:text="@string/buyer_info"
-            android:textColor="@color/color3e5365"
-            android:textSize="@dimen/_16sdp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/buyer_info"
+                android:textColor="@color/color3e5365"
+                android:textSize="@dimen/_16sdp" />
+
+            <TextView
+                android:id="@+id/tvRebatesDisc"
+                style="@style/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:background="@drawable/bg_button_disable"
+                android:enabled="false"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_12sdp"
+                android:paddingEnd="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_12sdp"
+                android:text="@string/rebatesDisc"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <TextView
             style="@style/medium"
@@ -1114,29 +1143,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <TextView
-            android:id="@+id/tvRebatesDisc"
-            style="@style/bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_25sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_button_disable"
-            android:enabled="false"
-            android:gravity="center"
-            android:paddingStart="@dimen/_18sdp"
-            android:paddingTop="@dimen/_12sdp"
-            android:paddingEnd="@dimen/_18sdp"
-            android:paddingBottom="@dimen/_12sdp"
-            android:text="@string/rebatesDisc"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
