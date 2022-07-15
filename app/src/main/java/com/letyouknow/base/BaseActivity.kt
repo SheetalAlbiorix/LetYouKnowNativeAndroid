@@ -95,6 +95,4 @@ public abstract class BaseActivity : AppCompatActivity(), BaseView {
             .setConfirmText(resources.getString(R.string.ok))
             .show()
     }
-
-
 }

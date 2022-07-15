@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: com.braintreepayments.api:paypal:4.11.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/921ad13cea5cff2a7ab7b803289b57a0/transformed/jetified-paypal-4.11.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/921ad13cea5cff2a7ab7b803289b57a0/transformed/jetified-paypal-4.11.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/921ad13cea5cff2a7ab7b803289b57a0/transformed/jetified-paypal-4.11.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/921ad13cea5cff2a7ab7b803289b57a0/transformed/jetified-paypal-4.11.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/paypal/4.11.0/722b2d4b32006c6a8bffb40c2a0c96dcd0b07244/paypal-4.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/paypal/4.11.0/ea219efca56afca0fc7a7a5598a6d0ba43d0cae7/paypal-4.11.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

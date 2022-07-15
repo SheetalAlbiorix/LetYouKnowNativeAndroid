@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: com.braintreepayments.api:shared-utils:4.11.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/455f3518e69f80825cd6280890d1d631/transformed/jetified-shared-utils-4.11.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/455f3518e69f80825cd6280890d1d631/transformed/jetified-shared-utils-4.11.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/455f3518e69f80825cd6280890d1d631/transformed/jetified-shared-utils-4.11.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/455f3518e69f80825cd6280890d1d631/transformed/jetified-shared-utils-4.11.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/shared-utils/4.11.0/1295c4b16d7227e9395d38cb781b334fcf439c17/shared-utils-4.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/shared-utils/4.11.0/52f9a0a07d5058feaffcde06d1e0a2033562ea7f/shared-utils-4.11.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

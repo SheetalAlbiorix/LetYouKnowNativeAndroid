@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: com.braintreepayments.api:braintree-core:4.11.0@aar">
+    <ANNOTATIONS>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b01346d705d9de7ceb32efa0ad8249cf/transformed/jetified-braintree-core-4.11.0/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b01346d705d9de7ceb32efa0ad8249cf/transformed/jetified-braintree-core-4.11.0/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b01346d705d9de7ceb32efa0ad8249cf/transformed/jetified-braintree-core-4.11.0/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/b01346d705d9de7ceb32efa0ad8249cf/transformed/jetified-braintree-core-4.11.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/braintree-core/4.11.0/e6a2f70bd8b34ea8349d99c19ce0783b0a4b03a9/braintree-core-4.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/com.braintreepayments.api/braintree-core/4.11.0/b84b9c1b2bb5d6c4ef7f7d1b0b452b38768f3e5/braintree-core-4.11.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

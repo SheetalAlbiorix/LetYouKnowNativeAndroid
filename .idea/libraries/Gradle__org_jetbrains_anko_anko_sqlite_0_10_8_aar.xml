@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.anko:anko-sqlite:0.10.8@aar">
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e6d3ba234331d5bfc4f8e05022e1c089/transformed/jetified-anko-sqlite-0.10.8/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e6d3ba234331d5bfc4f8e05022e1c089/transformed/jetified-anko-sqlite-0.10.8/res" />
+      <root url="file://C:/Program Files/Java/jdk-17.0.1/caches/transforms-3/e6d3ba234331d5bfc4f8e05022e1c089/transformed/jetified-anko-sqlite-0.10.8/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/jdk-17.0.1/caches/modules-2/files-2.1/org.jetbrains.anko/anko-sqlite/0.10.8/5bf3f4c2bc1e657e1e607566be8d9706807b248e/anko-sqlite-0.10.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
