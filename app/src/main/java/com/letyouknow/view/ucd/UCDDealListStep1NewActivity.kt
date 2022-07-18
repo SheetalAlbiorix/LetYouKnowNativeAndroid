@@ -437,7 +437,10 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                 request[ApiConstant.ImageProduct] = "Splash"
             } else {
                 request[ApiConstant.ImageProduct] = "MultiAngle"
-                request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
+                if (isFromLYK)
+                    request[ApiConstant.ExteriorColor] = dataUCDDeal.vehicleExteriorColor!!
+                else
+                    request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
             }
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->

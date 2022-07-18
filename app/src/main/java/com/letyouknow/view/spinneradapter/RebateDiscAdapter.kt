@@ -40,7 +40,6 @@ class RebateDiscAdapter(layout: Int, val clickListener: View.OnClickListener) :
                     Html.fromHtml(resources.getString(R.string.rebate_name_cross, rebateName))
                 tvRebatePrice.text =
                     NumberFormat.getCurrencyInstance(Locale.US).format(rebatePrice)!!
-                        .replace(".00", "")
                 llRebate.tag = position
                 llRebate.setOnClickListener(clickListener)
             }

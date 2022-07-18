@@ -419,7 +419,7 @@
     <string name="price_range_required">Price Range Required</string>
 
     <string name="miles_within"><i>(%1s miles within %2s)</i></string>
-    <string name="year_new_cars">YEAR - NEW CARS</string>
+    <string name="year_new_cars_title">YEAR - NEW CARS</string>
     <string name="make_title">MAKE</string>
     <string name="model_title">MODEL</string>
     <string name="trim_title">TRIM</string>
@@ -428,16 +428,16 @@
     <string name="packages_title">PACKAGES</string>
     <string name="options_accessories_title">OPTIONS &amp; ACCESSORIES </string>
 
-    <string name="rebate_name_cross">%1s<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
-    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
-    <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>‡</sup></font>:</string>
-    <string name="based_on_selected_state_of"> <![CDATA[<sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font>]]></string>
-    <string name="based_on_selected_state_of_italic"><![CDATA[<i><sup><font size="6">‡</font></sup><font size="10">Based on your selected state of %1s</font></i>]]></string>
+    <string name="rebate_name_cross">%1s<font size="10"><sup>†</sup></font></string>
+    <string name="estimated_taxes">Estimated Taxes<font size="10"><sup>†</sup></font>:</string>
+    <string name="estimated_taxes_colon">Estimated Taxes<font size="10"><sup>†</sup></font>:</string>
+    <string name="estimated_reg_non">Estimated Reg Non Tax Fees<font size="10"><sup>†</sup></font>:\n<i>(registration, licensing and titling fees)</i></string>
+    <string name="estimated_reg_nontax_fees">Estimated Reg Non Tax Fees<font size="10"><sup>†</sup></font>:</string>
+    <string name="estimated_reg_nontax_fees_colon">Estimated Reg Non Tax Fees<font size="10"><sup>†</sup></font>:</string>
+    <string name="estimated_total_remaining_balance">Estimated Total Remaining Balance<font size="10"><sup>†</sup></font>:</string>
+    <string name="estimated_total_remaining_balance_colon">Estimated Total Remaining Balance<font size="10"><sup>†</sup></font>:</string>
+    <string name="based_on_selected_state_of"> <![CDATA[<sup><font size="6">†</font></sup><font size="10">Based on your selected state of %1s</font>]]></string>
+    <string name="based_on_selected_state_of_italic"><![CDATA[<i><sup><font size="6">†</font></sup><font size="10">Based on your selected state of %1s</font></i>]]></string>
     <string name="adjusted_lyk_price">Adjusted LYK Price:</string>
     <string name="doc_fee">Doc Fee:</string>
     <string name="prepayment_by_lyk">Prepayment (by LYK):</string>
@@ -448,10 +448,11 @@
     <string name="my_receipt">My\nReceipt</string>
     <string name="nonrefundable_service_fee">(nonrefundable service and reservation fee)</string>
     <string name="rebatesDisc">CHECK ADDT’L REBATES/DISC</string>
-    <string name="estimated_discount">Estimated Discount<font size="10"><sup>‡</sup></font>:</string>
+    <string name="estimated_discount">Estimated Discount<font size="10"><sup>†</sup></font>:</string>
     <string name="no_rebates_found">No Rebates Found For Your Zip Code of %1s</string>
-    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">‡</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable. Selected Rebates: %1s</font>]]></string>
-    <string name="subject_to_eligibility_verification"><![CDATA[<sup><font size="6">‡</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
+    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
+    <!--    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable. Selected Rebates: %1s</font>]]></string>-->
+    <string name="subject_to_eligibility_verification"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
 
     //samsungpay
     <string name="merchant_sdk_test">Merchant SDK test</string>
@@ -605,5 +606,6 @@
     <string name="one_day_shipping">1 day shipping (0.2$)</string>
     <string name="provide_all_options">All options will be provided to user</string>
     <string name="provide_only_one_option">Only selected option will be provided to user</string>
+    <string name="one_or_more_rebates_need_to_be_applied">One or more rebates need to be applied</string>
 
 </resources>
