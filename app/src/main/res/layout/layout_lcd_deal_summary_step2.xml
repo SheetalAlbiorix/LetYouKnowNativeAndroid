@@ -1077,6 +1077,7 @@
             android:layout_marginLeft="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/bg_button"
             android:paddingStart="@dimen/_18sdp"
             android:paddingTop="@dimen/_12sdp"
@@ -1165,13 +1166,13 @@
             android:paddingBottom="@dimen/_12sdp"
             android:visibility="@{isSamsungPay?View.VISIBLE:View.GONE}">
 
-            <ImageView
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_google"
-                android:visibility="visible"
-                app:tint="@color/white" />
+            <!--   <ImageView
+                   android:layout_width="@dimen/_24sdp"
+                   android:layout_height="@dimen/_24sdp"
+                   android:layout_gravity="center_horizontal"
+                   android:src="@drawable/ic_google"
+                   android:visibility="visible"
+                   app:tint="@color/white" />-->
 
             <TextView
                 style="@style/bold"

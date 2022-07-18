@@ -894,7 +894,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 if (arRebate.isNullOrEmpty()) {
                     AppGlobal.alertError(
                         this,
-                        getString(R.string.no_rebates_found, " " + yearModelMakeData.zipCode)
+                        getString(
+                            R.string.no_rebates_found,
+                            " " + edtZipCode.text.toString().trim()
+                        )
                     )
                 } else {
                     strRebate = Gson().toJson(arRebate)
@@ -1977,6 +1980,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    data.estimatedRebates = calculateTaxData.estimatedRebates
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(adapterRebateDisc.getAll())
@@ -2316,7 +2320,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     private fun onClickGooglePayment() {
         googlePayLauncher.present(
             currencyCode = "USD",
-            amount = 2500
+            amount = (yearModelMakeData.price!!.toDouble() - (799.0f + yearModelMakeData.discount!!.toDouble() + dollar)).toInt()
         )
     }
 

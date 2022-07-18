@@ -1134,7 +1134,10 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                 if (arRebate.isNullOrEmpty()) {
                     AppGlobal.alertError(
                         this,
-                        getString(R.string.no_rebates_found, " " + yearModelMakeData.zipCode)
+                        getString(
+                            R.string.no_rebates_found,
+                            " " + edtZipCode.text.toString().trim()
+                        )
                     )
                 } else {
                     strRebate = Gson().toJson(arRebate)
@@ -2282,7 +2285,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.GuestId] = "0"
             map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
             map[ApiConstant.DealId] = ucdData.dealID!!
-            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.ProductId1] = "3"
             map[ApiConstant.RebateList] = jsonRebate
             map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
             map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
@@ -2349,7 +2352,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.GuestId] = "0"
             map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
             map[ApiConstant.DealId] = ucdData.dealID!!
-            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.ProductId1] = "3"
             map[ApiConstant.RebateList] = jsonRebate
             map[ApiConstant.priceBid] = ucdData.price!!.toDouble()
             map[ApiConstant.promocodeDiscount] = ucdData.discount!!.toDouble()
@@ -2363,6 +2366,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
+                    data.estimatedRebates = calculateTaxData.estimatedRebates
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(adapterRebateDisc.getAll())
@@ -2396,7 +2400,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.GuestId] = "0"
             map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
             map[ApiConstant.DealId] = ucdData.dealID!!
-            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.ProductId1] = "3"
 
             rebateListViewModel.rebateListApi(
                 this,
@@ -2441,7 +2445,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.GuestId] = "0"
             map[ApiConstant.UserId] = pref?.getUserData()?.buyerId!!
             map[ApiConstant.DealId] = ucdData.dealID!!
-            map[ApiConstant.ProductId1] = "1"
+            map[ApiConstant.ProductId1] = "3"
             map[ApiConstant.RebateList] = jsonRebate
             rebateCheckedViewModel.rebateCheckApi(
                 this,
@@ -2701,7 +2705,7 @@ class UCDDealSummaryStep3Activity : BaseActivity(), View.OnClickListener,
     private fun onClickGooglePayment() {
         googlePayLauncher.present(
             currencyCode = "USD",
-            amount = 2500
+            amount = (ucdData.price!!.toDouble() - (799.0f + ucdData.discount!!.toDouble() + dollar)).toInt()
         )
     }
 
