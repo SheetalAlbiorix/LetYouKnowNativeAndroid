@@ -9,8 +9,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnow.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnow.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnow.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnow.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.androidTest~1.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.androidTest~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.unitTest~1.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LetYouKnowNativeAndroid.LetYouKnow.app.unitTest~1.iml" />
     </modules>
   </component>
 </project>

@@ -875,7 +875,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

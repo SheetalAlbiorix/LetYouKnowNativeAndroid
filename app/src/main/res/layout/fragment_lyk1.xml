@@ -225,7 +225,6 @@
                                 android:textSize="@dimen/_11sdp"
                                 android:visibility="gone" />
 
-
                             <TextView
                                 android:id="@+id/tvTrim"
                                 style="@style/bold"
