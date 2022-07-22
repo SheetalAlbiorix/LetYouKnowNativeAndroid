@@ -54,6 +54,9 @@
             name="selectState"
             type="String" />
 
+        <variable
+            name="selectRebate"
+            type="String" />
 
         <variable
             name="isCheck"
@@ -519,6 +522,7 @@
                 <include
                     layout="@layout/layout_estimated_tax"
                     app:selectState="@{selectState}"
+                    app:selectRebate="@{selectRebate}"
                     app:taxData="@{taxData}" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

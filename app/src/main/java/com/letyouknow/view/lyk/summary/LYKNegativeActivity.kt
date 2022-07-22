@@ -148,7 +148,7 @@ class LYKNegativeActivity : BaseActivity(), View.OnClickListener {
         if (::submitDealData.isInitialized && !submitDealData.negativeResult?.ucdDeals.isNullOrEmpty()) {
             val arUcd: ArrayList<FindUcdDealData?> = ArrayList()
             arUcd.addAll(submitDealData.negativeResult?.ucdDeals!!)
-            adapterUCD = Items_LinearRVAdapter(arUcd, this, false)
+            adapterUCD = Items_LinearRVAdapter(arUcd, this, false, "")
             adapterUCD.notifyDataSetChanged()
             rvUnlockedCar.adapter = adapterUCD
         }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.text.Html" />
 
         <import type="android.view.View" />
@@ -589,8 +590,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:orientation="horizontal"
-                        android:visibility="@{data.estimatedRebates > 0 ? View.VISIBLE : View.GONE}">
+                        android:orientation="horizontal">
 
                         <TextView
                             style="@style/regular"
@@ -632,7 +632,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
-                            android:text="@{'+'+NumberFormat.getCurrencyInstance(Locale.US).format(data.estimatedTotalRemainingBalance)}"
+                            android:text="@{NumberFormat.getCurrencyInstance(Locale.US).format(data.estimatedTotalRemainingBalance)}"
                             android:textColor="@color/color545d64"
                             android:textSize="@dimen/_10sdp" />
 
@@ -816,6 +816,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/this_person_must_italic"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of,data.buyerState))}"
+                    android:textColor="@color/color3e5365"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    style="@style/regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text='@{Html.fromHtml(String.format(@string/subject_to_eligibility_verification_by_the_dealership,TextUtils.isEmpty(data.rebateDetails) ? "None" : data.rebateDetails))}'
                     android:textColor="@color/color3e5365"
                     android:textSize="@dimen/_10sdp" />
 

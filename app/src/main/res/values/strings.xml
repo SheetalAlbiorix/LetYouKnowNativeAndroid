@@ -451,7 +451,7 @@
     <string name="estimated_discount">Estimated Discount<font size="10"><sup>†</sup></font>:</string>
     <string name="no_rebates_found">No Rebates Found For Your Zip Code of %1s</string>
     <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
-    <!--    <string name="subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable. Selected Rebates: %1s</font>]]></string>-->
+    <string name="subject_to_eligibility_verification_by_the_dealership"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable. Selected Rebates: %1s</font>]]></string>
     <string name="subject_to_eligibility_verification"><![CDATA[<sup><font size="6">†</font></sup><font size="10">Subject to eligibility verification by the dealership. Rebates & discounts may be taxable.</font>]]></string>
 
     //samsungpay
@@ -607,5 +607,6 @@
     <string name="provide_all_options">All options will be provided to user</string>
     <string name="provide_only_one_option">Only selected option will be provided to user</string>
     <string name="one_or_more_rebates_need_to_be_applied">One or more rebates need to be applied</string>
+    <string name="estimated_rebate_discount_have_been_reset">Estimated Rebates/Discounts have been reset due to address change</string>
 
 </resources>

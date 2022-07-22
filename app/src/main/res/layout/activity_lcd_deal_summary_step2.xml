@@ -53,10 +53,14 @@
         <variable
             name="pendingUCDShippingData"
             type="com.letyouknow.model.SubmitPendingUcdData" />
+
         <variable
             name="selectState"
             type="String" />
 
+        <variable
+            name="selectRebate"
+            type="String" />
 
     </data>
 
@@ -213,19 +217,20 @@
 
                 <include
                     layout="@layout/layout_lcd_deal_summary_step2"
+                    app:dollar="@{dollar}"
+                    app:isCheck="@{isCheck}"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
-                    app:isStripe="@{isStripe}"
-                    app:selectState="@{selectState}"
-                    app:taxData="@{taxData}"
-                    app:dollar="@{dollar}"
-                    app:isCheck="@{isCheck}"
                     app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
+                    app:isStripe="@{isStripe}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}"
-                    app:pendingUCDShippingData="@{pendingUCDShippingData}" />
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}"
+                    app:selectRebate="@{selectRebate}"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}" />
 
             </LinearLayout>
 

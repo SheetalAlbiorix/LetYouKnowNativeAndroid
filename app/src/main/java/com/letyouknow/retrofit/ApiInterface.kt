@@ -3,6 +3,7 @@ package com.letyouknow.retrofit
 import com.letyouknow.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -41,7 +42,7 @@ interface ApiInterface {
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<VehicleYearData>
+    ): Response<ArrayList<VehicleYearData>>
 
     @GET("vehiclecriteria/getvehiclemakes")
     fun getVehicleMake(
@@ -51,6 +52,15 @@ interface ApiInterface {
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleMakeData>>
+
+    @GET("vehiclecriteria/getvehiclemakes")
+    fun getVehicleMake2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): ArrayList<VehicleMakeData>
 
     @GET("vehiclecriteria/getvehiclemodels")
     fun getVehicleModels(
@@ -62,6 +72,16 @@ interface ApiInterface {
         @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleModelData>>
 
+    @GET("vehiclecriteria/getvehiclemodels")
+    fun getVehicleModels2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("makeId") makeId: String?,
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): ArrayList<VehicleModelData>
+
     @GET("vehiclecriteria/getvehicletrims")
     fun getVehicleTrims(
         @Query("productId") productId: String?,
@@ -72,6 +92,17 @@ interface ApiInterface {
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
     ): Call<ArrayList<VehicleTrimData>>
+
+    @GET("vehiclecriteria/getvehicletrims")
+    fun getVehicleTrims2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("makeId") makeId: String?,
+        @Query("modelId") modelId: String?,
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): ArrayList<VehicleTrimData>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
     fun getVehicleExteriorColors(
@@ -85,6 +116,18 @@ interface ApiInterface {
         @Query("highprice") highprice: String?
     ): Call<ArrayList<ExteriorColorData>>
 
+    @GET("vehiclecriteria/getvehicleexteriorcolors")
+    fun getVehicleExteriorColors2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("makeId") makeId: String?,
+        @Query("modelId") modelId: String?,
+        @Query("trimId") trimId: String?,
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): ArrayList<ExteriorColorData>
+
     @GET("vehiclecriteria/getvehicleinteriorcolors")
     fun getVehicleInteriorColors(
         @Query("productId") productId: String?,
@@ -97,6 +140,19 @@ interface ApiInterface {
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
     ): Call<ArrayList<InteriorColorData>>
+
+    @GET("vehiclecriteria/getvehicleinteriorcolors")
+    fun getVehicleInteriorColors2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("makeId") makeId: String?,
+        @Query("modelId") modelId: String?,
+        @Query("trimId") trimId: String?,
+        @Query("exteriorColorId") exteriorColorId: String?,
+        @Query("zipCode") zipCode: String?,
+        @Query("lowprice") lowprice: String?,
+        @Query("highprice") highprice: String?
+    ): ArrayList<InteriorColorData>
 
 
     @GET("map/IsValidZip")
@@ -149,6 +205,9 @@ interface ApiInterface {
 
     @POST("image/getimageid")
     fun getImageId(@Body request: HashMap<String, Any>): Call<String>
+
+    @POST("image/getimageidgroup")
+    fun getImageIdGroup(@Body request: HashMap<String, Any>): Call<String>
 
     @POST("image/getimageurl")
     fun getImageURL(@Body request: HashMap<String, Any>): Call<ArrayList<String>>

@@ -234,7 +234,7 @@ class SamPaymentActivity : AppCompatActivity(), DialogInterface.OnClickListener 
         val extraPaymentInfo = Bundle()
 
         customSheetPaymentInfo = customSheetPaymentInfoBuilder
-            .setMerchantId("")
+            .setMerchantId("acct_1HaDBECeSnBm0gpF")
             .setMerchantName(mSampleAppPartnerInfoHolder!!.sampleAppName)
             .setOrderNumber("1")
             .setCustomSheet(makeUpCustomSheet())

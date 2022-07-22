@@ -72,6 +72,7 @@ import com.stripe.android.model.StripeIntent
 import kotlinx.android.synthetic.main.activity_lyk_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_highlight_inventory.*
 import kotlinx.android.synthetic.main.dialog_inventory_availability.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
 import kotlinx.android.synthetic.main.dialog_rebate_disc.*
@@ -257,8 +258,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         edtCardZipCode.inputType = InputType.TYPE_CLASS_NUMBER
         initLiveGoogle()
         checkEmptyData()
-
-        callRebateListAPI()
         setDeliveryOptions()
         initSPay()
     }
@@ -891,19 +890,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 startInAppPayWithCustomSheet()
             }
             R.id.tvRebatesDisc -> {
-                if (arRebate.isNullOrEmpty()) {
-                    AppGlobal.alertError(
-                        this,
-                        getString(
-                            R.string.no_rebates_found,
-                            " " + edtZipCode.text.toString().trim()
-                        )
-                    )
-                } else {
-                    strRebate = Gson().toJson(arRebate)
-                    setRebateSelection()
-                    dialogRebate.show()
-                }
+                callRebateListAPI()
             }
 
             R.id.llRebate -> {
@@ -914,15 +901,10 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 callCheckedRebateAPI()
             }
             R.id.tvCancelRebate -> {
-                val type: Type = object : TypeToken<ArrayList<RebateListData>?>() {}.type
-                arRebate = Gson().fromJson(strRebate, type)
-                for (i in 0 until arRebate.size) {
-                    adapterRebateDisc.update(i, arRebate[i])
-                }
-                setRebateSelection()
                 dialogRebate.dismiss()
             }
             R.id.tvResetRebate -> {
+                isShowZipDialog = 0
                 callRebateResetAPI()
 
             }
@@ -932,6 +914,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    if (isShowZipDialog != 2)
+                        isShowZipDialog = 1
                     isShowRebateDis = true
                     callApplyRebateAPI()
                 }
@@ -1152,7 +1136,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 binding.selectState = state
                 isState = true
 //                callCalculateTaxAPI()
-                callApplyRebateAPI()
+                callRebateResetAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -1804,11 +1788,14 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s?.toString()
-                if (str?.length!! > 0) {
+                if (str?.length!! == 5) {
                     edtText.setBackgroundResource(R.drawable.bg_edittext)
                     errorText.visibility = View.GONE
                     isZipCode = true
                     setDisableVar()
+                } else if (str.length == 4) {
+                    isZipCode = true
+                    callRebateResetAPI()
                 } else {
                     isZipCode = false
                     setDisableVar()
@@ -1843,9 +1830,27 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         dialogRebate.setCanceledOnTouchOutside(false)
         dialogRebate.setContentView(R.layout.dialog_rebate_disc)
         dialogRebate.run {
+
             adapterRebateDisc =
                 RebateDiscAdapter(R.layout.list_item_rebate_disc, this@LYKStep2Activity)
             dialogRebate.rvRebate.adapter = adapterRebateDisc
+            val type: Type = object : TypeToken<ArrayList<RebateListData>?>() {}.type
+            val arSelList = Gson().fromJson<ArrayList<RebateListData>?>(strRebate, type)
+
+            if (!arSelList.isNullOrEmpty()) {
+                for (i in 0 until arData.size) {
+                    for (j in 0 until arSelList.size) {
+                        if (arData[i].rebateId == arSelList[j].rebateId) {
+                            arData[i] = arSelList[j]
+                        }
+                    }
+                }
+            }
+            dialogRebate.tvDesc.text = Html.fromHtml(
+                getString(
+                    R.string.subject_to_eligibility_verification
+                )
+            )
             adapterRebateDisc.addAll(arData)
 
             tvCancelRebate.setOnClickListener(this@LYKStep2Activity)
@@ -1853,8 +1858,8 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             tvApplyRebate.setOnClickListener(this@LYKStep2Activity)
         }
         setLayoutParam(dialogRebate)
+        dialogRebate.show()
     }
-
 
     private fun showApplyEmptyDialog() {
         val dialog = Dialog(this, R.style.FullScreenDialog)
@@ -1871,9 +1876,26 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         dialog.show()
     }
 
+    private fun showStateZipCodeRebateDialog() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_highlight_inventory)
+        dialog.run {
+            tvMSG.text = getString(R.string.estimated_rebate_discount_have_been_reset)
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+
+        }
+        isShowZipDialog = 2
+        setLayoutParam(dialog)
+        dialog.show()
+    }
 
     //rebate api
     private var isShowRebateDis = false
+    private var isShowZipDialog = 0
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -1890,7 +1912,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
@@ -1904,6 +1926,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
             map[ApiConstant.promocodeDiscount] = yearModelMakeData.discount!!.toDouble()
             map[ApiConstant.lykDollars] = dollar
             map[ApiConstant.stateAbbr] = state
+
             rebateViewModel.rebateApi(
                 this,
                 map
@@ -1914,29 +1937,15 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     if (!isShowRebateDis) {
                         data.estimatedRebates = 0.0
-                        if (::dialogRebate.isInitialized)
-                            dialogRebate.tvDesc.text = Html.fromHtml(
-                                getString(
-                                    R.string.subject_to_eligibility_verification
-                                )
-                            )
-                    } else {
-                        if (::dialogRebate.isInitialized)
-                            dialogRebate.tvDesc.text = Html.fromHtml(
-                                if (!TextUtils.isEmpty(data.rebateDetails)) getString(
-                                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
-                                    data.rebateDetails
-                                ) else getString(
-                                    R.string.subject_to_eligibility_verification
-                                )
-                            )
-
                     }
+                    data.isShow = isShowRebateDis
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
                     if (::dialogRebate.isInitialized)
                         dialogRebate.dismiss()
+
+                    setRebateSelection(data.rebateDetails)
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -1946,19 +1955,17 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
     //reset rebate Reset api
     private fun callRebateResetAPI() {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
             val jsonRebate = JsonArray()
-            for (i in 0 until adapterRebateDisc.itemCount) {
-                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
-                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+            if (::adapterRebateDisc.isInitialized) {
+                for (i in 0 until adapterRebateDisc.itemCount) {
+                    if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                        jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                    }
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
@@ -1979,23 +1986,28 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 .observe(
                     this
                 ) { data ->
-                    Constant.dismissLoader()
-                    data.estimatedRebates = calculateTaxData.estimatedRebates
+                    data.isShow = isShowRebateDis
                     binding.taxData = data
                     calculateTaxData = data
-                    strRebate = Gson().toJson(adapterRebateDisc.getAll())
                     for (i in 0 until arRebate.size) {
                         arRebate[i].isSelect = false
                         arRebate[i].isOtherSelect = false
                         arRebate[i].isGray = false
                         adapterRebateDisc.update(i, arRebate[i])
                     }
-                    setRebateSelection()
+                    if (::adapterRebateDisc.isInitialized)
+                        strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                    setRebateSelection(data.rebateDetails)
+                    if (isShowZipDialog == 1) {
+                        showStateZipCodeRebateDialog()
+                    }
+
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
+
 
     //rebate list api
     private fun callRebateListAPI() {
@@ -2006,7 +2018,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
@@ -2025,8 +2037,18 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 ) { data ->
                     Constant.dismissLoader()
                     arRebate = ArrayList()
-                    if (data.isNotEmpty()) {
+                    if (data.isNullOrEmpty()) {
+
+                        AppGlobal.alertError(
+                            this,
+                            getString(
+                                R.string.no_rebates_found,
+                                " " + edtZipCode.text.toString().trim()
+                            )
+                        )
+                    } else {
                         arRebate = data
+//                        strRebate = Gson().toJson(arRebate)
                         dialogRebateDisc(data)
                     }
                 }
@@ -2051,7 +2073,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = yearModelMakeData.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = yearModelMakeData.vehicleYearID!!
             map[ApiConstant.VehicleMakeId1] = yearModelMakeData.vehicleMakeID!!
             map[ApiConstant.VehicleModelId1] = yearModelMakeData.vehicleModelID!!
@@ -2069,7 +2091,6 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                     this
                 ) { data ->
                     Constant.dismissLoader()
-
                     if (!data.autoCheckList.isNullOrEmpty()) {
                         for (i in 0 until data.autoCheckList.size) {
                             for (j in 0 until adapterRebateDisc.itemCount) {
@@ -2093,38 +2114,14 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-
-                    setRebateSelection()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setRebateSelection() {
-        var selectStr = ""
-        for (i in 0 until adapterRebateDisc.itemCount) {
-            if (adapterRebateDisc.getItem(i).isSelect == true || adapterRebateDisc.getItem(
-                    i
-                ).isOtherSelect == true
-            ) {
-                selectStr =
-                    selectStr + " " + adapterRebateDisc.getItem(i).rebateName + "(" + NumberFormat.getCurrencyInstance(
-                        Locale.US
-                    ).format(adapterRebateDisc.getItem(i).rebatePrice)!!
-                        .replace(".00", "") + ")"
-            }
-        }
-
-        if (::dialogRebate.isInitialized)
-            dialogRebate.tvDesc.text = Html.fromHtml(
-                if (!TextUtils.isEmpty(selectStr)) getString(
-                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
-                    selectStr
-                ) else getString(
-                    R.string.subject_to_eligibility_verification
-                )
-            )
+    private fun setRebateSelection(rebate: String?) {
+        binding.selectRebate = if (TextUtils.isEmpty(rebate)) "NONE" else rebate
     }
 
     private lateinit var adapterDeliveryPref: DeliveryPreferenceAdapter
@@ -2566,7 +2563,7 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
         val extraPaymentInfo = Bundle()
 
         customSheetPaymentInfo = customSheetPaymentInfoBuilder
-            .setMerchantId("")
+            .setMerchantId("acct_1HaDBECeSnBm0gpF")
             .setMerchantName(mSampleAppPartnerInfoHolder!!.sampleAppName)
             .setOrderNumber("1")
             .setCustomSheet(makeUpCustomSheet())

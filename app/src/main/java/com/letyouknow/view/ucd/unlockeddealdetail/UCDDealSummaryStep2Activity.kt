@@ -268,7 +268,6 @@ class UCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             }
 
             val request = HashMap<String, Any>()
-            request[ApiConstant.ImageId] = ImageId!!
             /*if(yearModelMakeData.vehicleExtColorID!! == "0"){
                 request[ApiConstant.ImageProduct] = "Splash"
             }else {

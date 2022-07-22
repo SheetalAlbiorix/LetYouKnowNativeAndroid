@@ -6,7 +6,7 @@ data class FindUCDMainData(
     var position: Int? = 0,
     var imageID: String? = "",
     var imgUrl: String? = "",
-    var arUCD: ArrayList<FindUcdDealData> = ArrayList()
+    var arUCD: ArrayList<FindUcdDealData?> = ArrayList()
 ) : Serializable
 
 data class FindUcdDealData(

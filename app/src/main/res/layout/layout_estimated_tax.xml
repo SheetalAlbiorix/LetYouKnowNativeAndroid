@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="android.text.TextUtils" />
         <import type="android.text.Html" />
 
         <import type="android.view.View" />
@@ -17,6 +17,10 @@
 
         <variable
             name="selectState"
+            type="String" />
+
+        <variable
+            name="selectRebate"
             type="String" />
 
     </data>
@@ -77,7 +81,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:visibility="@{(taxData.estimatedRebates.equals(0.0)) ? View.GONE : View.VISIBLE}"
+            android:visibility="@{taxData.isShow ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -132,6 +136,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
+            android:visibility='@{(TextUtils.isEmpty(selectState) || selectState.equals("State") )? View.GONE : View.VISIBLE}'
             style="@style/regular"
             android:id="@+id/tvSelectState"
             android:layout_width="wrap_content"
@@ -139,5 +144,14 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:text="@{Html.fromHtml(String.format(@string/based_on_selected_state_of,selectState))}"
             android:textColor="@color/color545d64" />
+
+        <TextView
+            style="@style/regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@{Html.fromHtml(String.format(@string/subject_to_eligibility_verification_by_the_dealership,selectRebate))}"
+            android:textColor="@color/color545d64"
+            android:visibility="@{taxData.isShow ? View.VISIBLE : View.GONE}" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -1,22 +1,22 @@
 package com.letyouknow.view.dropdown
 
 import android.view.View
-import com.letyouknow.model.VehicleYearData
+import com.letyouknow.model.VehicleMakeData
 import com.logispeed.ui.base.BaseAdapter
-import kotlinx.android.synthetic.main.list_item_year.view.*
+import kotlinx.android.synthetic.main.list_item_make.view.*
 
 class MakeAdapter(layout: Int, val clickListener: View.OnClickListener) :
-    BaseAdapter<VehicleYearData>(layout), BaseAdapter.OnBind<VehicleYearData> {
+    BaseAdapter<VehicleMakeData>(layout), BaseAdapter.OnBind<VehicleMakeData> {
 
     init {
         setOnBinding(this)
     }
 
-    override fun onBind(view: View, position: Int, data: VehicleYearData) {
+    override fun onBind(view: View, position: Int, data: VehicleMakeData) {
         view.run {
-            tvTitleYear.text = data.year
-            tvTitleYear.tag = position
-            tvTitleYear.setOnClickListener(clickListener)
+            tvTitleMake.text = data.make
+            tvTitleMake.tag = position
+            tvTitleMake.setOnClickListener(clickListener)
         }
     }
 }

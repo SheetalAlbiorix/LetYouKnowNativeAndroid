@@ -55,6 +55,7 @@ data class TransactionCodeData(
     val carSalesTax: Double? = 0.0,
     val nonTaxRegFee: Double? = 0.0,
     val estimatedRebates: Double? = 0.0,
+    val rebateDetails: String? = "",
     val estimatedTotalRemainingBalance: Double? = 0.0,
 ) : Serializable
 

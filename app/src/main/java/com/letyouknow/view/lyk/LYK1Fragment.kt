@@ -1,20 +1,14 @@
 package com.letyouknow.view.lyk
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupWindow
 import androidx.lifecycle.ViewModelProvider
 import com.letyouknow.R
 import com.letyouknow.base.BaseFragment
-import com.letyouknow.model.VehicleYearData
 import com.letyouknow.retrofit.viewmodel.*
-import com.letyouknow.view.dropdown.YearAdapter
 import kotlinx.android.synthetic.main.fragment_lyk1.*
-import kotlinx.android.synthetic.main.popup_dialog.view.*
 
 
 class LYK1Fragment : BaseFragment(), View.OnClickListener {
@@ -112,17 +106,34 @@ class LYK1Fragment : BaseFragment(), View.OnClickListener {
             R.id.tvOptionalAccessories -> {
 
             }
+            R.id.tvTitleYear -> {
+                val pos = v.tag as Int
+                val data = lyK1ViewModel.adapterYear.getItem(pos)
+                data.let {
+                    tvYear.text = it.year
+                    yearStr = it.year!!
+                    yearId = it.vehicleYearID!!
+                }
+                lyK1ViewModel.run {
+                    isShowYear = false
+                    lyK1ViewModel.popupYear.dismiss()
+                    lyK1ViewModel.liveDataYear.value?.clear()
+                }
+
+            }
         }
     }
 
     private fun callVehicleYearAPI(view: View?) {
-        lyK1ViewModel.liveDataYear.observe(viewLifecycleOwner) {
-            showAlertFilter(view, it)
+        if (lyK1ViewModel.isShowYear) {
+            lyK1ViewModel.liveDataYear.observe(viewLifecycleOwner) {
+                if (lyK1ViewModel.liveDataYear.value != null)
+                    lyK1ViewModel.showYearPopUp(view, it)
+            }
         }
         lyK1ViewModel.getYear(
             productId,
             "",
-            view
         )
     }
 
@@ -163,25 +174,5 @@ class LYK1Fragment : BaseFragment(), View.OnClickListener {
             }
         }
         return true
-    }
-
-    private lateinit var adapterYear: YearAdapter
-
-    private fun showAlertFilter(v: View?, list: MutableList<VehicleYearData>) {
-        val inflater =
-            requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.popup_dialog, v as ViewGroup, true)
-
-        val popup = PopupWindow(
-            view,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-
-        adapterYear = YearAdapter(R.layout.list_item_year, this)
-        view?.rvPopup?.adapter = adapterYear
-        adapterYear.addAll(ArrayList(list))
-
-        return popup.showAsDropDown(v, 100, -10, Gravity.CENTER)
     }
 }

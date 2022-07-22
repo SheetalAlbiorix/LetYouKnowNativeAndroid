@@ -286,7 +286,7 @@ class SamsungPaymentActivity : AppCompatActivity(), DialogInterface.OnClickListe
         }
         customSheetPaymentInfoBuilder.setAddressInPaymentSheet(mRequestAddressOptions!!.requestAddressType)
         customSheetPaymentInfo = customSheetPaymentInfoBuilder
-            .setMerchantId("")
+            .setMerchantId("acct_1HaDBECeSnBm0gpF")
             .setMerchantName(mSampleAppPartnerInfoHolder!!.sampleAppName)
             .setOrderNumber(mBinding!!.amountDetails.orderNo.text.toString())
             .setAddressInPaymentSheet(mRequestAddressOptions!!.requestAddressType)

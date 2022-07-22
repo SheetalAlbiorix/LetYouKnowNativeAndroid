@@ -44,6 +44,10 @@
             type="String" />
 
         <variable
+            name="selectRebate"
+            type="String" />
+
+        <variable
             name="data"
             type="com.letyouknow.model.YearModelMakeData" />
 
@@ -413,6 +417,7 @@
                 <include
                     layout="@layout/layout_estimated_tax"
                     app:selectState="@{selectState}"
+                    app:selectRebate="@{selectRebate}"
                     app:taxData="@{taxData}" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

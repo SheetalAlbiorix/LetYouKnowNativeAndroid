@@ -2,11 +2,16 @@ package com.letyouknow.view.ucd.ucdstep1
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.letyouknow.R
 import com.letyouknow.base.BaseActivity
@@ -16,17 +21,23 @@ import com.letyouknow.model.FindUcdDealData
 import com.letyouknow.model.YearModelMakeData
 import com.letyouknow.retrofit.ApiConstant
 import com.letyouknow.retrofit.viewmodel.FindUCDDealViewModel
-import com.letyouknow.retrofit.viewmodel.ImageIdViewModel
+import com.letyouknow.retrofit.viewmodel.ImageIdGroupViewModel
+import com.letyouknow.retrofit.viewmodel.ImageUrlViewModel
 import com.letyouknow.retrofit.viewmodel.UCDStep1ViewModel
 import com.letyouknow.utils.Constant
+import kotlinx.android.synthetic.main.activity_ucdstep1.*
+import kotlinx.android.synthetic.main.layout_toolbar_blue.*
 
-class UCDStep1Activity : BaseActivity() {
+
+class UCDStep1Activity : BaseActivity(), View.OnClickListener {
 
     private var searchRadius = ""
     private var zipCode = ""
     private lateinit var findUCDDealViewModel: FindUCDDealViewModel
+    private lateinit var yearModelMakeData: YearModelMakeData
     private lateinit var ucdStep1ViewModel: UCDStep1ViewModel
     private lateinit var binding: ActivityUcdstep1Binding
+    private lateinit var adapterUCD: UCDStep1ListAdapter
     private var arUCD: ArrayList<FindUCDMainData> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,87 +53,124 @@ class UCDStep1Activity : BaseActivity() {
                 Constant.ARG_RADIUS
             ) && intent.hasExtra(Constant.ARG_ZIPCODE)
         ) {
-            ucdStep1ViewModel.yearModelMakeData.value = Gson().fromJson(
+            yearModelMakeData = Gson().fromJson(
                 intent.getStringExtra(Constant.ARG_YEAR_MAKE_MODEL),
                 YearModelMakeData::class.java
             )
             searchRadius = intent.getStringExtra(Constant.ARG_RADIUS)!!
             zipCode = intent.getStringExtra(Constant.ARG_ZIPCODE)!!
-            ucdStep1ViewModel.initUCD(this)
+//            ucdStep1ViewModel.initUCD(this)
 
-//            callSearchFindDealAPI()
+            callSearchFindDealAPI()
+        }
+        val linearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.stackFromEnd = true
+        rvUnlockedCarList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    AbsListView.OnScrollListener.SCROLL_STATE_IDLE -> {
+                        println("SCROLL_STATE_IDLE")
+                        val lManager = rvUnlockedCarList.layoutManager as LinearLayoutManager
+                        println(lManager.findFirstVisibleItemPosition())
+                        val pos = lManager.findLastVisibleItemPosition()
+                        if (TextUtils.isEmpty(adapterUCD.getItem(pos).imgUrl)) {
+//                            callImageIdAPI(pos, adapterUCD.getItem(pos).arUCD)
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        })
+
+        ivBack.setOnClickListener(this)
+    }
+
+    private fun callSearchFindDealAPI() {
+        if (Constant.isOnline(this)) {
+            if (Constant.isInitProgress() && !Constant.progress.isShowing)
+                Constant.dismissLoader()
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(this)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(this)
+            }
+            val request = HashMap<String, Any>()
+            request[ApiConstant.vehicleYearID] = yearModelMakeData.vehicleYearID!!
+            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
+            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
+            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
+            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
+            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
+            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
+            request[ApiConstant.searchRadius] =
+                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
+                    "mi",
+                    ""
+                ).trim()
+            if (yearModelMakeData.LowPrice != "ANY PRICE") {
+                request[ApiConstant.LowPrice] =
+                    if (TextUtils.isEmpty(
+                            yearModelMakeData.LowPrice!!
+                        )
+                    ) "1" else yearModelMakeData.LowPrice!!
+                request[ApiConstant.HighPrice] =
+                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) "1000000" else yearModelMakeData.HighPrice!!
+            }
+            Log.e("Request Find Deal", Gson().toJson(request))
+            findUCDDealViewModel.findDeal(this, request)!!
+                .observe(this, Observer { data ->
+                    if (data.isNullOrEmpty()) {
+                        Constant.dismissLoader()
+                        tvNotFound.visibility = View.VISIBLE
+//                        callImageIdAPI()
+                    } else {
+                        tvNotFound.visibility = View.GONE
+                        val arGroup = data.groupBy { data -> data?.vehicleModel }
+                        val arGroup1 = arGroup.values
+                        val arList: ArrayList<FindUCDMainData?> = ArrayList()
+                        for ((i, group) in arGroup1.withIndex()) {
+                            arList.add(
+                                FindUCDMainData(
+                                    i,
+                                    "",
+                                    "",
+                                    group as ArrayList<FindUcdDealData?>
+                                )
+                            )
+                        }
+
+                        adapterUCD = UCDStep1ListAdapter(
+                            arList,
+                            this,
+                            false,
+                            yearModelMakeData.zipCode,
+                            yearModelMakeData.radius,
+                            this,
+                            this,
+                            this,
+                            yearModelMakeData.vehicleExtColorID,
+                            yearModelMakeData.vehicleExtColorStr
+                        )
+                        adapterUCD.notifyDataSetChanged()
+                        rvUnlockedCarList.adapter = adapterUCD
+                        Constant.dismissLoader()
+
+//                        callImageIdAPI(0, adapterUCD.getItem(0).arUCD)
+                        Log.e("GroupData", Gson().toJson(arList))
+                    }
+                }
+                )
+        } else {
+            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 
-//    private fun callSearchFindDealAPI() {
-//        if (Constant.isOnline(this)) {
-//            if (Constant.isInitProgress() && !Constant.progress.isShowing)
-//                Constant.dismissLoader()
-//            if (!Constant.isInitProgress()) {
-//                Constant.showLoader(this)
-//            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-//                Constant.showLoader(this)
-//            }
-//            val request = HashMap<String, Any>()
-//            request[ApiConstant.vehicleYearID] = ucdStep1ViewModel.yearModelMakeData.value?.vehicleYearID!!
-//            request[ApiConstant.vehicleMakeID] = yearModelMakeData.vehicleMakeID!!
-//            request[ApiConstant.vehicleModelID] = yearModelMakeData.vehicleModelID!!
-//            request[ApiConstant.vehicleTrimID] = yearModelMakeData.vehicleTrimID!!
-//            request[ApiConstant.vehicleExteriorColorID] = yearModelMakeData.vehicleExtColorID!!
-//            request[ApiConstant.vehicleInteriorColorID] = yearModelMakeData.vehicleIntColorID!!
-//            request[ApiConstant.zipCode] = yearModelMakeData.zipCode!!
-//            request[ApiConstant.searchRadius] =
-//                if (yearModelMakeData.radius == "ALL") "6000" else yearModelMakeData.radius!!.replace(
-//                    "mi",
-//                    ""
-//                ).trim()
-//            if (yearModelMakeData.LowPrice != "ANY PRICE") {
-//                request[ApiConstant.LowPrice] =
-//                    if (TextUtils.isEmpty(
-//                            yearModelMakeData.LowPrice!!
-//                        )
-//                    ) "1" else yearModelMakeData.LowPrice!!
-//                request[ApiConstant.HighPrice] =
-//                    if (TextUtils.isEmpty(yearModelMakeData.HighPrice!!)) "1000000" else yearModelMakeData.HighPrice!!
-//            }
-//            Log.e("Request Find Deal", Gson().toJson(request))
-//            findUCDDealViewModel.findDeal(this, request)!!
-//                .observe(this, Observer { data ->
-//                    if (data.isNullOrEmpty()) {
-//                        Constant.dismissLoader()
-////                        tvNotFound.visibility = View.VISIBLE
-////                        callImageIdAPI()
-//                    } else {
-//                        val arGroup = data.groupBy { data -> data?.vehicleModel }
-//                        val arGroup1 = arGroup.values
-//                        var i = 0
-//                        for (group in arGroup1) {
-//                            GlobalScope.launch(Dispatchers.Main) {
-//                                callImageIdAPI(i, group as ArrayList<FindUcdDealData>)
-//                                i++
-//                            }
-//                            /*mainData.position = i
-//                            mainData.imgUrl = callImageUrlAPI(mainData.imageID!!)
-//                            Log.e("ImageURL", mainData.imgUrl!!)
-//                            mainData.arUCD = group as ArrayList<FindUcdDealData>
-//                            arUCD.add(mainData)
-//                            Log.e("groupData", Gson().toJson(mainData))*/
-//                        }
-//                        Constant.dismissLoader()
-//                        Log.e("GroupData", Gson().toJson(arUCD))
-//                    }
-//                }
-//                )
-//        } else {
-//            Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
-
-    private fun callImageIdAPI(pos: Int, findData: ArrayList<FindUcdDealData>) {
+    private fun callImageIdAPI(pos: Int, findData: ArrayList<FindUcdDealData?>) {
         var imageId = ""
-        val imageIdViewModel: ImageIdViewModel =
-            ViewModelProvider(this)[ImageIdViewModel::class.java]
+        val imageIdViewModel: ImageIdGroupViewModel =
+            ViewModelProvider(this)[ImageIdGroupViewModel::class.java]
         if (Constant.isOnline(this)) {
             /*  if (!Constant.isInitProgress()) {
                   Constant.showLoader(this)
@@ -130,7 +178,7 @@ class UCDStep1Activity : BaseActivity() {
                   Constant.showLoader(this)
               }*/
             val request = HashMap<String, Any>()
-            findData[0].run {
+            findData[0]?.run {
                 request[ApiConstant.vehicleYearID] = yearId!!
                 request[ApiConstant.vehicleMakeID] = makeId!!
                 request[ApiConstant.vehicleModelID] = modelId!!
@@ -141,7 +189,7 @@ class UCDStep1Activity : BaseActivity() {
                 .observe(this, Observer { data ->
 //                    Constant.dismissLoader()
                     imageId = data
-//                    callImageUrlAPI(pos, data, findData)
+                    callImageUrlAPI(pos, data, findData)
                 }
                 )
 
@@ -150,17 +198,12 @@ class UCDStep1Activity : BaseActivity() {
         }
     }
 
-    /*private fun callImageUrlAPI(pos: Int, imageId: String, findData: ArrayList<FindUcdDealData>) {
+    private fun callImageUrlAPI(pos: Int, imageId: String, findData: ArrayList<FindUcdDealData?>) {
         var imgUrl = ""
         val imageUrlViewModel: ImageUrlViewModel =
             ViewModelProvider(this)[ImageUrlViewModel::class.java]
         if (Constant.isOnline(this)) {
-            *//*  if (!Constant.isInitProgress()) {
-                  Constant.showLoader(this)
-              } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                  Constant.showLoader(this)
-              }
-  *//*
+
             val request = HashMap<String, Any>()
 
             request[ApiConstant.ImageId] = imageId
@@ -168,11 +211,10 @@ class UCDStep1Activity : BaseActivity() {
                 request[ApiConstant.ImageProduct] = "Splash"
             } else {
                 request[ApiConstant.ImageProduct] = "MultiAngle"
-                request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
             }
+            request[ApiConstant.ExteriorColor] = yearModelMakeData.vehicleExtColorStr!!
             imageUrlViewModel.imageUrlCall(this, request)!!
                 .observe(this, Observer { data ->
-//                    Constant.dismissLoader()
                     if (data.isNotEmpty()) {
                         imgUrl = data[0]
                     }
@@ -181,14 +223,14 @@ class UCDStep1Activity : BaseActivity() {
                     mainData.imageID = imageId
                     mainData.imgUrl = imgUrl
                     mainData.arUCD = findData
-                    arUCD.add(mainData)
+                    adapterUCD.updateItem(pos, mainData)
                 }
                 )
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
 
-    }*/
+    }
 
     override fun getViewActivity(): Activity? {
         return this
@@ -197,5 +239,22 @@ class UCDStep1Activity : BaseActivity() {
     override fun onNetworkStateChange(isConnect: Boolean) {
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.ivBack -> {
+                onBackPressed()
+            }
+        }
+    }
 
+    override fun onBackPressed() {
+        /*if (isNotification || isFromLYK) {
+            startActivity(
+                intentFor<MainActivity>(Constant.ARG_SEL_TAB to Constant.TYPE_SEARCH_DEAL).clearTask()
+                    .newTask()
+            )
+        } else {*/
+        super.onBackPressed()
+//        }
+    }
 }

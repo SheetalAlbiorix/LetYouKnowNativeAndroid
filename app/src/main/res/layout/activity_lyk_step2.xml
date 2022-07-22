@@ -51,6 +51,10 @@
             type="String" />
 
         <variable
+            name="selectRebate"
+            type="String" />
+
+        <variable
             name="isShowShippingCheckBox"
             type="Boolean" />
 
@@ -370,11 +374,10 @@
 
                 <include
                     layout="@layout/layout_lyk_step2"
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}"
                     app:data="@{data}"
                     app:dollar="@{dollar}"
                     app:isCheck="@{isCheck}"
-                    app:selectState="@{selectState}"
-                    app:taxData="@{taxData}"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
@@ -382,7 +385,9 @@
                     app:isStripe="@{isStripe}"
                     app:lightDealBindData="@{lightDealBindData}"
                     app:pendingUCDData="@{pendingUcdData}"
-                    app:pendingUCDShippingData="@{pendingUCDShippingData}" />
+                    app:selectRebate="@{selectRebate}"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}" />
 
             </LinearLayout>
 

@@ -47,7 +47,6 @@ import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
 import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
 import com.letyouknow.view.login.LoginActivity
-import com.letyouknow.view.lyk.LYK1Fragment
 import com.letyouknow.view.lyk.LYKFragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.referreferral.ReferReferralActivity
@@ -721,8 +720,8 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-                loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
-//                loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+//                loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
+                loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             }
             R.id.itemBottom2 -> {
                 loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))

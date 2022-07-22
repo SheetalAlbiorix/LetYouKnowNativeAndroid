@@ -30,6 +30,7 @@ import com.letyouknow.utils.Constant.Companion.ARG_YEAR_MAKE_MODEL
 import com.letyouknow.utils.Constant.Companion.ARG_ZIPCODE
 import com.letyouknow.view.dashboard.MainActivity
 import com.letyouknow.view.spinneradapter.*
+import com.letyouknow.view.ucd.ucdstep1.UCDStep1Activity
 import kotlinx.android.synthetic.main.dialog_mobile_no.*
 import kotlinx.android.synthetic.main.fragment_ucd.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -379,16 +380,16 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
         dataYear.LowPrice = lowerBorder
         dataYear.HighPrice = upperBorder
 //                    Log.e("Find UCD",Gson().toJson(data))
-        /*  startActivity<UCDStep1Activity>(
-              ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
-              ARG_RADIUS to radiusId,
-              ARG_ZIPCODE to edtZipCode.text.toString().trim()
-          )*/
-        startActivity<UCDDealListStep1NewActivity>(
+        startActivity<UCDStep1Activity>(
             ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
             ARG_RADIUS to radiusId,
             ARG_ZIPCODE to edtZipCode.text.toString().trim()
         )
+        /*startActivity<UCDDealListStep1NewActivity>(
+            ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
+            ARG_RADIUS to radiusId,
+            ARG_ZIPCODE to edtZipCode.text.toString().trim()
+        )*/
     }
 
 
@@ -1053,20 +1054,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     if (TextUtils.isEmpty(data.lowerBorder)) "" else data.lowerBorder
                 prefSearchDealData.upperBorder =
                     if (TextUtils.isEmpty(data.upperBorder)) "" else data.upperBorder
-                prefSearchDealData.yearId = ""
-                prefSearchDealData.yearStr = ""
-                prefSearchDealData.makeId = ""
-                prefSearchDealData.modelId = ""
-                prefSearchDealData.trimId = ""
-                prefSearchDealData.extColorId = ""
-                prefSearchDealData.intColorId = ""
-                prefSearchDealData.makeStr = ""
-                prefSearchDealData.modelStr = ""
-                prefSearchDealData.trimStr = ""
-                prefSearchDealData.extColorStr = ""
-                prefSearchDealData.intColorStr = ""
+
                 Constant.dismissLoader()
-                setPrefData()
+
                 setErrorVisibleGone()
                 callVehicleYearAPI()
                 setMake()
@@ -1074,6 +1064,20 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 setTrim()
                 setExteriorColor()
                 setInteriorColor()
+
+                prefSearchDealData.yearId = yearId
+                prefSearchDealData.makeId = makeId
+                prefSearchDealData.modelId = modelId
+                prefSearchDealData.trimId = trimId
+                prefSearchDealData.extColorId = extColorId
+                prefSearchDealData.intColorId = intColorId
+                prefSearchDealData.yearStr = yearStr
+                prefSearchDealData.makeStr = makeStr
+                prefSearchDealData.modelStr = modelStr
+                prefSearchDealData.trimStr = trimStr
+                prefSearchDealData.extColorStr = extColorStr
+                prefSearchDealData.intColorStr = intColorStr
+                setPrefData()
 //                    setRadius()
 //                }
                 setSpinnerLayoutPos(position, spPriceRange, requireActivity())
@@ -1085,18 +1089,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (data.year != "YEAR - NEW CARS") {
                     prefSearchDealData.yearId = data.vehicleYearID
                     prefSearchDealData.yearStr = data.year
-                    prefSearchDealData.makeId = ""
-                    prefSearchDealData.modelId = ""
-                    prefSearchDealData.trimId = ""
-                    prefSearchDealData.extColorId = ""
-                    prefSearchDealData.intColorId = ""
-                    prefSearchDealData.makeStr = ""
-                    prefSearchDealData.modelStr = ""
-                    prefSearchDealData.trimStr = ""
-                    prefSearchDealData.extColorStr = ""
-                    prefSearchDealData.intColorStr = ""
+
                     Constant.dismissLoader()
-                    setPrefData()
+
                     setErrorVisibleGone()
                     if (prefSearchDealData.yearStr != "ANY")
                         callVehicleMakeAPI()
@@ -1106,6 +1101,19 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+
+
+                    prefSearchDealData.makeId = makeId
+                    prefSearchDealData.modelId = modelId
+                    prefSearchDealData.trimId = trimId
+                    prefSearchDealData.extColorId = extColorId
+                    prefSearchDealData.intColorId = intColorId
+                    prefSearchDealData.makeStr = makeStr
+                    prefSearchDealData.modelStr = modelStr
+                    prefSearchDealData.trimStr = trimStr
+                    prefSearchDealData.extColorStr = extColorStr
+                    prefSearchDealData.intColorStr = intColorStr
+                    setPrefData()
                     setPrefLYKLCDData()
 //                    setRadius()
                 }
@@ -1119,16 +1127,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (data.make != "MAKE") {
                     prefSearchDealData.makeId = data.vehicleMakeID
                     prefSearchDealData.makeStr = data.make
-                    prefSearchDealData.modelId = ""
-                    prefSearchDealData.trimId = ""
-                    prefSearchDealData.extColorId = ""
-                    prefSearchDealData.intColorId = ""
-                    prefSearchDealData.modelStr = ""
-                    prefSearchDealData.trimStr = ""
-                    prefSearchDealData.extColorStr = ""
-                    prefSearchDealData.intColorStr = ""
+
                     Constant.dismissLoader()
-                    setPrefData()
+
                     setErrorVisibleGone()
                     if (prefSearchDealData.makeStr != "ANY")
                         callVehicleModelAPI()
@@ -1137,6 +1138,15 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                     setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    prefSearchDealData.modelId = modelId
+                    prefSearchDealData.trimId = trimId
+                    prefSearchDealData.extColorId = extColorId
+                    prefSearchDealData.intColorId = intColorId
+                    prefSearchDealData.modelStr = modelStr
+                    prefSearchDealData.trimStr = trimStr
+                    prefSearchDealData.extColorStr = extColorStr
+                    prefSearchDealData.intColorStr = intColorStr
+                    setPrefData()
                     setPrefLYKLCDData()
 //                    setRadius()
                 }
@@ -1149,14 +1159,9 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (data.model != "MODEL") {
                     prefSearchDealData.modelId = data.vehicleModelID
                     prefSearchDealData.modelStr = data.model
-                    prefSearchDealData.trimId = ""
-                    prefSearchDealData.extColorId = ""
-                    prefSearchDealData.intColorId = ""
-                    prefSearchDealData.trimStr = ""
-                    prefSearchDealData.extColorStr = ""
-                    prefSearchDealData.intColorStr = ""
+
                     Constant.dismissLoader()
-                    setPrefData()
+
                     setErrorVisibleGone()
                     if (prefSearchDealData.modelStr != "ANY")
                         callVehicleTrimAPI()
@@ -1164,6 +1169,13 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                         setTrim()
                     setExteriorColor()
                     setInteriorColor()
+                    prefSearchDealData.trimId = trimId
+                    prefSearchDealData.extColorId = extColorId
+                    prefSearchDealData.intColorId = intColorId
+                    prefSearchDealData.trimStr = trimStr
+                    prefSearchDealData.extColorStr = extColorStr
+                    prefSearchDealData.intColorStr = intColorStr
+                    setPrefData()
                     setPrefLYKLCDData()
 //                    setRadius()
                 }
@@ -1176,18 +1188,22 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (data.trim != "TRIM") {
                     prefSearchDealData.trimId = data.vehicleTrimID
                     prefSearchDealData.trimStr = data.trim
-                    prefSearchDealData.extColorId = ""
-                    prefSearchDealData.intColorId = ""
-                    prefSearchDealData.extColorStr = ""
-                    prefSearchDealData.intColorStr = ""
+
                     Constant.dismissLoader()
-                    setPrefData()
+
                     setErrorVisibleGone()
                     if (prefSearchDealData.trimStr != "ANY")
                         callExteriorColorAPI()
                     else
                         setExteriorColor()
                     setInteriorColor()
+
+
+                    prefSearchDealData.extColorId = extColorId
+                    prefSearchDealData.intColorId = intColorId
+                    prefSearchDealData.extColorStr = extColorStr
+                    prefSearchDealData.intColorStr = intColorStr
+                    setPrefData()
                     setPrefLYKLCDData()
 //                    setRadius()
                 }
@@ -1201,16 +1217,18 @@ class UCDFragment : BaseFragment(), View.OnClickListener, AdapterView.OnItemSele
                 if (data.exteriorColor != "EXTERIOR COLOR") {
                     prefSearchDealData.extColorId = data.vehicleExteriorColorID
                     prefSearchDealData.extColorStr = data.exteriorColor
-                    prefSearchDealData.intColorId = ""
-                    prefSearchDealData.intColorStr = ""
+
                     Constant.dismissLoader()
-                    setPrefData()
+
                     setErrorVisibleGone()
                     if (prefSearchDealData.extColorStr != "ANY" || prefSearchDealData.lowerBorder == "ANY PRICE")
                         callInteriorColorAPI()
                     else
                         setInteriorColor()
 
+                    prefSearchDealData.intColorId = intColorId
+                    prefSearchDealData.intColorStr = intColorStr
+                    setPrefData()
                     setPrefLYKLCDData()
 //                    setRadius()
                 }

@@ -275,7 +275,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun setBidPreSelectionData() {
@@ -355,7 +354,6 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             override fun afterTextChanged(s: Editable?) {
             }
         })
-
     }
 
     private fun onChangePrice() {
@@ -463,11 +461,8 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             override fun afterTextChanged(s: Editable?) {
 
             }
-
         })
-
     }
-
 
     private fun popupPrice(price: Double) {
         llViewPrice.visibility = View.VISIBLE
@@ -476,12 +471,10 @@ class LYKStep1Activity : BaseActivity(), View.OnClickListener,
             price == 0.0 -> {
                 tvErrorDialogPrice.visibility = View.VISIBLE
                 tvErrorDialogPrice.text = getString(R.string.price_required)
-
             }
             price < 799 -> {
                 tvErrorDialogPrice.visibility = View.VISIBLE
                 tvErrorDialogPrice.text = getString(R.string.price_must_be_799_00)
-
             }
             else -> {
                 tvErrorDialogPrice.visibility = View.GONE

@@ -43,6 +43,10 @@
             type="String" />
 
         <variable
+            name="selectRebate"
+            type="String" />
+
+        <variable
             name="taxData"
             type="com.letyouknow.model.CalculateTaxData" />
 
@@ -209,20 +213,21 @@
                 </FrameLayout>
 
                 <include
+                    layout="@layout/layout_ucd_deal_summary_step3"
+                    app:dollar="@{dollar}"
                     app:isCheck="@{isCheck}"
                     app:isShowShippingCheckBox="@{isShowShippingCheckBox}"
-                    app:pendingUCDShippingData="@{pendingUCDShippingData}"
-                    layout="@layout/layout_ucd_deal_summary_step3"
                     app:isGooglePay="@{isGooglePay}"
                     app:isSamsungPay="@{isSamsungPay}"
                     app:isShowSamsungPay="@{isShowSamsungPay}"
+                    app:pendingUCDData="@{pendingUcdData}"
                     app:isStripe="@{isStripe}"
-                    app:selectState="@{selectState}"
-                    app:taxData="@{taxData}"
-                    app:dollar="@{dollar}"
                     app:lcdDealData="@{ucdData}"
                     app:lightDealBindData="@{lightDealBindData}"
-                    app:pendingUCDData="@{pendingUcdData}" />
+                    app:pendingUCDShippingData="@{pendingUCDShippingData}"
+                    app:selectRebate="@{selectRebate}"
+                    app:selectState="@{selectState}"
+                    app:taxData="@{taxData}" />
 
             </LinearLayout>
 

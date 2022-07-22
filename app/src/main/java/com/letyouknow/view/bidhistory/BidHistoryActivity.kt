@@ -496,13 +496,17 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                 .format(transData?.estimatedTotalRemainingBalance)
             tvBasedState.text =
                 Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
-            if (transData?.estimatedRebates!! > 0) {
-                llRebateDisc.visibility = View.VISIBLE
-                tvEstimatedTaxDiscount.text = "-" + NumberFormat.getCurrencyInstance(Locale.US)
-                    .format(transData?.estimatedRebates)
-            } else {
-                llRebateDisc.visibility = View.GONE
-            }
+            tvEstimatedTaxDiscount.text = "-" + NumberFormat.getCurrencyInstance(Locale.US)
+                .format(transData?.estimatedRebates)
+
+
+            tvSelectRebate.text =
+                Html.fromHtml(
+                    getString(
+                        R.string.subject_to_eligibility_verification_by_the_dealership,
+                        if (TextUtils.isEmpty(transData?.rebateDetails)) "None" else transData?.rebateDetails
+                    )
+                )
             ivDialogClose.setOnClickListener {
                 dismiss()
             }
@@ -611,17 +615,20 @@ class BidHistoryActivity : BaseActivity(), View.OnClickListener {
                     llDollarRec.visibility = View.GONE
                 }
 
-                if (data.estimatedRebates!! > 0) {
-                    llRebateDiscount.visibility = View.VISIBLE
-                    tvEstimatedTaxDiscRec.text = "-${
-                        NumberFormat.getCurrencyInstance(Locale.US)
-                            .format(data?.estimatedRebates)
-                    }"
-                } else {
-                    llRebateDiscount.visibility = View.GONE
-                }
+                tvEstimatedTaxDiscRec.text = "-${
+                    NumberFormat.getCurrencyInstance(Locale.US)
+                        .format(data?.estimatedRebates)
+                }"
+
                 tvBasedStateRec.text =
                     Html.fromHtml(getString(R.string.based_on_selected_state_of, data?.buyerState))
+
+                tvSelectRebateRec.text = Html.fromHtml(
+                    getString(
+                        R.string.subject_to_eligibility_verification_by_the_dealership,
+                        if (TextUtils.isEmpty(data?.rebateDetails)) "None" else data?.rebateDetails
+                    )
+                )
             }
         }
         setLayoutParam(dialog)

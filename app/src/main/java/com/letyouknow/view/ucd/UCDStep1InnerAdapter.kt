@@ -1,5 +1,6 @@
 package com.letyouknow.view.ucd
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.BlendMode
@@ -9,31 +10,50 @@ import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.letyouknow.R
-import com.letyouknow.model.FindUcdDealData
-import com.letyouknow.model.YearModelMakeData
+import com.letyouknow.model.*
+import com.letyouknow.retrofit.ApiConstant
+import com.letyouknow.retrofit.viewmodel.CheckVehicleStockPriceBidViewModel
 import com.letyouknow.utils.AppGlobal
+import com.letyouknow.utils.AppGlobal.Companion.pref
 import com.letyouknow.utils.AppGlobal.Companion.setLayoutParam
 import com.letyouknow.utils.Constant
+import com.letyouknow.view.dashboard.MainActivity
+import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.ucd.unlockeddealdetail.UCDDealSummaryStep2Activity
 import kotlinx.android.synthetic.main.dialog_option_accessories_unlocked.*
 import kotlinx.android.synthetic.main.list_item_unlocked_car.view.*
 import kotlinx.android.synthetic.main.progress_loading.view.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.startActivity
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
-class Items_LinearRVAdapter(
+class UCDStep1InnerAdapter(
     private var itemsCells: ArrayList<FindUcdDealData?>,
     var clickListener: View.OnClickListener,
     var isShowPriceBid: Boolean?,
     var imageId: String?,
+    var radius: String?,
+    var zipcode: String?,
+    var lifecycleOwner: LifecycleOwner?,
+    var activity: Activity?,
+    var viewModelStoreOwner: ViewModelStoreOwner
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -110,7 +130,9 @@ class Items_LinearRVAdapter(
                 submitDeal(itemsCells[position]!!)
             }
             holder.itemView.tvPriceBid.tag = position
-            holder.itemView.tvPriceBid.setOnClickListener(clickListener)
+            holder.itemView.tvPriceBid.setOnClickListener {
+                callCheckVehicleStockAPI(itemsCells[position]!!)
+            }
 
             holder.itemView.tvViewOptions.tag = position
             holder.itemView.tvViewOptions.setOnClickListener {
@@ -119,7 +141,6 @@ class Items_LinearRVAdapter(
 
             holder.itemView.tvTitle.text =
                 itemsCells[position]!!.vehicleYear + " " + itemsCells[position]!!.vehicleMake + " " + itemsCells[position]!!.vehicleModel + " " + itemsCells[position]!!.vehicleTrim
-            holder.itemView.tvExterior.text = itemsCells[position]!!.vehicleExteriorColor
             holder.itemView.tvExterior.text = itemsCells[position]!!.vehicleExteriorColor
             holder.itemView.tvInterior.text = itemsCells[position]!!.vehicleInteriorColor
 
@@ -256,6 +277,132 @@ class Items_LinearRVAdapter(
         }
         setLayoutParam(dialog)
         dialog.show()
+    }
+
+    private lateinit var checkVehicleStockViewModel: CheckVehicleStockPriceBidViewModel
+    private fun callCheckVehicleStockAPI(dataFind: FindUcdDealData) {
+        checkVehicleStockViewModel =
+            ViewModelProvider(viewModelStoreOwner)[CheckVehicleStockPriceBidViewModel::class.java]
+        if (Constant.isOnline(mcontext)) {
+            if (!Constant.isInitProgress()) {
+                Constant.showLoader(activity!!)
+            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
+                Constant.showLoader(activity!!)
+            }
+            val pkgList = JsonArray()
+            for (i in 0 until dataFind.vehiclePackages?.size!!) {
+                pkgList.add(dataFind.vehiclePackages[i].vehiclePackageID)
+            }
+            val accList = JsonArray()
+            for (i in 0 until dataFind.vehicleAccessories?.size!!) {
+                accList.add(dataFind.vehicleAccessories[i].dealerAccessoryID)
+            }
+
+            val request = HashMap<String, Any>()
+            request[ApiConstant.product1] = 3
+            request[ApiConstant.yearID] = dataFind.yearId!!
+            request[ApiConstant.makeID] = dataFind.makeId!!
+            request[ApiConstant.modelID1] = dataFind.modelId!!
+            request[ApiConstant.trimID1] = dataFind.trimId!!
+            request[ApiConstant.interiorColorID1] = dataFind.interiorColorId!!
+            request[ApiConstant.zipCode] = zipcode!!
+            request[ApiConstant.searchRadius] =
+                if (radius == "ALL") "6000" else radius!!.replace(
+                    "mi",
+                    ""
+                ).trim()
+
+
+            Log.e("RequestStock", Gson().toJson(request))
+            checkVehicleStockViewModel.checkVehicleStockCall(mcontext, request)!!
+                .observe(lifecycleOwner!!, androidx.lifecycle.Observer { data ->
+                    Constant.dismissLoader()
+                    Log.e("check Stock", data.toString())
+                    if (data) {
+                        setLYKData(dataFind)
+                    } else {
+                        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
+                        pref?.setSubmitPriceTime("")
+                        mcontext.startActivity(
+                            mcontext.intentFor<MainActivity>(Constant.ARG_IS_LYK_SHOW to true)
+                                .clearTask()
+                                .newTask()
+                        )
+                    }
+                }
+
+                )
+        } else {
+            Toast.makeText(mcontext, Constant.noInternet, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setLYKData(data: FindUcdDealData) {
+        val arSelectPackages = ArrayList<VehiclePackagesData>()
+        for (i in 0 until data.vehiclePackages!!.size) {
+            data.vehiclePackages[i].isSelect = true
+            arSelectPackages.add(data.vehiclePackages[i])
+        }
+
+        val arSelectAccessories = ArrayList<VehicleAccessoriesData>()
+        for (i in 0 until data.vehicleAccessories!!.size) {
+            data.vehicleAccessories[i].isSelect = true
+            arSelectAccessories.add(data.vehicleAccessories[i])
+        }
+
+        val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
+        val date = df.format(Calendar.getInstance().time)
+        pref?.setSubmitPriceTime(date)
+
+        val submitData = PrefSubmitPriceData()
+        submitData.yearId = data.yearId!!
+        submitData.makeId = data.makeId!!
+        submitData.modelId = data.modelId!!
+        submitData.trimId = data.trimId!!
+        submitData.extColorId = data.exteriorColorId!!
+        submitData.intColorId = data.interiorColorId!!
+        submitData.yearStr = data.vehicleYear!!
+        submitData.makeStr = data.vehicleMake!!
+        submitData.modelStr = data.vehicleModel!!
+        submitData.trimStr = data.vehicleTrim!!
+        submitData.extColorStr =
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
+        submitData.intColorStr =
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
+        submitData.packagesData = arSelectPackages
+        submitData.optionsData = arSelectAccessories
+        pref?.setSubmitPriceData(Gson().toJson(submitData))
+
+        val yearMakeData = YearModelMakeData()
+        yearMakeData.vehicleYearID = data.yearId
+        yearMakeData.vehicleMakeID = data.makeId
+        yearMakeData.vehicleModelID = data.modelId
+        yearMakeData.vehicleTrimID = data.trimId
+        yearMakeData.vehicleExtColorID = data.exteriorColorId
+        yearMakeData.vehicleIntColorID = data.interiorColorId
+        yearMakeData.vehicleYearStr = data.vehicleYear
+        yearMakeData.vehicleMakeStr = data.vehicleMake
+        yearMakeData.vehicleModelStr = data.vehicleModel
+        yearMakeData.vehicleTrimStr = data.vehicleTrim
+        yearMakeData.vehicleExtColorStr =
+            if (data.exteriorColorId == "0" || TextUtils.isEmpty(data.vehicleExteriorColor!!)) "ANY" else data.vehicleExteriorColor
+        yearMakeData.vehicleIntColorStr =
+            if (data.interiorColorId == "0" || TextUtils.isEmpty(data.vehicleInteriorColor!!)) "ANY" else data.vehicleInteriorColor
+        yearMakeData.arPackages = arSelectPackages
+        yearMakeData.arOptions = arSelectAccessories
+        yearMakeData.price = data.price!! - 100.0f
+        yearMakeData.radius = radius
+        yearMakeData.zipCode = zipcode
+
+        Handler().postDelayed({
+            mcontext.startActivity<LYKStep1Activity>(
+                Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                    yearMakeData
+                ),
+                Constant.ARG_IS_BID to true
+            )
+
+        }, 1000)
     }
 
 }

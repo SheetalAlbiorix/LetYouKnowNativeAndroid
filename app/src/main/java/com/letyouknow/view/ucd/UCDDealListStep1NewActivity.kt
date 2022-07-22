@@ -119,7 +119,7 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                 )
                 arUnlocked = ArrayList()
                 arUnlocked.add(dataUCDDeal)
-                adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true, "")
                 adapterLinear.notifyDataSetChanged()
                 rvUnlockedCar.adapter = adapterLinear
                 callImageIdAPI()
@@ -181,10 +181,10 @@ class UCDDealListStep1NewActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         Log.e("data_length", data.size.toString());
                         arUnlocked.addAll(data);
-                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true, "")
                         Log.e("data_length", data.size.toString())
                         arUnlocked.addAll(data)
-                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true)
+                        adapterLinear = Items_LinearRVAdapter(arUnlocked, this, true, "")
                         adapterLinear.notifyDataSetChanged()
                         rvUnlockedCar.adapter = adapterLinear
                         callImageIdAPI()

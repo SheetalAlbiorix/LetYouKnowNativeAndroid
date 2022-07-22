@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -55,7 +55,6 @@
                     android:layout_marginTop="@dimen/_12sdp"
                     android:orientation="horizontal">
 
-
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -66,23 +65,66 @@
                         <ImageView
                             android:layout_width="@dimen/_24sdp"
                             android:layout_height="@dimen/_24sdp"
+                            android:src="@drawable/ic_pin" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zip_code_colon"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tvZipCode"
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_24sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:src="@drawable/ic_zoom_out" />
 
-                        <TextView
-                            style="@style/regular"
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/search_radius_colon"
-                            android:textColor="@color/color545d64"
-                            android:textSize="@dimen/_12sdp" />
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            style="@style/regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{searchRadius}"
-                            android:textColor="@color/color545d64"
-                            android:textSize="@dimen/_12sdp" />
+                            <TextView
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/search_radius_colon"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tvRadius"
+                                style="@style/regular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color545d64"
+                                android:textSize="@dimen/_12sdp" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>

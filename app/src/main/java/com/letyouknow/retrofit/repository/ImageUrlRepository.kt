@@ -44,12 +44,13 @@ object ImageUrlRepository {
                 } else {
                     // Log.v("imgURL Resp ", response.toString())
                     Constant.dismissLoader()
-                    response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
+                    /*response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
                     if (response.errorBody()?.source()?.buffer?.snapshot()?.utf8() != null)
                         AppGlobal.alertError(
                             context,
                             response.errorBody()?.source()?.buffer?.snapshot()?.utf8()
-                        )
+                        )*/
+                    imageUrlData.value = arrayListOf("")
                 }
             }
         })

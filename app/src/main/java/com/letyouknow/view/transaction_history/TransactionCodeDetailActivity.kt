@@ -293,15 +293,19 @@ class TransactionCodeDetailActivity : BaseActivity(), View.OnClickListener {
                 .format(transData?.estimatedTotalRemainingBalance)
             tvBasedState.text =
                 Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
-            if (transData?.estimatedRebates!! > 0) {
-                llRebateDisc.visibility = View.VISIBLE
-                tvEstimatedTaxDiscount.text = "-${
-                    NumberFormat.getCurrencyInstance(Locale.US)
-                        .format(transData?.estimatedRebates)
-                }"
-            } else {
-                llRebateDisc.visibility = View.GONE
-            }
+            tvEstimatedTaxDiscount.text = "-${
+                NumberFormat.getCurrencyInstance(Locale.US)
+                    .format(transData?.estimatedRebates)
+            }"
+
+            tvSelectRebate.text =
+                Html.fromHtml(
+                    getString(
+                        R.string.subject_to_eligibility_verification_by_the_dealership,
+                        if (TextUtils.isEmpty(transData?.rebateDetails)) "None" else transData?.rebateDetails
+                    )
+                )
+
             ivDialogClose.setOnClickListener {
                 dismiss()
             }

@@ -265,19 +265,16 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
 
                 tvPriceRec.text =
                     NumberFormat.getCurrencyInstance(Locale.US).format(data?.price)
-                if (data?.estimatedRebates!! > 0) {
-                    llRebateDiscount.visibility = View.VISIBLE
-                    tvEstimatedTaxDiscRec.text =
-                        NumberFormat.getCurrencyInstance(Locale.US).format(data?.estimatedRebates)
-                } else {
-                    llRebateDiscount.visibility = View.GONE
-                }
+
+                tvEstimatedTaxDiscRec.text =
+                    "-${NumberFormat.getCurrencyInstance(Locale.US).format(data?.estimatedRebates)}"
 
                 tvPrePaymentRec.text =
                     "-${
                         NumberFormat.getCurrencyInstance(Locale.US)
                             .format(data?.reservationPrepayment)
                     }"
+
                 tvRemainingBalRec.text =
                     NumberFormat.getCurrencyInstance(Locale.US).format(data?.remainingBalance)
 
@@ -310,6 +307,12 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
                 }
                 tvBasedStateRec.text =
                     Html.fromHtml(getString(R.string.based_on_selected_state_of, data?.buyerState))
+                tvSelectRebateRec.text = Html.fromHtml(
+                    getString(
+                        R.string.subject_to_eligibility_verification_by_the_dealership,
+                        if (TextUtils.isEmpty(data?.rebateDetails)) "None" else data?.rebateDetails
+                    )
+                )
             }
         }
         setLayoutParam(dialog)
@@ -354,15 +357,20 @@ class TransactionHistoryActivity : BaseActivity(), View.OnClickListener {
             tvEstimatedTotal.text = NumberFormat.getCurrencyInstance(Locale.US)
                 .format(transData?.estimatedTotalRemainingBalance)
 
-            if (transData?.estimatedRebates!! > 0) {
-                llRebateDisc.visibility = View.VISIBLE
-                tvEstimatedTaxDiscount.text = NumberFormat.getCurrencyInstance(Locale.US)
+            tvEstimatedTaxDiscount.text = "-${
+                NumberFormat.getCurrencyInstance(Locale.US)
                     .format(transData?.estimatedRebates)
-            } else {
-                llRebateDisc.visibility = View.GONE
-            }
+            }"
+
             tvBasedState.text =
                 Html.fromHtml(getString(R.string.based_on_selected_state_of, transData?.buyerState))
+            tvSelectRebate.text =
+                Html.fromHtml(
+                    getString(
+                        R.string.subject_to_eligibility_verification_by_the_dealership,
+                        if (TextUtils.isEmpty(transData?.rebateDetails)) "None" else transData?.rebateDetails
+                    )
+                )
             ivDialogClose.setOnClickListener {
                 dismiss()
             }

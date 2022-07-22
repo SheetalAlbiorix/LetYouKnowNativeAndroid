@@ -86,6 +86,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lcd_deal_summary_step2.*
 import kotlinx.android.synthetic.main.dialog_deal_progress_bar.*
 import kotlinx.android.synthetic.main.dialog_error.*
+import kotlinx.android.synthetic.main.dialog_highlight_inventory.*
 import kotlinx.android.synthetic.main.dialog_inventory_availability.*
 import kotlinx.android.synthetic.main.dialog_leave_my_deal.*
 import kotlinx.android.synthetic.main.dialog_option_accessories.*
@@ -281,7 +282,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         initLiveGoogle()
         setDeliveryOptions()
         checkEmptyData()
-        callRebateListAPI()
+
         initSPay()
     }
 
@@ -469,6 +470,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s.toString()
                 if (str.isNotEmpty()) {
@@ -481,6 +483,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                         ColorStateList.valueOf(resources.getColor(R.color.color88898A))
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -524,7 +527,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     binding.dollar = data.toFloat()
                     dollar = data.toDouble()
 //                    callCalculateTaxAPI()
-                    callApplyRebateAPI()
+                    callRebateResetAPI()
+
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -1067,19 +1071,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 )
             }
             R.id.tvRebatesDisc -> {
-                if (arRebate.isNullOrEmpty()) {
-                    AppGlobal.alertError(
-                        this,
-                        getString(
-                            R.string.no_rebates_found,
-                            " " + edtZipCode.text.toString().trim()
-                        )
-                    )
-                } else {
-                    strRebate = Gson().toJson(arRebate)
-                    setRebateSelection()
-                    dialogRebate.show()
-                }
+                callRebateListAPI()
             }
 
             R.id.llRebate -> {
@@ -1095,10 +1087,10 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 for (i in 0 until arRebate.size) {
                     adapterRebateDisc.update(i, arRebate[i])
                 }
-                setRebateSelection()
                 dialogRebate.dismiss()
             }
             R.id.tvResetRebate -> {
+                isShowZipDialog = 0
                 callRebateResetAPI()
 
             }
@@ -1108,6 +1100,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 if (arFilter.isNullOrEmpty()) {
                     showApplyEmptyDialog()
                 } else {
+                    if (isShowZipDialog != 2)
+                        isShowZipDialog = 1
                     isShowRebateDis = true
                     callApplyRebateAPI()
                 }
@@ -1415,7 +1409,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 binding.selectState = state
                 isState = true
 //                callCalculateTaxAPI()
-                callApplyRebateAPI()
+                callRebateResetAPI()
             }
             R.id.spShippingState -> {
                 val data = adapterShippingState.getItem(position) as String
@@ -2392,11 +2386,14 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val str = s?.toString()
-                if (str?.length!! > 0) {
+                if (str?.length!! == 5) {
                     edtText.setBackgroundResource(R.drawable.bg_edittext)
                     errorText.visibility = View.GONE
                     isZipCode = true
                     setDisableVar()
+                } else if (str.length == 4) {
+                    isZipCode = true
+                    callRebateResetAPI()
                 } else {
                     isZipCode = false
                     setDisableVar()
@@ -2431,9 +2428,27 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         dialogRebate.setCanceledOnTouchOutside(false)
         dialogRebate.setContentView(R.layout.dialog_rebate_disc)
         dialogRebate.run {
+
             adapterRebateDisc =
                 RebateDiscAdapter(R.layout.list_item_rebate_disc, this@LCDDealSummaryStep2Activity)
             dialogRebate.rvRebate.adapter = adapterRebateDisc
+            val type: Type = object : TypeToken<ArrayList<RebateListData>?>() {}.type
+            val arSelList = Gson().fromJson<ArrayList<RebateListData>?>(strRebate, type)
+
+            if (!arSelList.isNullOrEmpty()) {
+                for (i in 0 until arData.size) {
+                    for (j in 0 until arSelList.size) {
+                        if (arData[i].rebateId == arSelList[j].rebateId) {
+                            arData[i] = arSelList[j]
+                        }
+                    }
+                }
+            }
+            dialogRebate.tvDesc.text = Html.fromHtml(
+                getString(
+                    R.string.subject_to_eligibility_verification
+                )
+            )
             adapterRebateDisc.addAll(arData)
 
             tvCancelRebate.setOnClickListener(this@LCDDealSummaryStep2Activity)
@@ -2441,8 +2456,8 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
             tvApplyRebate.setOnClickListener(this@LCDDealSummaryStep2Activity)
         }
         setLayoutParam(dialogRebate)
+        dialogRebate.show()
     }
-
 
     private fun showApplyEmptyDialog() {
         val dialog = Dialog(this, R.style.FullScreenDialog)
@@ -2459,8 +2474,26 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         dialog.show()
     }
 
+    private fun showStateZipCodeRebateDialog() {
+        val dialog = Dialog(this, R.style.FullScreenDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_highlight_inventory)
+        dialog.run {
+            tvMSG.text = getString(R.string.estimated_rebate_discount_have_been_reset)
+            Handler().postDelayed({
+                dismiss()
+            }, 3000)
+
+        }
+        isShowZipDialog = 2
+        setLayoutParam(dialog)
+        dialog.show()
+    }
+
     //rebate api
     private var isShowRebateDis = false
+    private var isShowZipDialog = 0
     private fun callApplyRebateAPI() {
         if (Constant.isOnline(this)) {
             if (!Constant.isInitProgress()) {
@@ -2477,7 +2510,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = dataLCDDeal.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = dataLCDDeal.yearId!!
             map[ApiConstant.VehicleMakeId1] = dataLCDDeal.makeId!!
             map[ApiConstant.VehicleModelId1] = dataLCDDeal.modelId!!
@@ -2502,28 +2535,15 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                     Constant.dismissLoader()
                     if (!isShowRebateDis) {
                         data.estimatedRebates = 0.0
-                        if (::dialogRebate.isInitialized)
-                            dialogRebate.tvDesc.text = Html.fromHtml(
-                                getString(
-                                    R.string.subject_to_eligibility_verification
-                                )
-                            )
-                    } else {
-                        if (::dialogRebate.isInitialized)
-                            dialogRebate.tvDesc.text = Html.fromHtml(
-                                if (!TextUtils.isEmpty(data.rebateDetails)) getString(
-                                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
-                                    data.rebateDetails
-                                ) else getString(
-                                    R.string.subject_to_eligibility_verification
-                                )
-                            )
                     }
+                    data.isShow = isShowRebateDis
                     binding.taxData = data
                     calculateTaxData = data
                     strRebate = Gson().toJson(arRebate)
                     if (::dialogRebate.isInitialized)
                         dialogRebate.dismiss()
+
+                    setRebateSelection(data.rebateDetails)
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
@@ -2533,19 +2553,17 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
     //reset rebate Reset api
     private fun callRebateResetAPI() {
         if (Constant.isOnline(this)) {
-            if (!Constant.isInitProgress()) {
-                Constant.showLoader(this)
-            } else if (Constant.isInitProgress() && !Constant.progress.isShowing) {
-                Constant.showLoader(this)
-            }
+
             val jsonRebate = JsonArray()
-            for (i in 0 until adapterRebateDisc.itemCount) {
-                if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
-                    jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+            if (::adapterRebateDisc.isInitialized) {
+                for (i in 0 until adapterRebateDisc.itemCount) {
+                    if (adapterRebateDisc.getItem(i).isSelect!! || adapterRebateDisc.getItem(i).isOtherSelect!!) {
+                        jsonRebate.add(adapterRebateDisc.getItem(i).rebateId)
+                    }
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = dataLCDDeal.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = dataLCDDeal.yearId!!
             map[ApiConstant.VehicleMakeId1] = dataLCDDeal.makeId!!
             map[ApiConstant.VehicleModelId1] = dataLCDDeal.modelId!!
@@ -2566,23 +2584,28 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 .observe(
                     this
                 ) { data ->
-                    Constant.dismissLoader()
-                    data.estimatedRebates = calculateTaxData.estimatedRebates
+                    data.isShow = isShowRebateDis
                     binding.taxData = data
                     calculateTaxData = data
-                    strRebate = Gson().toJson(adapterRebateDisc.getAll())
                     for (i in 0 until arRebate.size) {
                         arRebate[i].isSelect = false
                         arRebate[i].isOtherSelect = false
                         arRebate[i].isGray = false
                         adapterRebateDisc.update(i, arRebate[i])
                     }
-                    setRebateSelection()
+                    if (::adapterRebateDisc.isInitialized)
+                        strRebate = Gson().toJson(adapterRebateDisc.getAll())
+                    setRebateSelection(data.rebateDetails)
+                    if (isShowZipDialog == 1) {
+                        showStateZipCodeRebateDialog()
+                    }
+
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
+
 
     //rebate list api
     private fun callRebateListAPI() {
@@ -2593,7 +2616,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 Constant.showLoader(this)
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = dataLCDDeal.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = dataLCDDeal.yearId!!
             map[ApiConstant.VehicleMakeId1] = dataLCDDeal.makeId!!
             map[ApiConstant.VehicleModelId1] = dataLCDDeal.modelId!!
@@ -2612,8 +2635,18 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 ) { data ->
                     Constant.dismissLoader()
                     arRebate = ArrayList()
-                    if (data.isNotEmpty()) {
+                    if (data.isNullOrEmpty()) {
+
+                        AppGlobal.alertError(
+                            this,
+                            getString(
+                                R.string.no_rebates_found,
+                                " " + edtZipCode.text.toString().trim()
+                            )
+                        )
+                    } else {
                         arRebate = data
+//                        strRebate = Gson().toJson(arRebate)
                         dialogRebateDisc(data)
                     }
                 }
@@ -2638,7 +2671,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                 }
             }
             val map: HashMap<String, Any> = HashMap()
-            map[ApiConstant.Zipcode1] = dataLCDDeal.zipCode!!
+            map[ApiConstant.Zipcode1] = edtZipCode.text.toString().trim()
             map[ApiConstant.VehicleYearId1] = dataLCDDeal.yearId!!
             map[ApiConstant.VehicleMakeId1] = dataLCDDeal.makeId!!
             map[ApiConstant.VehicleModelId1] = dataLCDDeal.modelId!!
@@ -2679,38 +2712,14 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-
-                    setRebateSelection()
                 }
         } else {
             Toast.makeText(this, Constant.noInternet, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setRebateSelection() {
-        var selectStr = ""
-        for (i in 0 until adapterRebateDisc.itemCount) {
-            if (adapterRebateDisc.getItem(i).isSelect == true || adapterRebateDisc.getItem(
-                    i
-                ).isOtherSelect == true
-            ) {
-                selectStr =
-                    selectStr + " " + adapterRebateDisc.getItem(i).rebateName + "(" + NumberFormat.getCurrencyInstance(
-                        Locale.US
-                    ).format(adapterRebateDisc.getItem(i).rebatePrice)!!
-                        .replace(".00", "") + ")"
-            }
-        }
-
-        if (::dialogRebate.isInitialized)
-            dialogRebate.tvDesc.text = Html.fromHtml(
-                if (!TextUtils.isEmpty(selectStr)) getString(
-                    R.string.subject_to_eligibility_verification_by_the_dealership_rebates_amp_discounts_may_be_taxable,
-                    selectStr
-                ) else getString(
-                    R.string.subject_to_eligibility_verification
-                )
-            )
+    private fun setRebateSelection(rebate: String?) {
+        binding.selectRebate = if (TextUtils.isEmpty(rebate)) "NONE" else rebate
     }
 
     //SamsungPayment
@@ -2922,7 +2931,7 @@ class LCDDealSummaryStep2Activity : BaseActivity(), View.OnClickListener,
         val extraPaymentInfo = Bundle()
 
         customSheetPaymentInfo = customSheetPaymentInfoBuilder
-            .setMerchantId("")
+            .setMerchantId("acct_1HaDBECeSnBm0gpF")
             .setMerchantName(mSampleAppPartnerInfoHolder!!.sampleAppName)
             .setOrderNumber("1")
             .setCustomSheet(makeUpCustomSheet())
