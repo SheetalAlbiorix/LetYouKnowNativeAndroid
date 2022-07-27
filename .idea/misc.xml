@@ -67,6 +67,8 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/LetYouKnow/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1505" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/drawable/bg_button3_white.xml" value="0.1555" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/drawable/bg_dialog.xml" value="0.1555" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/drawable/bg_edittext.xml" value="0.1555" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/drawable/bg_edittext_dark.xml" value="0.1575" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/activity_bid_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/activity_lcd_deal_summary_step2.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/activity_lyk_step2.xml" value="0.18275058275058276" />
@@ -82,7 +84,12 @@
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/dialog_inventory_availability.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/dialog_my_receipt.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/dialog_rebate_disc.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_lcd.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_lyk.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_lyk1.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_one_deal_near_you.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_ucd.xml" value="0.20416666666666666" />
+        <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/fragment_ucd1.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/layout_estimated_tax.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/layout_lcd_deal_summary_step2.xml" value="0.20416666666666666" />
         <entry key="..\:/Albiorix/AlbiorixApplication/Production/LetYouKnowNativeAndroid/app/src/main/res/layout/layout_lyk_step2.xml" value="0.20416666666666666" />

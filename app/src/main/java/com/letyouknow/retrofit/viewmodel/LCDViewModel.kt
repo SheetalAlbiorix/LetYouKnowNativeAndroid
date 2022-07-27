@@ -7,6 +7,7 @@ import android.os.Handler
 import android.text.InputFilter
 import android.text.TextUtils
 import android.view.*
+import android.widget.EditText
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +26,7 @@ import com.letyouknow.utils.AppGlobal.Companion.setLayoutParam
 import com.letyouknow.utils.AppGlobal.Companion.showWarningDialog
 import com.letyouknow.utils.Constant
 import com.letyouknow.view.dropdown.*
-import com.letyouknow.view.lyk.summary.LYKStep1Activity
+import com.letyouknow.view.lcd.summary.LCDDealSummaryStep1Activity
 import com.letyouknow.view.spinneradapter.OptionsAdapter
 import com.letyouknow.view.spinneradapter.PackagesAdapter
 import kotlinx.android.synthetic.main.dialog_mobile_no.*
@@ -40,8 +41,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class LYK1ViewModel : ViewModel() {
-    val arYear: MutableLiveData<ArrayList<VehicleYearData>>? = null
+class LCDViewModel : ViewModel() {
 
     lateinit var adapterYear: YearAdapter
     lateinit var adapterMake: MakeAdapter
@@ -66,10 +66,11 @@ class LYK1ViewModel : ViewModel() {
     var hasMatchOptions = false
 
     lateinit var click: View.OnClickListener
-    lateinit var prefSubmitPriceData: PrefSubmitPriceData
+    lateinit var prefLCDData: PrefOneDealNearYouData
     lateinit var handler: Handler
 
-    var productId = "1"
+    var productId = "2"
+    var isValidZipCode = false
     var zipCode = ""
     var yearId = ""
     var makeId = ""
@@ -85,6 +86,7 @@ class LYK1ViewModel : ViewModel() {
     var extColorStr = ""
     var intColorStr = ""
 
+    lateinit var edtZipCode: EditText
     lateinit var tvYear: TextView
     lateinit var tvMake: TextView
     lateinit var tvModel: TextView
@@ -95,10 +97,12 @@ class LYK1ViewModel : ViewModel() {
     lateinit var tvOptions: TextView
 
     var liveDataPromotion: MutableLiveData<PromotionData>? = MutableLiveData()
+    var liveDataZipCode: MutableLiveData<Boolean>? = MutableLiveData()
 
     fun init(
         context: Activity,
         click: View.OnClickListener,
+        edtZipCode: EditText,
         tvYear: TextView,
         tvMake: TextView,
         tvModel: TextView,
@@ -111,6 +115,7 @@ class LYK1ViewModel : ViewModel() {
         this.context = context
         this.click = click
 
+        this.edtZipCode = edtZipCode
         this.tvYear = tvYear
         this.tvMake = tvMake
         this.tvModel = tvModel
@@ -121,11 +126,32 @@ class LYK1ViewModel : ViewModel() {
         this.tvOptions = tvOptions
     }
 
+    fun callVehicleZipCodeAPI(
+        zipCode: String?
+    ) {
+        Constant.showLoader(context)
+        try {
+            viewModelScope.launch {
+                val response: Deferred<Response<Boolean>> = async {
+                    RetrofitClient.apiInterface.isValidZip2(
+                        zipCode
+                    )
+                }
+                val data = response.await()
+                Constant.dismissLoader()
+                if (data.isSuccessful) {
+                    liveDataZipCode?.postValue(data.body())
+                } else {
+                    liveDataZipCode?.postValue(false)
+                }
+            }
+        } catch (e: Exception) {
+
+        }
+    }
 
     fun getYear(
-        v: View?,
-        zipCode: String?
-
+        v: View?
     ) {
         Constant.showLoader(context)
         try {
@@ -144,11 +170,11 @@ class LYK1ViewModel : ViewModel() {
                 Constant.dismissLoader()
                 if (data.isSuccessful) {
                     if (data.body().isNullOrEmpty())
-                        setClearData()
+                        showWarningDialog(context)
                     else
                         showYearPopUp(v, data.body()!!)
                 } else {
-                    setClearData()
+                    showWarningDialog(context)
                 }
             }
         } catch (e: Exception) {
@@ -157,9 +183,7 @@ class LYK1ViewModel : ViewModel() {
     }
 
     fun getMake(
-        view: View?,
-        zipCode: String?,
-        yearID: String?
+        view: View?
     ) {
         Constant.showLoader(context)
 
@@ -168,7 +192,7 @@ class LYK1ViewModel : ViewModel() {
                 val response: Deferred<Response<ArrayList<VehicleMakeData>>> = async {
                     RetrofitClient.apiInterface.getVehicleMake2(
                         productId,
-                        yearID,
+                        yearId,
                         zipCode,
                         null,
                         null
@@ -178,11 +202,11 @@ class LYK1ViewModel : ViewModel() {
                 Constant.dismissLoader()
                 if (data.isSuccessful) {
                     if (data.body().isNullOrEmpty())
-                        setClearData()
+                        showWarningDialog(context)
                     else
                         showMakePopUp(view, data.body()!!)
                 } else {
-                    setClearData()
+                    showWarningDialog(context)
                 }
             }
         } catch (e: Exception) {
@@ -211,11 +235,11 @@ class LYK1ViewModel : ViewModel() {
                 Constant.dismissLoader()
                 if (data.isSuccessful) {
                     if (data.body().isNullOrEmpty())
-                        setClearData()
+                        showWarningDialog(context)
                     else
                         showModelPopUp(view, data.body()!!)
                 } else {
-                    setClearData()
+                    showWarningDialog(context)
                 }
             }
         } catch (e: Exception) {
@@ -245,11 +269,11 @@ class LYK1ViewModel : ViewModel() {
                 Constant.dismissLoader()
                 if (data.isSuccessful) {
                     if (data.body().isNullOrEmpty())
-                        setClearData()
+                        showWarningDialog(context)
                     else
                         showTrimPopUp(view, data.body()!!)
                 } else {
-                    setClearData()
+                    showWarningDialog(context)
                 }
             }
         } catch (e: Exception) {
@@ -391,29 +415,28 @@ class LYK1ViewModel : ViewModel() {
     ) {
         Constant.showLoader(context)
         val jsonArray = JsonArray()
-        if (!prefSubmitPriceData.packagesData.isNullOrEmpty()) {
-            for (i in 0 until prefSubmitPriceData.packagesData?.size!!) {
-                if (prefSubmitPriceData.packagesData!![i].isSelect!! || prefSubmitPriceData.packagesData!![i].isOtherSelect!!) {
-                    jsonArray.add(prefSubmitPriceData.packagesData!![i].vehiclePackageID)
+        if (!prefLCDData.packagesData.isNullOrEmpty()) {
+            for (i in 0 until prefLCDData.packagesData?.size!!) {
+                if (prefLCDData.packagesData!![i].isSelect!! || prefLCDData.packagesData!![i].isOtherSelect!!) {
+                    jsonArray.add(prefLCDData.packagesData!![i].vehiclePackageID)
                 }
             }
         }
         val request = HashMap<String, Any>()
         request[ApiConstant.packageList] = jsonArray
         request[ApiConstant.productId] = productId
-        request[ApiConstant.yearId] = prefSubmitPriceData.yearId!!
-        request[ApiConstant.makeId] = prefSubmitPriceData.makeId!!
-        request[ApiConstant.modelId] = prefSubmitPriceData.modelId!!
-        request[ApiConstant.trimId] = prefSubmitPriceData.trimId!!
-        request[ApiConstant.exteriorColorId] = prefSubmitPriceData.extColorId!!
-        request[ApiConstant.interiorColorId] = prefSubmitPriceData.intColorId!!
-        request[ApiConstant.zipCode] = ""
+        request[ApiConstant.yearId] = prefLCDData.yearId!!
+        request[ApiConstant.makeId] = prefLCDData.makeId!!
+        request[ApiConstant.modelId] = prefLCDData.modelId!!
+        request[ApiConstant.trimId] = prefLCDData.trimId!!
+        request[ApiConstant.exteriorColorId] = prefLCDData.extColorId!!
+        request[ApiConstant.interiorColorId] = prefLCDData.intColorId!!
+        request[ApiConstant.zipCode] = zipCode
         viewModelScope.launch {
             val response: Deferred<Response<ArrayList<VehicleAccessoriesData>>> = async {
                 RetrofitClient.apiInterface.getVehicleDealerAccessories2(
                     request
                 )
-
             }
             val data = response.await()
             Constant.dismissLoader()
@@ -461,7 +484,7 @@ class LYK1ViewModel : ViewModel() {
                 request[ApiConstant.trimId] = trimId
                 request[ApiConstant.exteriorColorId] = extColorId
                 request[ApiConstant.interiorColorId] = intColorId
-                request[ApiConstant.zipCode] = ""
+                request[ApiConstant.zipCode] = zipCode
 
                 RetrofitClient.apiInterface.checkVehiclePackagesInventory2(
                     request
@@ -478,9 +501,9 @@ class LYK1ViewModel : ViewModel() {
                         dialogPackage.dismiss()
                     AppGlobal.alertError(context, context.getString(R.string.market_hot_msg))
                     tvPackages.text = context.getString(R.string.packages_title)
-                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
-                    prefSubmitPriceData.packagesData = java.util.ArrayList()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+                    prefLCDData = pref?.getOneDealNearYouData()!!
+                    prefLCDData.packagesData = java.util.ArrayList()
+                    pref?.setOneDealNearYouData(Gson().toJson(prefLCDData))
                     setCurrentTime()
                 } else {
                     if (data.body()?.status == 0 || data.body()?.status == 3) {
@@ -532,22 +555,22 @@ class LYK1ViewModel : ViewModel() {
                     }
                 }
                 val jsonArrayPackage = JsonArray()
-                for (i in 0 until prefSubmitPriceData.packagesData!!.size) {
-                    if (prefSubmitPriceData.packagesData!![i].isSelect!! || prefSubmitPriceData.packagesData!![i].isOtherSelect!!) {
-                        jsonArrayPackage.add(prefSubmitPriceData.packagesData!![i].vehiclePackageID)
+                for (i in 0 until prefLCDData.packagesData!!.size) {
+                    if (prefLCDData.packagesData!![i].isSelect!! || prefLCDData.packagesData!![i].isOtherSelect!!) {
+                        jsonArrayPackage.add(prefLCDData.packagesData!![i].vehiclePackageID)
                     }
                 }
                 val request = HashMap<String, Any>()
                 request[ApiConstant.packageList] = jsonArrayPackage
                 request[ApiConstant.checkedList] = jsonArray
                 request[ApiConstant.productId] = productId
-                request[ApiConstant.yearId] = prefSubmitPriceData.yearId!!
-                request[ApiConstant.makeId] = prefSubmitPriceData.makeId!!
-                request[ApiConstant.modelId] = prefSubmitPriceData.modelId!!
-                request[ApiConstant.trimId] = prefSubmitPriceData.trimId!!
-                request[ApiConstant.exteriorColorId] = prefSubmitPriceData.extColorId!!
-                request[ApiConstant.interiorColorId] = prefSubmitPriceData.intColorId!!
-                request[ApiConstant.zipCode] = ""
+                request[ApiConstant.yearId] = prefLCDData.yearId!!
+                request[ApiConstant.makeId] = prefLCDData.makeId!!
+                request[ApiConstant.modelId] = prefLCDData.modelId!!
+                request[ApiConstant.trimId] = prefLCDData.trimId!!
+                request[ApiConstant.exteriorColorId] = prefLCDData.extColorId!!
+                request[ApiConstant.interiorColorId] = prefLCDData.intColorId!!
+                request[ApiConstant.zipCode] = zipCode
 
                 RetrofitClient.apiInterface.checkVehicleAccessoriesInventory2(
                     request
@@ -563,9 +586,9 @@ class LYK1ViewModel : ViewModel() {
                         dialogOptions.dismiss()
                     AppGlobal.alertError(context, context.getString(R.string.market_hot_msg))
                     tvOptions.text = context.getString(R.string.options_accessories_title)
-                    prefSubmitPriceData = pref?.getSubmitPriceData()!!
-                    prefSubmitPriceData.optionsData = java.util.ArrayList()
-                    pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+                    prefLCDData = pref?.getOneDealNearYouData()!!
+                    prefLCDData.optionsData = java.util.ArrayList()
+                    pref?.setOneDealNearYouData(Gson().toJson(prefLCDData))
                     setCurrentTime()
                 } else {
                     if (data.body()!!.status == 0 || data.body()!!.status == 3) {
@@ -717,11 +740,11 @@ class LYK1ViewModel : ViewModel() {
 
     lateinit var dialogPackage: Dialog
     private fun popupPackages(data: ArrayList<VehiclePackagesData>) {
-        if (!prefSubmitPriceData.packagesData.isNullOrEmpty()) {
+        if (!prefLCDData.packagesData.isNullOrEmpty()) {
             for (i in 0 until data.size) {
-                for (j in 0 until prefSubmitPriceData.packagesData!!.size) {
-                    if (data[i].vehiclePackageID == prefSubmitPriceData.packagesData!![j].vehiclePackageID) {
-                        data[i] = prefSubmitPriceData.packagesData!![j]
+                for (j in 0 until prefLCDData.packagesData!!.size) {
+                    if (data[i].vehiclePackageID == prefLCDData.packagesData!![j].vehiclePackageID) {
+                        data[i] = prefLCDData.packagesData!![j]
                     }
                 }
             }
@@ -747,11 +770,11 @@ class LYK1ViewModel : ViewModel() {
 
     lateinit var dialogOptions: Dialog
     private fun popupOptions(data: java.util.ArrayList<VehicleAccessoriesData>) {
-        if (!prefSubmitPriceData.optionsData.isNullOrEmpty()) {
+        if (!prefLCDData.optionsData.isNullOrEmpty()) {
             for (i in 0 until data.size) {
-                for (j in 0 until prefSubmitPriceData.optionsData!!.size) {
-                    if (data[i].dealerAccessoryID == prefSubmitPriceData.optionsData!![j].dealerAccessoryID) {
-                        data[i] = prefSubmitPriceData.optionsData!![j]
+                for (j in 0 until prefLCDData.optionsData!!.size) {
+                    if (data[i].dealerAccessoryID == prefLCDData.optionsData!![j].dealerAccessoryID) {
+                        data[i] = prefLCDData.optionsData!![j]
                     }
                 }
             }
@@ -833,22 +856,22 @@ class LYK1ViewModel : ViewModel() {
         startHandler()
     }
 
-    fun setLYKPrefData() {
-        prefSubmitPriceData.isLYK = true
-        pref?.setSubmitPriceData(Gson().toJson(prefSubmitPriceData))
+    fun setLCDPrefData() {
+        prefLCDData.isLCD = true
+        pref?.setOneDealNearYouData(Gson().toJson(prefLCDData))
         setCurrentTime()
     }
 
     fun setCurrentTime() {
         val df = SimpleDateFormat("yyyy MM d, HH:mm:ss a")
         val date = df.format(Calendar.getInstance().time)
-        pref?.setSubmitPriceTime(date)
+        pref?.setOneDealNearYou(date)
 //        Log.e("Submit Date", date)
         startHandler()
     }
 
     fun startHandler() {
-        if (!AppGlobal.isEmpty(pref?.getSubmitPriceTime())) {
+        if (!AppGlobal.isEmpty(pref?.getOneDealNearYou())) {
             handler = Handler()
             handler.postDelayed(runnable, 1000)
         } else {
@@ -859,14 +882,13 @@ class LYK1ViewModel : ViewModel() {
             extColorStr = context.getString(R.string.exterior_color_title)
             intColorStr = context.getString(R.string.interior_color_title)
         }
-
     }
 
     private var runnable = object : Runnable {
         override fun run() {
             try {
                 val date = Calendar.getInstance().time
-                val lastDate = AppGlobal.stringToDate(pref?.getSubmitPriceTime())
+                val lastDate = AppGlobal.stringToDate(pref?.getOneDealNearYou())
 
                 val diff: Long = date.time - (lastDate?.time ?: 0)
                 print(diff)
@@ -875,8 +897,8 @@ class LYK1ViewModel : ViewModel() {
                 val minutes = seconds / 60
                 if (minutes >= 30) {
                     handler.removeCallbacks(this)
-                    pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-                    pref?.setSubmitPriceTime("")
+                    pref?.setOneDealNearYouData(Gson().toJson(PrefSubmitPriceData()))
+                    pref?.setOneDealNearYou("")
                     setTimerPrefData()
                 } else {
                     handler.postDelayed(this, 1000)
@@ -887,21 +909,23 @@ class LYK1ViewModel : ViewModel() {
     }
 
     fun setTimerPrefData() {
-        prefSubmitPriceData = pref?.getSubmitPriceData()!!
-        yearId = prefSubmitPriceData.yearId!!
-        makeId = prefSubmitPriceData.makeId!!
-        modelId = prefSubmitPriceData.modelId!!
-        trimId = prefSubmitPriceData.trimId!!
-        extColorId = prefSubmitPriceData.extColorId!!
-        intColorId = prefSubmitPriceData.intColorId!!
-        yearStr = prefSubmitPriceData.yearStr!!
-        makeStr = prefSubmitPriceData.makeStr!!
-        modelStr = prefSubmitPriceData.modelStr!!
-        trimStr = prefSubmitPriceData.trimStr!!
-        extColorStr = prefSubmitPriceData.extColorStr!!
-        intColorStr = prefSubmitPriceData.intColorStr!!
+        prefLCDData = pref?.getOneDealNearYouData()!!
+        isValidZipCode = prefLCDData.isZipCode!!
+        zipCode = prefLCDData.zipCode!!
+        yearId = prefLCDData.yearId!!
+        makeId = prefLCDData.makeId!!
+        modelId = prefLCDData.modelId!!
+        trimId = prefLCDData.trimId!!
+        extColorId = prefLCDData.extColorId!!
+        intColorId = prefLCDData.intColorId!!
+        yearStr = prefLCDData.yearStr!!
+        makeStr = prefLCDData.makeStr!!
+        modelStr = prefLCDData.modelStr!!
+        trimStr = prefLCDData.trimStr!!
+        extColorStr = prefLCDData.extColorStr!!
+        intColorStr = prefLCDData.intColorStr!!
 
-        if (TextUtils.isEmpty(yearId)) {
+        if (TextUtils.isEmpty(zipCode) || zipCode.length < 5) {
             yearStr = context.getString(R.string.year_new_cars_title)
             makeStr = context.getString(R.string.make_title)
             modelStr = context.getString(R.string.model_title)
@@ -909,6 +933,7 @@ class LYK1ViewModel : ViewModel() {
             extColorStr = context.getString(R.string.exterior_color_title)
             intColorStr = context.getString(R.string.interior_color_title)
 
+            edtZipCode.setText(zipCode)
             tvYear.text = context.getString(R.string.year_new_cars_title)
             tvMake.text = context.getString(R.string.make_title)
             tvModel.text = context.getString(R.string.model_title)
@@ -918,6 +943,7 @@ class LYK1ViewModel : ViewModel() {
             tvPackages.text = context.getString(R.string.packages_title)
             tvOptions.text = context.getString(R.string.options_accessories_title)
 
+            tvYear.isEnabled = false
             tvMake.isEnabled = false
             tvModel.isEnabled = false
             tvTrim.isEnabled = false
@@ -996,7 +1022,6 @@ class LYK1ViewModel : ViewModel() {
                     RetrofitClient.apiInterface.socialMobile2(
                         request
                     )
-
                 }
                 val dataLogin = response.await()
                 Constant.dismissLoader()
@@ -1030,71 +1055,94 @@ class LYK1ViewModel : ViewModel() {
         Constant.showLoader(context)
         try {
             viewModelScope.launch {
-                val jsonArray = JsonArray()
-                for (i in 0 until prefSubmitPriceData.optionsData?.size!!) {
-                    if (prefSubmitPriceData.optionsData!![i].isSelect!! || prefSubmitPriceData.optionsData!![i].isOtherSelect!!) {
-                        jsonArray.add(prefSubmitPriceData.optionsData!![i].dealerAccessoryID)
+                val jsonArrayAccessories = JsonArray()
+                var accessoriesStr = ""
+                var isFirstAcce = true
+                val arAccId: java.util.ArrayList<String> = java.util.ArrayList()
+                for (i in 0 until prefLCDData.optionsData!!.size) {
+                    if (prefLCDData.optionsData!![i].isSelect!! || prefLCDData.optionsData!![i].isOtherSelect!!) {
+                        jsonArrayAccessories.add(prefLCDData.optionsData!![i].dealerAccessoryID)
+                        arAccId.add(prefLCDData.optionsData!![i].dealerAccessoryID!!)
+                        if (isFirstAcce) {
+                            isFirstAcce = false
+                            accessoriesStr = prefLCDData.optionsData!![i].accessory!!
+                        } else
+                            accessoriesStr += ",\n" + prefLCDData.optionsData!![i].accessory!!
                     }
                 }
                 val jsonArrayPackage = JsonArray()
+                var packageStr = ""
+                var isFirstPackage = true
+                val arPackageId: java.util.ArrayList<String> = java.util.ArrayList()
 
-                for (i in 0 until prefSubmitPriceData.packagesData!!.size) {
-                    if (prefSubmitPriceData.packagesData!![i].isSelect!! || prefSubmitPriceData.packagesData!![i].isOtherSelect!!) {
-                        jsonArrayPackage.add(prefSubmitPriceData.packagesData!![i].vehiclePackageID)
+                for (i in 0 until prefLCDData.packagesData?.size!!) {
+                    if (prefLCDData.packagesData!![i].isSelect!! || prefLCDData.packagesData!![i].isOtherSelect!!) {
+                        jsonArrayPackage.add(prefLCDData.packagesData!![i].vehiclePackageID)
+                        arPackageId.add(prefLCDData.packagesData!![i].vehiclePackageID!!)
+                        if (isFirstPackage) {
+                            isFirstPackage = false
+                            packageStr = prefLCDData.packagesData!![i].packageName!!
+                        } else {
+                            packageStr =
+                                packageStr + ",\n" + prefLCDData.packagesData!![i].packageName!!
+                        }
                     }
                 }
                 val request = HashMap<String, Any>()
-                request[ApiConstant.packageList] = jsonArrayPackage
-                request[ApiConstant.checkedList] = jsonArray
-                request[ApiConstant.yearId] = yearId
-                request[ApiConstant.makeId] = makeId
-                request[ApiConstant.modelId] = modelId
-                request[ApiConstant.trimId] = trimId
-                request[ApiConstant.exteriorColorId] = extColorId
-                request[ApiConstant.interiorColorId] = intColorId
+                request[ApiConstant.vehicleYearID] = yearId
+                request[ApiConstant.vehicleMakeID] = makeId
+                request[ApiConstant.vehicleModelID] = modelId
+                request[ApiConstant.vehicleTrimID] = trimId
+                request[ApiConstant.vehicleExteriorColorID] = extColorId
+                request[ApiConstant.vehicleInteriorColorID] = intColorId
+                request[ApiConstant.zipCode] = edtZipCode.text.toString().trim()
+                request[ApiConstant.dealerAccessoryIDs] = jsonArrayAccessories
+                request[ApiConstant.vehiclePackageIDs] = jsonArrayPackage
 
-                val response: Deferred<Response<Double>> = async {
-                    RetrofitClient.apiInterface.getMinMSRP2(
+                val response: Deferred<Response<FindLCDDeaData>> = async {
+                    RetrofitClient.apiInterface.findLCDDeal2(
                         request
                     )
-
                 }
-                val dataMSRP = response.await()
+
+                val dataResp = response.await()
                 Constant.dismissLoader()
-                if (dataMSRP.isSuccessful) {
+                if (dataResp.isSuccessful) {
+                    val data = dataResp.body()
                     val arOptions: ArrayList<VehicleAccessoriesData> =
                         ArrayList()
-                    for (i in 0 until prefSubmitPriceData.optionsData!!.size) {
-                        if (prefSubmitPriceData.optionsData!![i].isSelect!! || prefSubmitPriceData.optionsData!![i].isOtherSelect!!) {
-                            arOptions.add(prefSubmitPriceData.optionsData!![i])
+                    for (i in 0 until prefLCDData.optionsData!!.size) {
+                        if (prefLCDData.optionsData!![i].isSelect!! || prefLCDData.optionsData!![i].isOtherSelect!!) {
+                            arOptions.add(prefLCDData.optionsData!![i])
                         }
                     }
                     val arPackage: ArrayList<VehiclePackagesData> = ArrayList()
 
-                    for (i in 0 until prefSubmitPriceData.packagesData!!.size) {
-                        if (prefSubmitPriceData.packagesData!![i].isSelect!! || prefSubmitPriceData.packagesData!![i].isOtherSelect!!) {
-                            arPackage.add(prefSubmitPriceData.packagesData!![i])
+                    for (i in 0 until prefLCDData.packagesData!!.size) {
+                        if (prefLCDData.packagesData!![i].isSelect!! || prefLCDData.packagesData!![i].isOtherSelect!!) {
+                            arPackage.add(prefLCDData.packagesData!![i])
                         }
                     }
-                    val data = YearModelMakeData()
-                    data.vehicleYearID = yearId
-                    data.vehicleMakeID = makeId
-                    data.vehicleModelID = modelId
-                    data.vehicleTrimID = trimId
-                    data.vehicleExtColorID = extColorId
-                    data.vehicleIntColorID = intColorId
-                    data.vehicleYearStr = yearStr
-                    data.vehicleMakeStr = makeStr
-                    data.vehicleModelStr = modelStr
-                    data.vehicleTrimStr = trimStr
-                    data.vehicleExtColorStr = extColorStr
-                    data.vehicleIntColorStr = intColorStr
-                    data.arPackages = arPackage
-                    data.arOptions = arOptions
-                    data.msrp = dataMSRP.body()?.toFloat()
-                    pref?.setSubmitPriceData(Gson().toJson(pref?.getSubmitPriceData()))
-                    context.startActivity<LYKStep1Activity>(
-                        Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(
+                    data?.productId = productId
+                    data?.yearId = yearId
+                    data?.makeId = makeId
+                    data?.modelId = modelId
+                    data?.trimId = trimId
+                    data?.exteriorColorId = extColorId
+                    data?.interiorColorId = intColorId
+                    data?.yearStr = yearStr
+                    data?.makeStr = makeStr
+                    data?.modelStr = modelStr
+                    data?.trimStr = trimStr
+                    data?.exteriorColorStr = extColorStr
+                    data?.interiorColorStr = intColorStr
+                    data?.arPackage = packageStr
+                    data?.arAccessories = accessoriesStr
+                    data?.arAccessoriesId = arAccId
+                    data?.arPackageId = arPackageId
+                    pref?.setOneDealNearYouData(Gson().toJson(pref?.getOneDealNearYouData()))
+                    context.startActivity<LCDDealSummaryStep1Activity>(
+                        Constant.ARG_LCD_DEAL_GUEST to Gson().toJson(
                             data
                         )
                     )
@@ -1170,137 +1218,4 @@ class LYK1ViewModel : ViewModel() {
             source
         }
     }
-
-    fun isEnableField(
-        isYear: Boolean,
-        isMake: Boolean,
-        isModel: Boolean,
-        isTrim: Boolean,
-        isExtColor: Boolean,
-        isIntColor: Boolean,
-        isPackage: Boolean,
-        isOptions: Boolean
-    ) {
-        tvYear.isEnabled = isYear
-        tvMake.isEnabled = isMake
-        tvModel.isEnabled = isModel
-        tvTrim.isEnabled = isTrim
-        tvExtColor.isEnabled = isExtColor
-        tvIntColor.isEnabled = isIntColor
-        tvPackages.isEnabled = isPackage
-        tvOptions.isEnabled = isOptions
-    }
-
-    fun isReInitField(
-        isYear: Boolean,
-        isMake: Boolean,
-        isModel: Boolean,
-        isTrim: Boolean,
-        isExtColor: Boolean,
-        isIntColor: Boolean,
-        isPackage: Boolean,
-        isOptions: Boolean
-    ) {
-        if (!isYear) {
-            tvYear.text = context.getString(R.string.year_new_cars_title)
-
-            yearId = ""
-            yearStr = ""
-            makeId = ""
-            makeStr = ""
-            modelId = ""
-            modelStr = ""
-            trimId = ""
-            trimStr = ""
-            extColorId = ""
-            extColorStr = ""
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isMake) {
-            tvMake.text = context.getString(R.string.make_title)
-
-            makeId = ""
-            makeStr = ""
-            modelId = ""
-            modelStr = ""
-            trimId = ""
-            trimStr = ""
-            extColorId = ""
-            extColorStr = ""
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isModel) {
-            tvModel.text = context.getString(R.string.model_title)
-            modelId = ""
-            modelStr = ""
-            trimId = ""
-            trimStr = ""
-            extColorId = ""
-            extColorStr = ""
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isTrim) {
-            tvTrim.text = context.getString(R.string.trim_title)
-            trimId = ""
-            trimStr = ""
-            extColorId = ""
-            extColorStr = ""
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isExtColor) {
-            tvExtColor.text = context.getString(R.string.exterior_color_title)
-
-            extColorId = ""
-            extColorStr = ""
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isIntColor) {
-            tvIntColor.text =
-                context.getString(R.string.interior_color_title)
-
-            intColorId = ""
-            intColorStr = ""
-
-        }
-        if (!isPackage) {
-            tvPackages.text = context.getString(R.string.packages_title)
-        }
-        if (!isOptions) tvOptions.text = context.getString(R.string.options_accessories_title)
-
-        prefSubmitPriceData.yearId = yearId
-        prefSubmitPriceData.makeId = makeId
-        prefSubmitPriceData.modelId = modelId
-        prefSubmitPriceData.trimId = trimId
-        prefSubmitPriceData.extColorId = extColorId
-        prefSubmitPriceData.intColorId = intColorId
-        prefSubmitPriceData.yearStr = yearStr
-        prefSubmitPriceData.makeStr = makeStr
-        prefSubmitPriceData.modelStr = modelStr
-        prefSubmitPriceData.trimStr = trimStr
-        prefSubmitPriceData.extColorStr = extColorStr
-        prefSubmitPriceData.intColorStr = intColorStr
-        prefSubmitPriceData.packagesData = ArrayList()
-        prefSubmitPriceData.optionsData = ArrayList()
-        setLYKPrefData()
-
-    }
-
-    private fun setClearData() {
-        showWarningDialog(context)
-        pref?.setSubmitPriceData(Gson().toJson(PrefSubmitPriceData()))
-        pref?.setSubmitPriceTime("")
-        setTimerPrefData()
-    }
-
 }
-

@@ -134,6 +134,9 @@ class Constant {
         var LYK_DEAL = "LYKDeal"
         var LCD_DEAL = "LCDDeal"
         var UCD_DEAL = "UCDDeal"
+        var PRODUCT_LYK = "1"
+        var PRODUCT_LCD = "2"
+        var PRODUCT_UCD = "3"
 
 
         lateinit var progress: KProgressHUD

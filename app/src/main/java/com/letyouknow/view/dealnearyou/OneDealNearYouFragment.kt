@@ -394,7 +394,7 @@ class OneDealNearYouFragment : BaseFragment(), View.OnClickListener,
                     Constant.showLoader(requireActivity())
                 }
                 zipCodeModel.getZipCode(requireActivity(), zipCode)!!
-                    .observe(requireActivity(), Observer { data ->
+                    .observe(requireActivity(), { data ->
                         Constant.dismissLoader()
                         //Log.e("ZipCode Data", Gson().toJson(data))
                         try {

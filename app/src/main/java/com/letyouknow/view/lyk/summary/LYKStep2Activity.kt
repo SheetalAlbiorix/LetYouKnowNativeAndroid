@@ -1134,7 +1134,12 @@ class LYKStep2Activity : BaseActivity(), View.OnClickListener,
                 val data = adapterState.getItem(position) as String
                 state = data
                 binding.selectState = state
-                isState = true
+                if (state == "State")
+                    isState = false
+                else {
+                    isState = true
+                    setDisableVar()
+                }
 //                callCalculateTaxAPI()
                 callRebateResetAPI()
             }

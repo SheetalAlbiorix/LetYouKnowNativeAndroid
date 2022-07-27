@@ -218,7 +218,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
         }
     }
 
-
     private fun setYear() {
         try {
             val arData = ArrayList<VehicleYearData>()
@@ -229,7 +228,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             spYear.adapter = adapterYear
             AppGlobal.setSpinnerLayoutPos(0, spYear, requireActivity())
         } catch (e: Exception) {
-
         }
     }
 
@@ -259,7 +257,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             spModel.adapter = adapterModel
             AppGlobal.setSpinnerLayoutPos(0, spModel, requireActivity())
         } catch (e: Exception) {
-
         }
     }
 
@@ -274,7 +271,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
             spTrim.adapter = adapterTrim
             AppGlobal.setSpinnerLayoutPos(0, spTrim, requireActivity())
         } catch (e: Exception) {
-
         }
     }
 
@@ -1193,7 +1189,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                         dialogPackage.dismiss()
                     }
                 } else {
-
                     showApplyEmptyDialog()
                 }
                 prefSubmitPriceData = pref?.getSubmitPriceData()!!
@@ -1202,7 +1197,6 @@ class LYKFragment : BaseFragment(), View.OnClickListener,
                 prefSubmitPriceData.optionsData = ArrayList()
                 setLYKPrefData()
                 setRadius()
-
             }
             R.id.tvCancelPackage -> {
                 val gson = Gson()

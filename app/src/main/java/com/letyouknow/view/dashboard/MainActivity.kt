@@ -44,10 +44,10 @@ import com.letyouknow.utils.Constant.Companion.TYPE_SUBMIT_PRICE
 import com.letyouknow.view.account.AccountFragment
 import com.letyouknow.view.bidhistory.BidHistoryActivity
 import com.letyouknow.view.dashboard.drawer.DrawerListAdapter
-import com.letyouknow.view.dealnearyou.OneDealNearYouFragment
 import com.letyouknow.view.howitworkhelp.HowItWorkHelpWebViewActivity
+import com.letyouknow.view.lcd.LCDFragment
 import com.letyouknow.view.login.LoginActivity
-import com.letyouknow.view.lyk.LYKFragment
+import com.letyouknow.view.lyk.LYK1Fragment
 import com.letyouknow.view.lyk.summary.LYKStep1Activity
 import com.letyouknow.view.referreferral.ReferReferralActivity
 import com.letyouknow.view.transaction_history.TransactionCodeDetailActivity
@@ -381,7 +381,7 @@ class MainActivity : BaseActivity(),
                     dataLYK.optionsData = accList
                     AppGlobal.pref?.setSubmitPriceData(Gson().toJson(dataLYK))
                     setCurrentTimeLYK()
-                    loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+                    loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
                     startActivity<LYKStep1Activity>(
                         Constant.ARG_YEAR_MAKE_MODEL to Gson().toJson(dataYear),
                         Constant.ARG_IS_BID to true
@@ -448,7 +448,7 @@ class MainActivity : BaseActivity(),
                 Constant.dismissLoader()
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
-            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
         } else {
             setFragOnReloadPage()
         }
@@ -457,10 +457,10 @@ class MainActivity : BaseActivity(),
 
     private fun setFragOnReloadPage() {
         val fragment = supportFragmentManager.findFragmentById(R.id.flContainer)
-        if (fragment is LYKFragment) {
+        if (fragment is LYK1Fragment) {
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
-        } else if (fragment is OneDealNearYouFragment) {
+        } else if (fragment is LCDFragment) {
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
             item.isChecked = true
         } else if (fragment is UCDFragment) {
@@ -553,13 +553,13 @@ class MainActivity : BaseActivity(),
                         Constant.dismissLoader()
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
                     item.isChecked = true
-                    loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+                    loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
 
                 }
                 TYPE_ONE_DEAL_NEAR_YOU -> {
                     if (Constant.isInitProgress() && Constant.progress.isShowing)
                         Constant.dismissLoader()
-                    loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
+                    loadFragment(LCDFragment(), getString(R.string.one_deal_near_you))
                     val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom2)
                     item.isChecked = true
                     if (intent.hasExtra(ARG_IS_LCD)) {
@@ -580,7 +580,7 @@ class MainActivity : BaseActivity(),
         } else {
             val item: MenuItem = bottomNavigation.menu.findItem(R.id.itemBottom1)
             item.isChecked = true
-            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
         }
 
     }
@@ -635,7 +635,7 @@ class MainActivity : BaseActivity(),
                 adapterDrawer.update(selectDrawerPos, data)
             }
             selectDrawerPos = -1
-            loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+            loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
             item.isChecked = true
         }
     }
@@ -720,11 +720,12 @@ class MainActivity : BaseActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemBottom1 -> {
-//                loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
-                loadFragment(LYKFragment(), getString(R.string.submit_your_price))
+                loadFragment(LYK1Fragment(), getString(R.string.submit_your_price))
+//                loadFragment(LYKFragment(), getString(R.string.submit_your_price))
             }
             R.id.itemBottom2 -> {
-                loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
+                loadFragment(LCDFragment(), getString(R.string.one_deal_near_you))
+//                loadFragment(OneDealNearYouFragment(), getString(R.string.one_deal_near_you))
             }
             R.id.itemBottom3 -> {
                 loadFragment(UCDFragment(), getString(R.string.search_deals_title))

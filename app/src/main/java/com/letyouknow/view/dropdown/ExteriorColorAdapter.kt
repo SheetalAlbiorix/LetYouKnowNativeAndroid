@@ -3,7 +3,7 @@ package com.letyouknow.view.dropdown
 import android.view.View
 import com.letyouknow.model.ExteriorColorData
 import com.logispeed.ui.base.BaseAdapter
-import kotlinx.android.synthetic.main.list_item_year.view.*
+import kotlinx.android.synthetic.main.list_item_exterior_color.view.*
 
 class ExteriorColorAdapter(layout: Int, val clickListener: View.OnClickListener) :
     BaseAdapter<ExteriorColorData>(layout), BaseAdapter.OnBind<ExteriorColorData> {
@@ -14,9 +14,9 @@ class ExteriorColorAdapter(layout: Int, val clickListener: View.OnClickListener)
 
     override fun onBind(view: View, position: Int, data: ExteriorColorData) {
         view.run {
-            tvTitleYear.text = data.exteriorColor
-            tvTitleYear.tag = position
-            tvTitleYear.setOnClickListener(clickListener)
+            tvTitleExterior.text = data.exteriorColor
+            tvTitleExterior.tag = position
+            tvTitleExterior.setOnClickListener(clickListener)
         }
     }
 }

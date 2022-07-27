@@ -54,13 +54,13 @@ interface ApiInterface {
     ): Call<ArrayList<VehicleMakeData>>
 
     @GET("vehiclecriteria/getvehiclemakes")
-    fun getVehicleMake2(
+    suspend fun getVehicleMake2(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<VehicleMakeData>
+    ): Response<ArrayList<VehicleMakeData>>
 
     @GET("vehiclecriteria/getvehiclemodels")
     fun getVehicleModels(
@@ -73,14 +73,14 @@ interface ApiInterface {
     ): Call<ArrayList<VehicleModelData>>
 
     @GET("vehiclecriteria/getvehiclemodels")
-    fun getVehicleModels2(
+    suspend fun getVehicleModels2(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<VehicleModelData>
+    ): Response<ArrayList<VehicleModelData>>
 
     @GET("vehiclecriteria/getvehicletrims")
     fun getVehicleTrims(
@@ -94,7 +94,7 @@ interface ApiInterface {
     ): Call<ArrayList<VehicleTrimData>>
 
     @GET("vehiclecriteria/getvehicletrims")
-    fun getVehicleTrims2(
+    suspend fun getVehicleTrims2(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
@@ -102,7 +102,7 @@ interface ApiInterface {
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<VehicleTrimData>
+    ): Response<ArrayList<VehicleTrimData>>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
     fun getVehicleExteriorColors(
@@ -117,7 +117,7 @@ interface ApiInterface {
     ): Call<ArrayList<ExteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleexteriorcolors")
-    fun getVehicleExteriorColors2(
+    suspend fun getVehicleExteriorColors2(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
@@ -126,7 +126,7 @@ interface ApiInterface {
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<ExteriorColorData>
+    ): Response<ArrayList<ExteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleinteriorcolors")
     fun getVehicleInteriorColors(
@@ -142,7 +142,7 @@ interface ApiInterface {
     ): Call<ArrayList<InteriorColorData>>
 
     @GET("vehiclecriteria/getvehicleinteriorcolors")
-    fun getVehicleInteriorColors2(
+    suspend fun getVehicleInteriorColors2(
         @Query("productId") productId: String?,
         @Query("yearId") yearId: String?,
         @Query("makeId") makeId: String?,
@@ -152,13 +152,18 @@ interface ApiInterface {
         @Query("zipCode") zipCode: String?,
         @Query("lowprice") lowprice: String?,
         @Query("highprice") highprice: String?
-    ): ArrayList<InteriorColorData>
+    ): Response<ArrayList<InteriorColorData>>
 
 
     @GET("map/IsValidZip")
     fun isValidZip(
         @Query("zip") zip: String?
     ): Call<Boolean>
+
+    @GET("map/IsValidZip")
+    suspend fun isValidZip2(
+        @Query("zip") zip: String?
+    ): Response<Boolean>
 
 
     @GET("vehiclecriteria/getvehiclepackages")
@@ -173,17 +178,41 @@ interface ApiInterface {
         @Query("zipCode") zipCode: String?
     ): Call<ArrayList<VehiclePackagesData>>
 
+    @GET("vehiclecriteria/getvehiclepackages")
+    suspend fun getVehiclePackages2(
+        @Query("productId") productId: String?,
+        @Query("yearId") yearId: String?,
+        @Query("makeId") makeId: String?,
+        @Query("modelId") modelId: String?,
+        @Query("trimId") trimId: String?,
+        @Query("exteriorColorId") exteriorColorId: String?,
+        @Query("interiorColorId") interiorColorId: String?,
+        @Query("zipCode") zipCode: String?
+    ): Response<ArrayList<VehiclePackagesData>>
+
     @POST("vehiclecriteria/getvehicledealeraccessories")
     fun getVehicleDealerAccessories(@Body request: HashMap<String, Any>): Call<ArrayList<VehicleAccessoriesData>>
+
+    @POST("vehiclecriteria/getvehicledealeraccessories")
+    suspend fun getVehicleDealerAccessories2(@Body request: HashMap<String, Any>): Response<ArrayList<VehicleAccessoriesData>>
 
     @POST("vehiclecriteria/checkVehiclePackagesInventory")
     fun checkVehiclePackagesInventory(@Body request: HashMap<String, Any>): Call<CheckedPackageData>
 
+    @POST("vehiclecriteria/checkVehiclePackagesInventory")
+    suspend fun checkVehiclePackagesInventory2(@Body request: HashMap<String, Any>): Response<CheckedPackageData>
+
     @POST("vehiclecriteria/checkVehicleDealerAccessoriesInventory")
     fun checkVehicleAccessoriesInventory(@Body request: HashMap<String, Any>): Call<CheckedPackageData>
 
+    @POST("vehiclecriteria/checkVehicleDealerAccessoriesInventory")
+    suspend fun checkVehicleAccessoriesInventory2(@Body request: HashMap<String, Any>): Response<CheckedPackageData>
+
     @POST("findmydeal/findLCDDeal")
     fun findLCDDeal(@Body request: HashMap<String, Any>): Call<FindLCDDeaData>
+
+    @POST("findmydeal/findLCDDeal")
+    suspend fun findLCDDeal2(@Body request: HashMap<String, Any>): Response<FindLCDDeaData>
 
     @POST("findmydeal/FindUCDDeal")
     fun findUCDDeal(@Body request: HashMap<String, Any>): Call<ArrayList<FindUcdDealData>>
@@ -261,6 +290,9 @@ interface ApiInterface {
     @POST("msrp/GetMinMSRP")
     fun getMinMSRP(@Body request: HashMap<String, Any>): Call<Double>
 
+    @POST("msrp/GetMinMSRP")
+    suspend fun getMinMSRP2(@Body request: HashMap<String, Any>): Response<Double>
+
     @POST("msrp/GetMSRPRange")
     fun getMSRPRange(@Body request: HashMap<String, Any>): Call<ArrayList<String>>
 
@@ -327,6 +359,9 @@ interface ApiInterface {
     @PUT("userprofile/socialmobile")
     fun socialMobile(@Body request: HashMap<String, Any>): Call<LoginData>
 
+    @PUT("userprofile/socialmobile")
+    fun socialMobile2(@Body request: HashMap<String, Any>): Response<LoginData>
+
     @GET("referralprogram/current/balance")
     fun referralProgramCurrentBalance(): Call<Double>
 
@@ -347,6 +382,9 @@ interface ApiInterface {
 
     @GET("promotion/public")
     fun promotionPublic(): Call<PromotionData>
+
+    @GET("promotion/public")
+    suspend fun promotionPublic2(): Response<PromotionData>
 
     @GET("activematching/deal/{dealId}")
     fun activeMatchingDeal(@Path(value = "dealId") token: String?): Call<ActiveMatchingData>
